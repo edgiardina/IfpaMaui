@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.ChampionshipSeriesPlayerCardPage"
+             Title="{Binding Title}">
+    <StackLayout>       
+
+        <ListView x:Name="MyListView"
+            ItemsSource="{Binding TournamentCardRecords}"
+            RefreshCommand="{Binding LoadItemsCommand}"
+            IsPullToRefreshEnabled="true"
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement"
+            HasUnevenRows="true">
+            <!--Custom View Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10,0,10,0" Orientation="Horizontal">
+                          
+                            <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                <Label Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding TournamentName}" />
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="10" Text="{Binding EventName}"  TextColor="{DynamicResource SecondaryTextColor}" />
+                            </StackLayout>
+
+                            <StackLayout Orientation="Vertical" Padding="10" MinimumWidthRequest="120" HorizontalOptions="End">
+                                <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="End" Text="{Binding EventEndDate, StringFormat='{0:d}'}" />
+                                <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="End" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}"  TextColor="{DynamicResource SecondaryTextColor}" />
+                            </StackLayout>                         
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

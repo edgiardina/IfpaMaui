@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Ifpa.Converters"
+             x:Class="Ifpa.Views.RankingsPage"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Search" x:Name="SearchButton" Clicked="SearchButton_Clicked"  IconImageSource="search.svg" />
+        <ToolbarItem Text="Filter" x:Name="InfoButton" Clicked="InfoButton_Clicked"  IconImageSource="filter.png" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <local:PlayerListViewIndexConverter x:Key="playerListViewIndexConverter" x:Name="PlayerListViewIndexConverter" StartingRank="{Binding StartingPosition, Mode=TwoWay}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ListView x:Name="PlayersListView" 
+                 ItemsSource="{Binding Players}"           
+                 HasUnevenRows="true"
+                 RefreshCommand="{Binding LoadItemsCommand}"
+                 IsPullToRefreshEnabled="true"
+                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                 ItemSelected="OnItemSelected"
+                 CachingStrategy="RecycleElement">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout Padding="10,0,10,0" Orientation="Horizontal" >
+                        <Label VerticalTextAlignment="Center" Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
+                        <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="{Binding FirstName}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding LastName}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <StackLayout Orientation="Horizontal">
+                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Location}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" />
+                                <Label TextColor="{DynamicResource SecondaryTextColor}" HorizontalOptions="End"  Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}" FontSize="10" />
+                            </StackLayout>
+                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" TextColor="{DynamicResource SecondaryTextColor}" 
+                                               FontSize="10" HorizontalTextAlignment="Start" IsVisible="{Binding Source={x:Reference BrowseItemsPage}, Path=BindingContext.ShowOverallRank}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="Overall WPPR Rank:" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

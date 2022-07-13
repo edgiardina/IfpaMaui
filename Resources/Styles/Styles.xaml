@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Style TargetType="TabBar">
+        <Setter Property="Shell.ForegroundColor" Value="{DynamicResource IconAccentColor}" />
+        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
+        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" />
+        <Setter Property="Shell.TabBarBackgroundColor"
+            Value="{AppThemeBinding Light={DynamicResource BarBackgroundColor}, Dark={DynamicResource BarBackgroundColorDark}}" />
+        <Setter Property="Shell.TabBarTitleColor"
+            Value="{DynamicResource IconAccentColor}" />
+        <Setter Property="Shell.TabBarUnselectedColor"
+            Value="{DynamicResource SecondaryTextColor}" />
+    </Style>
+
+    <Style TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
+    </Style>
+
+    <Style TargetType="Page">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
+    </Style>
+
+    <Style TargetType="SearchBar">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
+    </Style>
+
+    <Style TargetType="ListView">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
+    </Style>
+
+    <Style TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
+    </Style>
+
+    <Style TargetType="Button" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor" Value="{DynamicResource ButtonBackgroundColor}" />
+        <Setter Property="TextColor" Value="{DynamicResource ButtonTextColor}" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" />
+    </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" />
+    </Style>
+
+    <!--<Style TargetType="chart:SfChart">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
+    </Style>
+
+    <Style TargetType="chart:ChartTitle">
+        <Setter Property="TextColor"  Value="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <Style TargetType="tabView:SfTabView">
+        <Setter Property="TabHeaderBackgroundColor" Value="{AppThemeBinding Light={DynamicResource TabHeaderBackgroundColor}, Dark={DynamicResource TabHeaderBackgroundColorDark}}" />
+    </Style>
+
+    <Style TargetType="tabView:SfTabItem">
+        <Setter Property="TitleFontColor" Value="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" />
+    </Style>-->
+
+</ResourceDictionary>

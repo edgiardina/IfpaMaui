@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.ChampionshipSeriesListPage"
+             Title="{Binding Title}">
+    <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+        <CollectionView x:Name="ChampionshipSeriesCollectionView"            
+            ItemsSource="{Binding ChampionshipSeries}" 
+            SelectionMode="Single"                        
+            SelectionChanged="ChampionshipSeriesCollectionView_SelectionChanged">
+            <!--Custom View Cells-->
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Vertical"  HorizontalOptions="FillAndExpand">
+                        <StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding Title}" />
+                        </StackLayout>
+                        <BoxView HeightRequest=".5" Margin="10,0,0,0"
+                           BackgroundColor="{DynamicResource SecondaryTextColor}"                
+                           VerticalOptions="End"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

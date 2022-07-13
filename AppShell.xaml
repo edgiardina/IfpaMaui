@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Ifpa.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Ifpa"
+    xmlns:views="clr-namespace:Ifpa.Views"
+    Shell.FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <ShellContent Title="Rankings" ContentTemplate="{DataTemplate views:RankingsPage}" Icon="numbered_list.png" Route="rankings" />
+        
+        <ShellContent Title="Champ. Series" ContentTemplate="{DataTemplate views:ChampionshipSeriesListPage}" Icon="trophy.png" Route="champ-series-list" />
+        <!--
+        <ShellContent Title="My Stats" ContentTemplate="{DataTemplate views:PlayerDetailPage}" Icon="mystats.png" Route="my-stats" />
+        <ShellContent Title="Calendar" ContentTemplate="{DataTemplate views:CalendarPage}" Icon="calendar.png" Route="calendar" />
+        <ShellContent Title="More" ContentTemplate="{DataTemplate views:MoreItemsPage}" Icon="more.png" Route="more" />
+        -->
+    </TabBar>
+</Shell>

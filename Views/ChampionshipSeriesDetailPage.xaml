@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             x:Class="Ifpa.Views.ChampionshipSeriesDetailPage"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.LargeTitleDisplay="Never"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <tabView:SfTabView HeightRequest="50" TabBarBackground="{DynamicResource TabHeaderBackgroundColor}">
+        <tabView:SfTabItem Header="Standings">
+            <tabView:SfTabItem.Content>
+                <ListView
+                        ItemsSource="{Binding RegionStandings.Standings}"
+                        RefreshCommand="{Binding LoadItemsCommand}"
+                        IsPullToRefreshEnabled="true"
+                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                        ItemTapped="Handle_ItemTapped"
+                        CachingStrategy="RecycleElement"
+                        HasUnevenRows="true">
+                    <!--Custom View Cells-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="10,0,10,0" Orientation="Horizontal" >
+                                    <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
+                                       LineBreakMode="NoWrap" 
+                                       Style="{DynamicResource ListItemTextStyle}" 
+                                       FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
+                                    <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                        <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding PlayerName}" />
+
+                                        <Label HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
+                                               LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}" />
+                                    </StackLayout>
+
+                                    <StackLayout Orientation="Vertical" Padding="10">
+                                        <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span Text="Event Count:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="{Binding EventCount}" />
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span Text="Win Count:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="{Binding WinCount}" />
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+        <tabView:SfTabItem Header="Tournaments">
+            <tabView:SfTabItem.Content>
+                <ListView
+                        ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}"
+                        ItemTapped="ListView_ItemTapped"
+                        RefreshCommand="{Binding LoadItemsCommand}"
+                        IsPullToRefreshEnabled="true"
+                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"                 
+                        CachingStrategy="RecycleElement"
+                        HasUnevenRows="true">
+                    <!--Custom View Cells-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="10" Orientation="Horizontal"  >
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                        <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding TournamentName}" />
+                                        <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small" Text="{Binding EventName}"  />
+                                    </StackLayout>
+                                        
+                                    <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="EndAndExpand" MinimumWidthRequest="60">
+                                        <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" 
+                                               FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}"  />
+
+                                        <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span Text="Players:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="{Binding PlayerCount}" />
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+    </tabView:SfTabView>
+
+</ContentPage>
