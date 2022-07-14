@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>IfpaMaui</ApplicationTitle>
+		<ApplicationTitle>IFPA Companion</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.edgiardina.ifpa</ApplicationId>

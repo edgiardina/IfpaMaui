@@ -29,7 +29,8 @@
                     EmptyView="No players found."
                     IsVisible="{Binding IsPopulated}"
                     ItemsSource="{Binding Players}"
-                    VerticalOptions="CenterAndExpand"              
+                    VerticalOptions="CenterAndExpand"   
+                    SelectionMode="Single"
                     SelectionChanged="PlayersListView_SelectionChanged">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

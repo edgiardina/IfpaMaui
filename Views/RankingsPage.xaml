@@ -18,10 +18,10 @@
     <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
         <CollectionView x:Name="PlayersListView" 
                  ItemsSource="{Binding Players}"
+                 SelectionMode="Single"
                  SelectionChanged="PlayersListView_SelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-
                     <StackLayout Padding="10,0,10,0" Orientation="Horizontal" >
                         <Label VerticalTextAlignment="Center" Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
                                    LineBreakMode="NoWrap" 
