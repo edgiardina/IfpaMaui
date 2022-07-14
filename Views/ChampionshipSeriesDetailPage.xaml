@@ -16,18 +16,13 @@
     <tabView:SfTabView HeightRequest="50" TabBarBackground="{DynamicResource TabHeaderBackgroundColor}">
         <tabView:SfTabItem Header="Standings">
             <tabView:SfTabItem.Content>
-                <ListView
+                <RefreshView Command="{Binding LoadItemsCommand}"                        
+                        IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+                    <CollectionView
                         ItemsSource="{Binding RegionStandings.Standings}"
-                        RefreshCommand="{Binding LoadItemsCommand}"
-                        IsPullToRefreshEnabled="true"
-                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                        ItemTapped="Handle_ItemTapped"
-                        CachingStrategy="RecycleElement"
-                        HasUnevenRows="true">
-                    <!--Custom View Cells-->
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
+                        SelectionChanged="StandingsCollectionView_SelectionChanged">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
                                 <StackLayout Padding="10,0,10,0" Orientation="Horizontal" >
                                     <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
                                        LineBreakMode="NoWrap" 
@@ -65,32 +60,28 @@
                                         </Label>
                                     </StackLayout>
                                 </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
         <tabView:SfTabItem Header="Tournaments">
             <tabView:SfTabItem.Content>
-                <ListView
-                        ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}"
-                        ItemTapped="ListView_ItemTapped"
-                        RefreshCommand="{Binding LoadItemsCommand}"
-                        IsPullToRefreshEnabled="true"
-                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"                 
-                        CachingStrategy="RecycleElement"
-                        HasUnevenRows="true">
-                    <!--Custom View Cells-->
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
+                <RefreshView Command="{Binding LoadItemsCommand}"
+                        IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+                    <CollectionView
+                        SelectionChanged="TournamentResultsCollectionView_SelectionChanged"
+                        ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
                                 <StackLayout Padding="10" Orientation="Horizontal"  >
                                     <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                         <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding TournamentName}" />
                                         <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small" Text="{Binding EventName}"  />
                                     </StackLayout>
-                                        
+
                                     <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="EndAndExpand" MinimumWidthRequest="60">
                                         <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" 
                                                FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}"  />
@@ -108,10 +99,10 @@
                                         </Label>
                                     </StackLayout>
                                 </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
     </tabView:SfTabView>

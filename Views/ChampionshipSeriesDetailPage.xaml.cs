@@ -26,9 +26,9 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
+        async void StandingsCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var playerStanding = e.Item as RegionStanding;
+            var playerStanding = e.CurrentSelection as RegionStanding;
             if (playerStanding == null)
                 return;
 
@@ -48,9 +48,10 @@ namespace Ifpa.Views
             ViewModel.LoadItemsCommand.Execute(null);
         }
 
-        private async void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
+
+        private async void TournamentResultsCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var tournament = e.Item as SubmittedTournament;
+            var tournament = e.CurrentSelection as SubmittedTournament;
             if (tournament == null)
                 return;
 

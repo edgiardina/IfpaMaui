@@ -9,6 +9,8 @@ public partial class AppShell : Shell
 		InitializeComponent();
 
         Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
+        Routing.RegisterRoute("player-search", typeof(PlayerSearchPage));
+
 
         Routing.RegisterRoute("champ-series", typeof(ChampionshipSeriesPage));
         Routing.RegisterRoute("champ-series-detail", typeof(ChampionshipSeriesDetailPage));

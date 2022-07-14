@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.PlayerSearchPage"             
+             xmlns:local="clr-namespace:Ifpa.Converters"
+              Title="{Binding Title}"
+             x:Name="FavoritesPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <SearchBar Grid.Row="0" x:Name="SearchBar" SearchCommand="{Binding SearchCommand}"
+                       IsSpellCheckEnabled="False" TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" PlaceholderColor="{DynamicResource SecondaryTextColor}"   
+                       CancelButtonColor="{DynamicResource SecondaryTextColor}"                        
+                       MaxLength="100"
+                       Keyboard="Text"   
+                       Placeholder="Type a player's name to search"
+                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
+            <RefreshView Command="{Binding LoadItemsCommand}" Grid.Row="1" 
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+                <CollectionView x:Name="PlayersListView"                 
+                    EmptyView="No players found."
+                    IsVisible="{Binding IsPopulated}"
+                    ItemsSource="{Binding Players}"
+                    VerticalOptions="CenterAndExpand"              
+                    SelectionChanged="PlayersListView_SelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10" Orientation="Horizontal">
+                                <StackLayout Padding="10" Orientation="Vertical">
+                                    <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding FirstName}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding LastName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding City}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding State}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding CountryName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <Label HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="18" WidthRequest="80" />
+                            </StackLayout>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

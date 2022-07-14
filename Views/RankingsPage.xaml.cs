@@ -34,18 +34,6 @@ namespace Ifpa.Views
             base.OnAppearing();
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
-            var player = args.SelectedItem as RankingResult;
-            if (player == null)
-                return;
-
-            await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
-
-            // Manually deselect item.
-            PlayersListView.SelectedItem = null;
-        }
-
         private async void InfoButton_Clicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("rankings-filter");
@@ -54,6 +42,18 @@ namespace Ifpa.Views
         private async void SearchButton_Clicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("player-search");
+        }
+
+        private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var player = e.CurrentSelection as RankingResult;
+            if (player == null)
+                return;
+
+            await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
+
+            // Manually deselect item.
+            PlayersListView.SelectedItem = null;
         }
     }
 }
