@@ -13,98 +13,100 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <tabView:SfTabView HeightRequest="50" TabBarBackground="{DynamicResource TabHeaderBackgroundColor}">
-        <tabView:SfTabItem Header="Standings">
-            <tabView:SfTabItem.Content>
-                <RefreshView Command="{Binding LoadItemsCommand}"                        
+    <tabView:SfTabView>
+        <tabView:SfTabView.Items>
+            <tabView:SfTabItem Header="Standings">
+                <tabView:SfTabItem.Content>
+                    <RefreshView Command="{Binding LoadItemsCommand}"                        
                         IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-                    <CollectionView
+                        <CollectionView
                         ItemsSource="{Binding RegionStandings.Standings}"
                         SelectionChanged="StandingsCollectionView_SelectionChanged">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout Padding="10,0,10,0" Orientation="Horizontal" >
-                                    <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Padding="10,0,10,0" Orientation="Horizontal" >
+                                        <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
                                        LineBreakMode="NoWrap" 
                                        Style="{DynamicResource ListItemTextStyle}" 
                                        FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
-                                    <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                        <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding PlayerName}" />
+                                        <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding PlayerName}" />
 
-                                        <Label HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
+                                            <Label HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
                                                LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}" />
+                                        </StackLayout>
+
+                                        <StackLayout Orientation="Vertical" Padding="10">
+                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <FormattedString.Spans>
+                                                            <Span Text="Event Count:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding EventCount}" />
+                                                        </FormattedString.Spans>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <FormattedString.Spans>
+                                                            <Span Text="Win Count:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding WinCount}" />
+                                                        </FormattedString.Spans>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </StackLayout>
                                     </StackLayout>
 
-                                    <StackLayout Orientation="Vertical" Padding="10">
-                                        <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span Text="Event Count:" TextColor="{DynamicResource SecondaryTextColor}" />
-                                                        <Span Text=" " />
-                                                        <Span Text="{Binding EventCount}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span Text="Win Count:" TextColor="{DynamicResource SecondaryTextColor}" />
-                                                        <Span Text=" " />
-                                                        <Span Text="{Binding WinCount}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                    </StackLayout>
-                                </StackLayout>
-
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </RefreshView>
-            </tabView:SfTabItem.Content>
-        </tabView:SfTabItem>
-        <tabView:SfTabItem Header="Tournaments">
-            <tabView:SfTabItem.Content>
-                <RefreshView Command="{Binding LoadItemsCommand}"
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </RefreshView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Header="Tournaments">
+                <tabView:SfTabItem.Content>
+                    <RefreshView Command="{Binding LoadItemsCommand}"
                         IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-                    <CollectionView
+                        <CollectionView
                         SelectionChanged="TournamentResultsCollectionView_SelectionChanged"
                         ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout Padding="10" Orientation="Horizontal"  >
-                                    <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                        <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding TournamentName}" />
-                                        <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small" Text="{Binding EventName}"  />
-                                    </StackLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Padding="10" Orientation="Horizontal"  >
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding TournamentName}" />
+                                            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small" Text="{Binding EventName}"  />
+                                        </StackLayout>
 
-                                    <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="EndAndExpand" MinimumWidthRequest="60">
-                                        <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" 
+                                        <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="EndAndExpand" MinimumWidthRequest="60">
+                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" 
                                                FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}"  />
 
-                                        <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span Text="Players:" TextColor="{DynamicResource SecondaryTextColor}" />
-                                                        <Span Text=" " />
-                                                        <Span Text="{Binding PlayerCount}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
+                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <FormattedString.Spans>
+                                                            <Span Text="Players:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding PlayerCount}" />
+                                                        </FormattedString.Spans>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </StackLayout>
                                     </StackLayout>
-                                </StackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </RefreshView>
-            </tabView:SfTabItem.Content>
-        </tabView:SfTabItem>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </RefreshView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+        </tabView:SfTabView.Items>
     </tabView:SfTabView>
 
 </ContentPage>

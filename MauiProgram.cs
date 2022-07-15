@@ -1,10 +1,9 @@
 ﻿using Ifpa.ViewModels;
-using Scrutor;
-using Microsoft.Extensions.DependencyInjection;
 using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using Ifpa.Views;
+using Syncfusion.Maui.Core.Hosting;
 
 namespace Ifpa;
 
@@ -15,6 +14,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
