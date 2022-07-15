@@ -83,7 +83,7 @@
                                             <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small" Text="{Binding EventName}"  />
                                         </StackLayout>
 
-                                        <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="EndAndExpand" MinimumWidthRequest="60">
+                                        <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="End" MinimumWidthRequest="60">
                                             <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" 
                                                FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}"  />
 

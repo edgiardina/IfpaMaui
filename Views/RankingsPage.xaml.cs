@@ -44,9 +44,9 @@ namespace Ifpa.Views
             await Shell.Current.GoToAsync("player-search");
         }
 
-        private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var player = e.CurrentSelection as RankingResult;
+            var player = args.SelectedItem as RankingResult;
             if (player == null)
                 return;
 

@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.RankingsFilterModalPage"
-             BackgroundColor="{DynamicResource SecondaryBackgroundColor}"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              Shell.PresentationMode="ModalAnimated"
              ios:Page.ModalPresentationStyle="PageSheet">
@@ -18,6 +17,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />               
             </Grid.RowDefinitions>
 
             <Label Grid.Column="1" Grid.Row="1" Text="Ranking Type"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
@@ -55,7 +55,7 @@
                                     Value="{Binding StartingPosition, Mode=TwoWay}"
                                     ValueChanged="Stepper_ValueChanged" />
 
-            <StackLayout Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="4">
+            <StackLayout Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="3">
                 <Button WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Cancel" Clicked="CancelButton_Clicked" />
                 <Button WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Filter Rankings" Clicked="Button_Clicked" />
             </StackLayout>

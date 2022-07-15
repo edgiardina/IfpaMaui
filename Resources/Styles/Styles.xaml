@@ -18,7 +18,6 @@
     </Style>
 
     <Style TargetType="ContentPage">
-        <Setter Property="Padding" Value="0,10" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColor}, Dark={DynamicResource BackgroundColorDark}}" />
     </Style>
 

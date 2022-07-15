@@ -28,7 +28,7 @@ namespace Ifpa.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || parameter == null) return Colors.White;
-            return (((CollectionView)parameter).ItemsSource.Cast<object>().ToList().IndexOf(value) + StartingRank).OrdinalSuffix();
+            return (((ListView)parameter).ItemsSource.Cast<object>().ToList().IndexOf(value) + StartingRank).OrdinalSuffix();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
