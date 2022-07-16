@@ -18,7 +18,7 @@
     <Color x:Key="ButtonTextColor">#FFFFFF</Color>
     <Color x:Key="PrimaryTextColor">#000000</Color>
     <Color x:Key="SecondaryTextColor">#999999</Color>
-    <Color x:Key="TabHeaderBackgroundColor">#66FFFFFF</Color>
+    <Color x:Key="TabHeaderBackgroundColor">#FFFFFF</Color>
     <Color x:Key="SecondaryBackgroundColor">#f6f6f6</Color>
 
     <Color x:Key="LinkTextColor">#0000ff</Color>

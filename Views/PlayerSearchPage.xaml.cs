@@ -1,5 +1,4 @@
 ﻿using Microsoft.Maui;
-
 using Ifpa.ViewModels;
 using PinballApi.Models.WPPR.v1.Players;
 
@@ -24,14 +23,17 @@ namespace Ifpa.Views
 
         private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var player = e.CurrentSelection as Search;
-            if (player == null)
-                return;
+            if (e.CurrentSelection.FirstOrDefault() != null)
+            {
+                var player = e.CurrentSelection as Search;
+                if (player == null)
+                    return;
 
-            await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
+                await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
 
-            // Manually deselect item.
-            PlayersListView.SelectedItem = null;
+                // Manually deselect item.
+                PlayersListView.SelectedItem = null;
+            }
         }
     }
 }

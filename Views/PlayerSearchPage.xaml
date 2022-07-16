@@ -11,12 +11,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <SearchBar Grid.Row="0" x:Name="SearchBar" SearchCommand="{Binding SearchCommand}"
+        <VerticalStackLayout>            
+            <SearchBar Grid.Row="0" x:Name="SearchBar" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand"
                        IsSpellCheckEnabled="False" TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" PlaceholderColor="{DynamicResource SecondaryTextColor}"   
                        CancelButtonColor="{DynamicResource SecondaryTextColor}"                        
                        MaxLength="100"
@@ -29,12 +25,13 @@
                     EmptyView="No players found."
                     IsVisible="{Binding IsPopulated}"
                     ItemsSource="{Binding Players}"
-                    VerticalOptions="CenterAndExpand"   
-                    SelectionMode="Single"
+                    VerticalOptions="FillAndExpand"                       
                     SelectionChanged="PlayersListView_SelectionChanged">
+                    <!--SelectionMode="Single"-->
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Padding="10" Orientation="Horizontal">
+                            <VerticalStackLayout  Padding="10,0">
+                            <StackLayout Orientation="Horizontal">
                                 <StackLayout Padding="10" Orientation="Vertical">
                                     <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
                                         <Label.FormattedText>
@@ -62,16 +59,19 @@
                                         </Label.FormattedText>
                                     </Label>
                                 </StackLayout>
-                                <Label HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
+                                <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
                                    LineBreakMode="NoWrap" 
                                    Style="{DynamicResource ListItemTextStyle}" 
                                    FontSize="18" WidthRequest="80" />
                             </StackLayout>
-
+                                <BoxView HeightRequest=".5" Margin="0"
+                                   BackgroundColor="{DynamicResource SecondaryTextColor}"                
+                                   VerticalOptions="End"/>
+                            </VerticalStackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </RefreshView>
-        </Grid>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
