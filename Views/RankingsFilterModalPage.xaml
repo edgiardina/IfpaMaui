@@ -8,54 +8,54 @@
     <ContentPage.Content>
         <Grid Padding="10,10,10,10" VerticalOptions="CenterAndExpand">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />               
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
 
-            <Label Grid.Column="1" Grid.Row="1" Text="Ranking Type"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
-            <Picker x:Name="RankingTypePicker" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="1" HorizontalOptions="FillAndExpand" SelectedIndexChanged="RankingType_SelectedIndexChanged"
+            <Label Grid.Column="0" Grid.Row="0" Text="Ranking Type"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
+            <Picker x:Name="RankingTypePicker" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand" SelectedIndexChanged="RankingType_SelectedIndexChanged"
                                 SelectedItem="{Binding CurrentRankingType, Mode=TwoWay}"
                                 ItemsSource="{Binding RankingTypes, Mode=OneWay}" />
 
-            <Label Grid.Column="1" Grid.Row="2" Text="Country" x:Name="CountryLabel"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
-            <Picker Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Countries, Mode=OneWay}" 
+            <Label Grid.Column="0" Grid.Row="1" Text="Country" x:Name="CountryLabel"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
+            <Picker Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Countries, Mode=OneWay}" 
                                 ItemDisplayBinding="{Binding CountryName}"                                         
                                 SelectedItem="{Binding CountryToShow, Mode=TwoWay}"                   
                                 x:Name="CountryPicker"
                                 SelectedIndexChanged="Picker_SelectedIndexChanged"/>
 
-            <Label Grid.Column="1" Grid.Row="2" Text="Tournament Type" x:Name="TypeLabel"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
-            <Picker Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" HorizontalOptions="FillAndExpand" ItemsSource="{Binding TournamentTypes, Mode=OneWay}"                                                                   
+            <Label Grid.Column="0" Grid.Row="1" Text="Tournament Type" x:Name="TypeLabel"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
+            <Picker Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1" HorizontalOptions="FillAndExpand" ItemsSource="{Binding TournamentTypes, Mode=OneWay}"                                                                   
                                 SelectedItem="{Binding CurrentTournamentType, Mode=TwoWay}"                   
                                 x:Name="TypePicker"
                                 SelectedIndexChanged="TypePicker_SelectedIndexChanged"/>
 
-            <Label Grid.Column="1" Grid.Row="3" Text="Players"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
-            <Label Grid.Column="2" Grid.Row="3" Text="{Binding CountOfItemsToFetch}" HorizontalTextAlignment="End" LineBreakMode="NoWrap" HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center"  />
-            <Stepper Grid.Column="3" Grid.Row="3" Maximum="500" Minimum="10" 
+            <Label Grid.Column="0" Grid.Row="2" Text="Players"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center" />
+            <Label Grid.Column="1" Grid.Row="2" Text="{Binding CountOfItemsToFetch}" HorizontalTextAlignment="End" LineBreakMode="NoWrap" HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center"  />
+            <Stepper Grid.Column="2" Grid.Row="2" Maximum="500" Minimum="10" 
                                     Increment="10"
                                  HorizontalOptions="Center"
                                     Value="{Binding CountOfItemsToFetch, Mode=TwoWay}"
                                     ValueChanged="Stepper_ValueChanged" />
 
-            <Label Grid.Column="1" Grid.Row="4" Text="Starting Rank"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center"  />
-            <Label Grid.Column="2" Grid.Row="4" Text="{Binding StartingPosition}" HorizontalTextAlignment="End"  LineBreakMode="NoWrap" x:Name="StartingPositionLabel" HorizontalOptions="FillAndExpand"  VerticalTextAlignment="Center"  />
-            <Stepper Grid.Column="3" Grid.Row="4" Maximum="10000" Minimum="1"
+            <Label Grid.Column="0" Grid.Row="3" Text="Starting Rank"  TextColor="{DynamicResource SecondaryTextColor}" VerticalTextAlignment="Center"  />
+            <Label Grid.Column="1" Grid.Row="3" Text="{Binding StartingPosition}" HorizontalTextAlignment="End"  LineBreakMode="NoWrap" x:Name="StartingPositionLabel" HorizontalOptions="FillAndExpand"  VerticalTextAlignment="Center"  />
+            <Stepper Grid.Column="3" Grid.Row="3" Maximum="10000" Minimum="1"
                                     x:Name="StartingRankStepper"
                                       HorizontalOptions="Center"
                                     Increment="100"
                                     Value="{Binding StartingPosition, Mode=TwoWay}"
                                     ValueChanged="Stepper_ValueChanged" />
 
-            <StackLayout Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="3">
+            <StackLayout Orientation="Horizontal" Grid.Row="4" Grid.ColumnSpan="3">
                 <Button WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Cancel" Clicked="CancelButton_Clicked" />
                 <Button WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Filter Rankings" Clicked="Button_Clicked" />
             </StackLayout>

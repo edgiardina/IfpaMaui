@@ -24,7 +24,10 @@ public static class MauiProgram
                 //Add all viewmodels
                 .AddAllFromNamespace<BaseViewModel>()
                 //Add all pages
-                .AddAllFromNamespace<RankingsPage>();
+                .AddAllFromNamespace<RankingsPage>()
+                //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
+                //and RankingsFilterPage
+                .AddSingleton<RankingsViewModel>();
 
         var a = Assembly.GetExecutingAssembly();
         using var stream = a.GetManifestResourceStream("Ifpa.appsettings.json");
