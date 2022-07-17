@@ -23,13 +23,13 @@
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="share.png" />
     </ContentPage.ToolbarItems>
     <ScrollView>
-        <StackLayout BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
+        <Grid>
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" />
 
-            <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}" Spacing="20" Padding="15,0,15,0">
+            <StackLayout Padding="15">
 
-                <Grid BackgroundColor="{StaticResource SecondaryBanner}" Margin="-15,0,-15,0" Padding="15,0,15,0" VerticalOptions="StartAndExpand">
+                <Grid ColumnSpacing="10" BackgroundColor="{StaticResource SecondaryBanner}" Padding="15,0,15,0" VerticalOptions="StartAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -37,7 +37,7 @@
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <StackLayout Orientation="Vertical" VerticalOptions="Center" Padding="5" Grid.Column="0" Grid.Row="0">
+                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" Padding="5" Grid.Column="0" Grid.Row="0">
                         <Label Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
 
                         <StackLayout Orientation="Horizontal">
@@ -50,26 +50,40 @@
                                         </FormattedString.Spans>
                                     </FormattedString>
                                 </Label.FormattedText>
-                            </Label>
-                            <Frame HasShadow="True" BackgroundColor="Transparent" HorizontalOptions="End" Padding="0">
-                                <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered, Mode=OneWay}" 
-                                    HorizontalOptions="End" WidthRequest="16"/>
-                            </Frame>
+                            </Label>                          
+                            <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered, Mode=OneWay}" 
+                                HorizontalOptions="End">
+                                <Image.Shadow>
+                                    <Shadow Brush="Black"
+                                        Offset="20,20"
+                                        Radius="4"
+                                        Opacity="0.8" />
+                                </Image.Shadow>
+                            </Image>                     
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">
                             <Label Text="{Binding Location, Mode=OneWay}" HorizontalOptions="StartAndExpand" FontSize="16" Style="{StaticResource playerHeader}"  />
-                            <Frame HasShadow="True" BackgroundColor="Transparent" HorizontalOptions="End" Padding="0">
-                                <Image Source="{Binding CountryFlag, Mode=OneWay}"  />
-                            </Frame>
+
+                            <Image Source="{Binding CountryFlag, Mode=OneWay}"  >
+                                <Image.Shadow>
+                                    <Shadow Brush="Black"
+                                        Offset="20,20"
+                                        Radius="40"
+                                        Opacity="0.8" />
+                                </Image.Shadow>
+                            </Image>
+
                         </StackLayout>
                     </StackLayout>
                     <Image Grid.Column="1" Grid.Row="0" Source="{Binding PlayerAvatar, Mode=OneWay}" HeightRequest="100" x:Name="AvatarImage" />
 
                 </Grid>
+
+                <StackLayout Spacing="10" Margin="15">
                 <StackLayout Orientation="Horizontal">
-                    <Button Padding="10,0,10,0" Text="Results" HorizontalOptions="FillAndExpand" Clicked="TournamentResults_Button_Clicked" />
-                    <Button Padding="10,0,10,0" Text=" PVP " HorizontalOptions="FillAndExpand" Clicked="Pvp_Button_Clicked" />
-                    <Button Padding="10,0,10,0" Text="Champ. Series" HorizontalOptions="FillAndExpand" Clicked="CS_Button_Clicked" IsVisible="{Binding HasChampionshipSeriesData}" />
+                    <Button Margin="10,0" Text="Results" HorizontalOptions="FillAndExpand" Clicked="TournamentResults_Button_Clicked" />
+                    <Button Margin="10,0" Text=" PVP " HorizontalOptions="FillAndExpand" Clicked="Pvp_Button_Clicked" />
+                    <Button Margin="10,0" Text="Champ. Series" HorizontalOptions="FillAndExpand" Clicked="CS_Button_Clicked" IsVisible="{Binding HasChampionshipSeriesData}" />
                 </StackLayout>
 
 
@@ -105,9 +119,10 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Highest Rank" />
@@ -124,14 +139,14 @@
                         </Label.FormattedText>
                     </Label>
 
-                    <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Last Month's Rank" />
-                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding LastMonthRank, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Last Month's Rank" />
+                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding LastMonthRank, Mode=OneWay}" />
 
-                    <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Last Year's Rank" />
-                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding LastYearRank, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Last Year's Rank" />
+                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding LastYearRank, Mode=OneWay}" />
 
-                    <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total WPPRs" />
-                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding TotalWpprs, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="3" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total WPPRs" />
+                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding TotalWpprs, Mode=OneWay}" />
                 </Grid>
 
 
@@ -142,6 +157,7 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -162,20 +178,20 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Avg Finish" />
-                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding AvgFinish, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Avg Finish" />
+                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding AvgFinish, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
 
-                    <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Avg Finish Last Year" />
-                    <Label Grid.Column="1" Grid.Row="1" Text="{Binding AvgFinishLastYear, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Avg Finish Last Year" />
+                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding AvgFinishLastYear, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
 
-                    <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total Events" />
-                    <Label Grid.Column="1" Grid.Row="2" Text="{Binding TotalEvents, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="3" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total Events" />
+                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding TotalEvents, Mode=OneWay}" />
 
-                    <Label Grid.Column="0" Grid.Row="3" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total Active Events" />
-                    <Label Grid.Column="1" Grid.Row="3" Text="{Binding TotalActiveEvents, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="4" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total Active Events" />
+                    <Label Grid.Column="1" Grid.Row="4" Text="{Binding TotalActiveEvents, Mode=OneWay}" />
 
-                    <Label Grid.Column="0" Grid.Row="4" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Events Outside Country" />
-                    <Label Grid.Column="1" Grid.Row="4" Text="{Binding EventsOutsideCountry, Mode=OneWay}" />
+                    <Label Grid.Column="0" Grid.Row="5" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Events Outside Country" />
+                    <Label Grid.Column="1" Grid.Row="5" Text="{Binding EventsOutsideCountry, Mode=OneWay}" />
 
                 </Grid>
 
@@ -203,8 +219,10 @@
                         <chart:LineSeries ItemsSource="{Binding PlayerRatingHistory}" XBindingPath="RatingDate" YBindingPath="Rating"/>
                     </chart:SfCartesianChart>
                 </StackLayout>
+
+                </StackLayout>
             </StackLayout>
 
-        </StackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>
