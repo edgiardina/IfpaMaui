@@ -49,8 +49,11 @@
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
-	  <None Remove="Resources\Images\filter.png" />
+	  <None Remove="Resources\Images\filter.svg" />
+	  <None Remove="Resources\Images\mystats.svg" />
+	  <None Remove="Resources\Images\numbered_list.svg" />
 	  <None Remove="Resources\Images\search.svg" />
+	  <None Remove="Resources\Images\trophy.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -58,10 +61,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.1.0" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 	  <PackageReference Include="PinballApi" Version="2.0.78" />
 	  <PackageReference Include="Scrutor" Version="4.2.0" />
+	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+	  <PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.38" />
 	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.38" />
 	  <PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.38" />
 	</ItemGroup>
@@ -77,6 +83,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ChampionshipSeriesPlayerCardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PlayerDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\PlayerSearchPage.xaml">

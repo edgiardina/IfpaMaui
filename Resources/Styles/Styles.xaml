@@ -3,7 +3,8 @@
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView">
+    xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+    xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts">
 
     <Style TargetType="TabBar">
         <Setter Property="Shell.ForegroundColor" Value="{StaticResource IconAccentColor}" />
@@ -14,7 +15,7 @@
         <Setter Property="Shell.TabBarTitleColor"
             Value="{StaticResource IconAccentColor}" />
         <Setter Property="Shell.TabBarUnselectedColor"
-            Value="{StaticResource SecondaryTextColor}" />        
+            Value="{StaticResource SecondaryTextColor}" />
     </Style>
 
     <Style TargetType="ContentPage">
@@ -59,16 +60,11 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
     </Style>
 
-    <!--
-    <Style TargetType="chart:SfChart">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
-    </Style>
-
-    <Style TargetType="chart:ChartTitle">
+    <Style TargetType="chart:SfCartesianChart">
+        <!--
         <Setter Property="TextColor"  Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
         <Setter Property="BorderColor" Value="Transparent" />
+        -->
         <Setter Property="BackgroundColor" Value="Transparent" />
     </Style>
-    -->
-
 </ResourceDictionary>

@@ -13,6 +13,8 @@ namespace Ifpa.ViewModels
     {
         IConfiguration configuration;
 
+        protected AppSettings AppSettings { get; set; }
+
         public PinballRankingApiV1 PinballRankingApi { get; private set; } 
         public PinballRankingApiV2 PinballRankingApiV2 { get; private set; } 
 
@@ -34,10 +36,10 @@ namespace Ifpa.ViewModels
         {
             configuration = config;
 
-            var settings = configuration.GetRequiredSection("AppSettings").Get<AppSettings>();
+            AppSettings = configuration.GetRequiredSection("AppSettings").Get<AppSettings>();
 
-            PinballRankingApi = new PinballRankingApiV1(settings.IfpaApiKey);
-            PinballRankingApiV2 = new PinballRankingApiV2(settings.IfpaApiKey);
+            PinballRankingApi = new PinballRankingApiV1(AppSettings.IfpaApiKey);
+            PinballRankingApiV2 = new PinballRankingApiV2(AppSettings.IfpaApiKey);
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
