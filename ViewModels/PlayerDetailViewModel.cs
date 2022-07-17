@@ -3,7 +3,6 @@ using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 
 namespace Ifpa.ViewModels

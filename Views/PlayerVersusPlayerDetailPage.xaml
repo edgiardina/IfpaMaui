@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Ifpa.Converters"
+             x:Class="Ifpa.Views.PlayerVersusPlayerDetailPage"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.LargeTitleDisplay="Never"
+             Title="{Binding Title}"
+             x:Name="PVPDetailPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ListView x:Name="MyListView"
+            ItemsSource="{Binding PlayerVersusPlayer}"
+            RefreshCommand="{Binding LoadItemsCommand}"
+            IsPullToRefreshEnabled="true"
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement"
+            HasUnevenRows="true">
+        <!--Custom View Cells-->
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal" Margin="10">
+                        <StackLayout HorizontalOptions="StartAndExpand">
+                            <Label Text="{Binding TournamentName}"  FontSize="16" Style="{DynamicResource ListItemTextStyle}" />
+                            <StackLayout Orientation="Horizontal">
+                                <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" Text="{Binding EventName}" TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Label Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" />
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" MinimumWidthRequest="80" WidthRequest="80" >
+                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16" Style="{DynamicResource ListItemTextStyle}" >
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="{Binding Source={x:Reference PVPDetailPage}, Path=BindingContext.PlayerOneInitials}" TextColor="{DynamicResource SecondaryTextColor}" />
+                                            <Span Text=": " TextColor="{DynamicResource SecondaryTextColor}" />
+                                            <Span Text="{Binding FinishPosition.PlayerOne, Converter={StaticResource intToOrdinalString}}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16" Style="{DynamicResource ListItemTextStyle}" >
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="{Binding Source={x:Reference PVPDetailPage}, Path=BindingContext.PlayerTwoInitials}" TextColor="{DynamicResource SecondaryTextColor}" />
+                                            <Span Text=": " TextColor="{DynamicResource SecondaryTextColor}" />
+                                            <Span Text="{Binding FinishPosition.PlayerTwo, Converter={StaticResource intToOrdinalString}}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>
