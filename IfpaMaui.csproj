@@ -32,8 +32,8 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-	    <MauiIcon Include="Resources\AppIcon\appicon.png" />		
-		
+		<MauiIcon Include="Resources\AppIcon\appicon.png" />
+
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#062C53" BaseSize="256,88" />
 
@@ -48,68 +48,75 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="appsettings.json" />
-	  <None Remove="Resources\Images\activity_feed.svg" />
-	  <None Remove="Resources\Images\favorite_outline.svg" />
-	  <None Remove="Resources\Images\filter.svg" />
-	  <None Remove="Resources\Images\mystats.svg" />
-	  <None Remove="Resources\Images\numbered_list.svg" />
-	  <None Remove="Resources\Images\search.svg" />
-	  <None Remove="Resources\Images\share.svg" />
-	  <None Remove="Resources\Images\star.svg" />
-	  <None Remove="Resources\Images\trophy.svg" />
+		<None Remove="appsettings.json" />
+		<None Remove="Resources\Images\activity_feed.svg" />
+		<None Remove="Resources\Images\favorite_outline.svg" />
+		<None Remove="Resources\Images\filter.svg" />
+		<None Remove="Resources\Images\mystats.svg" />
+		<None Remove="Resources\Images\numbered_list.svg" />
+		<None Remove="Resources\Images\search.svg" />
+		<None Remove="Resources\Images\share.svg" />
+		<None Remove="Resources\Images\star.svg" />
+		<None Remove="Resources\Images\trophy.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="appsettings.json" />
+		<EmbeddedResource Include="appsettings.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.1.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-	  <PackageReference Include="PinballApi" Version="2.0.78" />
-	  <PackageReference Include="Scrutor" Version="4.2.0" />
-	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-	  <PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.38" />
-	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.2.38" />
-	  <PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.38" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="1.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+		<PackageReference Include="PinballApi" Version="2.0.78" />
+		<PackageReference Include="Scrutor" Version="4.2.0" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.0" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.0" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.0" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.38" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="20.2.38" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.38" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\ChampionshipSeriesDetailPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\ChampionshipSeriesListPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\ChampionshipSeriesPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\ChampionshipSeriesPlayerCardPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PlayerDetailPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PlayerResultsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PlayerSearchPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PlayerVersusPlayerDetailPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PlayerVersusPlayerPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\RankingsFilterModalPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\RankingsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		<MauiXaml Update="Views\ActivityFeedPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ChampionshipSeriesDetailPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ChampionshipSeriesListPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ChampionshipSeriesPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ChampionshipSeriesPlayerCardPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\PlayerDetailPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\PlayerResultsPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\PlayerSearchPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\PlayerVersusPlayerDetailPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\PlayerVersusPlayerPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\RankingsFilterModalPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\RankingsPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 </Project>

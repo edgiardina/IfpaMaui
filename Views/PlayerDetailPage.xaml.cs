@@ -26,7 +26,6 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-
             if (PlayerId == 0)
                 LoadMyStats = true;
             else
@@ -47,6 +46,10 @@ namespace Ifpa.Views
                     {
                         await RedirectUserToPlayerSearch();
                     }
+                }
+                else
+                {
+                    await RedirectUserToPlayerSearch();
                 }
 
                 ViewModel.PostPlayerLoadCommand = new Command(async () => await PostPlayerLoad());
@@ -123,6 +126,7 @@ namespace Ifpa.Views
         private async Task RedirectUserToPlayerSearch()
         {
             await DisplayAlert("Configure your Stats", "Looks like you haven't configured your 'My Stats' page. Use the Player Search to find your Player, and press the Star to configure your Stats", "OK");
+            await Shell.Current.GoToAsync("///rankings/player-search");
         }
 
         private async void ActivityFeedButton_Clicked(object sender, EventArgs e)

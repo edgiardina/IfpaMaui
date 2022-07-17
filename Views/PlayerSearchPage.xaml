@@ -26,8 +26,8 @@
                     IsVisible="{Binding IsPopulated}"
                     ItemsSource="{Binding Players}"
                     VerticalOptions="FillAndExpand"                       
-                    SelectionChanged="PlayersListView_SelectionChanged">
-                    <!--SelectionMode="Single"-->
+                    SelectionChanged="PlayersListView_SelectionChanged"
+                    SelectionMode="Single">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <VerticalStackLayout  Padding="10,0">

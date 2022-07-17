@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+          xmlns:local="clr-namespace:Ifpa.Views.Controls"
+          x:Class="Ifpa.Views.DataTemplates.ActivityFeedTournamentResultViewCell">
+    <ViewCell.View>
+        <StackLayout Orientation="Horizontal" Padding="10">
+            <StackLayout.Resources>
+                <ResourceDictionary>
+                    <toolkit:InvertedBoolConverter x:Key="inverter"/>
+                </ResourceDictionary>
+            </StackLayout.Resources>
+            <Image Source="ribbon.png" HeightRequest="25" local:ImageTint.TintColor="{StaticResource IconAccentColor}" />
+            <StackLayout HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
+                <Label Text="Tournament Result Posted" FontAttributes="Bold" />
+                <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Tournament results for " TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{Binding Description, Mode=OneWay}" />
+                                <Span Text=" were posted to your profile" TextColor="{DynamicResource SecondaryTextColor}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+            </StackLayout>
+            <BoxView Color="CornflowerBlue"
+                 IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
+                 CornerRadius="6"                       
+                 WidthRequest="12"
+                 HeightRequest="12"
+                 VerticalOptions="Center"
+                 HorizontalOptions="EndAndExpand" />
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>

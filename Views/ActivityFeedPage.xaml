@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Ifpa.Views.DataTemplates"
+             x:Class="Ifpa.Views.ActivityFeedPage"
+             Title="Activity Feed">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="rankChangeTemplate">
+            <local:ActivityFeedRankChangeViewCell />            
+        </DataTemplate>
+        <DataTemplate x:Key="tournamentResultTemplate">
+            <local:ActivityFeedTournamentResultViewCell />
+        </DataTemplate>
+        <local:ActivityFeedDataTemplateSelector x:Key="activityFeedDataTemplateSelector"
+                RankChangeTemplate="{StaticResource rankChangeTemplate}"
+                TournamentResultTemplate="{StaticResource tournamentResultTemplate}" />
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Mark All Seen" Clicked="ToolbarItem_Clicked" />
+        <!--<ToolbarItem Text="+" Clicked="ToolbarItem_Clicked_1" />-->
+    </ContentPage.ToolbarItems>
+    <ListView x:Name="ActivityFeedListView"
+            ItemSelected="ActivityFeedListView_ItemSelected"
+            ItemTemplate="{StaticResource activityFeedDataTemplateSelector}"
+            ItemsSource="{Binding ActivityFeedItems}"      
+            CachingStrategy="RecycleElement"
+            RefreshCommand="{Binding LoadItemsCommand}"
+            IsPullToRefreshEnabled="true"
+            HasUnevenRows="True"
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}" />
+</ContentPage>

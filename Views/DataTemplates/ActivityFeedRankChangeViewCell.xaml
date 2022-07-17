@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:local="clr-namespace:Ifpa.Converters"
+          xmlns:image="clr-namespace:Ifpa.Views.Controls"
+          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+          xmlns:effects="clr-namespace:Ifpa.Effects"
+          x:Class="Ifpa.Views.DataTemplates.ActivityFeedRankChangeViewCell">
+    <ViewCell.View>
+        <StackLayout Orientation="Horizontal" Padding="10">
+            <StackLayout.Resources>
+                <ResourceDictionary>
+                    <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+                    <toolkit:InvertedBoolConverter x:Key="inverter"/>
+                </ResourceDictionary>
+            </StackLayout.Resources>
+            <Image Source="rankchange.png" HeightRequest="25" image:ImageTint.TintColor="{StaticResource IconAccentColor}" />
+            <StackLayout Padding="10,0,0,0">
+                <Label Text="Rank Changed" FontAttributes="Bold" />
+                <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Your rank changed from " TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{Binding IntTwo, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                                <Span Text=" to " TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{Binding IntOne, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+            </StackLayout>
+            <!--TODO: -->
+            <BoxView Color="CornflowerBlue"
+                 IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
+                 CornerRadius="6"                     
+                 WidthRequest="12"
+                 HeightRequest="12"
+                 VerticalOptions="Center"
+                 HorizontalOptions="EndAndExpand" />
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>
