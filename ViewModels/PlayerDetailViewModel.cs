@@ -3,6 +3,7 @@ using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace Ifpa.ViewModels
@@ -14,7 +15,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
         public int LastTournamentCount { get; set; }
-        private Player playerRecord = new Player { PlayerStats = new PinballApi.Models.WPPR.v1.Players.PlayerStats { }, ChampionshipSeries = new System.Collections.Generic.List<ChampionshipSeries> { } };
+        private Player playerRecord = new Player { PlayerStats = new PinballApi.Models.WPPR.v1.Players.PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
         public Player PlayerRecord
         {
