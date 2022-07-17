@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>IFPA Companion</ApplicationTitle>
+		<ApplicationTitle>IFPA</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.edgiardina.ifpa</ApplicationId>
@@ -49,10 +49,14 @@
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
+	  <None Remove="Resources\Images\activity_feed.svg" />
+	  <None Remove="Resources\Images\favorite_outline.svg" />
 	  <None Remove="Resources\Images\filter.svg" />
 	  <None Remove="Resources\Images\mystats.svg" />
 	  <None Remove="Resources\Images\numbered_list.svg" />
 	  <None Remove="Resources\Images\search.svg" />
+	  <None Remove="Resources\Images\share.svg" />
+	  <None Remove="Resources\Images\star.svg" />
 	  <None Remove="Resources\Images\trophy.svg" />
 	</ItemGroup>
 
