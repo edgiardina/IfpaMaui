@@ -18,6 +18,8 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("pvp-detail", typeof(PlayerVersusPlayerDetailPage));
 
 
+        Routing.RegisterRoute("custom-ranking-details", typeof(CustomRankingsDetailPage));
+
         Routing.RegisterRoute("tournament-results", typeof(TournamentResultsPage));
 
         Routing.RegisterRoute("champ-series", typeof(ChampionshipSeriesPage));

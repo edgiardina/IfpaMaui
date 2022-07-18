@@ -50,6 +50,7 @@
 	<ItemGroup>
 		<None Remove="appsettings.json" />
 		<None Remove="Resources\Images\activity_feed.svg" />
+		<None Remove="Resources\Images\calendar.svg" />
 		<None Remove="Resources\Images\favorite_outline.svg" />
 		<None Remove="Resources\Images\filter.svg" />
 		<None Remove="Resources\Images\mystats.svg" />
@@ -77,11 +78,21 @@
 		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.0" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.38" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="20.2.38" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.2.38" />
 		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.38" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<MauiXaml Update="Views\ActivityFeedPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\CalendarDetailPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\CalendarFilterModalPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\CalendarPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\ChampionshipSeriesDetailPage.xaml">
@@ -95,6 +106,15 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\ChampionshipSeriesPlayerCardPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\CustomRankingsDetailPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\CustomRankingsPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\FavoritesPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\PlayerDetailPage.xaml">
 			<Generator>MSBuild:Compile</Generator>

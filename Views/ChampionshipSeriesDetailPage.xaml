@@ -24,19 +24,19 @@
                         SelectionChanged="StandingsCollectionView_SelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="10,0,10,0" Orientation="Horizontal" >
+                                    <StackLayout Margin="10" Orientation="Horizontal" >
                                         <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
                                        LineBreakMode="NoWrap" 
                                        Style="{DynamicResource ListItemTextStyle}" 
                                        FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
-                                        <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
                                             <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding PlayerName}" />
 
                                             <Label HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
                                                LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}" />
                                         </StackLayout>
 
-                                        <StackLayout Orientation="Vertical" Padding="10">
+                                        <StackLayout Orientation="Vertical" >
                                             <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
                                                 <Label.FormattedText>
                                                     <FormattedString>
@@ -58,8 +58,9 @@
                                                         </FormattedString.Spans>
                                                     </FormattedString>
                                                 </Label.FormattedText>
-                                            </Label>
+                                            </Label>                            
                                         </StackLayout>
+                                        
                                     </StackLayout>
 
                                 </DataTemplate>
@@ -77,7 +78,7 @@
                         ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Padding="10" Orientation="Horizontal"  >
+                                    <StackLayout Margin="10" Orientation="Horizontal"  >
                                         <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
                                             <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding TournamentName}" />
                                             <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small" Text="{Binding EventName}"  />

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+             
+             xmlns:controls="clr-namespace:Ifpa.Views.Controls"
+             x:Class="Ifpa.Views.CalendarPage"
+             Title="Calendar">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="location.png" />
+        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="calendar.png" />        
+    </ContentPage.ToolbarItems>    
+    <StackLayout Spacing="0">
+        <StackLayout x:Name="MapLayout" Spacing="0">
+            
+            <!-- TODO: Re-implement map -->
+            
+            <!--
+            <controls:CustomMap WidthRequest="320" HeightRequest="200"
+                x:Name="calendarMap"                  
+                VerticalOptions="Start"
+                MapType="Street" />-->
+            
+            <ListView x:Name="TournamentListView"                  
+                    ItemsSource="{Binding CalendarDetails}"
+                    VerticalOptions="FillAndExpand"
+                    HasUnevenRows="true"       
+                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                    CachingStrategy="RecycleElement"
+                    ItemSelected="TournamentListView_ItemSelected">
+                <ListView.ItemTemplate 
+                        VerticalOptions="FillAndExpand"
+                        HasUnevenRows="true">
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Margin="10" >
+                                <Label Text="{Binding TournamentName}" HorizontalOptions="StartAndExpand" />
+                                <Label MinimumWidthRequest="90" FontSize="Small" HorizontalOptions="End" VerticalTextAlignment="Center" TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding EndDate, StringFormat='{0:d}'}" LineBreakMode="NoWrap" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
+                                View="Month"                               
+                                AppointmentsSource="{Binding InlineCalendarItems, Mode=OneWay}" 
+                                BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
+        </scheduler:SfScheduler>             
+    </StackLayout>
+</ContentPage>

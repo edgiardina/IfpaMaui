@@ -26,6 +26,7 @@ namespace Ifpa.Views
 
         private async void CloseButton_Clicked(object sender, System.EventArgs e)
         {
+            //TODO: Remove all PopModals in favor of Shell.Current.GoToAsync("..");
             await Navigation.PopModalAsync();
         }
     }

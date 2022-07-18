@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.FavoritesPage"             
+             xmlns:local="clr-namespace:Ifpa.Converters"             
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="{Binding Title}"
+             x:Name="SearchPlayersPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <toolkit:InvertedBoolConverter x:Key="BoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Margin="10,0,10,0"
+                IsVisible="{Binding IsPopulated, Converter={StaticResource BoolConverter}}"
+                VerticalTextAlignment="Center"
+                HorizontalTextAlignment="Center"
+                FontAttributes="Italic"
+                Text="You have no favorite players selected. Use the heart icon to add a player to your favorites." />
+            
+            <ListView x:Name="PlayersListView" 
+                      IsVisible="{Binding IsPopulated}"
+                        ItemsSource="{Binding Players}"
+                        VerticalOptions="FillAndExpand"
+                         HasUnevenRows="true"
+                         RefreshCommand="{Binding LoadItemsCommand}"
+                         IsPullToRefreshEnabled="true"
+                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                         CachingStrategy="RecycleElement"
+                         ItemSelected="OnItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10" Orientation="Horizontal" >
+                                <StackLayout Padding="10" Orientation="Vertical">
+                                    <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding FirstName}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding LastName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding City}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding StateProvince}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding CountryName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" 
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="18" WidthRequest="80" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

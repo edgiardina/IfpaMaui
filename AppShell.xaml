@@ -11,8 +11,11 @@
         <ShellContent Title="Rankings" ContentTemplate="{DataTemplate views:RankingsPage}" Icon="numbered_list.png" Route="rankings" />
         <ShellContent Title="Champ. Series" ContentTemplate="{DataTemplate views:ChampionshipSeriesListPage}" Icon="trophy.png" Route="champ-series-list" />
         <ShellContent Title="My Stats" ContentTemplate="{DataTemplate views:PlayerDetailPage}" Icon="mystats.png" Route="my-stats" />
-        <!-- <ShellContent Title="Calendar" ContentTemplate="{DataTemplate views:CalendarPage}" Icon="calendar.png" Route="calendar" />
-        <ShellContent Title="More" ContentTemplate="{DataTemplate views:MoreItemsPage}" Icon="more.png" Route="more" />
+        <ShellContent Title="Calendar" ContentTemplate="{DataTemplate views:CalendarPage}" Icon="calendar.png" Route="calendar" />
+        <!--    <ShellContent Title="More" ContentTemplate="{DataTemplate views:MoreItemsPage}" Icon="more.png" Route="more" />
         -->
+
+        <ShellContent Title="Favorites" ContentTemplate="{DataTemplate views:FavoritesPage}" Icon="favorite.png" Route="favorites" />
+        <ShellContent Title="Custom Rankings" ContentTemplate="{DataTemplate views:CustomRankingsPage}" Icon="numbered_list.png" Route="custom-rankings" />
     </TabBar>
 </Shell>

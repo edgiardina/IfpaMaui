@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"             
+             xmlns:image="clr-namespace:Ifpa.Views.Controls"           
+             Title="Set Calendar Location"
+             x:Class="Ifpa.Views.CalendarFilterModalPage"
+             BackgroundColor="{DynamicResource SecondaryBackgroundColor}"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls">
+    <ContentPage.Content>
+        <Grid Padding="10,10,10,10" VerticalOptions="CenterAndExpand">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label Text="Location" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" />
+            <Entry Grid.Row="0" Grid.Column="1" Margin="20,0,5,0" Placeholder="Chicago, Illinois" x:Name="LocationEntry" TextColor="{DynamicResource PrimaryTextColor}" />
+            <Image Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalOptions="Center" WidthRequest="40" HorizontalOptions="Center"  Source="location.png" 
+                    image:ImageTint.TintColor="{StaticResource IconAccentColor}">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ImageButton_Clicked" />
+                </Image.GestureRecognizers>
+            </Image>
+
+
+            <Label Text="Distance" Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center" />
+            <Slider Grid.Row="1" Grid.Column="1" MinimumTrackColor="#007AFF" MaximumTrackColor="Gray" Margin="20,0,5,0" HorizontalOptions="FillAndExpand" Maximum="1000" Minimum="10" Value="150" ValueChanged="Slider_ValueChanged" x:Name="DistanceSlider" />
+            <Label Grid.Row="1" Grid.Column="2" Text="0" x:Name="DistanceText" VerticalTextAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="3" Text="Mi" VerticalTextAlignment="Center" />
+
+            <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="4">
+                <Button WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Cancel" Clicked="CancelButton_Clicked" />
+                <Button WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Find Events" Clicked="FindButton_Clicked" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
