@@ -25,7 +25,7 @@ namespace Ifpa.Views
         {
             if (e.CurrentSelection.FirstOrDefault() != null)
             {
-                var player = e.CurrentSelection as Search;
+                var player = e.CurrentSelection.FirstOrDefault() as Search;
                 if (player == null)
                     return;
 

@@ -11,18 +11,26 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <VerticalStackLayout>            
+        <VerticalStackLayout>
             <SearchBar Grid.Row="0" x:Name="SearchBar" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand"
-                       IsSpellCheckEnabled="False" TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColor}, Dark={DynamicResource PrimaryTextColorDark}}" PlaceholderColor="{DynamicResource SecondaryTextColor}"   
-                       CancelButtonColor="{DynamicResource SecondaryTextColor}"                        
+                       IsSpellCheckEnabled="False" 
+                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
+                       PlaceholderColor="{StaticResource SecondaryTextColor}"   
+                       CancelButtonColor="{StaticResource SecondaryTextColor}"                        
                        MaxLength="100"
                        Keyboard="Text"   
                        Placeholder="Type a player's name to search"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
             <RefreshView Command="{Binding LoadItemsCommand}" Grid.Row="1" 
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-                <CollectionView x:Name="PlayersListView"                 
-                    EmptyView="No players found."
+
+                <!--
+                TODO: emptyview and selectionmode cannot be used at the same time due to a maui bug
+                https://github.com/dotnet/maui/issues/8039
+                EmptyView="No players found."
+                -->
+
+                <CollectionView x:Name="PlayersListView"             
                     IsVisible="{Binding IsPopulated}"
                     ItemsSource="{Binding Players}"
                     VerticalOptions="FillAndExpand"                       
@@ -30,44 +38,44 @@
                     SelectionMode="Single">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <VerticalStackLayout  Padding="10,0">
-                            <StackLayout Orientation="Horizontal">
-                                <StackLayout Padding="10" Orientation="Vertical">
-                                    <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding FirstName}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding LastName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
+                            <StackLayout  Padding="10,0">
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout Padding="10" Orientation="Vertical">
+                                        <Label LineBreakMode="NoWrap" Style="{StaticResource ListItemTextStyle}" FontSize="16">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span Text="{Binding FirstName}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="{Binding LastName}" />
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
 
-                                    <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding City}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding State}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding CountryName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </StackLayout>
-                                <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
+                                        <Label LineBreakMode="NoWrap" Style="{StaticResource ListItemTextStyle}" FontSize="12" TextColor="{StaticResource SecondaryTextColor}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <FormattedString.Spans>
+                                                        <Span Text="{Binding City}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="{Binding State}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="{Binding CountryName}" />
+                                                    </FormattedString.Spans>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                    <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
                                    LineBreakMode="NoWrap" 
-                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   Style="{StaticResource ListItemTextStyle}" 
                                    FontSize="18" WidthRequest="80" />
-                            </StackLayout>
+                                </StackLayout>
                                 <BoxView HeightRequest=".5" Margin="0"
-                                   BackgroundColor="{DynamicResource SecondaryTextColor}"                
+                                   BackgroundColor="{StaticResource SecondaryTextColor}"                
                                    VerticalOptions="End"/>
-                            </VerticalStackLayout>
+                            </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

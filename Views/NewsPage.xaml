@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.NewsPage"
+             Title="{Binding Title}">
+    <StackLayout >
+        <ListView 
+                x:Name="ItemsListView" 
+                ItemsSource="{Binding NewsItems}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                SeparatorVisibility="None"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="ItemsListView_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame Padding="0" Margin="5" HasShadow="True" CornerRadius="0" >
+                            <StackLayout Orientation="Horizontal" Margin="0">
+                                <Grid VerticalOptions="FillAndExpand" Padding="0" Margin="0" HorizontalOptions="FillAndExpand">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" VerticalOptions="FillAndExpand" Margin="0" HorizontalOptions="FillAndExpand" Padding="5,5,5,5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Label FontAttributes="Bold" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="Default" Text="{Binding Title.Text}" Margin="0" />
+                                        <Label Grid.Row="1" VerticalTextAlignment="Start" FontSize="Small" Text="{Binding Summary.Text}"  Margin="0" />
+                                    </Grid>
+                                    <StackLayout Orientation="Horizontal" Grid.Row="1" Padding="5" HorizontalOptions="FillAndExpand" BackgroundColor="{DynamicResource SecondaryBackgroundColor}">
+                                        <Label HorizontalTextAlignment="Start"  FontSize="Small" Text="{Binding Author}"  Margin="0" />
+                                        <Label HorizontalTextAlignment="End" FontSize="Small" Text="{Binding PublishDate, StringFormat='{0:d}'}"/>
+                                    </StackLayout>
+                                </Grid>
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

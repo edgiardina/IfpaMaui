@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.DirectorsPage"             
+             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             Title="{Binding Title}"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.LargeTitleDisplay="Never"
+             x:Name="SearchPlayersPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <toolkit:InvertedBoolConverter x:Key="BoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <tabView:SfTabView>
+            <tabView:SfTabItem Header="NACS Directors">
+                <tabView:SfTabItem.Content>
+                    <ListView x:Name="NacsDirectorsListView" 
+                      IsVisible="{Binding IsPopulated}"
+                        ItemsSource="{Binding NacsDirectors}"
+                        VerticalOptions="FillAndExpand"
+                         HasUnevenRows="true"
+                         RefreshCommand="{Binding LoadItemsCommand}"
+                         IsPullToRefreshEnabled="true"
+                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                         CachingStrategy="RecycleElement"
+                         ItemSelected="OnItemSelected">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Padding="10" Orientation="Horizontal" >
+                                        <StackLayout Padding="10" Orientation="Vertical">
+                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <FormattedString.Spans>
+                                                            <Span Text="{Binding FirstName}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding LastName}" />
+                                                        </FormattedString.Spans>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <FormattedString.Spans>
+                                                            <Span Text="{Binding StateProvince}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding CountryName}" />
+                                                        </FormattedString.Spans>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </StackLayout>
+                                        <Label HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}" 
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="18" WidthRequest="80" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Header="Country Directors">
+                <tabView:SfTabItem.Content>
+                    <ListView x:Name="CountryDirectorsListView" 
+                      IsVisible="{Binding IsPopulated}"
+                        ItemsSource="{Binding CountryDirectors}"
+                        VerticalOptions="FillAndExpand"
+                         HasUnevenRows="true"
+                         RefreshCommand="{Binding LoadItemsCommand}"
+                         IsPullToRefreshEnabled="true"
+                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                         CachingStrategy="RecycleElement"
+                         ItemSelected="OnItemSelected">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Padding="10" Orientation="Horizontal" >
+                                        <StackLayout Padding="10" Orientation="Vertical">
+                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <FormattedString.Spans>
+                                                            <Span Text="{Binding FirstName}" />
+                                                            <Span Text=" " />
+                                                            <Span Text="{Binding LastName}" />
+                                                        </FormattedString.Spans>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <FormattedString.Spans>
+                                                            <Span Text="{Binding CountryName}" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                        </FormattedString.Spans>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+        </tabView:SfTabView>
+    </ContentPage.Content>
+</ContentPage>

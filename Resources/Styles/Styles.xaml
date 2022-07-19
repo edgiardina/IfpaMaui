@@ -41,6 +41,7 @@
     <Style TargetType="Button" ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
         <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
+        <Setter Property="HeightRequest" Value="40" />
     </Style>
 
     <Style TargetType="Label">

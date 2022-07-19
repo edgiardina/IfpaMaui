@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.SettingsPage" 
+             Title="Settings">
+    <ContentPage.Content>
+
+        <TableView Intent="Settings" HasUnevenRows="True">
+            <TableRoot>
+                <TableSection Title="Notifications" TextColor="{DynamicResource SecondaryTextColor}">
+                    <ViewCell>
+                        <StackLayout StyleClass="SettingsRow">
+                            <Label Text="IFPA Rank Change" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                            <Switch IsToggled="{Binding NotifyOnRankChange, Mode=TwoWay}" HorizontalOptions="End" VerticalOptions="Center" />
+                        </StackLayout>                        
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout StyleClass="SettingsRow">
+                            <Label Text="Tournament Result Posted" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                            <Switch IsToggled="{Binding NotifyOnTournamentResult, Mode=TwoWay}" HorizontalOptions="End" VerticalOptions="Center" />
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout StyleClass="SettingsRow">
+                            <Label Text="News Item Posted" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                            <Switch IsToggled="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" HorizontalOptions="End" VerticalOptions="Center" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+                <TableSection Title="'My Stats' Player" TextColor="{DynamicResource SecondaryTextColor}">
+                    <ViewCell>
+                        <StackLayout>
+                            <Button Padding="10,0,10,0" Margin="0,10,0,10" HorizontalOptions="CenterAndExpand" Text="Clear Selected Player" Clicked="Button_Clicked" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>            
+
+    </ContentPage.Content>
+</ContentPage>

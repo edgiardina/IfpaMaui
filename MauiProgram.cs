@@ -5,6 +5,7 @@ using System.Reflection;
 using Ifpa.Views;
 using Syncfusion.Maui.Core.Hosting;
 using CommunityToolkit.Maui;
+using Ifpa.Services;
 
 namespace Ifpa;
 
@@ -22,6 +23,15 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
+            .ConfigureEssentials(essentials =>
+            {
+                //TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
+                essentials
+                    .AddAppAction("calendar", "Calendar", "IFPA Tournament Calendar", "app_info_action_icon")
+                    .AddAppAction("my-stats", "My Stats", "Your IFPA player data", "app_info_action_icon")
+                    .AddAppAction("rankings/player-search", "Player Search", "Search for other players in the IFPA database", "search.png")
+                    .OnAppAction(App.HandleAppActions);
+            })
             .Services
                 //Add all viewmodels
                 .AddAllFromNamespace<BaseViewModel>()
@@ -29,7 +39,9 @@ public static class MauiProgram
                 .AddAllFromNamespace<RankingsPage>()
                 //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
                 //and RankingsFilterPage
-                .AddSingleton<RankingsViewModel>();
+                .AddSingleton<RankingsViewModel>()
+                //Services
+                .AddSingleton<BlogPostService>();
 
         var a = Assembly.GetExecutingAssembly();
         using var stream = a.GetManifestResourceStream("Ifpa.appsettings.json");
