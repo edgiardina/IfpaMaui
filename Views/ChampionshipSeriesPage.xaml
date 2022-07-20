@@ -21,9 +21,9 @@
                         <StackLayout Padding="10,0,10,0" Orientation="Horizontal">
                           
                             <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding RegionName}" />
+                                <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding RegionName}" />
 
-                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" >
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" >
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
@@ -37,7 +37,7 @@
                             </StackLayout>
 
                             <StackLayout Orientation="Vertical" Padding="10">                               
-                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
@@ -48,7 +48,7 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>

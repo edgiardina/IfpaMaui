@@ -28,14 +28,14 @@ namespace Ifpa.Views
 
         async void StandingsCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var playerStanding = e.CurrentSelection as RegionStanding;
+            var playerStanding = e.CurrentSelection.FirstOrDefault() as RegionStanding;
             if (playerStanding == null)
                 return;
 
             await Shell.Current.GoToAsync($"champ-series-player?seriesCode={SeriesCode}&regionCode={RegionCode}&year={Year}&playerId={playerStanding.PlayerId}");
          
             //Deselect Item
-            ((ListView)sender).SelectedItem = null;
+            ((CollectionView)sender).SelectedItem = null;
         }
         protected override void OnAppearing()
         {
@@ -58,7 +58,7 @@ namespace Ifpa.Views
             await Shell.Current.GoToAsync($"tournament-results?tournamentId={tournament.TournamentId}");
 
             //Deselect Item
-            ((ListView)sender).SelectedItem = null;
+            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }

@@ -53,7 +53,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Horizontal" Margin="10">
-                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start">
+                            <Label LineBreakMode="NoWrap"  FontSize="16" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
@@ -64,7 +64,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" HorizontalTextAlignment="End"                               
+                            <Label LineBreakMode="NoWrap"  FontSize="16" HorizontalTextAlignment="End"                               
                                TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
                                 <Label.FormattedText>
                                     <FormattedString>

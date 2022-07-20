@@ -26,11 +26,11 @@
                     <ViewCell>
                         <StackLayout Orientation="Horizontal" Margin="10">
                             <StackLayout HorizontalOptions="Start">
-                                <Label Text="{Binding RegionCode}" FontSize="20" Style="{DynamicResource ListItemTextStyle}" />
-                                <Label Text="{Binding SeriesCode}" FontSize="12" Style="{DynamicResource ListItemTextStyle}" />
+                                <Label Text="{Binding RegionCode}" FontSize="20"  />
+                                <Label Text="{Binding SeriesCode}" FontSize="12"  />
                             </StackLayout>
                             <StackLayout HorizontalOptions="EndAndExpand" MinimumWidthRequest="120" VerticalOptions="Center">
-                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}" FontSize="24" Style="{DynamicResource ListItemTextStyle}" />
+                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
                             </StackLayout>
                         </StackLayout>
                     </ViewCell>

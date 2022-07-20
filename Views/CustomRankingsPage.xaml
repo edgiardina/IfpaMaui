@@ -27,8 +27,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10" Orientation="Vertical">
-                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding Title}" />
-                            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Description}" />
+                            <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding Title}" />
+                            <Label  FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Description}" />
                         </StackLayout>
 
                     </ViewCell>

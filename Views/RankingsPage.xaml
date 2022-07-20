@@ -29,10 +29,10 @@
                     <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
                         <Label Margin="10,0" VerticalTextAlignment="Center" Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
                                    LineBreakMode="NoWrap" 
-                                   Style="{DynamicResource ListItemTextStyle}" 
+                                    
                                    FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
                         <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
+                            <Label LineBreakMode="NoWrap"  FontSize="16">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
@@ -44,11 +44,11 @@
                                 </Label.FormattedText>
                             </Label>
                             <StackLayout Orientation="Horizontal">
-                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Location}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" />
+                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Location}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" />
                                 <Label TextColor="{DynamicResource SecondaryTextColor}" HorizontalOptions="End"  Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap" 
-                                               Style="{DynamicResource ListItemTextStyle}" FontSize="10" />
+                                                FontSize="10" />
                             </StackLayout>
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" TextColor="{DynamicResource SecondaryTextColor}" 
+                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  TextColor="{DynamicResource SecondaryTextColor}" 
                                                FontSize="10" HorizontalTextAlignment="Start" IsVisible="{Binding Source={x:Reference BrowseItemsPage}, Path=BindingContext.ShowOverallRank}">
                                 <Label.FormattedText>
                                     <FormattedString>

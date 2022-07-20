@@ -21,38 +21,39 @@
                         IsRefreshing="{Binding IsBusy, Mode=OneWay}">
                         <CollectionView
                         ItemsSource="{Binding RegionStandings.Standings}"
+                        SelectionMode="Single"
                         SelectionChanged="StandingsCollectionView_SelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <StackLayout Margin="10" Orientation="Horizontal" >
                                         <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
                                        LineBreakMode="NoWrap" 
-                                       Style="{DynamicResource ListItemTextStyle}" 
+                                        
                                        FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
                                         <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" Text="{Binding PlayerName}" />
+                                            <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding PlayerName}" />
 
                                             <Label HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
-                                               LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="10" TextColor="{DynamicResource SecondaryTextColor}" />
+                                               LineBreakMode="NoWrap"  FontSize="10" TextColor="{StaticResource SecondaryTextColor}" />
                                         </StackLayout>
 
                                         <StackLayout Orientation="Vertical" >
-                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
-                                                            <Span Text="Event Count:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                            <Span Text="Event Count:" TextColor="{StaticResource SecondaryTextColor}" />
                                                             <Span Text=" " />
                                                             <Span Text="{Binding EventCount}" />
                                                         </FormattedString.Spans>
                                                     </FormattedString>
                                                 </Label.FormattedText>
                                             </Label>
-                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
-                                                            <Span Text="Win Count:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                            <Span Text="Win Count:" TextColor="{StaticResource SecondaryTextColor}" />
                                                             <Span Text=" " />
                                                             <Span Text="{Binding WinCount}" />
                                                         </FormattedString.Spans>
@@ -81,19 +82,19 @@
                                 <DataTemplate>
                                     <StackLayout Margin="10" Orientation="Horizontal"  >
                                         <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding TournamentName}" />
-                                            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small" Text="{Binding EventName}"  />
+                                            <Label  FontSize="Medium" Text="{Binding TournamentName}" />
+                                            <Label  FontSize="Small" Text="{Binding EventName}"  />
                                         </StackLayout>
 
                                         <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="End" MinimumWidthRequest="60">
-                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" 
-                                               FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}"  />
+                                            <Label LineBreakMode="NoWrap"  
+                                               FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{StaticResource SecondaryTextColor}"  />
 
-                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" HorizontalTextAlignment="Start">
+                                            <Label LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
-                                                            <Span Text="Players:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                            <Span Text="Players:" TextColor="{StaticResource SecondaryTextColor}" />
                                                             <Span Text=" " />
                                                             <Span Text="{Binding PlayerCount}" />
                                                         </FormattedString.Spans>

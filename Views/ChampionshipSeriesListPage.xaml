@@ -13,7 +13,7 @@
                 <DataTemplate>
                     <StackLayout Orientation="Vertical" Padding="10,0"  HorizontalOptions="FillAndExpand">
                         <StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" Text="{Binding Title}" />
+                            <Label  FontSize="Medium" Text="{Binding Title}" />
                         </StackLayout>
                         <BoxView HeightRequest=".5" Margin="0"
                            BackgroundColor="{DynamicResource SecondaryTextColor}"                

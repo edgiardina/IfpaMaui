@@ -41,7 +41,7 @@
                             <StackLayout  Padding="10,0">
                                 <StackLayout Orientation="Horizontal">
                                     <StackLayout Padding="10" Orientation="Vertical">
-                                        <Label LineBreakMode="NoWrap" Style="{StaticResource ListItemTextStyle}" FontSize="16">
+                                        <Label LineBreakMode="NoWrap"  FontSize="16">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
@@ -53,7 +53,7 @@
                                             </Label.FormattedText>
                                         </Label>
 
-                                        <Label LineBreakMode="NoWrap" Style="{StaticResource ListItemTextStyle}" FontSize="12" TextColor="{StaticResource SecondaryTextColor}">
+                                        <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{StaticResource SecondaryTextColor}">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
@@ -69,7 +69,7 @@
                                     </StackLayout>
                                     <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
                                    LineBreakMode="NoWrap" 
-                                   Style="{StaticResource ListItemTextStyle}" 
+                                    
                                    FontSize="18" WidthRequest="80" />
                                 </StackLayout>
                                 <BoxView HeightRequest=".5" Margin="0"

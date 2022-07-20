@@ -34,7 +34,7 @@
                                 <ViewCell>
                                     <StackLayout Margin="10" Orientation="Horizontal" >
                                         <StackLayout Orientation="Vertical" VerticalOptions="Center" Padding="10,0,0,0" HorizontalOptions="StartAndExpand">
-                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16">
+                                            <Label LineBreakMode="NoWrap"  FontSize="16">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
@@ -45,7 +45,7 @@
                                                     </FormattedString>
                                                 </Label.FormattedText>
                                             </Label>
-                                            <Label LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                                            <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
@@ -84,8 +84,8 @@
                                             </Label>
                                         </StackLayout>
                                         <StackLayout HorizontalOptions="End"  VerticalOptions="Center">
-                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24" Style="{DynamicResource ListItemTextStyle}" />
-                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Style="{DynamicResource ListItemTextStyle}" FontSize="12" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
+                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell>
@@ -136,7 +136,7 @@
                                 <ViewCell>
                                     <StackLayout Orientation="Vertical" Margin="10">
 
-                                        <Label Text="{Binding TournamentName}"  FontSize="16" Style="{DynamicResource ListItemTextStyle}" HorizontalOptions="StartAndExpand" />
+                                        <Label Text="{Binding TournamentName}"  FontSize="16"  HorizontalOptions="StartAndExpand" />
 
                                         <Grid HorizontalOptions="FillAndExpand">
                                             <Grid.ColumnDefinitions>

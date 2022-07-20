@@ -14,7 +14,7 @@
             <Image Source="ribbon.png" HeightRequest="25" local:ImageTint.TintColor="{StaticResource IconAccentColor}" />
             <StackLayout HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
                 <Label Text="Tournament Result Posted" FontAttributes="Bold" />
-                <Label Style="{DynamicResource ListItemTextStyle}" FontSize="Small">
+                <Label  FontSize="Small">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
