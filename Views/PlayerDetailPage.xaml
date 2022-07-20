@@ -72,7 +72,7 @@
 
                         </StackLayout>
                     </StackLayout>
-                    <Image Grid.Column="1" Grid.Row="0" Source="{Binding PlayerAvatar, Mode=OneWay}" HeightRequest="100" x:Name="AvatarImage" >
+                    <Image Grid.Column="1" Grid.Row="0" Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" >
                         <Image.Shadow>
                             <Shadow Brush="Black" 
                                   

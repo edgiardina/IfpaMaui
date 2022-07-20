@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Ifpa.Converters"
+             x:Class="Ifpa.Views.PlayerChampionshipSeriesPage"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.LargeTitleDisplay="Never"
+             Title="Championship Series">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>       
+
+        <ListView x:Name="MyListView"
+            ItemsSource="{Binding ChampionshipSeries}"
+            RefreshCommand="{Binding LoadItemsCommand}"
+            IsPullToRefreshEnabled="true"
+            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement"
+            HasUnevenRows="true">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="10">
+                            <StackLayout HorizontalOptions="Start">
+                                <Label Text="{Binding RegionCode}" FontSize="20" Style="{DynamicResource ListItemTextStyle}" />
+                                <Label Text="{Binding SeriesCode}" FontSize="12" Style="{DynamicResource ListItemTextStyle}" />
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="EndAndExpand" MinimumWidthRequest="120" VerticalOptions="Center">
+                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}" FontSize="24" Style="{DynamicResource ListItemTextStyle}" />
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

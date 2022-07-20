@@ -51,7 +51,7 @@ namespace Ifpa.Views
 
         private async void TournamentResultsCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var tournament = e.CurrentSelection as SubmittedTournament;
+            var tournament = e.CurrentSelection.FirstOrDefault() as SubmittedTournament;
             if (tournament == null)
                 return;
 

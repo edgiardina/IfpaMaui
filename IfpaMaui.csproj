@@ -129,6 +129,9 @@
 		<MauiXaml Update="Views\NewsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\PlayerChampionshipSeriesPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\PlayerDetailPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

@@ -75,6 +75,7 @@
                         IsRefreshing="{Binding IsBusy, Mode=OneWay}">
                         <CollectionView
                         SelectionChanged="TournamentResultsCollectionView_SelectionChanged"
+                        SelectionMode="Single"
                         ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
