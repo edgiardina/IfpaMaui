@@ -13,8 +13,8 @@
 	<uses-feature android:name="android.hardware.location" android:required="false" />
 	<uses-feature android:name="android.hardware.location.gps" android:required="false" />
 	<uses-feature android:name="android.hardware.location.network" android:required="false" />
-	<!-- Allow us to open the browser for store review, etc -->
 	<queries>
+		<!-- Allow us to open the browser for store review, etc -->
 		<intent>
 			<action android:name="android.intent.action.VIEW" />
 			<data android:scheme="http"/>
@@ -22,6 +22,11 @@
 		<intent>
 			<action android:name="android.intent.action.VIEW" />
 			<data android:scheme="https"/>
+		</intent>
+		<!-- Needed so we can open Google maps when a user taps on a pin from the calendar/tournament page -->
+		<intent>
+			<action android:name="android.intent.action.VIEW" />
+			<data android:scheme="geo"/>
 		</intent>
 	</queries>
 </manifest>

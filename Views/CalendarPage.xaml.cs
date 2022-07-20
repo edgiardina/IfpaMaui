@@ -66,7 +66,9 @@ namespace Ifpa.Views
                     Preferences.Set("LastCalendarLocation", location);
                     Preferences.Set("LastCalendarDistance", distance);
 
-                    IsBusy = true;
+                    //TODO: Page.IsBusy has a bug?
+
+                    //IsBusy = true;
                     /*
                     calendarMap.Pins.Clear();
 
@@ -76,14 +78,12 @@ namespace Ifpa.Views
                     */
                     await ViewModel.ExecuteLoadItemsCommand(location, distance);
 
-                    IsBusy = true;
-
                     List<Task> listOfTasks = new List<Task>();
                     foreach (var detail in ViewModel.CalendarDetails)
                     {
                         //listOfTasks.Add(LoadEventOntoCalendar(detail));
                     }
-                    await Task.WhenAll(listOfTasks);
+                    //await Task.WhenAll(listOfTasks);
                 }
                 catch (Exception e)
                 {

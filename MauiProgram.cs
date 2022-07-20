@@ -6,6 +6,7 @@ using Ifpa.Views;
 using Syncfusion.Maui.Core.Hosting;
 using CommunityToolkit.Maui;
 using Ifpa.Services;
+using Ifpa.Interfaces;
 
 namespace Ifpa;
 
@@ -31,6 +32,8 @@ public static class MauiProgram
                     .AddAppAction("my-stats", "My Stats", "Your IFPA player data", "app_info_action_icon")
                     .AddAppAction("rankings/player-search", "Player Search", "Search for other players in the IFPA database", "search.png")
                     .OnAppAction(App.HandleAppActions);
+
+                essentials.UseVersionTracking();
             })
             .Services
                 //Add all viewmodels
@@ -41,7 +44,9 @@ public static class MauiProgram
                 //and RankingsFilterPage
                 .AddSingleton<RankingsViewModel>()
                 //Services
-                .AddSingleton<BlogPostService>();
+                .AddSingleton<BlogPostService>()
+                .AddTransient<IReminderService, ReminderService>();
+        
 
         var a = Assembly.GetExecutingAssembly();
         using var stream = a.GetManifestResourceStream("Ifpa.appsettings.json");
