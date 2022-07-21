@@ -19,9 +19,9 @@
         <ShellContent Title="Custom Rankings" ContentTemplate="{DataTemplate views:CustomRankingsPage}" Icon="numbered_list.png" Route="custom-rankings" />
         <ShellContent Title="News" ContentTemplate="{DataTemplate views:NewsPage}" Icon="news.png" Route="news" />
         <ShellContent Title="Rules" ContentTemplate="{DataTemplate views:RulesPage}" Icon="rules.png" Route="rules" />
-        <!--<ShellContent Title="Stats" ContentTemplate="{DataTemplate views:StatsPage}" Icon="stats.png" Route="stats" />-->
-        <ShellContent Title="Directors" ContentTemplate="{DataTemplate views:DirectorsPage}" Icon="globe.png" Route="directors" />
+        <ShellContent Title="Stats" ContentTemplate="{DataTemplate views:StatsPage}" Icon="stats.png" Route="stats" />
+        <ShellContent Title="Directors" ContentTemplate="{DataTemplate views:DirectorsPage}" Icon="directors.png" Route="directors" />
         <ShellContent Title="Settings" ContentTemplate="{DataTemplate views:SettingsPage}" Icon="settings.png" Route="settings" />
-        <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" Icon="tab_about.png" Route="about" />
+        <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" Icon="about.png" Route="about" />
     </TabBar>
 </Shell>

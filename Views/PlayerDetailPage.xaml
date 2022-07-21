@@ -30,57 +30,49 @@
             <!-- TODO: restore hiding content IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" -->
             <StackLayout Padding="15">
 
-                <Grid ColumnSpacing="10" BackgroundColor="{StaticResource SecondaryBanner}" Padding="15,0,15,0" VerticalOptions="StartAndExpand" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" Padding="5" Grid.Column="0" Grid.Row="0">
-                        <Label Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
+                <StackLayout Spacing="10" BackgroundColor="{StaticResource SecondaryBanner}" Padding="15,10,15,10" VerticalOptions="StartAndExpand" Orientation="Horizontal" >
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
 
-                        <StackLayout Orientation="Horizontal">
-                            <Label LineBreakMode="NoWrap" HorizontalOptions="StartAndExpand" Style="{StaticResource playerHeader}" FontSize="16" >
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Player #: " />
-                                            <Span Text="{Binding PlayerId, Mode=OneWay}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered, Mode=OneWay}" 
-                                HorizontalOptions="End">
-                                <Image.Shadow>
-                                    <Shadow Brush="Black"                                      
+                            <StackLayout Orientation="Horizontal">
+                                <Label LineBreakMode="NoWrap" HorizontalOptions="StartAndExpand" Style="{StaticResource playerHeader}" FontSize="16" >
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="Player #: " />
+                                                <Span Text="{Binding PlayerId, Mode=OneWay}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered, Mode=OneWay}" 
+                                HorizontalOptions="End" WidthRequest="20" Margin="10,0">
+                                    <Image.Shadow>
+                                        <Shadow Brush="Black"                                      
                                         Opacity="0.8" />
-                                </Image.Shadow>
-                            </Image>
+                                    </Image.Shadow>
+                                </Image>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                <Label Text="{Binding Location, Mode=OneWay}" HorizontalOptions="StartAndExpand" FontSize="16" Style="{StaticResource playerHeader}"  />
+
+                                <Image Source="{Binding CountryFlag, Mode=OneWay}" WidthRequest="30" HorizontalOptions="End" Margin="10,0" >
+                                    <Image.Shadow>
+                                        <Shadow Brush="Black"                             
+                                        Opacity="0.8" />
+                                    </Image.Shadow>
+                                </Image>
+
+                            </StackLayout>
                         </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Location, Mode=OneWay}" HorizontalOptions="StartAndExpand" FontSize="16" Style="{StaticResource playerHeader}"  />
 
-                            <Image Source="{Binding CountryFlag, Mode=OneWay}" WidthRequest="30" >
-                                <Image.Shadow>
-                                    <Shadow Brush="Black"                             
+                        <Image Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" HorizontalOptions="End"  WidthRequest="100">
+                            <Image.Shadow>
+                                <Shadow Brush="Black"                                      
                                         Opacity="0.8" />
-                                </Image.Shadow>
-                            </Image>
-
-                        </StackLayout>
-                    </StackLayout>
-                    <Image Grid.Column="1" Grid.Row="0" Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" >
-                        <Image.Shadow>
-                            <Shadow Brush="Black" 
-                                  
-                                        Opacity="0.8" />
-                        </Image.Shadow>
-                    </Image>
-
-                </Grid>
+                            </Image.Shadow>
+                        </Image>
+                </StackLayout>
 
                 <StackLayout Spacing="10" Margin="15">
                     <StackLayout Orientation="Horizontal">

@@ -49,15 +49,22 @@
 
 	<ItemGroup>
 		<None Remove="appsettings.json" />
+		<None Remove="Resources\Images\about.svg" />
 		<None Remove="Resources\Images\activity_feed.svg" />
 		<None Remove="Resources\Images\calendar.svg" />
+		<None Remove="Resources\Images\directors.svg" />
+		<None Remove="Resources\Images\favorite.svg" />
 		<None Remove="Resources\Images\favorite_outline.svg" />
 		<None Remove="Resources\Images\filter.svg" />
 		<None Remove="Resources\Images\mystats.svg" />
+		<None Remove="Resources\Images\news.svg" />
 		<None Remove="Resources\Images\numbered_list.svg" />
+		<None Remove="Resources\Images\rules.svg" />
 		<None Remove="Resources\Images\search.svg" />
+		<None Remove="Resources\Images\settings.svg" />
 		<None Remove="Resources\Images\share.svg" />
 		<None Remove="Resources\Images\star.svg" />
+		<None Remove="Resources\Images\stats.svg" />
 		<None Remove="Resources\Images\trophy.svg" />
 	</ItemGroup>
 
@@ -157,6 +164,9 @@
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\SettingsPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\StatsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\TournamentInfoPage.xaml">

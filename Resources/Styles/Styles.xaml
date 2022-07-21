@@ -68,4 +68,10 @@
         -->
         <Setter Property="BackgroundColor" Value="Transparent" />
     </Style>
+
+    <Style TargetType="StackLayout" Class="SettingsRow">
+        <Setter Property="Padding" Value="15,10,10,10" />
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" />
+    </Style>
 </ResourceDictionary>
