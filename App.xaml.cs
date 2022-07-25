@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Handlers;
+using System.Web;
 
 namespace Ifpa;
 
@@ -19,6 +20,34 @@ public partial class App : Application
         {
             await Shell.Current.GoToAsync($"//{appAction.Id}");
         });
+    }
+
+    protected override async void OnAppLinkRequestReceived(Uri uri)
+    {
+        base.OnAppLinkRequestReceived(uri);
+
+        //DeepLinks
+        if (uri.ToString().Contains("player.php"))
+        {
+            //extract player ID from querystring
+            var id = HttpUtility.ParseQueryString(uri.Query)["p"];
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items[0];
+                await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}");
+            }
+        }
+        //tournaments/view.php?t=46773
+        else if (uri.ToString().Contains("tournaments/view.php"))
+        {
+            var id = HttpUtility.ParseQueryString(uri.Query)["t"];
+            if (!string.IsNullOrEmpty(id))
+            {
+                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items[0];
+                await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
+            }
+        }
     }
 
 

@@ -5,7 +5,7 @@ using Ifpa.ViewModels;
 
 namespace Ifpa.Services
 {
-    public class iOSReminderService : IReminderService
+    public class ReminderService : IReminderService
     {
         protected EKEventStore eventStore = new EKEventStore();
 

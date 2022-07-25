@@ -73,7 +73,7 @@ namespace Ifpa.Views
                 ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == "Activity Feed"));
             }
 
-            ViewModel.LoadItemsCommand.Execute(null);
+            await ViewModel.ExecuteLoadItemsCommand();
         }
 
         /// <summary>

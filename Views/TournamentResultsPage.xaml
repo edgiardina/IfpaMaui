@@ -11,7 +11,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="share.png" />
-        <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="tab_about.png" />
+        <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="about.png" />
     </ContentPage.ToolbarItems>
     <ListView x:Name="MyListView"
             ItemsSource="{Binding Results}"

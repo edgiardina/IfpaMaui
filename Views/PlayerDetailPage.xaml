@@ -27,11 +27,10 @@
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" />
 
-            <!-- TODO: restore hiding content IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" -->
-            <StackLayout Padding="15">
+            <StackLayout Padding="15" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
 
-                <StackLayout Spacing="10" BackgroundColor="{StaticResource SecondaryBanner}" Padding="15,10,15,10" VerticalOptions="StartAndExpand" Orientation="Horizontal" >
-                        <StackLayout Orientation="Vertical">
+                <StackLayout Spacing="10" BackgroundColor="{StaticResource SecondaryBanner}" Padding="15,10" VerticalOptions="CenterAndExpand" Orientation="Horizontal" >
+                        <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="StartAndExpand" Margin="10">
                             <Label Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
 
                             <StackLayout Orientation="Horizontal">
@@ -66,7 +65,7 @@
                             </StackLayout>
                         </StackLayout>
 
-                        <Image Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" HorizontalOptions="End"  WidthRequest="100">
+                        <Image Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" HorizontalOptions="End" HeightRequest="100" Margin="10">
                             <Image.Shadow>
                                 <Shadow Brush="Black"                                      
                                         Opacity="0.8" />

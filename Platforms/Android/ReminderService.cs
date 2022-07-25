@@ -19,6 +19,8 @@ namespace Ifpa.Services
             intent.PutExtra(CalendarContract.Events.InterfaceConsts.EventTimezone, "UTC");
             intent.PutExtra(CalendarContract.Events.InterfaceConsts.EventEndTimezone, "UTC");
             intent.SetData(CalendarContract.Events.ContentUri);
+
+            intent.SetFlags(ActivityFlags.ClearWhenTaskReset | ActivityFlags.NewTask);
             Android.App.Application.Context.StartActivity(intent);
             return true;
         }

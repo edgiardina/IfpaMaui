@@ -104,11 +104,11 @@ namespace Ifpa.ViewModels
             if (status == PermissionStatus.Granted)
             {
                 string selectedCalendar = null;
-                var calendars = await ReminderService.GetCalendarList();
 
                 //iOS Supports multiple calendars. no idea how to do this in Android yet. 
-                if (Device.RuntimePlatform == Device.iOS)
+                if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
                 {
+                    var calendars = await ReminderService.GetCalendarList();
                     selectedCalendar = await Shell.Current.DisplayActionSheet("This event will be added to your phone's calendar", "Cancel", null, calendars.ToArray());
                 }
 
