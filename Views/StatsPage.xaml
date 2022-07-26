@@ -11,7 +11,7 @@
         <tabView:SfTabView>
             <tabView:SfTabItem Header="Aggregates">
                 <tabView:SfTabItem.Content>
-                    <ScrollView BackgroundColor="{DynamicResource BackgroundColor}">
+                    <ScrollView>
                         <StackLayout Spacing="20" Padding="15">
                             <chart:SfCircularChart VerticalOptions="FillAndExpand" HeightRequest="350" Title="Players By Country" >
                                 <chart:SfCircularChart.Legend>

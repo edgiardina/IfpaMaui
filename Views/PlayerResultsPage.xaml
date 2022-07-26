@@ -27,14 +27,14 @@
                                 ItemTapped="Handle_ItemTapped"
                                 CachingStrategy="RecycleElement"
                                 HasUnevenRows="true">
-                    <!--Custom View Cells-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Vertical" Padding="10">
+                                <VerticalStackLayout Padding="10">
                                     <StackLayout Orientation="Horizontal" >
                                         <Label Text="{Binding TournamentName}"  FontSize="16"  HorizontalOptions="StartAndExpand" />
-                                        <Label LineBreakMode="NoWrap" MinimumWidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
+                                        <Label LineBreakMode="NoWrap" MinimumWidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="End" 
+                                               Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
                                     </StackLayout>
 
                                     <StackLayout  Orientation="Horizontal">
@@ -48,7 +48,7 @@
                                         </Grid>
                                         <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" Text="{Binding CurrentPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
                                     </StackLayout>
-                                </StackLayout>
+                                </VerticalStackLayout>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>

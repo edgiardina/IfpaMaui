@@ -19,11 +19,11 @@
         <ToolbarItem Text="Add To Calendar" x:Name="AddToCalendarButton" Clicked="AddToCalendarButton_Clicked" IconImageSource="calendar_add.png" />
     </ContentPage.ToolbarItems>
     <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" >
-        <Frame BackgroundColor="{DynamicResource SecondaryBanner}" CornerRadius="0">
+        <Frame BackgroundColor="{StaticResource SecondaryBanner}" CornerRadius="0">
             <StackLayout Orientation="Vertical">
-                <Label Text="{Binding Title, Mode=OneWay}" FontSize="24" Style="{DynamicResource calendarHeader}"/>
+                <Label Text="{Binding Title, Mode=OneWay}" FontSize="24" Style="{StaticResource calendarHeader}"/>
 
-                <Label LineBreakMode="NoWrap" FontSize="16" Style="{DynamicResource calendarHeader}">
+                <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
@@ -34,7 +34,7 @@
                     </Label.FormattedText>
                 </Label>
 
-                <Label LineBreakMode="NoWrap" FontSize="16" Style="{DynamicResource calendarHeader}">
+                <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
@@ -46,7 +46,7 @@
                 </Label>
             </StackLayout>
         </Frame>
-        <ScrollView VerticalOptions="FillAndExpand"  BackgroundColor="{DynamicResource BackgroundColor}"  IsClippedToBounds="True">
+        <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True">
             <StackLayout Spacing="0">
                 <!-- TODO: Restore Map on Calendar Page-->
                 

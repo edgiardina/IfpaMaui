@@ -17,9 +17,7 @@ namespace Ifpa.Views
         {
             InitializeComponent();
 
-            BindingContext = this.ViewModel = viewModel;
-
-            IsBusy = true;
+            BindingContext = this.ViewModel = viewModel;           
         }
 
         protected async override void OnAppearing()

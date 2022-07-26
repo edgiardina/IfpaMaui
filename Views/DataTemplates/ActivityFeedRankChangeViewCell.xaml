@@ -30,7 +30,7 @@
                 </Label>
                 <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
             </StackLayout>
-            <!--TODO: -->
+            
             <BoxView Color="CornflowerBlue"
                  IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
                  CornerRadius="6"                     

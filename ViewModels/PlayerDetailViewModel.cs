@@ -113,9 +113,8 @@ namespace Ifpa.ViewModels
                         PlayerRatingHistory = new ObservableCollection<RatingHistory>(playerHistoryData.RatingHistory);
 
                     PlayerRecord = playerData;
-                    
-                    //TODO: restore app links
-                    //AddPlayerToAppLinks();
+                 
+                    AddPlayerToAppLinks();
 
                     if (PostPlayerLoadCommand != null)
                     {
