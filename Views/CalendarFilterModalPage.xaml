@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"             
              xmlns:image="clr-namespace:Ifpa.Views.Controls"           
              Title="Set Calendar Location"
-             x:Class="Ifpa.Views.CalendarFilterModalPage"
-             BackgroundColor="{DynamicResource SecondaryBackgroundColor}"
+             x:Class="Ifpa.Views.CalendarFilterModalPage"             
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls">
     <ContentPage.Content>
         <Grid Margin="10,10,10,10" VerticalOptions="CenterAndExpand">
@@ -22,7 +21,7 @@
             </Grid.RowDefinitions>
 
             <Label Text="Location" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" />
-            <Entry Grid.Row="0" Grid.Column="1" Margin="20,0,5,0" Placeholder="Chicago, Illinois" x:Name="LocationEntry" TextColor="{DynamicResource PrimaryTextColor}" />
+            <Entry Grid.Row="0" Grid.Column="1" Margin="20,0,5,0" Placeholder="Chicago, Illinois" x:Name="LocationEntry" />
             <Image Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalOptions="Center" WidthRequest="40" HorizontalOptions="Center"  Source="location.png" 
                     image:ImageTint.TintColor="{StaticResource IconAccentColor}">
                 <Image.GestureRecognizers>

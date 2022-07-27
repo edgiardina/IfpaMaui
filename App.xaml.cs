@@ -1,4 +1,6 @@
 ﻿using Microsoft.Maui.Handlers;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.EventArgs;
 using System.Web;
 
 namespace Ifpa;
@@ -10,6 +12,8 @@ public partial class App : Application
         InitializeComponent();
 
         MainPage = new AppShell();
+
+        LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
 
         WindowHandler.Mapper.ModifyMapping(nameof(IWindow.Content), OnWorkaround);
     }
@@ -48,6 +52,11 @@ public partial class App : Application
                 await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
             }
         }
+    }
+
+    private async void OnNotificationActionTapped(NotificationEventArgs e)
+    {
+        await Shell.Current.GoToAsync(e.Request.ReturningData);
     }
 
 

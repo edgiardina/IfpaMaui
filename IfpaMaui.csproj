@@ -77,16 +77,17 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 		<PackageReference Include="PinballApi" Version="2.0.78" />
+		<PackageReference Include="Plugin.LocalNotification" Version="10.0.0-preview02" />
 		<PackageReference Include="Scrutor" Version="4.2.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.0" />
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.0" />
 		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.0" />
-		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.39" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="20.2.39" />
-		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.2.39" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.39" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.2.40" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="20.2.40" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.2.40" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.2.40" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="6.0.0" />
 	</ItemGroup>
 

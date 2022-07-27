@@ -11,10 +11,9 @@
             <!--Custom View Cells-->
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Vertical" Padding="10,0"  HorizontalOptions="FillAndExpand">
-                        <StackLayout Padding="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                            <Label  FontSize="Medium" Text="{Binding Title}" />
-                        </StackLayout>
+                    <StackLayout Orientation="Vertical" Padding="10,0" HorizontalOptions="FillAndExpand">
+                        <Label FontSize="Medium" Text="{Binding Title}" Margin="0,10" />
+                        
                         <BoxView HeightRequest=".5" Margin="0"
                            BackgroundColor="{DynamicResource SecondaryTextColor}"                
                            VerticalOptions="End"/>

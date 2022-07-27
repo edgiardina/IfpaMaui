@@ -7,6 +7,7 @@ using Syncfusion.Maui.Core.Hosting;
 using CommunityToolkit.Maui;
 using Ifpa.Services;
 using Ifpa.Interfaces;
+using Plugin.LocalNotification;
 
 namespace Ifpa;
 
@@ -35,6 +36,7 @@ public static class MauiProgram
 
                 essentials.UseVersionTracking();
             })
+            .UseLocalNotification()
             .Services
                 //Add all viewmodels
                 .AddAllFromNamespace<BaseViewModel>()
@@ -45,6 +47,7 @@ public static class MauiProgram
                 .AddSingleton<RankingsViewModel>()
                 //Services
                 .AddSingleton<BlogPostService>()
+                .AddSingleton<NotificationService>()
                 .AddTransient<IReminderService, ReminderService>();
         
 
