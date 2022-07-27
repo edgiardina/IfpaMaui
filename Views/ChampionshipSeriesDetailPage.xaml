@@ -25,45 +25,47 @@
                         SelectionChanged="StandingsCollectionView_SelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Margin="10" Orientation="Horizontal" >
-                                        <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
+                                    <StackLayout>
+                                        <StackLayout Margin="10" Orientation="Horizontal" >
+                                            <Label VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
                                        LineBreakMode="NoWrap" 
                                         
                                        FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
-                                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                            <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding PlayerName}" />
+                                            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                                <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding PlayerName}" />
 
-                                            <Label HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
+                                                <Label HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
                                                LineBreakMode="NoWrap"  FontSize="10" TextColor="{StaticResource SecondaryTextColor}" />
-                                        </StackLayout>
+                                            </StackLayout>
 
-                                        <StackLayout Orientation="Vertical" >
-                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Event Count:" TextColor="{StaticResource SecondaryTextColor}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding EventCount}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Win Count:" TextColor="{StaticResource SecondaryTextColor}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding WinCount}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>                            
+                                            <StackLayout Orientation="Vertical" >
+                                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <FormattedString.Spans>
+                                                                <Span Text="Event Count:" TextColor="{StaticResource SecondaryTextColor}" />
+                                                                <Span Text=" " />
+                                                                <Span Text="{Binding EventCount}" />
+                                                            </FormattedString.Spans>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <FormattedString.Spans>
+                                                                <Span Text="Win Count:" TextColor="{StaticResource SecondaryTextColor}" />
+                                                                <Span Text=" " />
+                                                                <Span Text="{Binding WinCount}" />
+                                                            </FormattedString.Spans>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </StackLayout>
+
                                         </StackLayout>
-                                        
+                                        <BoxView Style="{StaticResource BoxSeperator}"/>
                                     </StackLayout>
-
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
@@ -80,28 +82,31 @@
                         ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Margin="10" Orientation="Horizontal"  >
-                                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
-                                            <Label  FontSize="Medium" Text="{Binding TournamentName}" />
-                                            <Label  FontSize="Small" Text="{Binding EventName}"  />
-                                        </StackLayout>
+                                    <StackLayout>
+                                        <StackLayout Margin="10" Orientation="Horizontal"  >
+                                            <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                                <Label  FontSize="Medium" Text="{Binding TournamentName}" />
+                                                <Label  FontSize="Small" Text="{Binding EventName}"  />
+                                            </StackLayout>
 
-                                        <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="End" MinimumWidthRequest="60">
-                                            <Label LineBreakMode="NoWrap"  
+                                            <StackLayout Orientation="Vertical" Padding="10" HorizontalOptions="End" MinimumWidthRequest="60">
+                                                <Label LineBreakMode="NoWrap"  
                                                FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{StaticResource SecondaryTextColor}"  />
 
-                                            <Label LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Players:" TextColor="{StaticResource SecondaryTextColor}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding PlayerCount}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
+                                                <Label LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <FormattedString.Spans>
+                                                                <Span Text="Players:" TextColor="{StaticResource SecondaryTextColor}" />
+                                                                <Span Text=" " />
+                                                                <Span Text="{Binding PlayerCount}" />
+                                                            </FormattedString.Spans>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </StackLayout>
                                         </StackLayout>
+                                        <BoxView Style="{StaticResource BoxSeperator}"/>
                                     </StackLayout>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>

@@ -77,4 +77,11 @@
     <Style TargetType="TableView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" />
     </Style>
+
+    <Style TargetType="BoxView" x:Key="BoxSeperator">
+        <Setter Property="HeightRequest" Value=".5" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="BackgroundColor"  Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+        <Setter Property="VerticalOptions" Value="End" />
+    </Style>
 </ResourceDictionary>
