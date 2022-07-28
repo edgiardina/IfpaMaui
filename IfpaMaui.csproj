@@ -56,6 +56,7 @@
 		<None Remove="Resources\Images\favorite.svg" />
 		<None Remove="Resources\Images\favorite_outline.svg" />
 		<None Remove="Resources\Images\filter.svg" />
+		<None Remove="Resources\Images\location.svg" />
 		<None Remove="Resources\Images\mystats.svg" />
 		<None Remove="Resources\Images\news.svg" />
 		<None Remove="Resources\Images\numbered_list.svg" />

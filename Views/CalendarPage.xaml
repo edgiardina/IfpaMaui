@@ -7,7 +7,7 @@
              x:Class="Ifpa.Views.CalendarPage"
              Title="Calendar">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="location.png" />
+        <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="location.png"  />
         <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="calendar.png" />        
     </ContentPage.ToolbarItems>    
     <StackLayout Spacing="0">
