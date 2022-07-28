@@ -30,47 +30,47 @@
             <StackLayout Padding="15" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
 
                 <StackLayout Spacing="10" BackgroundColor="{StaticResource SecondaryBanner}" Padding="15,10" VerticalOptions="CenterAndExpand" Orientation="Horizontal" >
-                        <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="StartAndExpand" Margin="10">
-                            <Label Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="StartAndExpand" Margin="10">
+                        <Label Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
 
-                            <StackLayout Orientation="Horizontal">
-                                <Label LineBreakMode="NoWrap" HorizontalOptions="StartAndExpand" Style="{StaticResource playerHeader}" FontSize="16" >
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <FormattedString.Spans>
-                                                <Span Text="Player #: " />
-                                                <Span Text="{Binding PlayerId, Mode=OneWay}" />
-                                            </FormattedString.Spans>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                                <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered, Mode=OneWay}" 
-                                HorizontalOptions="End" WidthRequest="20" Margin="10,0">
-                                    <Image.Shadow>
-                                        <Shadow Brush="Black"                                      
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                            <Label LineBreakMode="NoWrap" HorizontalOptions="StartAndExpand" Style="{StaticResource playerHeader}" FontSize="16" >
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="Player #: " />
+                                            <Span Text="{Binding PlayerId, Mode=OneWay}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered}" 
+                                    HorizontalOptions="End" WidthRequest="20" >
+                                <Image.Shadow>
+                                    <Shadow Brush="Black"                             
                                         Opacity="0.8" />
-                                    </Image.Shadow>
-                                </Image>
-                            </StackLayout>
-                            <StackLayout Orientation="Horizontal" Spacing="10">
-                                <Label Text="{Binding Location, Mode=OneWay}" HorizontalOptions="StartAndExpand" FontSize="16" Style="{StaticResource playerHeader}"  />
-
-                                <Image Source="{Binding CountryFlag, Mode=OneWay}" WidthRequest="30" HorizontalOptions="End" Margin="10,0" >
-                                    <Image.Shadow>
-                                        <Shadow Brush="Black"                             
-                                        Opacity="0.8" />
-                                    </Image.Shadow>
-                                </Image>
-
-                            </StackLayout>
+                                </Image.Shadow>
+                            </Image>
                         </StackLayout>
+                        <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="EndAndExpand">
+                            <Label Text="{Binding Location, Mode=OneWay}" HorizontalOptions="StartAndExpand" FontSize="16" Style="{StaticResource playerHeader}" VerticalTextAlignment="Center"  />
 
-                        <Image Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" HorizontalOptions="End" HeightRequest="100" Margin="10">
-                            <Image.Shadow>
-                                <Shadow Brush="Black"                                      
+                            <Image Source="{Binding CountryFlag, Mode=OneWay}" WidthRequest="30" HorizontalOptions="End" Margin="10,0" >
+                                <Image.Shadow>
+                                    <Shadow Brush="Black"                             
                                         Opacity="0.8" />
-                            </Image.Shadow>
-                        </Image>
+                                </Image.Shadow>
+                            </Image>
+
+                        </StackLayout>
+                    </StackLayout>
+
+                    <Image Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" HorizontalOptions="End" HeightRequest="100" Margin="10">
+                        <Image.Shadow>
+                            <Shadow Brush="Black"                                      
+                                        Opacity="0.8" />
+                        </Image.Shadow>
+                    </Image>
                 </StackLayout>
 
                 <StackLayout Spacing="10" Margin="15">
