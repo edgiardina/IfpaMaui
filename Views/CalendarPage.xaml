@@ -1,11 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
-             
+             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"               
              xmlns:controls="clr-namespace:Ifpa.Views.Controls"
              x:Class="Ifpa.Views.CalendarPage"
              Title="Calendar">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="scheduler:SchedulerTextStyle" x:Key="CalendarHeaderStyle">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />               
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="location.png"  />
         <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="calendar.png" />        
@@ -42,10 +48,36 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
-        <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
-                                View="Month"                               
-                                AppointmentsSource="{Binding InlineCalendarItems, Mode=OneWay}" 
+        <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand"                                
+                                View="Month"                                                               
+                                AppointmentsSource="{Binding TournamentCalenderItems, Mode=OneWay}" 
+                               Tapped="calendar_Tapped"
                                 BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
+            <scheduler:SfScheduler.HeaderView>
+                <scheduler:SchedulerHeaderView  
+                                TextStyle="{StaticResource CalendarHeaderStyle}"  >
+                </scheduler:SchedulerHeaderView>
+            </scheduler:SfScheduler.HeaderView>
+            <scheduler:SfScheduler.MonthView>
+                <scheduler:SchedulerMonthView>                      
+                    <scheduler:SchedulerMonthView.ViewHeaderTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Label x:Name="label" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding StringFormat='{0:ddd}'}" 
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
+                                       FontSize="Subtitle" FontFamily="Bold" />
+                            </Grid>
+                        </DataTemplate>
+                    </scheduler:SchedulerMonthView.ViewHeaderTemplate>
+                    <scheduler:SchedulerMonthView.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Label HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" Text="{Binding DateTime.Day}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </scheduler:SchedulerMonthView.CellTemplate>
+                </scheduler:SchedulerMonthView>
+            </scheduler:SfScheduler.MonthView>
         </scheduler:SfScheduler>             
     </StackLayout>
 </ContentPage>

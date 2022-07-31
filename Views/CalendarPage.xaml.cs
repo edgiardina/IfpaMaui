@@ -140,5 +140,17 @@ namespace Ifpa.Views
                 ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = "map.png";
             }
         }
+
+        private async void calendar_Tapped(object sender, Syncfusion.Maui.Scheduler.SchedulerTappedEventArgs e)
+        {
+            if(e.Appointments.Any())
+            {
+                var calendar = e.Appointments.First() as InlineCalendarItem;
+                if (calendar == null)
+                    return;
+
+                await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendar.CalendarId}");
+            }
+        }
     }
 }

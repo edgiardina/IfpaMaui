@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.Maui;
 using PinballApi.Models.WPPR.v1.Calendar;
-using System.Linq;
 using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
 
@@ -12,15 +8,15 @@ namespace Ifpa.ViewModels
 {
     public class CalendarViewModel : BaseViewModel
     {
+        public ObservableCollection<InlineCalendarItem> TournamentCalenderItems { get; set; } 
         public ObservableCollectionRange<CalendarDetails> CalendarDetails { get; set; }
-        //public ObservableCollection<CalendarEvent> InlineCalendarItems { get; set; }
+
         public Command LoadItemsCommand { get; set; }
 
         public CalendarViewModel(IConfiguration config) : base(config)
         {
             Title = "Calendar";
-            CalendarDetails = new ObservableCollectionRange<CalendarDetails>();
-            //InlineCalendarItems = new CalendarEventCollectionRange();
+            CalendarDetails = new ObservableCollectionRange<CalendarDetails>();      
         }
 
         public async Task ExecuteLoadItemsCommand(string address, int distance)
@@ -44,18 +40,22 @@ namespace Ifpa.ViewModels
                 {
                     CalendarDetails.AddRange(items.Calendar.OrderBy(n => n.EndDate));
 
-                    //InlineCalendarItems.AddRange(
-                    //    items.Calendar.Where(item => item.EndDate - item.StartDate <= 5.Days())
-                    //                  .Select(i => 
-                    //                    new InlineCalendarItem
-                    //                    {
-                    //                        CalendarId = i.CalendarId,
-                    //                        Subject = i.TournamentName,
-                    //                        StartTime = i.StartDate.Date,
-                    //                        EndTime = i.EndDate.Date,
-                    //                        IsAllDay = true
-                    //                    })
-                    //);
+                    TournamentCalenderItems = new ObservableCollection<InlineCalendarItem>();
+
+                    foreach (var item in items.Calendar.Where(item => item.EndDate - item.StartDate <= 5.Days()))
+                    {
+                        TournamentCalenderItems.Add(new InlineCalendarItem()
+                        {
+                            CalendarId = item.CalendarId,
+                            StartTime = item.StartDate,
+                            EndTime = item.EndDate,
+                            Subject = item.TournamentName,
+                            Location = item.City,
+                            IsAllDay = true
+                        });
+                    }
+
+                    OnPropertyChanged("TournamentCalenderItems");
                 }
 
                 Console.WriteLine("Collections loaded at {0}", sw.ElapsedMilliseconds);
