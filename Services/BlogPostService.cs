@@ -7,9 +7,6 @@ namespace Ifpa.Services
 {
     public class BlogPostService
     {
-
-        IConfiguration configuration;
-
         protected AppSettings AppSettings { get; set; }
 
         public BlogPostService(IConfiguration config)
