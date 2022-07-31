@@ -8,6 +8,7 @@ using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
 //using Syncfusion.SfCalendar.XForms;
 using System.Collections.Generic;
+using Syncfusion.Maui.Scheduler;
 
 namespace Ifpa.Views
 {
@@ -41,8 +42,16 @@ namespace Ifpa.Views
                 await UpdateCalendarData();
             }
 
-            //TODO: make sure 'today' is selected as actual today. if the calendar page was drawn before and reused / kept in memory the day before,
-            //next time you view, you won't see the updated today
+            //TODO: Get resource dictionary by name not by order in list
+            var colorResources = App.Current.Resources.MergedDictionaries.First();
+
+            //TODO: This should be in the XAML since it's UI / markup / descriptive not logic.
+            calendar.HeaderView.TextStyle.SetAppTheme(SchedulerTextStyle.TextColorProperty,
+                colorResources["PrimaryTextColor"],
+                colorResources["PrimaryTextColorDark"]);
+
+
+            //TODO: actually restrict calendar not to go to months in the past.
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)
@@ -143,7 +152,7 @@ namespace Ifpa.Views
 
         private async void calendar_Tapped(object sender, Syncfusion.Maui.Scheduler.SchedulerTappedEventArgs e)
         {
-            if(e.Appointments.Any())
+            if(e.Appointments != null && e.Appointments.Any())
             {
                 var calendar = e.Appointments.First() as InlineCalendarItem;
                 if (calendar == null)
