@@ -7,9 +7,12 @@
     xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts">
 
     <Style TargetType="TabBar">
+        <!-- Nav Bar Properties (Top) -->
         <Setter Property="Shell.ForegroundColor" Value="{StaticResource IconAccentColor}" />
-        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
         <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+      
+        <!-- Tab Bar Properties (Bottom) -->
         <Setter Property="Shell.TabBarBackgroundColor"
             Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
         <Setter Property="Shell.TabBarTitleColor"

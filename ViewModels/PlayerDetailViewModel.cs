@@ -147,8 +147,14 @@ namespace Ifpa.ViewModels
 
             entry.KeyValues.Add("contentType", "Player");
             entry.KeyValues.Add("appName", "IFPA Companion");
-
-            Application.Current.AppLinks.RegisterLink(entry);
+            try
+            {
+                Application.Current.AppLinks.RegisterLink(entry);
+            }
+            catch(ArgumentException ex)
+            {
+                //TODO: resolve "No IAppIndexingProvider was provided" exception
+            }
         }
 
     }

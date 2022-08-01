@@ -37,15 +37,16 @@ namespace Ifpa.ViewModels
                     {
                         Players.Clear();
 
-                        var favorites = await Settings.LocalDatabase.GetFavorites();                    
-
-                        var tempList = await PinballRankingApiV2.GetPlayers(favorites.Select(n => n.PlayerID).ToList());
-                   
-                        foreach (var player in tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank))
+                        var favorites = await Settings.LocalDatabase.GetFavorites();
+                        if (favorites.Any())
                         {
-                            Players.Add(player);
-                        }
+                            var tempList = await PinballRankingApiV2.GetPlayers(favorites.Select(n => n.PlayerID).ToList());
 
+                            foreach (var player in tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank))
+                            {
+                                Players.Add(player);
+                            }
+                        }
                         OnPropertyChanged("IsPopulated");
                     }
                     catch (Exception ex)
