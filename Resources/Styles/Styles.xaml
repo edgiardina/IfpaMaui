@@ -10,7 +10,7 @@
         <!-- Nav Bar Properties (Top) -->
         <Setter Property="Shell.ForegroundColor" Value="{StaticResource IconAccentColor}" />
         <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
-        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />       
       
         <!-- Tab Bar Properties (Bottom) -->
         <Setter Property="Shell.TabBarBackgroundColor"
@@ -55,13 +55,13 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
     </Style>
 
-    <Style TargetType="tabView:SfTabView"  ApplyToDerivedTypes="True">
+    <Style TargetType="tabView:SfTabView" ApplyToDerivedTypes="True">
         <Setter Property="TabWidthMode" Value="Default" />
         <Setter Property="TabBarBackground" Value="{AppThemeBinding Light={StaticResource TabHeaderBackgroundColor}, Dark={StaticResource TabHeaderBackgroundColorDark}}" />
         <Setter Property="IndicatorBackground" Value="{StaticResource IconAccentColor}" />
     </Style>
 
-    <Style TargetType="tabView:SfTabItem"  ApplyToDerivedTypes="True">
+    <Style TargetType="tabView:SfTabItem" ApplyToDerivedTypes="True">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
     </Style>
 

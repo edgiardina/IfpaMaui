@@ -67,8 +67,14 @@ namespace Ifpa.ViewModels
 
             entry.KeyValues.Add("contentType", "Tournament Result");
             entry.KeyValues.Add("appName", "IFPA Companion");
-
-            Application.Current.AppLinks.RegisterLink(entry);
+            try
+            {
+                Application.Current.AppLinks.RegisterLink(entry);
+            }
+            catch(Exception ex)
+            {
+                //TODO: No IAppIndexingProvider
+            }
         }
     }
 }
