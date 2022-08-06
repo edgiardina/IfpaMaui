@@ -52,11 +52,13 @@
 		<None Remove="Resources\Images\about.svg" />
 		<None Remove="Resources\Images\activity_feed.svg" />
 		<None Remove="Resources\Images\calendar.svg" />
+		<None Remove="Resources\Images\calendar_add.svg" />
 		<None Remove="Resources\Images\directors.svg" />
 		<None Remove="Resources\Images\favorite.svg" />
 		<None Remove="Resources\Images\favorite_outline.svg" />
 		<None Remove="Resources\Images\filter.svg" />
 		<None Remove="Resources\Images\location.svg" />
+		<None Remove="Resources\Images\map.svg" />
 		<None Remove="Resources\Images\mystats.svg" />
 		<None Remove="Resources\Images\news.svg" />
 		<None Remove="Resources\Images\numbered_list.svg" />
@@ -79,7 +81,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 		<PackageReference Include="PinballApi" Version="2.0.78" />
-		<PackageReference Include="Plugin.LocalNotification" Version="10.0.0" />
+		<PackageReference Include="Plugin.LocalNotification" Version="10.0.1" />
 		<PackageReference Include="Scrutor" Version="4.2.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.0" />

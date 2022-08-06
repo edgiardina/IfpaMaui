@@ -11,13 +11,13 @@ namespace Ifpa.Views
 
         bool LoadMyStats = false;
 
-        public int PlayerId { get;set; }
+        public int PlayerId { get; set; }
 
         public PlayerDetailPage(PlayerDetailViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = this.ViewModel = viewModel;           
+            BindingContext = this.ViewModel = viewModel;
         }
 
         protected async override void OnAppearing()
@@ -153,7 +153,7 @@ namespace Ifpa.Views
             else
             {
                 await Settings.LocalDatabase.AddFavorite(ViewModel.PlayerId);
-                SetCorrectFavoriteIcon(true);                
+                SetCorrectFavoriteIcon(true);
                 await DisplayAlert("Favorite Added", "This player has been added to your favorites!", "OK");
             }
         }
@@ -164,25 +164,10 @@ namespace Ifpa.Views
             {
                 //if player is in the existing favorites list, fill the heart icon.
                 ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite.png";
-                if (DeviceInfo.Current.Platform == DevicePlatform.Android)
-                {
-                    ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite_white.png";
-                }
-                else
-                {
-                    ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite.png";
-                }
             }
             else
-            {                
-                if (DeviceInfo.Current.Platform == DevicePlatform.Android)
-                {
-                    ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite_outline.png";
-                }
-                else
-                {
-                    ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite-outline.png";
-                }
+            {
+                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite_outline.png";
             }
         }
 

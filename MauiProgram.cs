@@ -36,7 +36,7 @@ public static class MauiProgram
 
                 essentials.UseVersionTracking();
             })
-            .UseLocalNotification()
+            //.UseLocalNotification()
             .Services
                 //Add all viewmodels
                 .AddAllFromNamespace<BaseViewModel>()
@@ -47,7 +47,7 @@ public static class MauiProgram
                 .AddSingleton<RankingsViewModel>()
                 //Services
                 .AddSingleton<BlogPostService>()
-                .AddSingleton<NotificationService>()
+                //.AddSingleton<NotificationService>()
                 .AddTransient<IReminderService, ReminderService>();
         
 
