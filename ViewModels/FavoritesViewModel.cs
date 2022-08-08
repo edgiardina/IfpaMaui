@@ -40,11 +40,15 @@ namespace Ifpa.ViewModels
                         var favorites = await Settings.LocalDatabase.GetFavorites();
                         if (favorites.Any())
                         {
-                            var tempList = await PinballRankingApiV2.GetPlayers(favorites.Select(n => n.PlayerID).ToList());
-
-                            foreach (var player in tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank))
+                            //Chunk into 50 to solve https://github.com/edgiardina/Ifpa/issues/148
+                            foreach (var favoritesChunk in favorites.Chunk(50))
                             {
-                                Players.Add(player);
+                                var tempList = await PinballRankingApiV2.GetPlayers(favoritesChunk.Select(n => n.PlayerID).ToList());
+
+                                foreach (var player in tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank))
+                                {
+                                    Players.Add(player);
+                                }
                             }
                         }
                         OnPropertyChanged("IsPopulated");
