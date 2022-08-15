@@ -62,7 +62,9 @@
 		<None Remove="Resources\Images\mystats.svg" />
 		<None Remove="Resources\Images\news.svg" />
 		<None Remove="Resources\Images\numbered_list.svg" />
+		<None Remove="Resources\Images\rankchange.svg" />
 		<None Remove="Resources\Images\ranking_profile.svg" />
+		<None Remove="Resources\Images\ribbon.svg" />
 		<None Remove="Resources\Images\rules.svg" />
 		<None Remove="Resources\Images\search.svg" />
 		<None Remove="Resources\Images\settings.svg" />

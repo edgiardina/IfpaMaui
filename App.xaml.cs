@@ -7,15 +7,18 @@ namespace Ifpa;
 
 public partial class App : Application
 {
-    public App()
+    //This service provider is so platform specific code like BackgroundReceiver can get NotificationService et al
+    public static IServiceProvider ServiceProvider { get; set; }
+
+    public App(IServiceProvider serviceProvider)
     {
         InitializeComponent();
 
         MainPage = new AppShell();
 
-        LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
+        ServiceProvider = serviceProvider;
 
-        WindowHandler.Mapper.ModifyMapping(nameof(IWindow.Content), OnWorkaround);
+        LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
     }
         
     public static void HandleAppActions(AppAction appAction)
@@ -57,13 +60,5 @@ public partial class App : Application
     private async void OnNotificationActionTapped(NotificationEventArgs e)
     {
         await Shell.Current.GoToAsync(e.Request.ReturningData);
-    }
-
-
-    //workaround for modal dialog presentation on android
-    //https://github.com/dotnet/maui/issues/8062
-    private void OnWorkaround(IWindowHandler arg1, IWindow arg2, Action<IElementHandler, IElement> arg3)
-    {
-        WindowHandler.MapContent(arg1, arg2);
     }
 }

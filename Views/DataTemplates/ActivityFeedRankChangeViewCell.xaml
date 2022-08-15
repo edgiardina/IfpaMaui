@@ -5,7 +5,7 @@
           xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
           x:Class="Ifpa.Views.DataTemplates.ActivityFeedRankChangeViewCell">
     <ViewCell.View>
-        <StackLayout Orientation="Horizontal" Padding="10">
+        <StackLayout Orientation="Horizontal" Spacing="10" Margin="10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
             <StackLayout.Resources>
                 <ResourceDictionary>
                     <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -17,7 +17,7 @@
                     <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                 </Image.Behaviors>
             </Image>
-            <StackLayout Padding="10,0,0,0">
+            <StackLayout HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
                 <Label Text="Rank Changed" FontAttributes="Bold" />
                 <Label  FontSize="Small">
                     <Label.FormattedText>
@@ -33,14 +33,15 @@
                 </Label>
                 <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
             </StackLayout>
-            
-            <BoxView Color="CornflowerBlue"
+
+            <BoxView Color="{StaticResource IconAccentColor}"
+                 Margin="10,0,0,0"
                  IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
-                 CornerRadius="6"                     
+                 CornerRadius="6"                       
                  WidthRequest="12"
                  HeightRequest="12"
                  VerticalOptions="Center"
-                 HorizontalOptions="EndAndExpand" />
+                 HorizontalOptions="End" />
         </StackLayout>
     </ViewCell.View>
 </ViewCell>

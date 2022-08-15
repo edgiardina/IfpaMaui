@@ -4,7 +4,7 @@
           xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
           x:Class="Ifpa.Views.DataTemplates.ActivityFeedTournamentResultViewCell">
     <ViewCell.View>
-        <StackLayout Orientation="Horizontal" Padding="10">
+        <StackLayout Orientation="Horizontal" Spacing="10" Margin="10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
             <StackLayout.Resources>
                 <ResourceDictionary>
                     <toolkit:InvertedBoolConverter x:Key="inverter"/>
@@ -30,13 +30,15 @@
                 </Label>
                 <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
             </StackLayout>
-            <BoxView Color="CornflowerBlue"
+
+            <BoxView Color="{StaticResource IconAccentColor}"
+                 Margin="10,0,0,0"
                  IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
                  CornerRadius="6"                       
                  WidthRequest="12"
                  HeightRequest="12"
                  VerticalOptions="Center"
-                 HorizontalOptions="EndAndExpand" />
+                 HorizontalOptions="End" />
         </StackLayout>
     </ViewCell.View>
 </ViewCell>

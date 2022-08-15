@@ -24,8 +24,5 @@
             ItemTemplate="{StaticResource activityFeedDataTemplateSelector}"
             ItemsSource="{Binding ActivityFeedItems}"      
             CachingStrategy="RecycleElement"
-            RefreshCommand="{Binding LoadItemsCommand}"
-            IsPullToRefreshEnabled="true"
-            HasUnevenRows="True"
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}" />
+            HasUnevenRows="True" />
 </ContentPage>

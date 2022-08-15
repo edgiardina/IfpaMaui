@@ -3,21 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.ChampionshipSeriesListPage"
              Title="{Binding Title}">
-    <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-        <CollectionView x:Name="ChampionshipSeriesCollectionView"            
+    <!-- RefreshView doesn't size correctly in iOS so it's been removed for now
+         https://github.com/dotnet/maui/issues/7315 -->
+    <CollectionView x:Name="ChampionshipSeriesCollectionView"            
             ItemsSource="{Binding ChampionshipSeries}" 
             SelectionMode="Single"                        
             SelectionChanged="ChampionshipSeriesCollectionView_SelectionChanged">
-            <!--Custom View Cells-->
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                        <Label FontSize="Medium" Text="{Binding Title}" Margin="10,10" />
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <StackLayout Orientation="Vertical">
+                    <Label FontSize="Medium" Text="{Binding Title}" Margin="10,10" />
 
-                        <BoxView Style="{StaticResource BoxSeperator}"/>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </RefreshView>
+                    <BoxView Style="{StaticResource BoxSeperator}"/>
+                </StackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>

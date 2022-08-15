@@ -7,7 +7,7 @@ using Syncfusion.Maui.Core.Hosting;
 using CommunityToolkit.Maui;
 using Ifpa.Services;
 using Ifpa.Interfaces;
-using Plugin.LocalNotification;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace Ifpa;
 
@@ -36,6 +36,17 @@ public static class MauiProgram
 
                 essentials.UseVersionTracking();
             })
+            .ConfigureLifecycleEvents(events =>
+            {
+                //Set up android Background Recevier
+                //https://stackoverflow.com/questions/71766108/how-to-use-a-broadcastreceiver-from-net-maui-on-android
+#if ANDROID
+                events.AddAndroid(android => android
+                      .OnCreate((activity, bundle) => Ifpa.Platforms.Android.AndroidAlarmManager.CreateAlarm()));
+#endif
+                //                events.AddiOS(ios => ios.DidEnterBackground*);                
+
+            })
             //.UseLocalNotification()
             .Services
                 //Add all viewmodels
@@ -47,7 +58,7 @@ public static class MauiProgram
                 .AddSingleton<RankingsViewModel>()
                 //Services
                 .AddSingleton<BlogPostService>()
-                //.AddSingleton<NotificationService>()
+                .AddSingleton<NotificationService>()
                 .AddTransient<IReminderService, ReminderService>();
         
 
@@ -62,4 +73,5 @@ public static class MauiProgram
 
         return builder.Build();
     }
+
 }
