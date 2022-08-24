@@ -64,7 +64,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label LineBreakMode="NoWrap"  FontSize="16" HorizontalTextAlignment="End"                               
+                            <Label LineBreakMode="NoWrap" FontSize="16" HorizontalTextAlignment="Center"                               
                                TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
                                 <Label.FormattedText>
                                     <FormattedString>

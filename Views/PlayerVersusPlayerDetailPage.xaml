@@ -20,20 +20,19 @@
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement"
             HasUnevenRows="true">
-        <!--Custom View Cells-->
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout Orientation="Horizontal" Margin="10">
-                        <StackLayout HorizontalOptions="StartAndExpand">
+                    <Grid Margin="10" ColumnDefinitions="*, 80" ColumnSpacing="10">
+                        <StackLayout Grid.Column="0">
                             <Label Text="{Binding TournamentName}"  FontSize="16"  />
                             <StackLayout Orientation="Horizontal">
                                 <Label LineBreakMode="NoWrap"  FontSize="12" Text="{Binding EventName}" TextColor="{DynamicResource SecondaryTextColor}" />
                                 <Label Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" />
                             </StackLayout>
                         </StackLayout>
-                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" MinimumWidthRequest="80" WidthRequest="80" >
-                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16"  >
+                        <StackLayout Grid.Column="1" >
+                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
@@ -44,7 +43,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16"  >
+                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
@@ -56,7 +55,7 @@
                                 </Label.FormattedText>
                             </Label>
                         </StackLayout>
-                    </StackLayout>
+                    </Grid>
                 </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
