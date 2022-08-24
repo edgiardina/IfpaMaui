@@ -98,6 +98,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\DataTemplates\PlayerResultViewCell.xaml.cs">
+	    <DependentUpon>PlayerResultViewCell.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 		<MauiXaml Update="Views\AboutPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -129,6 +135,9 @@
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\CustomRankingsPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\PlayerResultViewCell.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\DirectorsPage.xaml">

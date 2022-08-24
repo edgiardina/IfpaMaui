@@ -1,17 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Converters"             
+             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:datatemplate="clr-namespace:Ifpa.Views.DataTemplates"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
              x:Class="Ifpa.Views.PlayerResultsPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
-             Title="{Binding Title}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
+             Title="{Binding Title}">    
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Ranking Profile" IsEnabled="{Binding ShowRankingTypeChoice}" x:Name="RankingProfileButton" Clicked="RankingProfileButton_Clicked" IconImageSource="ranking_profile.png" />
     </ContentPage.ToolbarItems>
@@ -29,27 +25,7 @@
                                 HasUnevenRows="true">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <VerticalStackLayout Padding="10">
-                                    <StackLayout Orientation="Horizontal" >
-                                        <Label Text="{Binding TournamentName}"  FontSize="16"  HorizontalOptions="StartAndExpand" />
-                                        <Label LineBreakMode="NoWrap" MinimumWidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="End" 
-                                               Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
-                                    </StackLayout>
-
-                                    <StackLayout  Orientation="Horizontal">
-                                        <Grid HorizontalOptions="FillAndExpand">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition  Width="1*" />
-                                                <ColumnDefinition  Width="1*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" LineBreakMode="NoWrap"  FontSize="12" Text="{Binding EventName}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                            <Label Grid.Column="1" Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" />
-                                        </Grid>
-                                        <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" Text="{Binding CurrentPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                    </StackLayout>
-                                </VerticalStackLayout>
-                            </ViewCell>
+                            <datatemplate:PlayerResultViewCell />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -65,29 +41,9 @@
                                     ItemTapped="Handle_ItemTapped"
                                     CachingStrategy="RecycleElement"
                                     HasUnevenRows="true">
-                    <!--Custom View Cells-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Vertical" Padding="10">
-                                    <StackLayout Orientation="Horizontal" >
-                                        <Label Text="{Binding TournamentName}"  FontSize="16"  HorizontalOptions="StartAndExpand" />
-                                        <Label LineBreakMode="NoWrap"  MinimumWidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
-                                    </StackLayout>
-
-                                    <StackLayout  Orientation="Horizontal">
-                                        <Grid HorizontalOptions="FillAndExpand">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition  Width="1*" />
-                                                <ColumnDefinition  Width="1*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" LineBreakMode="NoWrap"  FontSize="12" Text="{Binding EventName}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                            <Label Grid.Column="1" Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" />
-                                        </Grid>
-                                        <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" Text="{Binding CurrentPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell>
+                            <datatemplate:PlayerResultViewCell />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -103,29 +59,9 @@
                                 ItemTapped="Handle_ItemTapped"
                                 CachingStrategy="RecycleElement"
                                 HasUnevenRows="true">
-                    <!--Custom View Cells-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Vertical" Padding="10">
-                                    <StackLayout Orientation="Horizontal" >
-                                        <Label Text="{Binding TournamentName}"  FontSize="16"  HorizontalOptions="StartAndExpand" />
-                                        <Label LineBreakMode="NoWrap"  MinimumWidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
-                                    </StackLayout>
-
-                                    <StackLayout  Orientation="Horizontal">
-                                        <Grid HorizontalOptions="FillAndExpand">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition  Width="1*" />
-                                                <ColumnDefinition  Width="1*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" LineBreakMode="NoWrap"  FontSize="12" Text="{Binding EventName}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                            <Label Grid.Column="1" Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" />
-                                        </Grid>
-                                        <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" HorizontalOptions="End"  FontSize="12" Text="{Binding CurrentPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell>
+                            <datatemplate:PlayerResultViewCell />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

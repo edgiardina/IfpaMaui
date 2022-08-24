@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:local="clr-namespace:Ifpa.Converters"
+          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+          x:Class="Ifpa.Views.DataTemplates.PlayerResultViewCell">
+    <ViewCell.View>
+        <VerticalStackLayout Padding="10">
+            <VerticalStackLayout.Resources>
+                <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            </VerticalStackLayout.Resources>
+            <Grid ColumnDefinitions="*,100">
+                <Label Grid.Column="0" Text="{Binding TournamentName}" FontSize="16"  HorizontalTextAlignment="Start"  />
+                <Label Grid.Column="1" LineBreakMode="NoWrap" HorizontalTextAlignment="End" 
+                                               Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
+            </Grid>
+            <Grid ColumnDefinitions="*,*,*">
+                <Label Grid.Column="0" LineBreakMode="NoWrap" HorizontalTextAlignment="Start"  FontSize="12" Text="{Binding EventName}" TextColor="{DynamicResource SecondaryTextColor}" />
+                <Label Grid.Column="1" Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" HorizontalTextAlignment="Center" />
+                <Label Grid.Column="2" LineBreakMode="NoWrap" HorizontalTextAlignment="End" FontSize="12" Text="{Binding CurrentPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+            </Grid>
+        </VerticalStackLayout>
+    </ViewCell.View>
+</ViewCell>

@@ -65,12 +65,16 @@
                         </StackLayout>
                     </StackLayout>
 
-                    <Image Source="{Binding PlayerAvatar, Mode=OneWay}" x:Name="AvatarImage" HorizontalOptions="End" HeightRequest="100" Margin="10">
-                        <Image.Shadow>
+                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="End" Margin="10" 
+                                        Text="{Binding Initials, Mode=OneWay}" 
+                                        BackgroundColor="{StaticResource ButtonBackgroundColor}"
+                                        BorderWidth="0"
+                                        TextColor="{StaticResource ButtonTextColor}">
+                        <toolkit:AvatarView.Shadow>
                             <Shadow Brush="Black"                                      
                                         Opacity="0.8" />
-                        </Image.Shadow>
-                    </Image>
+                        </toolkit:AvatarView.Shadow>
+                    </toolkit:AvatarView>      
                 </StackLayout>
 
                 <StackLayout Spacing="10" Margin="15">
