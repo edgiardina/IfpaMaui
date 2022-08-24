@@ -22,12 +22,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid Padding="10,10,10,10"  VerticalOptions="CenterAndExpand">
+        <Grid Padding="10,10,10,10" VerticalOptions="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -75,17 +76,20 @@
                     <FormattedString>
                         <FormattedString.Spans>
                             <Span Text="{Binding TournamentDetails.TournamentPercentageGrade, Mode=OneWay}" />
-                            <Span Text=" %" />
+                            <Span Text="%" />
                         </FormattedString.Spans>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
 
-            <Label Grid.Column="0" Grid.Row="10" Style="{DynamicResource labelStyle}" Text="Tournament Value: " />
-            <Label Grid.Column="1" Grid.Row="10" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.TournamentValue, Mode=OneWay}" />
+            <Label Grid.Column="0" Grid.Row="10" Style="{DynamicResource labelStyle}" Text="Event Booster: " />
+            <Label Grid.Column="1" Grid.Row="10" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.EventWeight, Mode=OneWay, StringFormat='{0:P0}'}" />
+
+            <Label Grid.Column="0" Grid.Row="11" Style="{DynamicResource labelStyle}" Text="Tournament Value: " />
+            <Label Grid.Column="1" Grid.Row="11" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.TournamentValue, Mode=OneWay}" />
             
             
-            <StackLayout Orientation="Horizontal" Grid.Row="11" Grid.ColumnSpan="2" Margin="10">
+            <StackLayout Orientation="Horizontal" Grid.Row="12" Grid.ColumnSpan="2" Margin="10">
                 <Button WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand" Text="Close" Clicked="CloseButton_Clicked" />
             </StackLayout>
         </Grid>
