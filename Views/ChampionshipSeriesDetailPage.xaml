@@ -89,11 +89,11 @@
                                                 <Label  FontSize="Small" Text="{Binding EventName}"  />
                                             </StackLayout>
 
-                                            <StackLayout Grid.Column="1" Orientation="Vertical" Padding="10" MinimumWidthRequest="60">
-                                                <Label LineBreakMode="NoWrap"  
-                                               FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{StaticResource SecondaryTextColor}"  />
+                                            <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Center" Padding="10" MinimumWidthRequest="60">
+                                                <Label LineBreakMode="NoWrap" FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" 
+                                                       TextColor="{StaticResource SecondaryTextColor}"  />
 
-                                                <Label LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
+                                                <Label LineBreakMode="NoWrap" FontSize="12" HorizontalTextAlignment="End">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <FormattedString.Spans>

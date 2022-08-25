@@ -106,6 +106,7 @@ namespace Ifpa.ViewModels
                 }
                 else if(CurrentRankingType == RankingType.Women)
                 {
+                    //TODO: wish the api returned relative rank for the women's ranking
                     ShowOverallRank = CurrentTournamentType == TournamentType.Open;
 
                     var items = await PinballRankingApiV2.GetRankingForWomen(CurrentTournamentType, StartingPosition, CountOfItemsToFetch);

@@ -10,15 +10,16 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:AlternatingRowListViewConverter x:Key="alternatingRowListViewIndexConverter" />
+            <local:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <StackLayout VerticalOptions="FillAndExpand">
+    <Grid RowDefinitions="50,*,25, Auto">
 
-        <Label FontAttributes="Bold"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="Default" Text="{Binding NewsItem.Title.Text}" Margin="5" />
+        <Label Grid.Row="0" FontAttributes="Bold"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="Default" Text="{Binding NewsItem.Title.Text}" Margin="5" />
 
-        <WebView Source="{Binding NewsItemContent}" VerticalOptions="FillAndExpand" Navigating="WebView_Navigating"  />
+        <WebView Grid.Row="1" Source="{Binding NewsItemContent}" VerticalOptions="Fill" Navigating="WebView_Navigating"  />
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="5">
+        <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="5">
 
             <Label HorizontalTextAlignment="Start"  FontSize="Small" Margin="0" >
                 <Label.GestureRecognizers>
@@ -33,12 +34,12 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand"  BackgroundColor="{DynamicResource SecondaryBackgroundColor}" Margin="-5" Padding="5">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="-5" Padding="5">
                 <Label HorizontalTextAlignment="Start"  FontSize="Small" Text="{Binding NewsItem.Author}"  Margin="0" />
                 <Label HorizontalTextAlignment="End" FontSize="Small" Text="{Binding NewsItem.PublishDate, StringFormat='{0:d}'}"/>
             </StackLayout>
         </StackLayout>
-        <ListView IsVisible="False"
+        <ListView IsVisible="False" Grid.Row="3"
                         Margin="15"
                         HeightRequest="150"
                         x:Name="ItemsListView" 
@@ -53,13 +54,13 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="5" BackgroundColor="{Binding ., Converter={StaticResource alternatingRowListViewIndexConverter}, ConverterParameter={x:Reference ItemsListView}}">
-                            <Label HorizontalTextAlignment="Start"  FontSize="Small" Text="{Binding Summary.Text}" Margin="0" />
+                            <Label HorizontalTextAlignment="Start"  FontSize="Small" Text="{Binding Summary.Text, Converter={StaticResource HtmlDecodeConverter}}" Margin="0" />
                             <Label HorizontalTextAlignment="Start"  FontSize="Small" Text="{Binding Title.Text}" Margin="0" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackLayout>
+    </Grid>
 
 </ContentPage>
