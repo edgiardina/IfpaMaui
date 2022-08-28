@@ -16,18 +16,18 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="10,0,10,0" Orientation="Horizontal">
+                        <Grid ColumnSpacing="10" ColumnDefinitions="*, 120">
                           
-                            <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label  FontSize="16" Text="{Binding TournamentName}" />
+                            <StackLayout Grid.Column="0" Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                <Label FontSize="16" Text="{Binding TournamentName}" />
                                 <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="10" Text="{Binding EventName}"  TextColor="{DynamicResource SecondaryTextColor}" />
                             </StackLayout>
 
-                            <StackLayout Orientation="Vertical" Padding="10" MinimumWidthRequest="120" HorizontalOptions="End">
+                            <StackLayout Grid.Column="1" Orientation="Vertical" Padding="10" MinimumWidthRequest="100" HorizontalOptions="End" VerticalOptions="Center">
                                 <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding EventEndDate, StringFormat='{0:d}'}" />
                                 <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}"  TextColor="{DynamicResource SecondaryTextColor}" />
                             </StackLayout>                         
-                        </StackLayout>
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
