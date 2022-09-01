@@ -6,7 +6,7 @@
              Shell.PresentationMode="ModalAnimated"
              ios:Page.ModalPresentationStyle="PageSheet">
     <ContentPage.Content>
-        <Grid Padding="10,10,10,10" VerticalOptions="CenterAndExpand">
+        <Grid Padding="10,10,10,10" VerticalOptions="CenterAndExpand" RowSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

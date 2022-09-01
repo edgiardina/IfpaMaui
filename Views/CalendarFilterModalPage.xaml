@@ -7,7 +7,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls">
     <ContentPage.Content>
-        <Grid Margin="10,10,10,10" VerticalOptions="CenterAndExpand">
+        <Grid Margin="10,10,10,10" VerticalOptions="CenterAndExpand" RowSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -22,7 +22,7 @@
 
             <Label Text="Location" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" />
             <Entry Grid.Row="0" Grid.Column="1" Margin="20,0,5,0" Placeholder="Chicago, Illinois" x:Name="LocationEntry" />
-            <Image Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalOptions="Center" WidthRequest="25" HorizontalOptions="Center"  Source="location.png">
+            <Image Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalOptions="Center" HeightRequest="25" WidthRequest="25" HorizontalOptions="Center"  Source="location.png">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="ImageButton_Clicked" />
                 </Image.GestureRecognizers>
