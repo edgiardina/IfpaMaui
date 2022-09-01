@@ -5,5 +5,7 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              Title="Rules">
-    <WebView x:Name="RulesWebView" />
+    <Grid>
+        <WebView x:Name="RulesWebView" />
+    </Grid>
 </ContentPage>
