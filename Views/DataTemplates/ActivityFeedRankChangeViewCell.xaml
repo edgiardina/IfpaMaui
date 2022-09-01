@@ -12,7 +12,7 @@
                     <toolkit:InvertedBoolConverter x:Key="inverter"/>
                 </ResourceDictionary>
             </StackLayout.Resources>
-            <Image Source="rankchange.png" HeightRequest="25">
+            <Image Source="rankchange.png" HeightRequest="25" WidthRequest="25">
                 <Image.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                 </Image.Behaviors>
