@@ -72,6 +72,7 @@
 		<None Remove="Resources\Images\filter.svg" />
 		<None Remove="Resources\Images\location.svg" />
 		<None Remove="Resources\Images\map.svg" />
+		<None Remove="Resources\Images\more.svg" />
 		<None Remove="Resources\Images\mystats.svg" />
 		<None Remove="Resources\Images\news.svg" />
 		<None Remove="Resources\Images\numbered_list.svg" />
@@ -157,6 +158,9 @@
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\FavoritesPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\MoreItemsPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\NewsDetailPage.xaml">

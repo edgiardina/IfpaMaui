@@ -10,10 +10,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="Fill" BackgroundColor="{StaticResource BannerTextColor}">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="https://www.ifpapinball.com/images/ifpa_logo.jpg" VerticalOptions="Center" HeightRequest="100" />
-            </StackLayout>
+            <StackLayout Padding="0,5" HorizontalOptions="Fill" BackgroundColor="{StaticResource BannerTextColor}">
+                <Image Source="https://www.ifpapinball.com/images/ifpa_logo.jpg" VerticalOptions="Center" HeightRequest="100" />            
         </StackLayout>
         <ScrollView Grid.Row="1">
             <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">

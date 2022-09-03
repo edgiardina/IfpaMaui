@@ -14,13 +14,15 @@
         <ShellContent Title="Calendar" ContentTemplate="{DataTemplate views:CalendarPage}" Icon="calendar.png" Route="calendar" />
 
         <!-- More Menu Items-->
-        <ShellContent Title="Favorites" ContentTemplate="{DataTemplate views:FavoritesPage}" Icon="favorite.png" Route="favorites" />
+        <ShellContent Title="More" ContentTemplate="{DataTemplate views:MoreItemsPage}" Icon="more.png" Route="more" />
+        
+        <!--<ShellContent Title="Favorites" ContentTemplate="{DataTemplate views:FavoritesPage}" Icon="favorite.png" Route="favorites" />
         <ShellContent Title="Custom Rankings" ContentTemplate="{DataTemplate views:CustomRankingsPage}" Icon="numbered_list.png" Route="custom-rankings" />
         <ShellContent Title="News" ContentTemplate="{DataTemplate views:NewsPage}" Icon="news.png" Route="news" />
         <ShellContent Title="Rules" ContentTemplate="{DataTemplate views:RulesPage}" Icon="rules.png" Route="rules" />
         <ShellContent Title="Stats" ContentTemplate="{DataTemplate views:StatsPage}" Icon="stats.png" Route="stats" />
         <ShellContent Title="Directors" ContentTemplate="{DataTemplate views:DirectorsPage}" Icon="directors.png" Route="directors" />
         <ShellContent Title="Settings" ContentTemplate="{DataTemplate views:SettingsPage}" Icon="settings.png" Route="settings" />
-        <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" Icon="about.png" Route="about" />
+        <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" Icon="about.png" Route="about" />-->
     </TabBar>
 </Shell>
