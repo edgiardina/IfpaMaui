@@ -11,7 +11,7 @@ namespace Ifpa.Platforms.Android
         public static void CreateAlarm()
         {
             var alarmIntent = new Intent(Platform.CurrentActivity, typeof(BackgroundReceiver));
-            var pending = PendingIntent.GetBroadcast(Platform.CurrentActivity, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var pending = PendingIntent.GetBroadcast(Platform.CurrentActivity, 0, alarmIntent, PendingIntentFlags.Immutable);
 
             var alarmManager = Platform.CurrentActivity.GetSystemService(Context.AlarmService).JavaCast<AlarmManager>();
             alarmManager.SetInexactRepeating(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 3 * 1000, AlarmManager.IntervalFifteenMinutes, pending);

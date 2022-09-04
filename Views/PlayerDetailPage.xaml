@@ -27,10 +27,11 @@
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" />
 
-            <StackLayout Padding="15" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+            <StackLayout IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
 
-                <StackLayout Spacing="10" BackgroundColor="{StaticResource SecondaryBanner}" Padding="15,10" VerticalOptions="CenterAndExpand" Orientation="Horizontal" >
-                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="StartAndExpand" Margin="10">
+                <Grid ColumnSpacing="10" BackgroundColor="{StaticResource SecondaryBanner}"                     
+                      ColumnDefinitions="3*,*">
+                    <StackLayout Grid.Column="0" Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="StartAndExpand" Margin="10">
                         <Label Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
 
                         <StackLayout Orientation="Horizontal" VerticalOptions="Center">
@@ -44,8 +45,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered}" 
-                                    HorizontalOptions="End" WidthRequest="20" >
+                            <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered}" HeightRequest="16">
                                 <Image.Shadow>
                                     <Shadow Brush="Black"                             
                                         Opacity="0.8" />
@@ -55,7 +55,7 @@
                         <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="EndAndExpand">
                             <Label Text="{Binding Location, Mode=OneWay}" HorizontalOptions="StartAndExpand" FontSize="16" Style="{StaticResource playerHeader}" VerticalTextAlignment="Center"  />
 
-                            <Image Source="{Binding CountryFlag, Mode=OneWay}" WidthRequest="30" HorizontalOptions="End" Margin="10,0" >
+                            <Image Source="{Binding CountryFlag, Mode=OneWay}" WidthRequest="30" HorizontalOptions="End" >
                                 <Image.Shadow>
                                     <Shadow Brush="Black"                             
                                         Opacity="0.8" />
@@ -65,7 +65,7 @@
                         </StackLayout>
                     </StackLayout>
 
-                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="End" Margin="10" 
+                    <toolkit:AvatarView Grid.Column="1" ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" Margin="10" 
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
@@ -75,7 +75,7 @@
                                         Opacity="0.8" />
                         </toolkit:AvatarView.Shadow>
                     </toolkit:AvatarView>      
-                </StackLayout>
+                </Grid>
 
                 <StackLayout Spacing="10" Margin="15">
                     <StackLayout Orientation="Horizontal">
@@ -93,9 +93,9 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rank" />
                         <Label Grid.Column="1" Grid.Row="0" Text="{Binding Rank, Mode=OneWay}" HorizontalTextAlignment="Center"/>
@@ -155,12 +155,12 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Best Finish" />
