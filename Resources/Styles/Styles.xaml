@@ -55,7 +55,7 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
     </Style>
 
-    <Style TargetType="tabView:SfTabView" ApplyToDerivedTypes="True">
+    <Style TargetType="tabView:SfTabView" x:Key="TabView">
         <Setter Property="TabWidthMode" Value="Default" />
         <Setter Property="TabBarBackground" Value="{AppThemeBinding Light={StaticResource TabHeaderBackgroundColor}, Dark={StaticResource TabHeaderBackgroundColorDark}}" />
         <Setter Property="IndicatorBackground" Value="{StaticResource IconAccentColor}" />

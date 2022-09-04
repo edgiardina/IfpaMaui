@@ -12,7 +12,7 @@
         <ToolbarItem Text="Ranking Profile" IsEnabled="{Binding ShowRankingTypeChoice}" x:Name="RankingProfileButton" Clicked="RankingProfileButton_Clicked" IconImageSource="ranking_profile.png" />
     </ContentPage.ToolbarItems>
 
-    <tabView:SfTabView>
+    <tabView:SfTabView Style="{StaticResource TabView}">
         <tabView:SfTabItem Header="Active">
             <tabView:SfTabItem.Content>
                 <ListView x:Name="ActiveListView"

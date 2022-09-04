@@ -13,7 +13,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <tabView:SfTabView>
+    <tabView:SfTabView Style="{StaticResource TabView}">
         <tabView:SfTabView.Items>
             <tabView:SfTabItem Header="Standings">
                 <tabView:SfTabItem.Content>

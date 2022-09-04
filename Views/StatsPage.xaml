@@ -8,7 +8,7 @@
              ios:Page.LargeTitleDisplay="Never"
              Title="Stats">
     <ContentPage.Content>
-        <tabView:SfTabView>
+        <tabView:SfTabView Style="{StaticResource TabView}">
             <tabView:SfTabItem Header="Aggregates">
                 <tabView:SfTabItem.Content>
                     <ScrollView>
