@@ -6,7 +6,7 @@
              Title="Activity Feed">
     <ContentPage.Resources>
         <DataTemplate x:Key="rankChangeTemplate">
-            <local:ActivityFeedRankChangeViewCell />            
+            <local:ActivityFeedRankChangeViewCell />
         </DataTemplate>
         <DataTemplate x:Key="tournamentResultTemplate">
             <local:ActivityFeedTournamentResultViewCell />
@@ -19,10 +19,12 @@
         <ToolbarItem Text="Mark All Seen" Clicked="ToolbarItem_Clicked" />
         <!--<ToolbarItem Text="+" Clicked="ToolbarItem_Clicked_1" />-->
     </ContentPage.ToolbarItems>
-    <ListView x:Name="ActivityFeedListView"
+    <Grid>
+        <ListView x:Name="ActivityFeedListView"
             ItemSelected="ActivityFeedListView_ItemSelected"
             ItemTemplate="{StaticResource activityFeedDataTemplateSelector}"
             ItemsSource="{Binding ActivityFeedItems}"      
             CachingStrategy="RecycleElement"
             HasUnevenRows="True" />
+    </Grid>
 </ContentPage>

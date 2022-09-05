@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.NewsPage"
              Title="{Binding Title}">
-    <StackLayout >
+    <Grid>
         <ListView 
                 x:Name="ItemsListView" 
                 ItemsSource="{Binding NewsItems}"
@@ -41,5 +41,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackLayout>
+    </Grid>
 </ContentPage>

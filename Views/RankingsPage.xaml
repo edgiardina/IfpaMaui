@@ -15,7 +15,8 @@
             <local:PlayerListViewIndexConverter x:Key="playerListViewIndexConverter" x:Name="PlayerListViewIndexConverter" StartingRank="{Binding StartingPosition, Mode=TwoWay}" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ListView x:Name="PlayersListView" 
+    <Grid>
+        <ListView x:Name="PlayersListView" 
                  ItemsSource="{Binding Players}"           
                  HasUnevenRows="true"
                  RefreshCommand="{Binding LoadItemsCommand}"
@@ -23,47 +24,48 @@
                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                  ItemSelected="OnItemSelected"
                  CachingStrategy="RecycleElement">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                        <Label Margin="10,0" VerticalTextAlignment="Center" Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                            <Label Margin="10,0" VerticalTextAlignment="Center" Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
                                    LineBreakMode="NoWrap" 
                                     
                                    FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
-                        <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                            <Label LineBreakMode="NoWrap"  FontSize="16">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="{Binding FirstName}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding LastName}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Location}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" />
-                                <Label TextColor="{DynamicResource SecondaryTextColor}" HorizontalOptions="End"  Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap" 
+                            <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                <Label LineBreakMode="NoWrap"  FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="{Binding FirstName}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding LastName}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Location}" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" />
+                                    <Label TextColor="{DynamicResource SecondaryTextColor}" HorizontalOptions="End"  Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap" 
                                                 FontSize="10" />
-                            </StackLayout>
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  TextColor="{DynamicResource SecondaryTextColor}" 
+                                </StackLayout>
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  TextColor="{DynamicResource SecondaryTextColor}" 
                                                FontSize="10" HorizontalTextAlignment="Start" IsVisible="{Binding Source={x:Reference BrowseItemsPage}, Path=BindingContext.ShowOverallRank}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Overall WPPR Rank:" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="Overall WPPR Rank:" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
                         </StackLayout>
-                    </StackLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ContentPage>

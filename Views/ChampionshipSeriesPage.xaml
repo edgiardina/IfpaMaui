@@ -6,7 +6,8 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Filter" Clicked="ToolbarItem_Clicked" IconImageSource="filter.png" />
     </ContentPage.ToolbarItems>
-    <ListView x:Name="MyListView"
+    <Grid>
+        <ListView x:Name="MyListView"
             ItemsSource="{Binding SeriesOverallResults}"
             RefreshCommand="{Binding LoadItemsCommand}"
             IsPullToRefreshEnabled="true"
@@ -19,7 +20,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="10,0,10,0" Orientation="Horizontal">
-                          
+
                             <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
                                 <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding RegionName}" />
 
@@ -36,7 +37,7 @@
                                 </Label>
                             </StackLayout>
 
-                            <StackLayout Orientation="Vertical" Padding="10">                               
+                            <StackLayout Orientation="Vertical" Padding="10">
                                 <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
@@ -59,10 +60,11 @@
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                            </StackLayout>                         
+                            </StackLayout>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+    </Grid>
 </ContentPage>

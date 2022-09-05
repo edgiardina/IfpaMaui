@@ -13,7 +13,8 @@
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="share.png" />
         <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="about.png" />
     </ContentPage.ToolbarItems>
-    <ListView x:Name="MyListView"
+    <Grid>
+        <ListView x:Name="MyListView"
             ItemsSource="{Binding Results}"
             RefreshCommand="{Binding LoadItemsCommand}"
             IsPullToRefreshEnabled="true"
@@ -21,29 +22,30 @@
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement"
             HasUnevenRows="true">
-        <!--Custom View Cells-->
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label LineBreakMode="NoWrap"  FontSize="16" VerticalTextAlignment="Center">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span Text="{Binding FirstName}" />
-                                        <Span Text=" " />
-                                        <Span Text="{Binding LastName}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <StackLayout HorizontalOptions="EndAndExpand">
-                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
-                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding Points, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+            <!--Custom View Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Margin="10">
+                            <Label LineBreakMode="NoWrap"  FontSize="16" VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="{Binding FirstName}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding LastName}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <StackLayout HorizontalOptions="EndAndExpand">
+                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
+                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding Points, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+                            </StackLayout>
                         </StackLayout>
-                    </StackLayout>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ContentPage>
