@@ -207,11 +207,11 @@
                                 </chart:DateTimeAxis>
                             </chart:SfCartesianChart.XAxes>
                             <chart:SfCartesianChart.YAxes>
-                                <chart:NumericalAxis  IsInversed="True" >
-                                    <chart:NumericalAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                    </chart:NumericalAxis.LabelStyle>
-                                </chart:NumericalAxis>
+                                <chart:LogarithmicAxis IsInversed="True">
+                                    <chart:LogarithmicAxis.LabelStyle>
+                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
+                                    </chart:LogarithmicAxis.LabelStyle>
+                                </chart:LogarithmicAxis>
                                 <!--
                             TODO: When Syncfusion supports Logarithmic charts, implement
                             <chart:LogarithmicAxis IsInversed="True" />

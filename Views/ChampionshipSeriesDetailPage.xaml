@@ -20,7 +20,7 @@
                     <RefreshView Command="{Binding LoadItemsCommand}"                        
                         IsRefreshing="{Binding IsBusy, Mode=OneWay}">
                         <CollectionView
-                        ItemsSource="{Binding RegionStandings.Standings}"
+                        ItemsSource="{Binding RegionStandings.Standings}"                        
                         SelectionMode="Single"
                         SelectionChanged="StandingsCollectionView_SelectionChanged">
                             <CollectionView.ItemTemplate>
