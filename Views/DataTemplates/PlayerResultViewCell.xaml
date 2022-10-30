@@ -10,8 +10,8 @@
                 <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             </VerticalStackLayout.Resources>
             <Grid ColumnDefinitions="*,100">
-                <Label Grid.Column="0" Text="{Binding TournamentName}" FontSize="16"  HorizontalTextAlignment="Start"  />
-                <Label Grid.Column="1" LineBreakMode="NoWrap" HorizontalTextAlignment="End" 
+                <Label Grid.Column="0" Text="{Binding TournamentName}" FontSize="16"  HorizontalTextAlignment="Start" />
+                <Label Grid.Column="1" LineBreakMode="NoWrap" HorizontalTextAlignment="End" MinimumHeightRequest="40"
                                                Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
             </Grid>
             <Grid ColumnDefinitions="*,*,*">

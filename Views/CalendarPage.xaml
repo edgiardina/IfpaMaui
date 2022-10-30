@@ -21,7 +21,8 @@
         <StackLayout x:Name="MapLayout" Spacing="0" VerticalOptions="Fill">
             
             <!-- TODO: Re-implement map -->
-            
+
+            <Map x:Name="calendarMap" />
             <!--
             <controls:CustomMap WidthRequest="320" HeightRequest="200"
                 x:Name="calendarMap"                  

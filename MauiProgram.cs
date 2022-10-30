@@ -19,6 +19,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
+            .UseMauiMaps()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {

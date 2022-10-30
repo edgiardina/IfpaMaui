@@ -18,7 +18,7 @@
     <Grid>
         <ListView x:Name="PlayersListView" 
                  ItemsSource="{Binding Players}"           
-                 HasUnevenRows="true"
+                
                  RefreshCommand="{Binding LoadItemsCommand}"
                  IsPullToRefreshEnabled="true"
                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
@@ -27,12 +27,12 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                        <StackLayout Orientation="Horizontal" HeightRequest="60">
                             <Label Margin="10,0" VerticalTextAlignment="Center" Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
                                    LineBreakMode="NoWrap" 
                                     
                                    FontSize="24" MinimumWidthRequest="58" HorizontalOptions="Start" />
-                            <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                            <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand" >
                                 <Label LineBreakMode="NoWrap"  FontSize="16">
                                     <Label.FormattedText>
                                         <FormattedString>
