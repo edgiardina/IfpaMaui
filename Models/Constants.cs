@@ -1,4 +1,4 @@
-﻿namespace IfpaMaui.Models
+﻿namespace Ifpa.Models
 {
     public static class Constants
     {

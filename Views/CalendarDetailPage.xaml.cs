@@ -1,4 +1,6 @@
 ﻿using Ifpa.ViewModels;
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
 
 namespace Ifpa.Views
 {
@@ -27,39 +29,41 @@ namespace Ifpa.Views
             ViewModel.LoadItemsCommand.Execute(null);
         }
 
+        protected override void OnNavigatedTo(NavigatedToEventArgs args)
+        {
+            base.OnNavigatedTo(args);
+        }
+
         private async Task CalendarDetailPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             //when busy is flipped back to false it means we are done loading the address
             if (e.PropertyName == "IsBusy" && ViewModel.IsBusy == false)
             {
+                try
+                {
+                    var locations = await Geocoding.GetLocationsAsync(ViewModel.Address1 + " " + ViewModel.City + ", " + ViewModel.State);
 
-                //TODO: Restore adding pin to map
+                    var position = new Location(locations.First().Latitude, locations.First().Longitude);
+                    calendarMap.MoveToRegion(new MapSpan(position, 0.1, 0.1));
+                    var pin = new Pin
+                    {
+                        Label = ViewModel.TournamentName,
+                        Location = position,
+                        Address = ViewModel.Location,
+                        Type = PinType.Generic
+                    };
 
-                //try
-                //{
-                //    var locations = await Geocoding.GetLocationsAsync(viewModel.Address1 + " " + viewModel.City + ", " + viewModel.State);
+                    pin.InfoWindowClicked += Pin_Clicked;
 
-                //    var position = new Position(locations.First().Latitude, locations.First().Longitude);
-                //    calendarMap.MoveToRegion(new MapSpan(position, 0.1, 0.1));
-                //    var pin = new Pin
-                //    {
-                //        Label = viewModel.TournamentName,
-                //        Position = position,
-                //        Address = viewModel.Location,
-                //        Type = PinType.Generic                        
-                //    };
+                    calendarMap.Pins.Add(pin);
 
-                //    pin.InfoWindowClicked += Pin_Clicked;
-               
-                //    calendarMap.Pins.Add(pin);
-                    
-                //    calendarMap.IsVisible = true;
-                //}
-                ////unable to geocode position on the map, ignore. 
-                //catch(Exception)
-                //{
-                //    calendarMap.IsVisible = false;
-                //}                
+                    calendarMap.IsVisible = true;
+                }
+                //unable to geocode position on the map, ignore. 
+                catch (Exception)
+                {
+                    calendarMap.IsVisible = false;
+                }
             }
         }
 
@@ -84,7 +88,7 @@ namespace Ifpa.Views
             };
             var options = new MapLaunchOptions { Name = ViewModel.TournamentName };  
 
-            await Map.OpenAsync(placemark, options);
+            await Microsoft.Maui.ApplicationModel.Map.OpenAsync(placemark, options);
         }
 
         private async void AddToCalendarButton_Clicked(object sender, EventArgs e)

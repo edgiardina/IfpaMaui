@@ -22,12 +22,7 @@
             
             <!-- TODO: Re-implement map -->
 
-            <Map x:Name="calendarMap" />
-            <!--
-            <controls:CustomMap WidthRequest="320" HeightRequest="200"
-                x:Name="calendarMap"                  
-                VerticalOptions="Start"
-                MapType="Street" />-->
+            <Map x:Name="calendarMap" MapType="Street" HeightRequest="300" />
             
             <ListView x:Name="TournamentListView"                  
                     ItemsSource="{Binding CalendarDetails}"         

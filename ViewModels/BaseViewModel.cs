@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Ifpa.Models;
-using IfpaMaui.Models;
+using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
 using PinballApi;
 

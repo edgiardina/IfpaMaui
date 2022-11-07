@@ -1,4 +1,4 @@
-﻿using IfpaMaui.Models;
+﻿using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
 using System.ServiceModel.Syndication;
 using System.Xml;

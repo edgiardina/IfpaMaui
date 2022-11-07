@@ -47,11 +47,11 @@
         </Frame>
         <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True">
             <StackLayout Spacing="0">
-                <!-- TODO: Restore Map on Calendar Page-->
-                
-                <!--<local1:PinViewMap
-                    x:Name="calendarMap" HasScrollEnabled="False" HasZoomEnabled="False" HeightRequest="200"              
-                     MapType="Street" IsVisible="False" />-->
+
+                <Map x:Name="calendarMap" MapType="Street" HeightRequest="200" IsZoomEnabled="False" IsScrollEnabled="False">
+                    
+                    
+                </Map>
 
                 <StackLayout VerticalOptions="FillAndExpand" Padding="20,20,20,20" >                          
 

@@ -3,7 +3,7 @@ using PinballApi;
 using PinballApi.Extensions;
 using Plugin.LocalNotification;
 using Microsoft.Extensions.Configuration;
-using IfpaMaui.Models;
+using Ifpa.Models;
 
 namespace Ifpa.Services
 {
