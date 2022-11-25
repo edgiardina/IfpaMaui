@@ -30,7 +30,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)'=='net6.0-ios'">
+	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
 	  <CodesignKey>Apple Development: Created via API (P9N2FS27AF)</CodesignKey>
 	  <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
 	</PropertyGroup>
