@@ -26,7 +26,7 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
             ViewModel.CalendarId = CalendarId;
-            ViewModel.LoadItemsCommand.Execute(null);
+            ViewModel.LoadItemsCommand.Execute(null);            
         }
 
         protected override void OnNavigatedTo(NavigatedToEventArgs args)

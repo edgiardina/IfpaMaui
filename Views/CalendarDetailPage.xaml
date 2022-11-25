@@ -18,51 +18,41 @@
         <ToolbarItem Text="Add To Calendar" x:Name="AddToCalendarButton" Clicked="AddToCalendarButton_Clicked" IconImageSource="calendar_add.png" />
     </ContentPage.ToolbarItems>
     <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" >
-        <Frame BackgroundColor="{StaticResource SecondaryBanner}" CornerRadius="0">
-            <StackLayout Orientation="Vertical">
-                <Label Text="{Binding Title, Mode=OneWay}" FontSize="24" Style="{StaticResource calendarHeader}"/>
 
-                <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="Date: " />
-                                <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
+        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource SecondaryBanner}" Spacing="10"  Padding="12,10">
+            <Label Text="{Binding Title, Mode=OneWay}" FontSize="24" Style="{StaticResource calendarHeader}"/>
+
+            <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Date: " />
+                            <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Director: " />
+                            <Span Text="{Binding DirectorName, Mode=OneWay}" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+        <Map x:Name="calendarMap" MapType="Street" IsZoomEnabled="False" IsScrollEnabled="False" BackgroundColor="Purple" />
+        <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True" Padding="12,10">
+            <StackLayout>
+                <Label Text="{Binding Website, Mode=OneWay}" TextColor="Blue" Margin="0,0,0,10">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="WebsiteLabel_Tapped"/>
+                    </Label.GestureRecognizers>
                 </Label>
-
-                <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="Director: " />
-                                <Span Text="{Binding DirectorName, Mode=OneWay}" />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </StackLayout>
-        </Frame>
-        <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True">
-            <StackLayout Spacing="0">
-
-                <Map x:Name="calendarMap" MapType="Street" HeightRequest="200" IsZoomEnabled="False" IsScrollEnabled="False">
-                    
-                    
-                </Map>
-
-                <StackLayout VerticalOptions="FillAndExpand" Padding="20,20,20,20" >                          
-
-                    <Label Text="{Binding Website, Mode=OneWay}" TextColor="Blue" Margin="0,0,0,10">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="WebsiteLabel_Tapped"/>
-                        </Label.GestureRecognizers>
-                    </Label>
-
-                    <Label Text="{Binding Details, Mode=OneWay}" />
-                </StackLayout>
+                <Label Text="{Binding Details, Mode=OneWay}" />
             </StackLayout>
         </ScrollView>
     </StackLayout>
