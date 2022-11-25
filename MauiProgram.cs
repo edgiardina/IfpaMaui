@@ -30,9 +30,9 @@ public static class MauiProgram
             {
                 //TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
                 essentials
-                    .AddAppAction("calendar", "Calendar", "IFPA Tournament Calendar", "calendar.png")
-                    .AddAppAction("my-stats", "My Stats", "Your IFPA player data", "mystats.png")
-                    .AddAppAction("rankings/player-search", "Player Search", "Search for other players in the IFPA database", "search.png")
+                    .AddAppAction("calendar", "Calendar", "IFPA Tournament Calendar", "calendar")
+                    .AddAppAction("my-stats", "My Stats", "Your IFPA player data", "mystats")
+                    .AddAppAction("rankings/player-search", "Player Search", "Search for other players in the IFPA database", "search")
                     .OnAppAction(App.HandleAppActions);
 
                 essentials.UseVersionTracking();
