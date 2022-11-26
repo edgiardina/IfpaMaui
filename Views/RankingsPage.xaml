@@ -20,12 +20,12 @@
                  RefreshCommand="{Binding LoadItemsCommand}"
                  IsPullToRefreshEnabled="true"
                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                 ItemSelected="OnItemSelected"
-                 CachingStrategy="RecycleElement">
+                 ItemSelected="OnItemSelected"              
+                 CachingStrategy="RetainElement">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <Grid ColumnDefinitions="80,*,60" RowDefinitions="*,*">
+                    <Grid ColumnDefinitions="Auto,*,60" RowDefinitions="*,*">
                         <Label Grid.Column="0" Grid.RowSpan="2" Margin="10,0" VerticalTextAlignment="Center" 
                                Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
                                    LineBreakMode="NoWrap"                                     
