@@ -4,7 +4,7 @@ using Ifpa.Droid;
 using Android.OS;
 using Android.Runtime;
 
-namespace Ifpa.Platforms.Android
+namespace Ifpa.Platforms.Droid
 {
     public class AndroidAlarmManager
     {

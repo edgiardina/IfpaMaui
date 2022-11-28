@@ -81,6 +81,10 @@ namespace Ifpa.ViewModels
                 EndDate = calendarEntry.EndDate;
                 TournamentId = calendarEntry.TournamentId;
 
+                var location = (await Geocoding.GetLocationsAsync(Address1 + " " + City + ", " + State)).FirstOrDefault();
+                Latitude = location.Latitude;
+                Longitude = location.Longitude;
+
                 OnPropertyChanged(null);
             }
             catch (Exception ex)

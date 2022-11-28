@@ -4,6 +4,7 @@ using Ifpa.Models;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2;
 using Microsoft.Extensions.Configuration;
+using System.Windows.Input;
 
 namespace Ifpa.ViewModels
 {
@@ -14,7 +15,7 @@ namespace Ifpa.ViewModels
 
         public Country CountryToShow { get; set; } 
 
-        public Command LoadItemsCommand { get; set; }
+        public ICommand LoadItemsCommand { get; set; }
 
         private int startingPosition;
         public int StartingPosition
@@ -63,7 +64,12 @@ namespace Ifpa.ViewModels
             StartingPosition = 1;
             Players = new ObservableCollection<RankingWithFormattedLocation>();
             Countries = new ObservableCollection<Country>();           
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadItemsCommand = new Command(
+                execute: () => ExecuteLoadItemsCommand(), 
+                canExecute: () =>
+                {
+                    return !IsBusy;
+                });
         }
 
         async Task ExecuteLoadItemsCommand()

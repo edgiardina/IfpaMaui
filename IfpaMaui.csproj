@@ -30,7 +30,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)'=='net6.0-ios'">
+	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
 	  <CodesignKey>Apple Development: Created via API (P9N2FS27AF)</CodesignKey>
 	  <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
 	</PropertyGroup>
@@ -99,8 +99,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.49" />
 		<PackageReference Include="PinballApi" Version="2.0.83" />
 		<PackageReference Include="Plugin.LocalNotification" Version="10.0.2" />
 		<PackageReference Include="Scrutor" Version="4.2.0" />
@@ -109,11 +110,11 @@
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.2" />
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.2" />
 		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.2" />
-		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.3.50" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="20.3.50" />
-		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.3.50" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.3.50" />
-		<PackageReference Include="System.ServiceModel.Syndication" Version="6.0.0" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.3.58" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="20.3.58" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.3.58" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.3.58" />
+		<PackageReference Include="System.ServiceModel.Syndication" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

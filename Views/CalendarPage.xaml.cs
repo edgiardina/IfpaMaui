@@ -1,14 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Ifpa.ViewModels;
+﻿using Ifpa.ViewModels;
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
-//using Syncfusion.SfCalendar.XForms;
-using System.Collections.Generic;
 using Syncfusion.Maui.Scheduler;
+using Microsoft.Maui.Maps;
+using Microsoft.Maui.Controls.Maps;
 
 namespace Ifpa.Views
 {
@@ -76,23 +72,22 @@ namespace Ifpa.Views
                     Preferences.Set("LastCalendarDistance", distance);
 
                     //TODO: Page.IsBusy has a bug?
-
                     //IsBusy = true;
-                    /*
+                    
                     calendarMap.Pins.Clear();
 
                     var geoLocation = await Geocoding.GetLocationsAsync(location);
-                    calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(geoLocation.First().Latitude, geoLocation.First().Longitude), 
+                    calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude), 
                                                                          new Distance(distance * Constants.MetersInAMile)));
-                    */
+                    
                     await ViewModel.ExecuteLoadItemsCommand(location, distance);
 
                     List<Task> listOfTasks = new List<Task>();
                     foreach (var detail in ViewModel.CalendarDetails)
                     {
-                        //listOfTasks.Add(LoadEventOntoCalendar(detail));
+                       listOfTasks.Add(LoadEventOntoCalendar(detail));
                     }
-                    //await Task.WhenAll(listOfTasks);
+                    await Task.WhenAll(listOfTasks);
                 }
                 catch (Exception e)
                 {
@@ -104,21 +99,21 @@ namespace Ifpa.Views
             }
         }
 
-        //private async Task LoadEventOntoCalendar(CalendarDetails detail)
-        //{
-        //    var pin = new Pin();
-        //    var locations = await Geocoding.GetLocationsAsync(detail.Address1 + " " + detail.City + ", " + detail.State);
-        //    pin.Position = new Position(locations.First().Latitude, locations.First().Longitude);
-        //    pin.Label = detail.TournamentName;
+        private async Task LoadEventOntoCalendar(CalendarDetails detail)
+        {
+            var pin = new Pin();
+            var locations = await Geocoding.GetLocationsAsync(detail.Address1 + " " + detail.City + ", " + detail.State);
+            pin.Location = new Location(locations.First().Latitude, locations.First().Longitude);
+            pin.Label = detail.TournamentName;
 
-        //    //TODO: on pinpress scroll listview to find item. 
-        //    pin.MarkerClicked += (sender, e) =>
-        //    {
-        //        TournamentListView.ScrollTo(detail, ScrollToPosition.MakeVisible, true);
-        //    };
+            //TODO: on pinpress scroll listview to find item. 
+            pin.MarkerClicked += (sender, e) =>
+            {
+                TournamentListView.ScrollTo(detail, ScrollToPosition.MakeVisible, true);
+            };
 
-        //    calendarMap.Pins.Add(pin);
-        //}
+            calendarMap.Pins.Add(pin);
+        }
 
         private async void TournamentListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {

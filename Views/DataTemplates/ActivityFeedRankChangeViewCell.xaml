@@ -5,19 +5,19 @@
           xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
           x:Class="Ifpa.Views.DataTemplates.ActivityFeedRankChangeViewCell">
     <ViewCell.View>
-        <StackLayout Orientation="Horizontal" Spacing="10" Margin="10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-            <StackLayout.Resources>
+        <Grid Margin="10" ColumnDefinitions="35, *" RowDefinitions="*,12">
+            <Grid.Resources>
                 <ResourceDictionary>
                     <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
                     <toolkit:InvertedBoolConverter x:Key="inverter"/>
                 </ResourceDictionary>
-            </StackLayout.Resources>
-            <Image Source="rankchange.png" HeightRequest="25" WidthRequest="25">
+            </Grid.Resources>
+            <Image Grid.Column="0" Grid.Row="0" Source="rankchange.png" HeightRequest="25" WidthRequest="25">
                 <Image.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                 </Image.Behaviors>
             </Image>
-            <StackLayout HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
+            <StackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
                 <Label Text="Rank Changed" FontAttributes="Bold" />
                 <Label  FontSize="Small">
                     <Label.FormattedText>
@@ -34,7 +34,7 @@
                 <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
             </StackLayout>
 
-            <BoxView Color="{StaticResource IconAccentColor}"
+            <BoxView Color="{StaticResource IconAccentColor}" Grid.Row="1" Grid.ColumnSpan="2"
                  Margin="10,0,0,0"
                  IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
                  CornerRadius="6"                       
@@ -42,6 +42,6 @@
                  HeightRequest="12"
                  VerticalOptions="Center"
                  HorizontalOptions="End" />
-        </StackLayout>
+        </Grid>
     </ViewCell.View>
 </ViewCell>

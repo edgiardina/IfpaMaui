@@ -9,17 +9,16 @@ namespace Ifpa;
 [IntentFilter(new[] { Platform.Intent.ActionAppAction },
               Categories = new[] { Intent.CategoryDefault })]
 //TODO: Support Deep linking?
-/*
-[IntentFilter(new[] { Intent.ActionView },
-          Categories = new[] {
-              Intent.CategoryDefault,
-              Intent.CategoryBrowsable
-          },
-          DataSchemes = new string[] { "http", "https" },
-          DataHost = "www.ifpapinball.com",
-          DataPaths = new string[] { "/player.php", "/tournaments/view.php" },
-          AutoVerify = true)]
-*/
+//https://github.com/dotnet/maui/issues/11684
+//[IntentFilter(new[] { Intent.ActionView },
+//          Categories = new[] {
+//              Intent.CategoryDefault,
+//              Intent.CategoryBrowsable
+//          },
+//          DataSchemes = new string[] { "http", "https" },
+//          DataHost = "www.ifpapinball.com",
+//          DataPaths = new string[] { "/player.php", "/tournaments/view.php" },
+//          AutoVerify = true)]
 public class MainActivity : MauiAppCompatActivity
 {
 }
