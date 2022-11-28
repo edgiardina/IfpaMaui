@@ -8,7 +8,6 @@ using CommunityToolkit.Maui;
 using Ifpa.Services;
 using Ifpa.Interfaces;
 using Microsoft.Maui.LifecycleEvents;
-using Ifpa.Platforms.Droid;
 
 namespace Ifpa;
 
@@ -20,7 +19,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
-            .UseMauiMaps()
+            .UseMauiMaps()            
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
@@ -44,9 +43,12 @@ public static class MauiProgram
                 //https://stackoverflow.com/questions/71766108/how-to-use-a-broadcastreceiver-from-net-maui-on-android
 #if ANDROID
                 events.AddAndroid(android => android
-                      .OnCreate((activity, bundle) => AndroidAlarmManager.CreateAlarm()));
+                      .OnCreate((activity, bundle) => Ifpa.Platforms.Droid.AndroidAlarmManager.CreateAlarm()));                      
+#elif IOS
+                //events.AddiOS(ios => ios.DidEnterBackground*);    
+                
 #endif
-                //                events.AddiOS(ios => ios.DidEnterBackground*);                
+
 
             })
             //.UseLocalNotification()

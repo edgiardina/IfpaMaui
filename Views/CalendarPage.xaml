@@ -20,9 +20,7 @@
     <Grid>
         <StackLayout x:Name="MapLayout" Spacing="0" VerticalOptions="Fill">
             
-            <!-- TODO: Re-implement map -->
-
-            <Map x:Name="calendarMap" MapType="Street" HeightRequest="300" />
+            <Map x:Name="calendarMap" MapType="Street" />
             
             <ListView x:Name="TournamentListView"                  
                     ItemsSource="{Binding CalendarDetails}"         

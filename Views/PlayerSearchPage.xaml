@@ -21,65 +21,58 @@
                        Keyboard="Text"   
                        Placeholder="Type a player's name to search"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
-            <RefreshView Command="{Binding LoadItemsCommand}" Grid.Row="1" 
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-
-                <!--
+            <!--
                 TODO: emptyview and selectionmode cannot be used at the same time due to a maui bug
                 https://github.com/dotnet/maui/issues/8039
                 EmptyView="No players found."
                 -->
-
-                <CollectionView x:Name="PlayersListView"             
+            <CollectionView x:Name="PlayersListView"             
                     IsVisible="{Binding IsPopulated}"
-                    ItemsSource="{Binding Players}"
-                    VerticalOptions="FillAndExpand"                       
+                    ItemsSource="{Binding Players}"                    
                     SelectionChanged="PlayersListView_SelectionChanged"
                     SelectionMode="Single">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout  Padding="10,0">
-                                <StackLayout Orientation="Horizontal">
-                                    <StackLayout Padding="10" Orientation="Vertical">
-                                        <Label LineBreakMode="NoWrap"  FontSize="16">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span Text="{Binding FirstName}" />
-                                                        <Span Text=" " />
-                                                        <Span Text="{Binding LastName}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10,0">
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout Padding="10" Orientation="Vertical">
+                                    <Label LineBreakMode="NoWrap"  FontSize="16">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding FirstName}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding LastName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
 
-                                        <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{StaticResource SecondaryTextColor}">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span Text="{Binding City}" />
-                                                        <Span Text=" " />
-                                                        <Span Text="{Binding State}" />
-                                                        <Span Text=" " />
-                                                        <Span Text="{Binding CountryName}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                    </StackLayout>
-                                    <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
-                                   LineBreakMode="NoWrap" 
-                                    
-                                   FontSize="18" WidthRequest="80" />
+                                    <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{StaticResource SecondaryTextColor}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding City}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding State}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding CountryName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                 </StackLayout>
-                                <BoxView HeightRequest=".5" Margin="0"
+                                <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
+                                        LineBreakMode="NoWrap" FontSize="18" WidthRequest="80" />
+                            </StackLayout>
+                            <BoxView HeightRequest=".5" Margin="0"
                                    BackgroundColor="{StaticResource SecondaryTextColor}"                
                                    VerticalOptions="End"/>
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </RefreshView>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
