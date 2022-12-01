@@ -14,13 +14,13 @@ namespace Ifpa.Views
             InitializeComponent();
         }
 
-        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void MoreItemsCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (listView.SelectedItem != null)
+            if (e.CurrentSelection != null && e.CurrentSelection.Count > 0)
             {
-                await Shell.Current.GoToAsync(((MoreItemsMenuItem)e.SelectedItem).Route);
+                await Shell.Current.GoToAsync(((MoreItemsMenuItem)e.CurrentSelection.FirstOrDefault()).Route);
 
-                listView.SelectedItem = null;
+                ((CollectionView)sender).SelectedItem = null;     
             }
         }
     }

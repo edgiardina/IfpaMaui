@@ -5,8 +5,8 @@
              x:Class="Ifpa.Views.MoreItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="More">
-    <ListView x:Name="listView" x:FieldModifier="public" ItemSelected="ListView_ItemSelected" >
-        <ListView.ItemsSource>            
+    <CollectionView x:Name="MoreItemsCollection" x:FieldModifier="public" SelectionChanged="MoreItemsCollection_SelectionChanged" SelectionMode="Single" >
+        <CollectionView.ItemsSource>
             <x:Array Type="{x:Type local:MoreItemsMenuItem}">
                 <local:MoreItemsMenuItem Title="Favorites" IconSource="favorite.png" Route="favorites" />
                 <local:MoreItemsMenuItem Title="Custom Rankings" IconSource="numbered_list.png" Route="custom-rankings" />
@@ -17,10 +17,10 @@
                 <local:MoreItemsMenuItem Title="Settings" IconSource="settings.png" Route="settings" />
                 <local:MoreItemsMenuItem Title="About" IconSource="about.png" Route="about" />
             </x:Array>
-        </ListView.ItemsSource>
-        <ListView.ItemTemplate>
+        </CollectionView.ItemsSource>
+        <CollectionView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
+                <StackLayout>
                     <Grid Padding="0,10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
@@ -34,8 +34,9 @@
                         </Image>
                         <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" />
                     </Grid>
-                </ViewCell>
+                    <BoxView Style="{StaticResource BoxSeperator}"/>
+                </StackLayout>
             </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>
