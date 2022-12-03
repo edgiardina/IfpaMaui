@@ -8,6 +8,7 @@ using CommunityToolkit.Maui;
 using Ifpa.Services;
 using Ifpa.Interfaces;
 using Microsoft.Maui.LifecycleEvents;
+using MauiIcons.Fluent;
 
 namespace Ifpa;
 
@@ -19,7 +20,8 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
-            .UseMauiMaps()            
+            .UseMauiMaps()
+            .UseFluentMauiIcons()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {

@@ -6,10 +6,12 @@
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
              x:Class="Ifpa.Views.PlayerResultsPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+                xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}">    
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Ranking Profile" IsEnabled="{Binding ShowRankingTypeChoice}" x:Name="RankingProfileButton" Clicked="RankingProfileButton_Clicked" IconImageSource="ranking_profile.png" />
+        <ToolbarItem Text="Ranking Profile" IsEnabled="{Binding ShowRankingTypeChoice}" x:Name="RankingProfileButton" Clicked="RankingProfileButton_Clicked" 
+                     IconImageSource="{fluent:Icon Icon=People48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
 
     <tabView:SfTabView Style="{StaticResource TabView}">

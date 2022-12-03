@@ -5,6 +5,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Ifpa.Views.PlayerVersusPlayerPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}">
     <ContentPage.Resources>
@@ -14,7 +15,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filter" x:Name="InfoButton" Clicked="InfoButton_Clicked"  IconImageSource="filter.png" />
+        <ToolbarItem Text="Filter" x:Name="InfoButton" Clicked="InfoButton_Clicked"  IconImageSource="{fluent:Icon Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
         <Grid.RowDefinitions>
