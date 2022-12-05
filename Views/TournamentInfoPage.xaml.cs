@@ -23,11 +23,5 @@ namespace Ifpa.Views
             if (viewModel.Results.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
-
-        private async void CloseButton_Clicked(object sender, System.EventArgs e)
-        {
-            //TODO: Remove all PopModals in favor of Shell.Current.GoToAsync("..");
-            await Navigation.PopModalAsync();
-        }
     }
 }

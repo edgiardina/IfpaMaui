@@ -1,4 +1,5 @@
-﻿using Ifpa.ViewModels;
+﻿using Ifpa.Platforms.Extensions;
+using Ifpa.ViewModels;
 using PinballApi.Models.WPPR.v2.Tournaments;
 
 namespace Ifpa.Views
@@ -55,10 +56,19 @@ namespace Ifpa.Views
 
         private async void InfoButton_Clicked(object sender, EventArgs e)
         {
-            //TODO: convert to shell route
+            //Originally this was a seperate modal page. now its a bottom sheet. 
             var infoPage = new TournamentInfoPage(ViewModel);
 
-            await Navigation.PushModalAsync(infoPage);
+            //await Navigation.PushModalAsync(infoPage);
+
+            infoPage.ForceLayout();
+
+            var view = (View)BottomSheetTemplate.CreateContent();
+            view.BindingContext = BindingContext;
+            
+
+            this.ShowBottomSheet(view, true);
+
         }
 
     }
