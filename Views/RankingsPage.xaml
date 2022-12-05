@@ -4,10 +4,12 @@
              xmlns:local="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.RankingsPage"
              Title="{Binding Title}"
+             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Name="BrowseItemsPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filter" x:Name="SearchButton" Clicked="SearchButton_Clicked" IconImageSource="search.png" />
-        <ToolbarItem Text="Filter" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="filter.png" />
+        <ToolbarItem Text="Filter" x:Name="SearchButton" Clicked="SearchButton_Clicked" IconImageSource="{fluent:Icon Icon=Search48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Filter" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="{fluent:Icon Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>

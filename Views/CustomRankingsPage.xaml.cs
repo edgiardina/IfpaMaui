@@ -15,9 +15,9 @@ namespace Ifpa.Views
             BindingContext = ViewModel = viewModel;
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        async void OnItemSelected(object sender, SelectionChangedEventArgs e)
         {
-            var view = args.SelectedItem as CustomRankingView;
+            var view = e.CurrentSelection.FirstOrDefault() as CustomRankingView;
             if (view == null)
                 return;
 

@@ -24,7 +24,7 @@
             ItemSelected="ActivityFeedListView_ItemSelected"
             ItemTemplate="{StaticResource activityFeedDataTemplateSelector}"
             ItemsSource="{Binding ActivityFeedItems}"      
-            CachingStrategy="RecycleElement"
+            CachingStrategy="RetainElement"
             HasUnevenRows="True" />
     </Grid>
 </ContentPage>

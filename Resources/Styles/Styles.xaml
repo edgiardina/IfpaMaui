@@ -82,7 +82,7 @@
     </Style>
 
     <Style TargetType="BoxView" x:Key="BoxSeperator">
-        <Setter Property="HeightRequest" Value=".5" />
+        <Setter Property="HeightRequest" Value="1" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="BackgroundColor"  Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
         <Setter Property="VerticalOptions" Value="End" />
