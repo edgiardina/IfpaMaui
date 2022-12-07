@@ -5,6 +5,8 @@ using Ifpa.Models;
 using Syncfusion.Maui.Scheduler;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
+using MauiIcons.Fluent;
+using Microsoft.Maui.Controls;
 
 namespace Ifpa.Views
 {
@@ -129,19 +131,22 @@ namespace Ifpa.Views
 
         private void ToggleView_Clicked(object sender, EventArgs e)
         {
-            if(View == CalendarPageView.Calendar)
+            var colorDictionary = Application.Current.Resources.MergedDictionaries.First();
+            var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
+
+            if (View == CalendarPageView.Calendar)
             {
                 MapLayout.IsVisible = true;
                 calendar.IsVisible = false;
                 View = CalendarPageView.MapAndList;
-                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = "calendar.png";
+                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.CalendarLtr28, IconColor = toolbarIconColor };
             }
             else
             {
                 MapLayout.IsVisible = false;
                 calendar.IsVisible = true;
                 View = CalendarPageView.Calendar;
-                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = "map.png";
+                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Map24, IconColor = toolbarIconColor };
             }
         }
 

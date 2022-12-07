@@ -1,5 +1,6 @@
 ﻿using Ifpa.ViewModels;
 using Ifpa.Models;
+using MauiIcons.Fluent;
 
 namespace Ifpa.Views
 {
@@ -160,14 +161,19 @@ namespace Ifpa.Views
 
         private void SetCorrectFavoriteIcon(bool isFavorite = true)
         {
+            var colorDictionary = Application.Current.Resources.MergedDictionaries.First();
+            var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
+            var filledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Heart48, IconColor = toolbarIconColor };
+            var unfilledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.HeartBroken24, IconColor = toolbarIconColor };           
+
             if (isFavorite)
             {
                 //if player is in the existing favorites list, fill the heart icon.
-                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite.png";
+                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = filledHeartIcon;                
             }
             else
             {
-                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = "favorite_outline.png";
+                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = unfilledHeartIcon;
             }
         }
 

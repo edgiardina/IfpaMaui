@@ -19,7 +19,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{fluent:Icon Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=Heart48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=HeartBroken24, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{fluent:Icon Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
