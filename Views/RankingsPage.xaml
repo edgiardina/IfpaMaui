@@ -28,8 +28,7 @@
                  ItemsSource="{Binding Players}"
                  IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"  
                  SelectionMode="Single"
-                 SelectionChanged="PlayersListView_SelectionChanged"
-                 >
+                 SelectionChanged="PlayersListView_SelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout>
@@ -77,7 +76,7 @@
                             <Label Grid.Column="2" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Margin="10,0" HorizontalTextAlignment="End" 
                                Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap"  VerticalTextAlignment="Center" FontSize="10" />
 
-                        <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{DynamicResource SecondaryTextColor}"
+                            <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{DynamicResource SecondaryTextColor}"
                                Margin="10,0" FontSize="10" HorizontalTextAlignment="End" VerticalTextAlignment="Center" 
                                IsVisible="{Binding Source={x:Reference BrowseItemsPage}, Path=BindingContext.ShowOverallRank}">
                                 <Label.FormattedText>

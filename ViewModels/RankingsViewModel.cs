@@ -10,7 +10,7 @@ namespace Ifpa.ViewModels
 {
     public class RankingsViewModel : BaseViewModel
     {
-        public ObservableCollection<RankingWithFormattedLocation> Players { get; set; }
+        public ObservableCollection<RankingResult> Players { get; set; }
         public ObservableCollection<Country> Countries { get; set; }
 
         public Country CountryToShow { get; set; } 
@@ -62,7 +62,7 @@ namespace Ifpa.ViewModels
             Title = "Rankings";
             CountOfItemsToFetch = 100;
             StartingPosition = 1;
-            Players = new ObservableCollection<RankingWithFormattedLocation>();
+            Players = new ObservableCollection<RankingResult>();
             Countries = new ObservableCollection<Country>();           
             LoadItemsCommand = new Command(
                 execute: () => ExecuteLoadItemsCommand(), 
@@ -107,7 +107,7 @@ namespace Ifpa.ViewModels
                     var items = await PinballRankingApiV2.GetWpprRanking(StartingPosition, CountOfItemsToFetch);
                     foreach (var item in items.Rankings)
                     {
-                        Players.Add(new RankingWithFormattedLocation(item));
+                        Players.Add(item);
                     }
                 }
                 else if(CurrentRankingType == RankingType.Women)
@@ -118,7 +118,7 @@ namespace Ifpa.ViewModels
                     var items = await PinballRankingApiV2.GetRankingForWomen(CurrentTournamentType, StartingPosition, CountOfItemsToFetch);
                     foreach (var item in items.Rankings)
                     {
-                        Players.Add(new RankingWithFormattedLocation(item));
+                        Players.Add(item);
                     }
                 }
                 else if (CurrentRankingType == RankingType.Youth)
@@ -128,7 +128,7 @@ namespace Ifpa.ViewModels
                     var items = await PinballRankingApiV2.GetRankingForYouth(StartingPosition, CountOfItemsToFetch);
                     foreach (var item in items.Rankings)
                     {
-                        Players.Add(new RankingWithFormattedLocation(item));
+                        Players.Add(item);
                     }
                 }
                 else if (CurrentRankingType == RankingType.Country)
@@ -138,7 +138,9 @@ namespace Ifpa.ViewModels
                     var items = await PinballRankingApiV2.GetRankingForCountry(CountryToShow.CountryName, StartingPosition, CountOfItemsToFetch);
                     foreach (var item in items.Rankings)
                     {
-                        Players.Add(new RankingWithFormattedLocation(item));
+                        //TODO: this is a hack because we can't seem to get DataTriggers to work right for enum value(s) of CurrentRankingType
+                        item.CurrentRank = item.CountryRank;
+                        Players.Add(item);
                     }
                 }
                 //else if (CurrentRankingType == RankingType.Elite)
@@ -149,6 +151,8 @@ namespace Ifpa.ViewModels
                 //        Players.Add(new RankingWithFormattedLocation(item));
                 //    }
                 //}
+
+                OnPropertyChanged(nameof(CurrentRankingType));
             }
             catch (Exception ex)
             {
