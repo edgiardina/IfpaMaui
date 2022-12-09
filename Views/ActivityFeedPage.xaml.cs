@@ -24,31 +24,6 @@ namespace Ifpa.Views
             activityFeedViewModel.LoadItemsCommand.Execute(null);
         }
 
-        private async void ActivityFeedListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem != null)
-            {
-                var item = (ActivityFeedItem)e.SelectedItem;
-                item.HasBeenSeen = true;
-                await Settings.LocalDatabase.UpdateActivityFeedRecord(item);                
-
-                if (item.ActivityType == ActivityFeedType.TournamentResult)
-                {
-                    await Shell.Current.GoToAsync($"tournament-results?tournamentId={item.RecordID.Value}");
-                }
-
-                if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
-                {
-                    var remainingUnreads = await Settings.LocalDatabase.GetUnreadActivityCount();
-
-                    //TODO: update badge
-                    //CrossBadge.Current.SetBadge(remainingUnreads);
-                }
-
-                ActivityFeedListView.SelectedItem = null;
-                activityFeedViewModel.LoadItemsCommand.Execute(null);
-            }
-        }
 
         private async void ToolbarItem_Clicked(object sender, System.EventArgs e)
         {
@@ -81,6 +56,32 @@ namespace Ifpa.Views
             //TODO: update badge
             //CrossBadge.Current.SetBadge(1);
             activityFeedViewModel.LoadItemsCommand.Execute(null);
+        }
+
+        private async void ActivityFeedListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.Count() > 0)
+            {
+                var item = (ActivityFeedItem)e.CurrentSelection.FirstOrDefault();
+                item.HasBeenSeen = true;
+                await Settings.LocalDatabase.UpdateActivityFeedRecord(item);
+
+                if (item.ActivityType == ActivityFeedType.TournamentResult)
+                {
+                    await Shell.Current.GoToAsync($"tournament-results?tournamentId={item.RecordID.Value}");
+                }
+
+                if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
+                {
+                    var remainingUnreads = await Settings.LocalDatabase.GetUnreadActivityCount();
+
+                    //TODO: update badge
+                    //CrossBadge.Current.SetBadge(remainingUnreads);
+                }
+
+                ActivityFeedListView.SelectedItem = null;
+                activityFeedViewModel.LoadItemsCommand.Execute(null);
+            }
         }
     }
 }

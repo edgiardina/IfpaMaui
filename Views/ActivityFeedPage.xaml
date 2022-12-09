@@ -5,12 +5,8 @@
              x:Class="Ifpa.Views.ActivityFeedPage"
              Title="Activity Feed">
     <ContentPage.Resources>
-        <DataTemplate x:Key="rankChangeTemplate">
-            <local:ActivityFeedRankChangeViewCell />
-        </DataTemplate>
-        <DataTemplate x:Key="tournamentResultTemplate">
-            <local:ActivityFeedTournamentResultViewCell />
-        </DataTemplate>
+        <local:ActivityFeedRankChangeDataTemplate x:Key="rankChangeTemplate" />
+        <local:ActivityFeedTournamentResultDataTemplate  x:Key="tournamentResultTemplate" />
         <local:ActivityFeedDataTemplateSelector x:Key="activityFeedDataTemplateSelector"
                 RankChangeTemplate="{StaticResource rankChangeTemplate}"
                 TournamentResultTemplate="{StaticResource tournamentResultTemplate}" />
@@ -20,11 +16,10 @@
         <!--<ToolbarItem Text="+" Clicked="ToolbarItem_Clicked_1" />-->
     </ContentPage.ToolbarItems>
     <Grid>
-        <ListView x:Name="ActivityFeedListView"
-            ItemSelected="ActivityFeedListView_ItemSelected"
+        <CollectionView x:Name="ActivityFeedListView"
+            SelectionMode="Single"
+            SelectionChanged="ActivityFeedListView_SelectionChanged"      
             ItemTemplate="{StaticResource activityFeedDataTemplateSelector}"
-            ItemsSource="{Binding ActivityFeedItems}"      
-            CachingStrategy="RetainElement"
-            HasUnevenRows="True" />
+            ItemsSource="{Binding ActivityFeedItems}" />
     </Grid>
 </ContentPage>

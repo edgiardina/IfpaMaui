@@ -1,32 +1,29 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ViewCell xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-          xmlns:local="clr-namespace:Ifpa.Converters"
           xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-          x:Class="Ifpa.Views.DataTemplates.ActivityFeedRankChangeViewCell">
-    <ViewCell.View>
-        <Grid Margin="10" ColumnDefinitions="35, *">
+          x:Class="Ifpa.Views.DataTemplates.ActivityFeedTournamentResultDataTemplate">
+    <StackLayout>
+        <Grid Padding="10" ColumnDefinitions="35, *" >
             <Grid.Resources>
                 <ResourceDictionary>
-                    <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
                     <toolkit:InvertedBoolConverter x:Key="inverter"/>
                 </ResourceDictionary>
             </Grid.Resources>
-            <Image Grid.Column="0" Source="rankchange.png" HeightRequest="25" WidthRequest="25">
+            <Image Grid.Column="0" Source="ribbon.png" HeightRequest="25" WidthRequest="25" >
                 <Image.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                 </Image.Behaviors>
             </Image>
             <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
-                <Label Text="Rank Changed" FontAttributes="Bold" />
+                <Label Text="Tournament Result Posted" FontAttributes="Bold" />
                 <Label  FontSize="Small">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
-                                <Span Text="Your rank changed from " TextColor="{DynamicResource SecondaryTextColor}" />
-                                <Span Text="{Binding IntTwo, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
-                                <Span Text=" to " TextColor="{DynamicResource SecondaryTextColor}" />
-                                <Span Text="{Binding IntOne, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                                <Span Text="Tournament results for " TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{Binding Description, Mode=OneWay}" />
+                                <Span Text=" were posted to your profile" TextColor="{DynamicResource SecondaryTextColor}" />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
@@ -43,5 +40,6 @@
                  VerticalOptions="Center"
                  HorizontalOptions="End" />
         </Grid>
-    </ViewCell.View>
-</ViewCell>
+        <BoxView Style="{StaticResource BoxSeperator}"/>
+    </StackLayout>
+</DataTemplate>
