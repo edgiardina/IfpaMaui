@@ -106,6 +106,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Views\DataTemplates\ActivityFeedRankChangeDataTemplate.xaml.cs">
+		  <DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\ActivityFeedTournamentResultDataTemplate.xaml.cs">
+		  <DependentUpon>ActivityFeedTournamentResultDataTemplate.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Views\DataTemplates\PlayerResultViewCell.xaml.cs">
 			<DependentUpon>PlayerResultViewCell.xaml</DependentUpon>
 		</Compile>
