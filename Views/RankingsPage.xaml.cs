@@ -14,7 +14,6 @@ namespace Ifpa.Views
             InitializeComponent();
 
             BindingContext = ViewModel = viewModel;
-            PlayerListViewIndexConverter.BindingContext = viewModel;
         }
 
         protected override async void OnAppearing()
@@ -44,9 +43,9 @@ namespace Ifpa.Views
             await Shell.Current.GoToAsync("player-search");
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var player = args.SelectedItem as RankingResult;
+            var player = e.CurrentSelection.FirstOrDefault() as RankingResult;
             if (player == null)
                 return;
 
