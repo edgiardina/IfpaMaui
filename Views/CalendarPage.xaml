@@ -22,23 +22,27 @@
         <Grid x:Name="MapLayout" RowDefinitions="*,*" >
 
             <Map x:Name="calendarMap" MapType="Street" Grid.Row="0" />
-      
-                <CollectionView x:Name="TournamentListView" 
+
+            <CollectionView x:Name="TournamentListView" 
                                  Grid.Row="1"
                     ItemsSource="{Binding CalendarDetails}"         
                     SelectionMode="Single"
                     SelectionChanged="TournamentListView_SelectionChanged">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout>
                             <Grid Margin="10" ColumnSpacing="10" ColumnDefinitions="*,90">
                                 <Label Grid.Column="0" Text="{Binding TournamentName}" />
                                 <Label Grid.Column="1" MinimumWidthRequest="90" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}" 
                                        Text="{Binding EndDate, StringFormat='{0:d}'}" LineBreakMode="NoWrap" />
                             </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-     
+
+                            <BoxView Style="{StaticResource BoxSeperator}"/>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </Grid>
         <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
                                 MinimumDateTime="{Binding DateTime.Today}"

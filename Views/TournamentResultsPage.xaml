@@ -97,19 +97,14 @@
         <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="{fluent:Icon Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
-        <ListView x:Name="MyListView"
+        <CollectionView x:Name="MyListView"
             ItemsSource="{Binding Results}"
-            RefreshCommand="{Binding LoadItemsCommand}"
-            IsPullToRefreshEnabled="true"
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement"
-            HasUnevenRows="true">
-            <!--Custom View Cells-->
-            <ListView.ItemTemplate>
+            SelectionChanged="MyListView_SelectionChanged"
+            SelectionMode="Single">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal" Margin="10">
+                    <VerticalStackLayout Spacing="0">
+                        <StackLayout Orientation="Horizontal" Margin="10,5">
                             <Label LineBreakMode="NoWrap"  FontSize="16" VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -126,9 +121,11 @@
                                 <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding Points, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
                             </StackLayout>
                         </StackLayout>
-                    </ViewCell>
+
+                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                    </VerticalStackLayout>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>
