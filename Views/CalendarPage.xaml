@@ -10,40 +10,36 @@
         <ResourceDictionary>
             <Style TargetType="scheduler:SchedulerTextStyle" x:Key="CalendarHeaderStyle">
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                <Setter Property="FontSize" Value="200"/> 
+                <Setter Property="FontSize" Value="200"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="{fluent:Icon Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
-        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />        
-    </ContentPage.ToolbarItems>    
+        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
+    </ContentPage.ToolbarItems>
     <Grid>
-        <StackLayout x:Name="MapLayout" Spacing="0" VerticalOptions="Fill">
-            
-            <Map x:Name="calendarMap" MapType="Street" />
-            
-            <ListView x:Name="TournamentListView"                  
+        <Grid x:Name="MapLayout" RowDefinitions="*,*" >
+
+            <Map x:Name="calendarMap" MapType="Street" Grid.Row="0" />
+      
+                <CollectionView x:Name="TournamentListView" 
+                                 Grid.Row="1"
                     ItemsSource="{Binding CalendarDetails}"         
-                    HasUnevenRows="true"       
-                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    CachingStrategy="RecycleElement"
-                    ItemSelected="TournamentListView_ItemSelected">
-                <ListView.ItemTemplate 
-                        VerticalOptions="Fill"
-                        HasUnevenRows="true">
-                    <DataTemplate>
-                        <ViewCell>
+                    SelectionMode="Single"
+                    SelectionChanged="TournamentListView_SelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
                             <Grid Margin="10" ColumnSpacing="10" ColumnDefinitions="*,90">
                                 <Label Grid.Column="0" Text="{Binding TournamentName}" />
                                 <Label Grid.Column="1" MinimumWidthRequest="90" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}" 
                                        Text="{Binding EndDate, StringFormat='{0:d}'}" LineBreakMode="NoWrap" />
                             </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+     
+        </Grid>
         <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
                                 MinimumDateTime="{Binding DateTime.Today}"
                                 View="Month"                                                               
@@ -51,7 +47,7 @@
                                Tapped="calendar_Tapped"
                                 BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
             <scheduler:SfScheduler.MonthView>
-                <scheduler:SchedulerMonthView>                      
+                <scheduler:SchedulerMonthView>
                     <scheduler:SchedulerMonthView.ViewHeaderTemplate>
                         <DataTemplate>
                             <Grid>
@@ -70,6 +66,6 @@
                     </scheduler:SchedulerMonthView.CellTemplate>
                 </scheduler:SchedulerMonthView>
             </scheduler:SfScheduler.MonthView>
-        </scheduler:SfScheduler>             
+        </scheduler:SfScheduler>
     </Grid>
 </ContentPage>
