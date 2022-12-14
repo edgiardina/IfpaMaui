@@ -8,11 +8,18 @@ namespace Ifpa.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SettingsPage : ContentPage
 	{
+        SettingsViewModel ViewModel { get; set; }
 		public SettingsPage (SettingsViewModel viewModel)
 		{
 			InitializeComponent ();
-            this.BindingContext = viewModel;
+            this.BindingContext = ViewModel = viewModel;
 		}
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await ViewModel.LoadPlayer();
+        }
 
         private async void Button_Clicked(object sender, System.EventArgs e)
         {
