@@ -28,6 +28,7 @@ namespace Ifpa.Views
             {
                 await Settings.SetMyStatsPlayer(0, 0);
                 await DisplayAlert("Selected Player Cleared", "Your 'My Stats' player selection has been cleared", "OK");
+                await ViewModel.LoadPlayer();
             }
         }
     }

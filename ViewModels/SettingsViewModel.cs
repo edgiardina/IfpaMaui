@@ -37,6 +37,11 @@ namespace Ifpa.ViewModels
 
                     PlayerRecord = playerData;               
                 }
+                else
+                {
+                    playerRecord = new Player { PlayerStats = new PinballApi.Models.WPPR.v1.Players.PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
+                    OnPropertyChanged(null);
+                }
             }
             catch (Exception ex)
             {
@@ -58,7 +63,7 @@ namespace Ifpa.ViewModels
             }
         }
 
-        public string Name => PlayerRecord.FirstName + " " + PlayerRecord.LastName;
+        public string Name => PlayerRecord.FirstName != null || PlayerRecord.LastName != null ? PlayerRecord.FirstName + " " + PlayerRecord.LastName : null;
 
         public bool NotifyOnRankChange
         {
