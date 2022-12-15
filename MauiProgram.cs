@@ -9,6 +9,8 @@ using Ifpa.Services;
 using Ifpa.Interfaces;
 using Microsoft.Maui.LifecycleEvents;
 using MauiIcons.Fluent;
+using Ifpa.Controls;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
 
 namespace Ifpa;
 
@@ -27,6 +29,11 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            .ConfigureMauiHandlers((handlers) => {
+#if IOS
+               handlers.AddHandler(typeof(InsetTableView), typeof(Ifpa.iOS.Renderers.InsetTableViewRenderer)); 
+#endif
             })
             .ConfigureEssentials(essentials =>
             {
