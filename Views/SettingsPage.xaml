@@ -4,7 +4,8 @@
              x:Class="Ifpa.Views.SettingsPage" 
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"             
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent" 
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              Title="Settings">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -14,14 +15,14 @@
     <ContentPage.Content>        
         <controls:InsetTableView Intent="Settings" HasUnevenRows="True">
             <TableRoot>
-                <TableSection Title="Notifications" TextColor="{DynamicResource SecondaryTextColor}">
-                    <SwitchCell Text="IFPA Rank Change" On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
-                    <SwitchCell Text="Tournament Result Posted" On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
-                    <SwitchCell Text="News Item Posted" On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />                  
+                <TableSection Title="Notifications" TextColor="{StaticResource SecondaryTextColor}">
+                    <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="IFPA Rank Change" On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
+                    <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="Tournament Result Posted" On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
+                    <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="News Item Posted" On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />                  
                 </TableSection>
-                <TableSection Title="My Stats" TextColor="{DynamicResource SecondaryTextColor}">
-                    <ViewCell>
-                        <StackLayout StyleClass="SettingsRow">
+                <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
+                    <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                        <StackLayout Orientation="Horizontal">
                             <toolkit:AvatarView Grid.Column="1" ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" Margin="10" 
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
