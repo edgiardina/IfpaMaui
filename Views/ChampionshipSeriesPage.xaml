@@ -14,47 +14,51 @@
             SelectionMode="Single">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10,0,10,0" Orientation="Horizontal">
-                        <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                            <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding RegionName}" />
+                    <StackLayout>
+                        <StackLayout Padding="10,0,10,0" Orientation="Horizontal">
+                            <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                                <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding RegionName}" />
 
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" >
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Current Leader:" TextColor="{DynamicResource SecondaryTextColor}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding CurrentLeader.PlayerName}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" >
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="Current Leader:" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding CurrentLeader.PlayerName}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+
+                            <StackLayout Orientation="Vertical" Padding="10">
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="Unique Players:" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding UniquePlayerCount}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="Prize Value:" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding PrizeFund, StringFormat='{0:C}'}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
                         </StackLayout>
 
-                        <StackLayout Orientation="Vertical" Padding="10">
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Unique Players:" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding UniquePlayerCount}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Prize Value:" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding PrizeFund, StringFormat='{0:C}'}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
+                        <BoxView Style="{StaticResource BoxSeperator}"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
