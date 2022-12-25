@@ -3,13 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.FavoritesPage"             
              xmlns:local="clr-namespace:Ifpa.Converters"             
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"             
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              Title="{Binding Title}"
              x:Name="SearchPlayersPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="BoolConverter" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
+            <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
+                <toolkit:IsStringNullOrEmptyConverter />
+                <toolkit:InvertedBoolConverter />
+            </toolkit:MultiConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -18,7 +24,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Label Margin="10,0,10,0"
-                IsVisible="{Binding IsPopulated, Converter={StaticResource BoolConverter}}"
+                IsVisible="{Binding IsPopulated, Converter={StaticResource invertedBoolConverter}}"
                 VerticalTextAlignment="Center"
                 HorizontalTextAlignment="Center"
                 FontAttributes="Italic"
@@ -50,24 +56,13 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding City}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding StateProvince}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding CountryName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
+
+                                    <controls:CityStateCountryView />
                                 </StackLayout>
-                                <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" 
-                                   LineBreakMode="NoWrap" 
-                                    
-                                   FontSize="18" WidthRequest="80" />
+                                <controls:PlayerRankLabel HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
+                                   Rank="{Binding PlayerStats.CurrentWpprRank}" 
+                                   LineBreakMode="NoWrap"                                     
+                                   FontSize="18" WidthRequest="80"/>                      
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
