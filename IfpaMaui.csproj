@@ -93,10 +93,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.0.1" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.49" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.52" />
 		<PackageReference Include="PinballApi" Version="2.0.86" />
 		<PackageReference Include="Plugin.LocalNotification" Version="10.0.2" />
 		<PackageReference Include="Scrutor" Version="4.2.0" />

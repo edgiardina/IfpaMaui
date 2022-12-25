@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              x:Class="Ifpa.Views.RankingsPage"
              Title="{Binding Title}"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
@@ -14,12 +15,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-            <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
-            <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
-                <toolkit:IsStringNullOrEmptyConverter />
-                <toolkit:InvertedBoolConverter />
-            </toolkit:MultiConverter>            
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />               
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
@@ -49,29 +45,8 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <StackLayout Orientation="Horizontal" Grid.Row="1" 
-                                         Grid.Column="1">
-                                <!-- City -->
-                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding City}" LineBreakMode="NoWrap" FontSize="12" VerticalTextAlignment="Center"
-                                       IsVisible="{Binding City, Converter={StaticResource invertedNullOrEmptyConverter}}"
-                                       Padding="0,0,5,0"/>
-                                <!-- , State -->
-                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="," LineBreakMode="NoWrap" FontSize="12" VerticalTextAlignment="Center" 
-                                       Margin="-5,0,0,0" Padding="0,0,5,0">
-                                    <Label.Triggers>
-                                        <DataTrigger Binding="{Binding StateProvince, Converter={StaticResource nullOrEmptyConverter}}" Value="True" TargetType="Label">                                           
-                                            <Setter Property="IsVisible" Value="False" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding City, Converter={StaticResource nullOrEmptyConverter}}" Value="True" TargetType="Label">
-                                            <Setter Property="IsVisible" Value="False" />
-                                        </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
-                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding StateProvince}" LineBreakMode="NoWrap" FontSize="12" VerticalTextAlignment="Center" 
-                                       IsVisible="{Binding StateProvince, Converter={StaticResource invertedNullOrEmptyConverter}}" Padding="0,0,5,0" />
-                                <!-- Country -->
-                                <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding CountryName}" LineBreakMode="NoWrap" FontSize="12" VerticalTextAlignment="Center" />
-                            </StackLayout>
+
+                            <controls:CityStateCountryView Grid.Row="1" Grid.Column="1" />
                            
                             <Label Grid.Column="2" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Margin="10,0" HorizontalTextAlignment="End" 
                                Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap"  VerticalTextAlignment="Center" FontSize="10" />
