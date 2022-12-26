@@ -4,7 +4,8 @@
        xmlns:local="clr-namespace:Ifpa.Converters" xmlns:controls="clr-namespace:Ifpa.Controls" 
        x:DataType="controls:PlayerRankLabel"
        x:Class="Ifpa.Controls.PlayerRankLabel"
-       Text="{Binding Rank}">
+       Text="{Binding Rank}"
+       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}">
     <Label.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />            

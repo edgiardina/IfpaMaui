@@ -43,8 +43,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Padding="10" Orientation="Horizontal" >
-                                <StackLayout Padding="10" Orientation="Vertical">
+                            <StackLayout Padding="15,10" Orientation="Horizontal" >
+                                <StackLayout Orientation="Vertical">
                                     <Label LineBreakMode="NoWrap"  FontSize="16">
                                         <Label.FormattedText>
                                             <FormattedString>
@@ -62,7 +62,7 @@
                                 <controls:PlayerRankLabel HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
                                    Rank="{Binding PlayerStats.CurrentWpprRank}" 
                                    LineBreakMode="NoWrap"                                     
-                                   FontSize="18" WidthRequest="80"/>                      
+                                   FontSize="18" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
