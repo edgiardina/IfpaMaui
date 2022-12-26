@@ -4,6 +4,7 @@
              x:Class="Ifpa.Views.PlayerDetailPage"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
              Title="{Binding Name}">
@@ -19,7 +20,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{fluent:Icon Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=HeartBroken24, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{fluent:Icon Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
@@ -94,7 +95,7 @@
                             </DataTrigger>
                         </Grid.Triggers>
                         <Button Grid.Column="0" Margin="10,0" Text="Results" HorizontalOptions="FillAndExpand" Clicked="TournamentResults_Button_Clicked" />
-                        <Button Grid.Column="1" Margin="10,0" Text=" PVP " HorizontalOptions="FillAndExpand" Clicked="Pvp_Button_Clicked" />
+                        <Button Grid.Column="1" Margin="10,0" Text="PVP" HorizontalOptions="FillAndExpand" Clicked="Pvp_Button_Clicked" />
                         <Button Grid.Column="2" Margin="10,0" Text="Champ. Series" x:Name="ChampButton" HorizontalOptions="FillAndExpand" Clicked="CS_Button_Clicked" 
                             IsVisible="{Binding HasChampionshipSeriesData}" />
                     </Grid>
@@ -113,7 +114,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rank" />
-                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Rank, Mode=OneWay}" HorizontalTextAlignment="Center"/>
+                        <controls:PlayerRankLabel Grid.Column="1" Grid.Row="0" Rank="{Binding Rank, Mode=OneWay}" HorizontalTextAlignment="Center"/>
                         <Label Grid.Column="2" Grid.Row="0" Text="{Binding CurrentWpprValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
 
                         <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rating" />
@@ -121,7 +122,7 @@
                         <Label Grid.Column="2" Grid.Row="1" Text="{Binding RatingValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
 
                         <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Eff percent" />
-                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding EffPercent, Mode=OneWay}" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding PlayerRecord.PlayerStats.EfficiencyRank, TargetNullValue='Not Ranked', Mode=OneWay}" HorizontalTextAlignment="Center"/>
                         <Label Grid.Column="2" Grid.Row="2" Text="{Binding EfficiencyValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
                     </Grid>
 

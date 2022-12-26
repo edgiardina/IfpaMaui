@@ -33,7 +33,7 @@ namespace Ifpa.ViewModels
 
         public string Initials => PlayerRecord.Initials;
 
-        public string Rank => PlayerRecord.PlayerStats.CurrentWpprRank.OrdinalSuffix();
+        public int Rank => PlayerRecord.PlayerStats.CurrentWpprRank;
 
         public string Rating => PlayerRecord.PlayerStats.RatingsRank.HasValue ? PlayerRecord.PlayerStats.RatingsRank.Value.OrdinalSuffix() : "Not Ranked";
 
@@ -139,7 +139,7 @@ namespace Ifpa.ViewModels
             var entry = new AppLinkEntry
             {
                 Title = Name,
-                Description = Rank,
+                Description = Rank.ToString(),
                 AppLinkUri = new Uri(url, UriKind.RelativeOrAbsolute),
                 IsLinkActive = true,
                 Thumbnail = ImageSource.FromUri(new Uri(PlayerAvatar, UriKind.RelativeOrAbsolute))
