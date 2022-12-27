@@ -24,7 +24,8 @@
                                 ItemsSource="{Binding ActiveResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
-                                ItemTemplate="{StaticResource PlayerResultDataTemplate}" />
+                                ItemTemplate="{StaticResource PlayerResultDataTemplate}"
+                                EmptyView="No active tournament results" />
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
         <tabView:SfTabItem Header="Unused">
@@ -33,7 +34,8 @@
                                 ItemsSource="{Binding UnusedResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
-                                ItemTemplate="{StaticResource PlayerResultDataTemplate}" />
+                                ItemTemplate="{StaticResource PlayerResultDataTemplate}"
+                                EmptyView="No unused tournament results"/>
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
         <tabView:SfTabItem Header="Past">
@@ -42,7 +44,8 @@
                                 ItemsSource="{Binding PastResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
-                                ItemTemplate="{StaticResource PlayerResultDataTemplate}" />
+                                ItemTemplate="{StaticResource PlayerResultDataTemplate}"
+                                EmptyView="No past tournament results"/>
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
     </tabView:SfTabView>

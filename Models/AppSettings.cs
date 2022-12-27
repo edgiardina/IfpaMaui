@@ -13,6 +13,6 @@ namespace Ifpa.Models
         public string AppStoreAppId { get; set; }
         public string PlayStoreAppId { get; set; }
         public string IfpaRssFeedUrl { get; set; }
-        public string PlayerProfileNoPicUrl { get; set; }
+        public string IfpaPlayerNoProfilePicUrl { get; set; }
     }
 }
