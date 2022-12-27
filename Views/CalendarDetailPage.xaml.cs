@@ -9,15 +9,15 @@ namespace Ifpa.Views
     public partial class CalendarDetailPage : ContentPage
     {
         CalendarDetailViewModel ViewModel;
-        
+
         public int CalendarId { get; set; }
 
         public CalendarDetailPage(CalendarDetailViewModel viewModel)
-        {       
+        {
             InitializeComponent();
 
-            BindingContext = this.ViewModel = viewModel;         
-        }        
+            BindingContext = this.ViewModel = viewModel;
+        }
 
         protected override async void OnAppearing()
         {
@@ -27,7 +27,15 @@ namespace Ifpa.Views
 
             try
             {
-                calendarMap.MoveToRegion(new MapSpan(ViewModel.GeocodedLocation, 0.1, 0.1));
+                //TODO: I don't know why but you have to call a geolocation call here for this map to work on android
+                //it's likely a timing or threading bug.
+                if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+                {
+                    _ = await Geocoding.GetLocationsAsync("Boston, MA");
+                }
+
+                MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Distance.FromKilometers(1));
+                calendarMap.MoveToRegion(mapSpan);
                 var pin = new Pin
                 {
                     Label = ViewModel.TournamentName,
@@ -47,10 +55,11 @@ namespace Ifpa.Views
             }
         }
 
+
         protected override void OnNavigatedTo(NavigatedToEventArgs args)
         {
             base.OnNavigatedTo(args);
-        }       
+        }
 
         private void Pin_Clicked(object sender, PinClickedEventArgs e)
         {
@@ -71,7 +80,7 @@ namespace Ifpa.Views
                 Thoroughfare = ViewModel.Address1,
                 Locality = ViewModel.City
             };
-            var options = new MapLaunchOptions { Name = ViewModel.TournamentName };  
+            var options = new MapLaunchOptions { Name = ViewModel.TournamentName };
 
             await Microsoft.Maui.ApplicationModel.Map.OpenAsync(placemark, options);
         }
