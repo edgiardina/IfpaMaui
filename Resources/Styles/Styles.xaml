@@ -45,6 +45,7 @@
         <Setter Property="BackgroundColor" Value="{StaticResource ButtonBackgroundColor}" />
         <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
         <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="CornerRadius" Value="8" />
     </Style>
 
     <Style TargetType="Label">

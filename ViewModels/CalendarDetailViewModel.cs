@@ -42,6 +42,8 @@ namespace Ifpa.ViewModels
 
         public string Location => $"{Address1} {Address2} {City}{(!string.IsNullOrEmpty(City) && !string.IsNullOrEmpty(State) ? "," : string.Empty)} {State} {CountryName}".Trim().Replace("  ", " ");
 
+        public Location GeocodedLocation { get; set; } = new Location();
+
         public Command LoadItemsCommand { get; set; }
 
         public int CalendarId { get; set; }
@@ -54,7 +56,7 @@ namespace Ifpa.ViewModels
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        public async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;
@@ -81,9 +83,9 @@ namespace Ifpa.ViewModels
                 EndDate = calendarEntry.EndDate;
                 TournamentId = calendarEntry.TournamentId;
 
-                var location = (await Geocoding.GetLocationsAsync(Address1 + " " + City + ", " + State)).FirstOrDefault();
-                Latitude = location.Latitude;
-                Longitude = location.Longitude;
+                GeocodedLocation = (await Geocoding.GetLocationsAsync(Address1 + " " + City + ", " + State)).FirstOrDefault();
+                Latitude = GeocodedLocation.Latitude;
+                Longitude = GeocodedLocation.Longitude;
 
                 OnPropertyChanged(null);
             }

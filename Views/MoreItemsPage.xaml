@@ -32,7 +32,7 @@
                                 <toolkit:IconTintColorBehavior TintColor="#4579FB" />
                             </Image.Behaviors>
                         </Image>
-                        <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" />
+                        <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" FontSize="18" />
                     </Grid>
                     <BoxView Style="{StaticResource BoxSeperator}"/>
                 </StackLayout>

@@ -169,11 +169,11 @@ namespace Ifpa.Views
             if (isFavorite)
             {
                 //if player is in the existing favorites list, fill the heart icon.
-                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = filledHeartIcon;                
+                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = unfilledHeartIcon;                
             }
             else
             {
-                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = unfilledHeartIcon;
+                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = filledHeartIcon;
             }
         }
 

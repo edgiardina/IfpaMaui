@@ -22,16 +22,16 @@
                 </TableSection>
                 <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
                     <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                        <StackLayout Orientation="Horizontal">
-                            <toolkit:AvatarView Grid.Column="1" ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" Margin="10" 
+                        <StackLayout Orientation="Horizontal" Margin="15">
+                            <toolkit:AvatarView Grid.Column="1" ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
                                         CornerRadius="30"
                                         TextColor="{StaticResource ButtonTextColor}" />
-                            <Label Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                            <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
 
-                            <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Padding="10,0,10,0" Margin="0,10,0,10" HorizontalOptions="End" Clicked="Button_Clicked" />
+                            <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}"  HorizontalOptions="End" Clicked="Button_Clicked" />
                         </StackLayout>
                     </ViewCell>
                 </TableSection>
