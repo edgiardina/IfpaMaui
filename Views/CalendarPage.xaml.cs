@@ -72,15 +72,12 @@ namespace Ifpa.Views
 
                     Preferences.Set("LastCalendarLocation", location);
                     Preferences.Set("LastCalendarDistance", distance);
-
-                    //TODO: Page.IsBusy has a bug?
-                    //IsBusy = true;
                     
                     calendarMap.Pins.Clear();
 
                     var geoLocation = await Geocoding.GetLocationsAsync(location);
                     calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude), 
-                                                                         new Distance(distance * Constants.MetersInAMile)));
+                                                                            Distance.FromMiles(distance)));
                     
                     await ViewModel.ExecuteLoadItemsCommand(location, distance);
 
@@ -107,6 +104,7 @@ namespace Ifpa.Views
             var locations = await Geocoding.GetLocationsAsync(detail.Address1 + " " + detail.City + ", " + detail.State);
             pin.Location = new Location(locations.First().Latitude, locations.First().Longitude);
             pin.Label = detail.TournamentName;
+            pin.Type = PinType.Place;
 
             //TODO: on pinpress scroll listview to find item. 
             pin.MarkerClicked += (sender, e) =>

@@ -4,10 +4,12 @@
              xmlns:local="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.CalendarDetailPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"    
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"             
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              ios:Page.LargeTitleDisplay="Never">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <Style x:Key="calendarHeader" TargetType="Label">
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="FontAttributes" Value="Bold" />
@@ -18,43 +20,48 @@
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Add To Calendar" x:Name="AddToCalendarButton" Clicked="AddToCalendarButton_Clicked" IconImageSource="{fluent:Icon Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
-    <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" >
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
 
-        <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource SecondaryBanner}" Spacing="10"  Padding="12,10">
-            <Label Text="{Binding Title, Mode=OneWay}" FontSize="24" Style="{StaticResource calendarHeader}"/>
+            <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource SecondaryBanner}" Spacing="10"  Padding="12,10">
+                <Label Text="{Binding Title, Mode=OneWay}" FontSize="24" Style="{StaticResource calendarHeader}"/>
 
-            <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="Date: " />
-                            <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-
-            <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="Director: " />
-                            <Span Text="{Binding DirectorName, Mode=OneWay}" />
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-        </StackLayout>
-        <Map x:Name="calendarMap" MapType="Street" IsZoomEnabled="False" IsScrollEnabled="False" BackgroundColor="Purple" />
-        <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True" Padding="12,10">
-            <StackLayout>
-                <Label Text="{Binding Website, Mode=OneWay}" TextColor="Blue" Margin="0,0,0,10">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="WebsiteLabel_Tapped"/>
-                    </Label.GestureRecognizers>
+                <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Date: " />
+                                <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
                 </Label>
-                <Label Text="{Binding Details, Mode=OneWay}" />
+
+                <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Director: " />
+                                <Span Text="{Binding DirectorName, Mode=OneWay}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </StackLayout>
-        </ScrollView>
-    </StackLayout>
+            
+            <Map x:Name="calendarMap" MapType="Street" IsZoomEnabled="False" IsScrollEnabled="False" />
+            
+            <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True" Padding="12,10">
+                <StackLayout>
+                    <Label Text="{Binding Website, Mode=OneWay}" TextColor="Blue" Margin="0,0,0,10">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="WebsiteLabel_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="{Binding Details, Mode=OneWay}" />
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </Grid>
 </ContentPage>

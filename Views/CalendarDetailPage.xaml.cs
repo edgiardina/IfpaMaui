@@ -16,58 +16,43 @@ namespace Ifpa.Views
         {       
             InitializeComponent();
 
-            BindingContext = this.ViewModel = viewModel;
+            BindingContext = this.ViewModel = viewModel;         
+        }        
 
-            ((CalendarDetailViewModel)BindingContext).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(async (s, e) => await CalendarDetailPage_PropertyChanged(s, e)) ;            
-        }
-
-
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             ViewModel.CalendarId = CalendarId;
-            ViewModel.LoadItemsCommand.Execute(null);            
+            await ViewModel.ExecuteLoadItemsCommand();
+
+            try
+            {
+                calendarMap.MoveToRegion(new MapSpan(ViewModel.GeocodedLocation, 0.1, 0.1));
+                var pin = new Pin
+                {
+                    Label = ViewModel.TournamentName,
+                    Location = ViewModel.GeocodedLocation,
+                    Address = ViewModel.Location,
+                    Type = PinType.Generic
+                };
+
+                pin.InfoWindowClicked += Pin_Clicked;
+                pin.MarkerClicked += Pin_Clicked;
+
+                calendarMap.Pins.Add(pin);
+            }
+            //unable to geocode position on the map, ignore. 
+            catch (Exception)
+            {
+            }
         }
 
         protected override void OnNavigatedTo(NavigatedToEventArgs args)
         {
             base.OnNavigatedTo(args);
-        }
+        }       
 
-        private async Task CalendarDetailPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            //when busy is flipped back to false it means we are done loading the address
-            if (e.PropertyName == "IsBusy" && ViewModel.IsBusy == false)
-            {
-                try
-                {
-                    var locations = await Geocoding.GetLocationsAsync(ViewModel.Address1 + " " + ViewModel.City + ", " + ViewModel.State);
-
-                    var position = new Location(locations.First().Latitude, locations.First().Longitude);
-                    calendarMap.MoveToRegion(new MapSpan(position, 0.1, 0.1));
-                    var pin = new Pin
-                    {
-                        Label = ViewModel.TournamentName,
-                        Location = position,
-                        Address = ViewModel.Location,
-                        Type = PinType.Generic
-                    };
-
-                    pin.InfoWindowClicked += Pin_Clicked;
-
-                    calendarMap.Pins.Add(pin);
-
-                    calendarMap.IsVisible = true;
-                }
-                //unable to geocode position on the map, ignore. 
-                catch (Exception)
-                {
-                    calendarMap.IsVisible = false;
-                }
-            }
-        }
-
-        private void Pin_Clicked(object sender, EventArgs e)
+        private void Pin_Clicked(object sender, PinClickedEventArgs e)
         {
             Address_Tapped(sender, e);
         }
