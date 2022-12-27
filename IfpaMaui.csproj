@@ -119,8 +119,8 @@
 		<Compile Update="Views\DataTemplates\ActivityFeedTournamentResultDataTemplate.xaml.cs">
 		  <DependentUpon>ActivityFeedTournamentResultDataTemplate.xaml</DependentUpon>
 		</Compile>
-		<Compile Update="Views\DataTemplates\PlayerResultViewCell.xaml.cs">
-			<DependentUpon>PlayerResultViewCell.xaml</DependentUpon>
+		<Compile Update="Views\DataTemplates\PlayerResultDataTemplate.xaml.cs">
+			<DependentUpon>PlayerResultDataTemplate.xaml</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
@@ -161,7 +161,7 @@
 		<MauiXaml Update="Views\CustomRankingsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\PlayerResultViewCell.xaml">
+		<MauiXaml Update="Views\DataTemplates\PlayerResultDataTemplate.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\DirectorsPage.xaml">

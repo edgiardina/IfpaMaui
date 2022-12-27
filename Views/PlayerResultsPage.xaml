@@ -6,67 +6,43 @@
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
              x:Class="Ifpa.Views.PlayerResultsPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-                xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
              ios:Page.LargeTitleDisplay="Never"
-             Title="{Binding Title}">    
+             Title="{Binding Title}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Ranking Profile" IsEnabled="{Binding ShowRankingTypeChoice}" x:Name="RankingProfileButton" Clicked="RankingProfileButton_Clicked" 
                      IconImageSource="{fluent:Icon Icon=People48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <datatemplate:PlayerResultDataTemplate x:Key="PlayerResultDataTemplate" />
+    </ContentPage.Resources>
 
     <tabView:SfTabView Style="{StaticResource TabView}">
         <tabView:SfTabItem Header="Active">
             <tabView:SfTabItem.Content>
-                <ListView x:Name="ActiveListView"
+                <CollectionView x:Name="ActiveListView"
                                 ItemsSource="{Binding ActiveResults}"
-                                RefreshCommand="{Binding LoadItemsCommand}"
-                                IsPullToRefreshEnabled="true"
-                                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                                ItemTapped="Handle_ItemTapped"
-                                CachingStrategy="RecycleElement"
-                                HasUnevenRows="true">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <datatemplate:PlayerResultViewCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                SelectionMode="Single"
+                                SelectionChanged="ActiveListView_SelectionChanged"
+                                ItemTemplate="{StaticResource PlayerResultDataTemplate}" />
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
         <tabView:SfTabItem Header="Unused">
             <tabView:SfTabItem.Content>
-                <ListView x:Name="UnusedListView"
-                                    ItemsSource="{Binding UnusedResults}"
-                                    RefreshCommand="{Binding LoadItemsCommand}"
-                                    IsPullToRefreshEnabled="true"
-                                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                                    ItemTapped="Handle_ItemTapped"
-                                    CachingStrategy="RecycleElement"
-                                    HasUnevenRows="true">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <datatemplate:PlayerResultViewCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <CollectionView x:Name="UnusedListView"
+                                ItemsSource="{Binding UnusedResults}"
+                                SelectionMode="Single"
+                                SelectionChanged="ActiveListView_SelectionChanged"
+                                ItemTemplate="{StaticResource PlayerResultDataTemplate}" />
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
         <tabView:SfTabItem Header="Past">
             <tabView:SfTabItem.Content>
-                <ListView x:Name="PastListView"
+                <CollectionView x:Name="PastListView"
                                 ItemsSource="{Binding PastResults}"
-                                RefreshCommand="{Binding LoadItemsCommand}"
-                                IsPullToRefreshEnabled="true"
-                                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                                ItemTapped="Handle_ItemTapped"
-                                CachingStrategy="RecycleElement"
-                                HasUnevenRows="true">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <datatemplate:PlayerResultViewCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                SelectionMode="Single"
+                                SelectionChanged="ActiveListView_SelectionChanged"
+                                ItemTemplate="{StaticResource PlayerResultDataTemplate}" />
             </tabView:SfTabItem.Content>
         </tabView:SfTabItem>
     </tabView:SfTabView>
