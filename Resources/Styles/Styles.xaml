@@ -88,4 +88,8 @@
         <Setter Property="BackgroundColor"  Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
         <Setter Property="VerticalOptions" Value="End" />
     </Style>
+
+    <Style TargetType="ActivityIndicator">
+        <Setter Property="HeightRequest" Value="40" />        
+    </Style>
 </ResourceDictionary>
