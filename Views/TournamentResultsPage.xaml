@@ -4,10 +4,12 @@
              xmlns:local="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.TournamentResultsPage"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{Binding Title}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />           
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
         <DataTemplate x:Name="BottomSheetTemplate" x:Key="BottomSheetTemplate">            
             <Grid Padding="10,10,10,10" VerticalOptions="Center" RowSpacing="5">
@@ -97,9 +99,11 @@
         <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="{fluent:Icon Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
         <CollectionView x:Name="MyListView"
             ItemsSource="{Binding Results}"
-            SelectionChanged="MyListView_SelectionChanged"
+            SelectionChanged="MyListView_SelectionChanged"                        
+            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"  
             SelectionMode="Single">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
