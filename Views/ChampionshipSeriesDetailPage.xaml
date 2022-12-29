@@ -3,22 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Ifpa.Converters"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-             x:Class="Ifpa.Views.ChampionshipSeriesDetailPage"
+             x:Class="Ifpa.Views.ChampionshipSeriesDetailPage"             
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"     
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <tabView:SfTabView Style="{StaticResource TabView}"
+                           IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+            <tabView:SfTabView.Items>
+                <tabView:SfTabItem Header="Standings">
+                    <tabView:SfTabItem.Content>
 
-    <tabView:SfTabView Style="{StaticResource TabView}">
-        <tabView:SfTabView.Items>
-            <tabView:SfTabItem Header="Standings">
-                <tabView:SfTabItem.Content>
-                    <RefreshView Command="{Binding LoadItemsCommand}"                        
-                        IsRefreshing="{Binding IsBusy, Mode=OneWay}">
                         <CollectionView
                         ItemsSource="{Binding RegionStandings.Standings}"                        
                         SelectionMode="Single"
@@ -69,13 +72,12 @@
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                    </RefreshView>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-            <tabView:SfTabItem Header="Tournaments">
-                <tabView:SfTabItem.Content>
-                    <RefreshView Command="{Binding LoadItemsCommand}"
-                        IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <tabView:SfTabItem Header="Tournaments">
+                    <tabView:SfTabItem.Content>
+
                         <CollectionView
                         SelectionChanged="TournamentResultsCollectionView_SelectionChanged"
                         SelectionMode="Single"
@@ -111,10 +113,10 @@
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                    </RefreshView>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-        </tabView:SfTabView.Items>
-    </tabView:SfTabView>
 
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+            </tabView:SfTabView.Items>
+        </tabView:SfTabView>
+    </Grid>
 </ContentPage>

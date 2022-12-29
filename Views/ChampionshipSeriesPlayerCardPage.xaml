@@ -3,30 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.ChampionshipSeriesPlayerCardPage"
              Title="{Binding Title}">
-    <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-        <CollectionView x:Name="MyListView"
+    <CollectionView x:Name="MyListView"
             ItemsSource="{Binding TournamentCardRecords}"
             SelectionMode="Single"
             SelectionChanged="MyListView_SelectionChanged">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <Grid ColumnSpacing="10" ColumnDefinitions="*, 120">
-                            <StackLayout Grid.Column="0" Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                                <Label FontSize="16" Text="{Binding TournamentName}" />
-                                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="10" Text="{Binding EventName}"  TextColor="{DynamicResource SecondaryTextColor}" />
-                            </StackLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <StackLayout>
+                    <Grid ColumnSpacing="10" ColumnDefinitions="*, 120">
+                        <StackLayout Grid.Column="0" Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                            <Label FontSize="16" Text="{Binding TournamentName}" />
+                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="10" Text="{Binding EventName}"  TextColor="{DynamicResource SecondaryTextColor}" />
+                        </StackLayout>
 
-                            <StackLayout Grid.Column="1" Orientation="Vertical" Padding="10" MinimumWidthRequest="100" HorizontalOptions="End" VerticalOptions="Center">
-                                <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding EventEndDate, StringFormat='{0:d}'}" />
-                                <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}"  TextColor="{DynamicResource SecondaryTextColor}" />
-                            </StackLayout>
-                        </Grid>
+                        <StackLayout Grid.Column="1" Orientation="Vertical" Padding="10" MinimumWidthRequest="100" HorizontalOptions="End" VerticalOptions="Center">
+                            <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding EventEndDate, StringFormat='{0:d}'}" />
+                            <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}"  TextColor="{DynamicResource SecondaryTextColor}" />
+                        </StackLayout>
+                    </Grid>
 
-                        <BoxView Style="{StaticResource BoxSeperator}"/>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </RefreshView>
+                    <BoxView Style="{StaticResource BoxSeperator}"/>
+                </StackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>
