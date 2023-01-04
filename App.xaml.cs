@@ -1,4 +1,6 @@
-﻿using Microsoft.Maui.Handlers;
+﻿using Ifpa.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Maui.Handlers;
 using Plugin.LocalNotification;
 using Plugin.LocalNotification.EventArgs;
 using System.Web;
@@ -9,9 +11,13 @@ public partial class App : Application
 {
     //This service provider is so platform specific code like BackgroundReceiver can get NotificationService et al
     public static IServiceProvider ServiceProvider { get; set; }
+    protected AppSettings AppSettings { get; set; }
 
-    public App(IServiceProvider serviceProvider)
+    public App(IServiceProvider serviceProvider, IConfiguration config)
     {
+        AppSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppSettings.SyncFusionLicenseKey);
+
         InitializeComponent();
 
         MainPage = new AppShell();
