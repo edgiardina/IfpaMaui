@@ -7,6 +7,7 @@
              x:Class="Ifpa.Views.PlayerResultsPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}">
     <ContentPage.ToolbarItems>
@@ -15,39 +16,41 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <datatemplate:PlayerResultDataTemplate x:Key="PlayerResultDataTemplate" />
+        <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
     </ContentPage.Resources>
-
-    <tabView:SfTabView Style="{StaticResource TabView}">
-        <tabView:SfTabItem Header="Active">
-            <tabView:SfTabItem.Content>
-                <CollectionView x:Name="ActiveListView"
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <tabView:SfTabView Style="{StaticResource TabView}" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"  >
+            <tabView:SfTabItem Header="Active">
+                <tabView:SfTabItem.Content>
+                    <CollectionView x:Name="ActiveListView"
                                 ItemsSource="{Binding ActiveResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
                                 ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                 EmptyView="No active tournament results" />
-            </tabView:SfTabItem.Content>
-        </tabView:SfTabItem>
-        <tabView:SfTabItem Header="Unused">
-            <tabView:SfTabItem.Content>
-                <CollectionView x:Name="UnusedListView"
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Header="Unused">
+                <tabView:SfTabItem.Content>
+                    <CollectionView x:Name="UnusedListView"
                                 ItemsSource="{Binding UnusedResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
                                 ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                 EmptyView="No unused tournament results"/>
-            </tabView:SfTabItem.Content>
-        </tabView:SfTabItem>
-        <tabView:SfTabItem Header="Past">
-            <tabView:SfTabItem.Content>
-                <CollectionView x:Name="PastListView"
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+            <tabView:SfTabItem Header="Past">
+                <tabView:SfTabItem.Content>
+                    <CollectionView x:Name="PastListView"
                                 ItemsSource="{Binding PastResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
                                 ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                 EmptyView="No past tournament results"/>
-            </tabView:SfTabItem.Content>
-        </tabView:SfTabItem>
-    </tabView:SfTabView>
-
+                </tabView:SfTabItem.Content>
+            </tabView:SfTabItem>
+        </tabView:SfTabView>
+    </Grid>
 </ContentPage>
