@@ -27,6 +27,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
@@ -93,11 +94,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.0.1" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="4.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.52" />
-		<PackageReference Include="PinballApi" Version="2.0.86" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.58" />
+		<PackageReference Include="PinballApi" Version="2.1.0" />
 		<PackageReference Include="Plugin.LocalNotification" Version="10.0.2" />
 		<PackageReference Include="Scrutor" Version="4.2.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
@@ -105,10 +107,10 @@
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.2" />
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.2" />
 		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.2" />
-		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.4.41" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="20.4.41" />
-		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.4.41" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.4.41" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.4.44" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="20.4.44" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.4.44" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.4.44" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="7.0.0" />
 	</ItemGroup>
 

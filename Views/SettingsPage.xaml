@@ -27,11 +27,10 @@
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
-                                        CornerRadius="30"
                                         TextColor="{StaticResource ButtonTextColor}" />
                             <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
 
-                            <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}"  HorizontalOptions="End" Clicked="Button_Clicked" />
+                            <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
                         </StackLayout>
                     </ViewCell>
                 </TableSection>
