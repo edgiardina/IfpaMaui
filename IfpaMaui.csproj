@@ -28,12 +28,6 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
-	
-	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
-		<CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
-		<CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
-		<ProvisioningType>automatic</ProvisioningType>
-	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
