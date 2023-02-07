@@ -20,17 +20,6 @@ namespace Ifpa.Views
             BindingContext = this.viewModel = viewModel;
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            var state = e.Item as ChampionshipSeries;
-            if (state == null)
-                return;
-
-            await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={state.SeriesCode}&regionCode={state.RegionCode}&year={state.Year}");
-
-            //Deselect Item
-            ((ListView)sender).SelectedItem = null;
-        }
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -39,6 +28,18 @@ namespace Ifpa.Views
 
             if (viewModel.ChampionshipSeries.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
-        }  
+        }
+
+        private async void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var state = e.CurrentSelection.FirstOrDefault() as ChampionshipSeries;
+            if (state == null)
+                return;
+
+            await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={state.SeriesCode}&regionCode={state.RegionCode}&year={state.Year}");
+
+            //Deselect Item
+            ((CollectionView)sender).SelectedItem = null;
+        }
     }
 }

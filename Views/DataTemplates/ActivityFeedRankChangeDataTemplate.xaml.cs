@@ -10,9 +10,9 @@ using Microsoft.Maui;
 namespace Ifpa.Views.DataTemplates
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ActivityFeedRankChangeViewCell : ViewCell
+	public partial class ActivityFeedRankChangeDataTemplate : DataTemplate
 	{
-		public ActivityFeedRankChangeViewCell ()
+		public ActivityFeedRankChangeDataTemplate()
 		{
 			InitializeComponent ();
 		}

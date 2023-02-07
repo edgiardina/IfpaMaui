@@ -8,13 +8,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui;
 using Microsoft.Extensions.Configuration;
+using System.Windows.Input;
 
 namespace Ifpa.ViewModels
 {
     public class ChampionshipSeriesViewModel : BaseViewModel
     {
         public ObservableCollection<SeriesOverallResult> SeriesOverallResults { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        public ICommand LoadItemsCommand { get; set; }
 
         public List<int> AvailableYears { get; set; }
 

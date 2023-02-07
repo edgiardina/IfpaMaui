@@ -9,7 +9,6 @@
              x:Name="SearchPlayersPage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
             <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
@@ -18,56 +17,44 @@
             </toolkit:MultiConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Label Margin="10,0,10,0"
-                IsVisible="{Binding IsPopulated, Converter={StaticResource invertedBoolConverter}}"
-                VerticalTextAlignment="Center"
-                HorizontalTextAlignment="Center"
-                FontAttributes="Italic"
-                Text="You have no favorite players selected. Use the heart icon to add a player to your favorites." />
-            
-            <ListView x:Name="PlayersListView" 
-                      IsVisible="{Binding IsPopulated}"
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <CollectionView x:Name="PlayersListView" 
+                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding Players}"
                         VerticalOptions="FillAndExpand"
-                         HasUnevenRows="true"
-                         RefreshCommand="{Binding LoadItemsCommand}"
-                         IsPullToRefreshEnabled="true"
-                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
-                         ItemSelected="OnItemSelected">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Padding="15,10" Orientation="Horizontal" >
-                                <StackLayout Orientation="Vertical">
-                                    <Label LineBreakMode="NoWrap"  FontSize="16">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding FirstName}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding LastName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
+                        SelectionMode="Single" 
+                        EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites."
+                        SelectionChanged="PlayersListView_SelectionChanged">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout>
+                        <StackLayout Padding="15,10" Orientation="Horizontal" >
+                            <StackLayout Orientation="Vertical">
+                                <Label LineBreakMode="NoWrap"  FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="{Binding FirstName}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding LastName}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
 
-                                    <controls:CityStateCountryView />
-                                </StackLayout>
-                                <controls:PlayerRankLabel HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
+                                <controls:CityStateCountryView />
+                            </StackLayout>
+                            <controls:PlayerRankLabel HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
                                    Rank="{Binding PlayerStats.CurrentWpprRank}" 
                                    LineBreakMode="NoWrap"                                     
                                    FontSize="18" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
-    </ContentPage.Content>
+                        </StackLayout>
+                        
+                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

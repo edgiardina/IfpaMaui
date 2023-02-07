@@ -28,17 +28,6 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            var tournamentCardRecord = e.Item as PlayerCard;
-            if (tournamentCardRecord == null)
-                return;
-
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={tournamentCardRecord.TournamentId}");
-
-            ////Deselect Item
-            ((ListView)sender).SelectedItem = null;
-        }
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -52,6 +41,18 @@ namespace Ifpa.Views
 
                 ViewModel.LoadItemsCommand.Execute(null);
             }
-        }  
+        }
+
+        private async void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var tournamentCardRecord = e.CurrentSelection.FirstOrDefault() as PlayerCard;
+            if (tournamentCardRecord == null)
+                return;
+
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={tournamentCardRecord.TournamentId}");
+
+            ////Deselect Item
+            ((CollectionView)sender).SelectedItem = null;
+        }
     }
 }

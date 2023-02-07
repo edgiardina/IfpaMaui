@@ -18,21 +18,6 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            
-            var tournament = e.Item as TournamentResult;
-            if (tournament == null)
-                return;
-
-            if (tournament.PlayerId.HasValue)
-            {
-                await Shell.Current.GoToAsync($"player-details?playerId={tournament.PlayerId.Value}");
-            }
-
-            //Deselect Item
-            ((ListView)sender).SelectedItem = null;
-        }
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -61,5 +46,19 @@ namespace Ifpa.Views
             await Navigation.PushModalAsync(infoPage);
         }
 
+        private async void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var tournament = e.CurrentSelection.FirstOrDefault() as TournamentResult;
+            if (tournament == null)
+                return;
+
+            if (tournament.PlayerId.HasValue)
+            {
+                await Shell.Current.GoToAsync($"player-details?playerId={tournament.PlayerId.Value}");
+            }
+
+            //Deselect Item
+            ((CollectionView)sender).SelectedItem = null;
+        }
     }
 }

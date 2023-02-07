@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ViewCell xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
           xmlns:local="clr-namespace:Ifpa.Converters"
-          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-          x:Class="Ifpa.Views.DataTemplates.PlayerResultViewCell">
-    <ViewCell.View>
-        <VerticalStackLayout Padding="10">
+          x:Class="Ifpa.Views.DataTemplates.PlayerResultDataTemplate">
+    <VerticalStackLayout>
+        <VerticalStackLayout Padding="15,10">
             <VerticalStackLayout.Resources>
                 <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             </VerticalStackLayout.Resources>
@@ -19,6 +18,8 @@
                 <Label Grid.Column="1" Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" HorizontalTextAlignment="Center" />
                 <Label Grid.Column="2" LineBreakMode="NoWrap" HorizontalTextAlignment="End" FontSize="12" Text="{Binding CurrentPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
             </Grid>
+
         </VerticalStackLayout>
-    </ViewCell.View>
-</ViewCell>
+        <BoxView Style="{StaticResource BoxSeperator}"/>
+    </VerticalStackLayout>
+</DataTemplate>

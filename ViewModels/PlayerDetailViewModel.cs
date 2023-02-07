@@ -76,7 +76,7 @@ namespace Ifpa.ViewModels
                 if (PlayerRecord.ProfilePhoto != null)
                     return PlayerRecord.ProfilePhoto?.ToString();
                 else
-                    return AppSettings.PlayerProfileNoPicUrl;
+                    return AppSettings.IfpaPlayerNoProfilePicUrl;
             }
         }
 

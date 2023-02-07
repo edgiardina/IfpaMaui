@@ -105,9 +105,12 @@ namespace Ifpa.ViewModels
                     ShowOverallRank = false;
 
                     var items = await PinballRankingApiV2.GetWpprRanking(StartingPosition, CountOfItemsToFetch);
-                    foreach (var item in items.Rankings)
+                    if (items.Rankings != null)
                     {
-                        Players.Add(item);
+                        foreach (var item in items.Rankings)
+                        {
+                            Players.Add(item);
+                        }
                     }
                 }
                 else if(CurrentRankingType == RankingType.Women)
@@ -116,9 +119,12 @@ namespace Ifpa.ViewModels
                     ShowOverallRank = CurrentTournamentType == TournamentType.Open;
 
                     var items = await PinballRankingApiV2.GetRankingForWomen(CurrentTournamentType, StartingPosition, CountOfItemsToFetch);
-                    foreach (var item in items.Rankings)
+                    if (items.Rankings != null)
                     {
-                        Players.Add(item);
+                        foreach (var item in items.Rankings)
+                        {
+                            Players.Add(item);
+                        }
                     }
                 }
                 else if (CurrentRankingType == RankingType.Youth)
@@ -126,9 +132,12 @@ namespace Ifpa.ViewModels
                     ShowOverallRank = true;
 
                     var items = await PinballRankingApiV2.GetRankingForYouth(StartingPosition, CountOfItemsToFetch);
-                    foreach (var item in items.Rankings)
+                    if (items.Rankings != null)
                     {
-                        Players.Add(item);
+                        foreach (var item in items.Rankings)
+                        {
+                            Players.Add(item);
+                        }
                     }
                 }
                 else if (CurrentRankingType == RankingType.Country)
@@ -136,11 +145,14 @@ namespace Ifpa.ViewModels
                     ShowOverallRank = true;
 
                     var items = await PinballRankingApiV2.GetRankingForCountry(CountryToShow.CountryName, StartingPosition, CountOfItemsToFetch);
-                    foreach (var item in items.Rankings)
+                    if (items.Rankings != null)
                     {
-                        //TODO: this is a hack because we can't seem to get DataTriggers to work right for enum value(s) of CurrentRankingType
-                        item.CurrentRank = item.CountryRank;
-                        Players.Add(item);
+                        foreach (var item in items.Rankings)
+                        {
+                            //TODO: this is a hack because we can't seem to get DataTriggers to work right for enum value(s) of CurrentRankingType
+                            item.CurrentRank = item.CountryRank;
+                            Players.Add(item);
+                        }
                     }
                 }
                 //else if (CurrentRankingType == RankingType.Elite)

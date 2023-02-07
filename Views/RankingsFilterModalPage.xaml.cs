@@ -49,7 +49,6 @@ namespace Ifpa.Views
             if (viewModel.Countries.Count > 0 && !viewModel.IsBusy)
             {
                 Preferences.Set("CountryName", viewModel.CountryToShow.CountryName);
-                viewModel.LoadItemsCommand.Execute(null);
             }
         }
 
@@ -59,13 +58,15 @@ namespace Ifpa.Views
             {
                 Preferences.Set("PlayerCount", viewModel.CountOfItemsToFetch);
                 Preferences.Set("StartingRank", viewModel.StartingPosition);
-                viewModel.LoadItemsCommand.Execute(null);
             }
         }
 
         private void RankingType_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            var selectedType = (RankingType)Enum.Parse(typeof(RankingType), ((Picker)sender).SelectedItem as string);
+            var selectedType =
+                ((Picker)sender).SelectedItem is string ?
+                (RankingType)Enum.Parse(typeof(RankingType), ((Picker)sender).SelectedItem as string) :
+                (RankingType)((Picker)sender).SelectedItem;
 
             if (selectedType == RankingType.Country)
             {
@@ -92,9 +93,7 @@ namespace Ifpa.Views
 
             viewModel.CurrentRankingType = selectedType;
 
-            Preferences.Set("RankingType", viewModel.CurrentRankingType.ToString());
-
-            viewModel.LoadItemsCommand.Execute(null);
+            Preferences.Set("RankingType", viewModel.CurrentRankingType.ToString());           
         }
 
         private void TypePicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -102,12 +101,12 @@ namespace Ifpa.Views
             viewModel.CurrentTournamentType = (TournamentType)Enum.Parse(typeof(TournamentType), ((Picker)sender).SelectedItem as string);
 
             Preferences.Set("TournamentType", viewModel.CurrentTournamentType.ToString());
-            viewModel.LoadItemsCommand.Execute(null);
-
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
+            await Task.Run(() => viewModel.LoadItemsCommand.Execute(null));
+
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
         }

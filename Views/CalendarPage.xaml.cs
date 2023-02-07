@@ -109,23 +109,12 @@ namespace Ifpa.Views
             //TODO: on pinpress scroll listview to find item. 
             pin.MarkerClicked += (sender, e) =>
             {
-                TournamentListView.ScrollTo(detail, ScrollToPosition.MakeVisible, true);
+                TournamentListView.ScrollTo(ViewModel.CalendarDetails.IndexOf(detail), position: ScrollToPosition.MakeVisible, animate: true);
             };
 
             calendarMap.Pins.Add(pin);
         }
 
-        private async void TournamentListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var calendar = e.SelectedItem as CalendarDetails;
-            if (calendar == null)
-                return;
-
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendar.CalendarId}");
-
-            // Manually deselect item.
-            TournamentListView.SelectedItem = null;
-        }
 
         private void ToggleView_Clicked(object sender, EventArgs e)
         {
@@ -158,6 +147,18 @@ namespace Ifpa.Views
 
                 await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendar.CalendarId}");
             }
+        }
+
+        private async void TournamentListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var calendar = e.CurrentSelection.FirstOrDefault() as CalendarDetails;
+            if (calendar == null)
+                return;
+
+            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendar.CalendarId}");
+
+            // Manually deselect item.
+            TournamentListView.SelectedItem = null;
         }
     }
 }
