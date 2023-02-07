@@ -33,7 +33,6 @@
 	  <CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
 	  <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
 	</PropertyGroup>
-
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
