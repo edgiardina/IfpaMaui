@@ -93,7 +93,5 @@
     <Style TargetType="ActivityIndicator">
         <Setter Property="HeightRequest" Value="40" />        
     </Style>
-    <Style TargetType="toolkit:AvatarView">
-        <Setter Property="CornerRadius" Value="8" />
-    </Style>
+
 </ResourceDictionary>

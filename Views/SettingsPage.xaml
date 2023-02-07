@@ -22,11 +22,12 @@
                 </TableSection>
                 <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
                     <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                        <StackLayout Orientation="Horizontal" Margin="15">
-                            <toolkit:AvatarView Grid.Column="1" ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
+                        <StackLayout Orientation="Horizontal" Margin="10">
+                            <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
+                                        CornerRadius="8"
                                         TextColor="{StaticResource ButtonTextColor}" />
                             <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
 
