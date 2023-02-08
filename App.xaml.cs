@@ -1,30 +1,39 @@
 ﻿using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Handlers;
+using Shiny.Notifications;
 using System.Web;
 
 namespace Ifpa;
 
 public partial class App : Application
 {
-    //This service provider is so platform specific code like BackgroundReceiver can get NotificationService et al
-    public static IServiceProvider ServiceProvider { get; set; }
-    protected AppSettings AppSettings { get; set; }
 
-    public App(IServiceProvider serviceProvider, IConfiguration config)
+    protected AppSettings AppSettings { get; set; }
+    protected INotificationManager NotificationManager { get; set; }
+
+    public App(IConfiguration config, INotificationManager notificationManager)
     {
         AppSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppSettings.SyncFusionLicenseKey);
+
+        NotificationManager = notificationManager;
 
         InitializeComponent();
 
         MainPage = new AppShell();
 
-        ServiceProvider = serviceProvider;
-
         //LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
     }
-        
+
+    protected override async void OnStart()
+    {
+        base.OnStart();
+
+        var t = await NotificationManager.RequestAccess();
+
+    }
+
     public static void HandleAppActions(AppAction appAction)
     {
         App.Current.Dispatcher.Dispatch(async () =>
