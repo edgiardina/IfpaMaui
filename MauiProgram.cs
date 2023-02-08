@@ -75,23 +75,25 @@ public static class MauiProgram
 
         s.AddSingleton(appSettings);
 
-        //TODO: PinballrankingsApi should support IOptions
-        var pinballRankingApiV1 = new PinballRankingApiV1(appSettings.IfpaApiKey);
-        s.AddSingleton(pinballRankingApiV1);
-
-        var pinballRankingApiV2 = new PinballRankingApiV2(appSettings.IfpaApiKey);
-        s.AddSingleton(pinballRankingApiV2);
-
         return builder;
     }
 
     static MauiAppBuilder RegisterIfpaServices(this MauiAppBuilder builder)
     {
         var s = builder.Services;
+        var c = builder.Configuration;
+        var appSettings = c.GetRequiredSection("AppSettings").Get<AppSettings>();
 
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
         s.AddTransient<IReminderService, ReminderService>();
+
+        //TODO: PinballrankingsApi should support IOptions
+        var pinballRankingApiV1 = new PinballRankingApiV1(appSettings.IfpaApiKey);
+        s.AddSingleton(pinballRankingApiV1);
+
+        var pinballRankingApiV2 = new PinballRankingApiV2(appSettings.IfpaApiKey);
+        s.AddSingleton(pinballRankingApiV2);
 
         return builder;
     }
