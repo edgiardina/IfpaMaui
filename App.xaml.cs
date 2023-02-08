@@ -1,8 +1,6 @@
 ﻿using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Handlers;
-using Plugin.LocalNotification;
-using Plugin.LocalNotification.EventArgs;
 using System.Web;
 
 namespace Ifpa;
@@ -24,7 +22,7 @@ public partial class App : Application
 
         ServiceProvider = serviceProvider;
 
-        LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
+        //LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
     }
         
     public static void HandleAppActions(AppAction appAction)
@@ -63,8 +61,8 @@ public partial class App : Application
         }
     }
 
-    private async void OnNotificationActionTapped(NotificationEventArgs e)
-    {
-        await Shell.Current.GoToAsync(e.Request.ReturningData);
-    }
+    //private async void OnNotificationActionTapped(NotificationEventArgs e)
+    //{
+    //    await Shell.Current.GoToAsync(e.Request.ReturningData);
+    //}
 }

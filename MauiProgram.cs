@@ -34,9 +34,10 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
-            .ConfigureMauiHandlers((handlers) => {
+            .ConfigureMauiHandlers((handlers) =>
+            {
 #if IOS
-               handlers.AddHandler(typeof(InsetTableView), typeof(Ifpa.iOS.Renderers.InsetTableViewRenderer)); 
+                handlers.AddHandler(typeof(InsetTableView), typeof(iOS.Renderers.InsetTableViewRenderer));
 #endif
             })
             .ConfigureEssentials(essentials =>
@@ -51,20 +52,36 @@ public static class MauiProgram
                 essentials.UseVersionTracking();
             })
             .RegisterShinyServices()
-            .Services
-                //Add all viewmodels
-                .AddAllFromNamespace<ViewModels.BaseViewModel>()
-                //Add all pages
-                .AddAllFromNamespace<RankingsPage>()
-                //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
-                //and RankingsFilterPage
-                .AddSingleton<RankingsViewModel>()
-                //Services
-                .AddSingleton<BlogPostService>()
-                .AddSingleton<NotificationService>()
-                .AddTransient<IReminderService, ReminderService>();
+            .RegisterIfpaModels()
+            .RegisterIfpaServices();
 
         return builder.Build();
+    }
+
+    static MauiAppBuilder RegisterIfpaModels(this MauiAppBuilder builder)
+    {
+        var s = builder.Services;
+
+        //Add all viewmodels
+        s.AddAllFromNamespace<BaseViewModel>();
+        //Add all pages
+        s.AddAllFromNamespace<RankingsPage>();
+        //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
+        //and RankingsFilterPage
+        s.AddSingleton<RankingsViewModel>();       
+
+        return builder;
+    }
+
+    static MauiAppBuilder RegisterIfpaServices(this MauiAppBuilder builder)
+    {
+        var s = builder.Services;
+
+        s.AddSingleton<BlogPostService>();
+        s.AddSingleton<NotificationService>();
+        s.AddTransient<IReminderService, ReminderService>();
+
+        return builder;
     }
 
     static MauiAppBuilder RegisterShinyServices(this MauiAppBuilder builder)

@@ -1,20 +1,22 @@
-﻿using Shiny.Jobs;
+﻿using Ifpa.Services;
+using Shiny.Jobs;
 
 namespace Ifpa.BackgroundJobs
 {
     public class NotificationJob : IJob
     {
+        public NotificationService notificationService { get; set; }
+
+        public NotificationJob(NotificationService notificationService)
+        {
+            this.notificationService = notificationService;
+        }
+
         public async Task Run(JobInfo jobInfo, CancellationToken cancelToken)
         {
-            //var loops = jobInfo.GetValue("LoopCount", 25);
-
-            //for (var i = 0; i < loops; i++)
-            //{
-            //    if (cancelToken.IsCancellationRequested)
-            //        break;
-
-            //    await Task.Delay(1000, cancelToken).ConfigureAwait(false);
-            //}
+            await notificationService.NotifyIfUsersRankChanged();
+            await notificationService.NotifyIfUserHasNewlySubmittedTourneyResults();
+            await notificationService.NotifyIfNewBlogItemPosted();
 
         }
     }
