@@ -1,16 +1,15 @@
 ﻿using Ifpa.ViewModels;
 using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
-using System.Reflection;
 using Ifpa.Views;
 using Syncfusion.Maui.Core.Hosting;
 using CommunityToolkit.Maui;
 using Ifpa.Services;
 using Ifpa.Interfaces;
-using Microsoft.Maui.LifecycleEvents;
 using MauiIcons.Fluent;
+using Ifpa.BackgroundJobs;
 using Ifpa.Controls;
-using Microsoft.Maui.Controls.Compatibility.Hosting;
+using Shiny.Infrastructure;
 
 namespace Ifpa;
 
@@ -19,11 +18,16 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
+
+        //pull in appsettings.json
+        builder.Configuration.AddJsonPlatformBundle();
+
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
             .UseFluentMauiIcons()
+            .UseShiny()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
@@ -46,24 +50,10 @@ public static class MauiProgram
 
                 essentials.UseVersionTracking();
             })
-            .ConfigureLifecycleEvents(events =>
-            {
-                //Set up android Background Recevier
-                //https://stackoverflow.com/questions/71766108/how-to-use-a-broadcastreceiver-from-net-maui-on-android
-#if ANDROID
-                events.AddAndroid(android => android
-                      .OnCreate((activity, bundle) => Ifpa.Platforms.Droid.AndroidAlarmManager.CreateAlarm()));                      
-#elif IOS
-                //events.AddiOS(ios => ios.DidEnterBackground*);    
-                
-#endif
-
-
-            })
-            //.UseLocalNotification()
+            .RegisterShinyServices()
             .Services
                 //Add all viewmodels
-                .AddAllFromNamespace<BaseViewModel>()
+                .AddAllFromNamespace<ViewModels.BaseViewModel>()
                 //Add all pages
                 .AddAllFromNamespace<RankingsPage>()
                 //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
@@ -73,18 +63,23 @@ public static class MauiProgram
                 .AddSingleton<BlogPostService>()
                 .AddSingleton<NotificationService>()
                 .AddTransient<IReminderService, ReminderService>();
-        
-
-        var a = Assembly.GetExecutingAssembly();
-        using var stream = a.GetManifestResourceStream("Ifpa.appsettings.json");
-
-        var config = new ConfigurationBuilder()
-                    .AddJsonStream(stream)
-                    .Build();
-
-        builder.Configuration.AddConfiguration(config);
 
         return builder.Build();
+    }
+
+    static MauiAppBuilder RegisterShinyServices(this MauiAppBuilder builder)
+    {
+        var s = builder.Services;
+
+        s.AddJobs();
+        s.AddShinyCoreServices();
+
+        s.AddJob(typeof(NotificationJob));
+
+        // shiny.notifications
+        s.AddNotifications();
+
+        return builder;
     }
 
 }

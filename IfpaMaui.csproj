@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+		<!--<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>-->
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
@@ -24,15 +24,20 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
 		<UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
 	  <CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
 	  <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
@@ -83,7 +88,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="appsettings.json" />
+		<MauiAsset Include="appsettings.json" />
 		<EmbeddedResource Include="Controls\PlayerRankLabel.xaml">
 		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 		</EmbeddedResource>
@@ -99,7 +104,11 @@
 		<PackageReference Include="PinballApi" Version="2.1.0" />
 		<PackageReference Include="Plugin.LocalNotification" Version="10.0.2" />
 		<PackageReference Include="Scrutor" Version="4.2.0" />
-		<PackageReference Include="Shiny.Jobs" Version="3.0.0-alpha-0496" />
+		<PackageReference Include="Shiny.Core" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Jobs" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Notifications" Version="$(ShinyVersion)" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.2" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.2" />
@@ -219,5 +228,4 @@
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
-
 </Project>
