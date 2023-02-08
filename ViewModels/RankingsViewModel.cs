@@ -1,10 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using Ifpa.Models;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2;
-using Microsoft.Extensions.Configuration;
 using System.Windows.Input;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -57,7 +56,7 @@ namespace Ifpa.ViewModels
 
         public readonly Country DefaultCountry = new Country { CountryName = "United States" };        
 
-        public RankingsViewModel(IConfiguration config) : base(config)
+        public RankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Rankings";
             CountOfItemsToFetch = 100;

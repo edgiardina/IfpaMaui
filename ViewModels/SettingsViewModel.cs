@@ -1,5 +1,5 @@
 ﻿using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Diagnostics;
@@ -8,6 +8,8 @@ namespace Ifpa.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
+        AppSettings AppSettings;
+        
         private Player playerRecord = new Player { PlayerStats = new PinballApi.Models.WPPR.v1.Players.PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
         public string PlayerAvatar
@@ -21,9 +23,9 @@ namespace Ifpa.ViewModels
             }
         }
 
-        public SettingsViewModel(IConfiguration config) : base(config)
+        public SettingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
-
+            AppSettings = appSettings;
         }
 
         public async Task LoadPlayer()

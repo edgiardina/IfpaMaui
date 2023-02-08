@@ -14,9 +14,12 @@ namespace Ifpa.BackgroundJobs
 
         public async Task Run(JobInfo jobInfo, CancellationToken cancelToken)
         {
-            await notificationService.NotifyIfUsersRankChanged();
-            await notificationService.NotifyIfUserHasNewlySubmittedTourneyResults();
-            await notificationService.NotifyIfNewBlogItemPosted();
+            if (jobInfo.PeriodicTime != null)
+            {
+                await notificationService.NotifyIfUsersRankChanged();
+                await notificationService.NotifyIfUserHasNewlySubmittedTourneyResults();
+                await notificationService.NotifyIfNewBlogItemPosted();
+            }
 
         }
     }

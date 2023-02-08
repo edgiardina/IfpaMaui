@@ -3,6 +3,7 @@ using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Ifpa.ViewModels
 
         public Command LoadItemsCommand { get; set; }
 
-        public CalendarViewModel(IConfiguration config) : base(config)
+        public CalendarViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Calendar";
             CalendarDetails = new ObservableCollectionRange<CalendarDetails>();      

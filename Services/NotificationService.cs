@@ -8,16 +8,13 @@ namespace Ifpa.Services
 {
     public class NotificationService
     {
-        protected AppSettings AppSettings { get; set; }
         protected BlogPostService BlogPostService { get; set; }
 
         readonly INotificationManager notificationManager;
 
-        public NotificationService(IConfiguration config, BlogPostService blogPostService, INotificationManager notificationManager)
+        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager)
         {
-            AppSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
-
-            PinballRankingApi = new PinballRankingApiV1(AppSettings.IfpaApiKey);
+            PinballRankingApi = pinballRankingApi;
 
             BlogPostService = blogPostService;
             this.notificationManager = notificationManager;
@@ -164,11 +161,14 @@ namespace Ifpa.Services
 
         public async Task SendNotification(string title, string description, string url)
         {
+            var payload = new Dictionary<string, string>();
+            payload.Add("url", url);
+
             var notification = new Notification
             {
                 Title = title,
                 Message = description,
-                //ReturningData = url
+                Payload = payload
             };
 
             var result = await notificationManager.RequestRequiredAccess(notification);

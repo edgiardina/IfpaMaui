@@ -10,6 +10,7 @@ using MauiIcons.Fluent;
 using Ifpa.BackgroundJobs;
 using Ifpa.Controls;
 using Shiny.Infrastructure;
+using PinballApi;
 
 namespace Ifpa;
 
@@ -61,6 +62,8 @@ public static class MauiProgram
     static MauiAppBuilder RegisterIfpaModels(this MauiAppBuilder builder)
     {
         var s = builder.Services;
+        var c = builder.Configuration;
+        var appSettings = c.GetRequiredSection("AppSettings").Get<AppSettings>();
 
         //Add all viewmodels
         s.AddAllFromNamespace<BaseViewModel>();
@@ -68,7 +71,16 @@ public static class MauiProgram
         s.AddAllFromNamespace<RankingsPage>();
         //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
         //and RankingsFilterPage
-        s.AddSingleton<RankingsViewModel>();       
+        s.AddSingleton<RankingsViewModel>();
+
+        s.AddSingleton(appSettings);
+
+        //TODO: PinballrankingsApi should support IOptions
+        var pinballRankingApiV1 = new PinballRankingApiV1(appSettings.IfpaApiKey);
+        s.AddSingleton(pinballRankingApiV1);
+
+        var pinballRankingApiV2 = new PinballRankingApiV2(appSettings.IfpaApiKey);
+        s.AddSingleton(pinballRankingApiV2);
 
         return builder;
     }

@@ -1,12 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Ifpa.Models;
+using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {
-        public AboutViewModel(IConfiguration config) : base(config)
-        {
+        AppSettings AppSettings { get; set; }
 
+        public AboutViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings) : base(pinballRankingApiV1, pinballRankingApiV2)
+        {
+            AppSettings = appSettings;
         }
         //TODO: when it's ported to MAUI, use store review plugin
         public async Task OpenReview()

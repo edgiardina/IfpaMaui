@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Statistics;
 using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -22,7 +22,7 @@ namespace Ifpa.ViewModels
 
         public Command LoadItemsCommand { get; set; }
 
-        public StatsViewModel(IConfiguration config) : base(config)
+        public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Stats";
             PlayersByCountry = new ObservableCollection<PlayersByCountryStat>();

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Rankings;
 using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -12,7 +13,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsViewModel(IConfiguration config) : base(config)
+        public CustomRankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Custom Rankings";
             CustomRankings = new ObservableCollection<CustomRankingView>();

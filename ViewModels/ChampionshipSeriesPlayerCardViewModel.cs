@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Maui;
 using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -18,7 +19,7 @@ namespace Ifpa.ViewModels
         public string RegionCode { get; set; }
         public string SeriesCode { get; set; }
 
-        public ChampionshipSeriesPlayerCardViewModel(IConfiguration config) : base(config)
+        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             TournamentCardRecords = new ObservableCollection<PlayerCard>();
 
