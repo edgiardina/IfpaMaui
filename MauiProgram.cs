@@ -108,7 +108,7 @@ public static class MauiProgram
         s.AddJob(typeof(NotificationJob));
 
         // shiny.notifications
-        s.AddNotifications();
+        s.AddNotifications(typeof(NotificationDelegate));
 
         return builder;
     }

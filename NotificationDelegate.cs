@@ -2,7 +2,7 @@
 
 namespace Ifpa
 {
-    internal class NotificationDelegate : INotificationDelegate
+    public class NotificationDelegate : INotificationDelegate
     {
         public async Task OnEntry(NotificationResponse response)
         {
