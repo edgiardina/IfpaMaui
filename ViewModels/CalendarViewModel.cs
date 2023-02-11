@@ -21,10 +21,7 @@ namespace Ifpa.ViewModels
         }
 
         public async Task ExecuteLoadItemsCommand(string address, int distance)
-        {
-            if (IsBusy)
-                return;
-
+        {           
             IsBusy = true;
 
             try

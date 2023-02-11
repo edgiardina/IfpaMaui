@@ -34,7 +34,7 @@ namespace Ifpa.Views
                     _ = await Geocoding.GetLocationsAsync("Boston, MA");
                 }
 
-                MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Distance.FromKilometers(1));
+                MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
                 calendarMap.MoveToRegion(mapSpan);
                 var pin = new Pin
                 {

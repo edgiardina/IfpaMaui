@@ -21,7 +21,7 @@ namespace Ifpa.Views
     public partial class CalendarPage : ContentPage
     {
         public CalendarViewModel ViewModel { get; set; }
-        
+
         public CalendarPageView View { get; set; }
 
         public CalendarPage(CalendarViewModel viewModel)
@@ -29,6 +29,7 @@ namespace Ifpa.Views
             InitializeComponent();
 
             BindingContext = ViewModel = viewModel;
+            viewModel.IsBusy = true;
         }
 
         protected async override void OnAppearing()
@@ -36,7 +37,7 @@ namespace Ifpa.Views
             base.OnAppearing();
 
             if (ViewModel.CalendarDetails.Count == 0)
-            {                
+            {
                 await UpdateCalendarData();
             }
 
@@ -63,38 +64,33 @@ namespace Ifpa.Views
 
         private async Task UpdateCalendarData()
         {
-            if (!IsBusy)
+            try
             {
-                try
+                var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
+                var distance = Preferences.Get("LastCalendarDistance", 150);
+
+                Preferences.Set("LastCalendarLocation", location);
+                Preferences.Set("LastCalendarDistance", distance);
+
+                calendarMap.Pins.Clear();
+
+                var geoLocation = await Geocoding.GetLocationsAsync(location);
+                calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                                                                        Microsoft.Maui.Maps.Distance.FromMiles(distance)));
+
+                await ViewModel.ExecuteLoadItemsCommand(location, distance);
+
+                List<Task> listOfTasks = new List<Task>();
+                foreach (var detail in ViewModel.CalendarDetails)
                 {
-                    var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
-                    var distance = Preferences.Get("LastCalendarDistance", 150);
-
-                    Preferences.Set("LastCalendarLocation", location);
-                    Preferences.Set("LastCalendarDistance", distance);
-                    
-                    calendarMap.Pins.Clear();
-
-                    var geoLocation = await Geocoding.GetLocationsAsync(location);
-                    calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude), 
-                                                                            Distance.FromMiles(distance)));
-                    
-                    await ViewModel.ExecuteLoadItemsCommand(location, distance);
-
-                    List<Task> listOfTasks = new List<Task>();
-                    foreach (var detail in ViewModel.CalendarDetails)
-                    {
-                       listOfTasks.Add(LoadEventOntoCalendar(detail));
-                    }
-                    await Task.WhenAll(listOfTasks);
+                    listOfTasks.Add(LoadEventOntoCalendar(detail));
                 }
-                catch (Exception e)
-                {
-                    //don't let the calendar crash our entire app
-                    Debug.WriteLine(e.Message);
-                }
-
-                IsBusy = false;
+                await Task.WhenAll(listOfTasks);
+            }
+            catch (Exception e)
+            {
+                //don't let the calendar crash our entire app
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -139,7 +135,7 @@ namespace Ifpa.Views
 
         private async void calendar_Tapped(object sender, Syncfusion.Maui.Scheduler.SchedulerTappedEventArgs e)
         {
-            if(e.Appointments != null && e.Appointments.Any())
+            if (e.Appointments != null && e.Appointments.Any())
             {
                 var calendar = e.Appointments.First() as InlineCalendarItem;
                 if (calendar == null)

@@ -5,6 +5,8 @@
              xmlns:controls="clr-namespace:Ifpa.Views.Controls"
              x:Class="Ifpa.Views.CalendarPage"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             IsBusy="{Binding IsBusy}"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="Calendar">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -12,6 +14,7 @@
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
                 <Setter Property="FontSize" Value="200"/>
             </Style>
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -19,57 +22,60 @@
         <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
-        <Grid x:Name="MapLayout" RowDefinitions="*,*" >
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <Grid IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+            <Grid x:Name="MapLayout" RowDefinitions="*,*" >
 
-            <Map x:Name="calendarMap" MapType="Street" Grid.Row="0" />
+                <Map x:Name="calendarMap" MapType="Street" Grid.Row="0" />
 
-            <CollectionView x:Name="TournamentListView" 
+                <CollectionView x:Name="TournamentListView" 
                                  Grid.Row="1"
                     ItemsSource="{Binding CalendarDetails}"         
                     SelectionMode="Single"
                     SelectionChanged="TournamentListView_SelectionChanged">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <VerticalStackLayout>
-                            <Grid Margin="10" ColumnSpacing="10" ColumnDefinitions="*,90">
-                                <Label Grid.Column="0" Text="{Binding TournamentName}" />
-                                <Label Grid.Column="1" MinimumWidthRequest="90" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}" 
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout>
+                                <Grid Margin="10" ColumnSpacing="10" ColumnDefinitions="*,90">
+                                    <Label Grid.Column="0" Text="{Binding TournamentName}" />
+                                    <Label Grid.Column="1" MinimumWidthRequest="90" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}" 
                                        Text="{Binding EndDate, StringFormat='{0:d}'}" LineBreakMode="NoWrap" />
-                            </Grid>
+                                </Grid>
 
-                            <BoxView Style="{StaticResource BoxSeperator}"/>
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                <BoxView Style="{StaticResource BoxSeperator}"/>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-        </Grid>
-        <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
+            </Grid>
+            <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
                                 MinimumDateTime="{Binding DateTime.Today}"
                                 View="Month"                                                               
                                 AppointmentsSource="{Binding TournamentCalenderItems, Mode=OneWay}" 
                                Tapped="calendar_Tapped"
                                 BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
-            <scheduler:SfScheduler.MonthView>
-                <scheduler:SchedulerMonthView>
-                    <scheduler:SchedulerMonthView.ViewHeaderTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Label x:Name="label" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding StringFormat='{0:ddd}'}" 
+                <scheduler:SfScheduler.MonthView>
+                    <scheduler:SchedulerMonthView>
+                        <scheduler:SchedulerMonthView.ViewHeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Label x:Name="label" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding StringFormat='{0:ddd}'}" 
                                        TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
                                        FontSize="Subtitle" FontFamily="Bold" />
-                            </Grid>
-                        </DataTemplate>
-                    </scheduler:SchedulerMonthView.ViewHeaderTemplate>
-                    <scheduler:SchedulerMonthView.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Label HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" Text="{Binding DateTime.Day}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </scheduler:SchedulerMonthView.CellTemplate>
-                </scheduler:SchedulerMonthView>
-            </scheduler:SfScheduler.MonthView>
-        </scheduler:SfScheduler>
+                                </Grid>
+                            </DataTemplate>
+                        </scheduler:SchedulerMonthView.ViewHeaderTemplate>
+                        <scheduler:SchedulerMonthView.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Label HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" Text="{Binding DateTime.Day}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </scheduler:SchedulerMonthView.CellTemplate>
+                    </scheduler:SchedulerMonthView>
+                </scheduler:SfScheduler.MonthView>
+            </scheduler:SfScheduler>
+        </Grid>
     </Grid>
 </ContentPage>
