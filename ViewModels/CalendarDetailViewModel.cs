@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Ifpa.Interfaces;
 using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -50,7 +51,7 @@ namespace Ifpa.ViewModels
 
         private readonly IReminderService ReminderService;
 
-        public CalendarDetailViewModel(IReminderService reminderService, IConfiguration config) : base(config)
+        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             ReminderService = reminderService;
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());

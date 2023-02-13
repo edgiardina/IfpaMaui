@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Ifpa.Models;
+using Microsoft.Extensions.Configuration;
+using PinballApi;
 using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
@@ -9,6 +11,8 @@ namespace Ifpa.ViewModels
 {
     public class PlayerDetailViewModel : BaseViewModel
     {
+        AppSettings AppSettings { get; set; }
+
         public Command LoadItemsCommand { get; set; }
         public Command PostPlayerLoadCommand { get; set; }
 
@@ -89,11 +93,12 @@ namespace Ifpa.ViewModels
 
         public bool IsRegistered => PlayerRecord.IfpaRegistered;
         
-        public PlayerDetailViewModel(IConfiguration config) : base(config)
+        public PlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             PlayerRankHistory = new ObservableCollection<RankHistory>();
             PlayerRatingHistory = new ObservableCollection<RatingHistory>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            AppSettings = appSettings;
         }
 
         public async Task ExecuteLoadItemsCommand()

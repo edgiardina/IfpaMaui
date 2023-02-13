@@ -1,16 +1,16 @@
 ﻿using Ifpa.ViewModels;
 using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
-using System.Reflection;
 using Ifpa.Views;
 using Syncfusion.Maui.Core.Hosting;
 using CommunityToolkit.Maui;
 using Ifpa.Services;
 using Ifpa.Interfaces;
-using Microsoft.Maui.LifecycleEvents;
 using MauiIcons.Fluent;
+using Ifpa.BackgroundJobs;
 using Ifpa.Controls;
-using Microsoft.Maui.Controls.Compatibility.Hosting;
+using Shiny.Infrastructure;
+using PinballApi;
 
 namespace Ifpa;
 
@@ -19,20 +19,26 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
+
+        //pull in appsettings.json
+        builder.Configuration.AddJsonPlatformBundle();
+
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
             .UseFluentMauiIcons()
+            .UseShiny()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
-            .ConfigureMauiHandlers((handlers) => {
+            .ConfigureMauiHandlers((handlers) =>
+            {
 #if IOS
-               handlers.AddHandler(typeof(InsetTableView), typeof(Ifpa.iOS.Renderers.InsetTableViewRenderer)); 
+                handlers.AddHandler(typeof(InsetTableView), typeof(iOS.Renderers.InsetTableViewRenderer));
 #endif
             })
             .ConfigureEssentials(essentials =>
@@ -46,45 +52,65 @@ public static class MauiProgram
 
                 essentials.UseVersionTracking();
             })
-            .ConfigureLifecycleEvents(events =>
-            {
-                //Set up android Background Recevier
-                //https://stackoverflow.com/questions/71766108/how-to-use-a-broadcastreceiver-from-net-maui-on-android
-#if ANDROID
-                events.AddAndroid(android => android
-                      .OnCreate((activity, bundle) => Ifpa.Platforms.Droid.AndroidAlarmManager.CreateAlarm()));                      
-#elif IOS
-                //events.AddiOS(ios => ios.DidEnterBackground*);    
-                
-#endif
-
-
-            })
-            //.UseLocalNotification()
-            .Services
-                //Add all viewmodels
-                .AddAllFromNamespace<BaseViewModel>()
-                //Add all pages
-                .AddAllFromNamespace<RankingsPage>()
-                //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
-                //and RankingsFilterPage
-                .AddSingleton<RankingsViewModel>()
-                //Services
-                .AddSingleton<BlogPostService>()
-                .AddSingleton<NotificationService>()
-                .AddTransient<IReminderService, ReminderService>();
-        
-
-        var a = Assembly.GetExecutingAssembly();
-        using var stream = a.GetManifestResourceStream("Ifpa.appsettings.json");
-
-        var config = new ConfigurationBuilder()
-                    .AddJsonStream(stream)
-                    .Build();
-
-        builder.Configuration.AddConfiguration(config);
+            .RegisterShinyServices()
+            .RegisterIfpaModels()
+            .RegisterIfpaServices();
 
         return builder.Build();
+    }
+
+    static MauiAppBuilder RegisterIfpaModels(this MauiAppBuilder builder)
+    {
+        var s = builder.Services;
+        var c = builder.Configuration;
+        var appSettings = c.GetRequiredSection("AppSettings").Get<AppSettings>();
+
+        //Add all viewmodels
+        s.AddAllFromNamespace<BaseViewModel>();
+        //Add all pages
+        s.AddAllFromNamespace<RankingsPage>();
+        //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
+        //and RankingsFilterPage
+        s.AddSingleton<RankingsViewModel>();
+
+        s.AddSingleton(appSettings);
+
+        return builder;
+    }
+
+    static MauiAppBuilder RegisterIfpaServices(this MauiAppBuilder builder)
+    {
+        var s = builder.Services;
+        var c = builder.Configuration;
+        var appSettings = c.GetRequiredSection("AppSettings").Get<AppSettings>();
+
+        s.AddSingleton<BlogPostService>();
+        s.AddSingleton<NotificationService>();
+        s.AddTransient<IReminderService, ReminderService>();
+
+        //TODO: PinballrankingsApi should support IOptions
+        var pinballRankingApiV1 = new PinballRankingApiV1(appSettings.IfpaApiKey);
+        s.AddSingleton(pinballRankingApiV1);
+
+        var pinballRankingApiV2 = new PinballRankingApiV2(appSettings.IfpaApiKey);
+        s.AddSingleton(pinballRankingApiV2);
+
+        return builder;
+    }
+
+    static MauiAppBuilder RegisterShinyServices(this MauiAppBuilder builder)
+    {
+        var s = builder.Services;
+
+        s.AddJobs();
+        s.AddShinyCoreServices();
+
+        s.AddJob(typeof(NotificationJob));
+
+        // shiny.notifications
+        s.AddNotifications(typeof(NotificationDelegate));
+
+        return builder;
     }
 
 }

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Maui;
 using Newtonsoft.Json;
-using PinballApi.Models.WPPR.v1.Players;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -15,7 +12,7 @@ namespace Ifpa.ViewModels
 
         public bool IsPopulated => Players != null && Players.Count > 0;
 
-        public PlayerSearchViewModel(IConfiguration config) : base(config)
+        public PlayerSearchViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Player Search";
             Players = new ObservableCollection<PlayerSearchResult>();

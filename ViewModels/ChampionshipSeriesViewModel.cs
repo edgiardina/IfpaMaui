@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Maui;
 using Microsoft.Extensions.Configuration;
 using System.Windows.Input;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -23,7 +24,7 @@ namespace Ifpa.ViewModels
 
         public string SeriesCode { get; set; }
         
-        public ChampionshipSeriesViewModel(IConfiguration config) : base(config)
+        public ChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {    
             this.AvailableYears = new List<int>();
 

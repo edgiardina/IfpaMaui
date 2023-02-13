@@ -4,6 +4,7 @@ using Ifpa.Services;
 using System.ServiceModel.Syndication;
 using System.Web;
 using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -14,7 +15,7 @@ namespace Ifpa.ViewModels
 
         private BlogPostService BlogPostService { get; set; }
 
-        public NewsViewModel(IConfiguration config, BlogPostService blogPostService) : base(config)
+        public NewsViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             BlogPostService = blogPostService;
 
