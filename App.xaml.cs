@@ -8,30 +8,24 @@ namespace Ifpa;
 
 public partial class App : Application
 {
-
-    protected AppSettings AppSettings { get; set; }
     protected INotificationManager NotificationManager { get; set; }
 
-    public App(IConfiguration config, INotificationManager notificationManager)
+    public App(AppSettings appSettings, INotificationManager notificationManager)
     {
-        AppSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
-        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(AppSettings.SyncFusionLicenseKey);
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
 
         NotificationManager = notificationManager;
 
         InitializeComponent();
 
         MainPage = new AppShell();
-
-        //LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
     }
 
     protected override async void OnStart()
     {
         base.OnStart();
 
-        var t = await NotificationManager.RequestAccess();
-
+        await NotificationManager.RequestAccess();
     }
 
     public static void HandleAppActions(AppAction appAction)
@@ -69,9 +63,4 @@ public partial class App : Application
             }
         }
     }
-
-    //private async void OnNotificationActionTapped(NotificationEventArgs e)
-    //{
-    //    await Shell.Current.GoToAsync(e.Request.ReturningData);
-    //}
 }
