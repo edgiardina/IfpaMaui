@@ -40,14 +40,6 @@ namespace Ifpa.Views
             {
                 await UpdateCalendarData();
             }
-
-            //TODO: Get resource dictionary by name not by order in list
-            var colorResources = App.Current.Resources.MergedDictionaries.First();
-
-            //TODO: This should be in the XAML since it's UI / markup / descriptive not logic.
-            calendar.HeaderView.TextStyle.SetAppTheme(SchedulerTextStyle.TextColorProperty,
-                colorResources["PrimaryTextColor"],
-                colorResources["PrimaryTextColorDark"]);
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)

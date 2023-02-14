@@ -56,7 +56,14 @@
                                 AppointmentsSource="{Binding TournamentCalenderItems, Mode=OneWay}" 
                                 Tapped="calendar_Tapped"
                                 BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
-                <scheduler:SfScheduler.MonthView>
+            <scheduler:SfScheduler.HeaderView>
+                <scheduler:SchedulerHeaderView >
+                    <scheduler:SchedulerHeaderView.TextStyle>
+                        <scheduler:SchedulerTextStyle FontSize="18" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"  />
+                    </scheduler:SchedulerHeaderView.TextStyle>
+                </scheduler:SchedulerHeaderView>
+            </scheduler:SfScheduler.HeaderView>
+            <scheduler:SfScheduler.MonthView>
                     <scheduler:SchedulerMonthView>
                         <scheduler:SchedulerMonthView.ViewHeaderTemplate>
                             <DataTemplate>
