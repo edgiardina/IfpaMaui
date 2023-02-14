@@ -10,32 +10,50 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsNotNullConverter x:Key="notNullConverter" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.Content>        
-        <controls:InsetTableView Intent="Settings" HasUnevenRows="True">
-            <TableRoot>
-                <TableSection Title="Notifications" TextColor="{StaticResource SecondaryTextColor}">
-                    <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="IFPA Rank Change" On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
-                    <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="Tournament Result Posted" On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
-                    <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="News Item Posted" On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />                  
-                </TableSection>
-                <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
-                    <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                        <StackLayout Orientation="Horizontal" Margin="10">
-                            <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
+    <ContentPage.Content>
+        <VerticalStackLayout>
+            <controls:InsetTableView Intent="Settings" HasUnevenRows="True">
+                <TableRoot>
+                    <TableSection Title="Notifications" TextColor="{StaticResource SecondaryTextColor}">
+                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="IFPA Rank Change" On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
+                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="Tournament Result Posted" On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
+                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="News Item Posted" On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />
+                    </TableSection>
+                    <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
+                        <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                            <!--<Grid IsVisible="{OnPlatform Android=false}">
+                                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ZIndex="2" />-->
+                                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{OnPlatform Android=false}" >
+                                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
+                                            Text="{Binding Initials, Mode=OneWay}" 
+                                            BackgroundColor="{StaticResource ButtonBackgroundColor}"
+                                            BorderWidth="0"
+                                            CornerRadius="8"
+                                            TextColor="{StaticResource ButtonTextColor}" />
+                                    <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+
+                                    <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
+                                </StackLayout>
+                            <!--</Grid>-->
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </controls:InsetTableView>
+            <!-- TODO: there's a bug in Android where our custom viewcell won't display. so just render below -->
+            <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{OnPlatform false, Android=true}">
+                <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
                                         CornerRadius="8"
                                         TextColor="{StaticResource ButtonTextColor}" />
-                            <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
 
-                            <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>
-            </TableRoot>
-        </controls:InsetTableView>
+                <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
+            </StackLayout>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

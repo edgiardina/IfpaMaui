@@ -12,28 +12,39 @@
             <tabView:SfTabItem Header="Aggregates">
                 <tabView:SfTabItem.Content>
                     <ScrollView>
-                        <StackLayout Spacing="20" Padding="15">
+                        <StackLayout Spacing="20" Margin="15, 30">
                             <!-- TODO: CircularChart is throwing a tapGestureRecognizer exception in .NET 7 -->
-                            <!--<chart:SfCircularChart VerticalOptions="FillAndExpand" HeightRequest="350" Title="Players By Country" >
-                                <chart:SfCircularChart.Legend>
-                                    <chart:ChartLegend/>
-                                </chart:SfCircularChart.Legend>
-                                --><!--<chart:SfCircularChart.ChartBehaviors>
-                                    <chart:ChartTooltipBehavior />
-                                </chart:SfCircularChart.ChartBehaviors>-->
+                            <chart:SfCircularChart VerticalOptions="FillAndExpand" HeightRequest="350" >
+                                <chart:SfCircularChart.Title>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Rectangle HeightRequest="12" WidthRequest="12" Margin="3"
+                                            Background="{Binding IconBrush}"/>
+                                        <Label Margin="3" Text="Players By Country" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
+                                    </StackLayout>
+                                </chart:SfCircularChart.Title>
                                 <!--GroupMode="Percentage" GroupTo="2" 
-                                                 ExplodeOnTouch="True" DataMarkerPosition="OutsideExtended"--><!--
-                                <chart:PieSeries EnableAnimation="True" ShowDataLabels="True"                               
+                                                 ExplodeOnTouch="True" DataMarkerPosition="OutsideExtended"-->
+                                <chart:SfCircularChart.Legend>
+                                    <chart:ChartLegend>
+                                        <chart:ChartLegend.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding Text}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
+                                            </DataTemplate>
+                                        </chart:ChartLegend.ItemTemplate>
+                                    </chart:ChartLegend>
+                                </chart:SfCircularChart.Legend>
+
+                                <chart:PieSeries EnableAnimation="True" ShowDataLabels="True"  EnableTooltip="True"
+                                                 ExplodeOnTouch="True"                               
                                                  ItemsSource="{Binding PlayersByCountry}" XBindingPath="CountryName" YBindingPath="Count">
-                                    --><!--<chart:PieSeries.DataMarker>
-                                        <chart:ChartDataMarker ShowLabel="true" LabelContent="YValue"  />
-                                    </chart:PieSeries.DataMarker>--><!--
                                     <chart:PieSeries.DataLabelSettings>
                                         <chart:CircularDataLabelSettings LabelPlacement="Auto"/>
                                     </chart:PieSeries.DataLabelSettings>
                                 </chart:PieSeries>
 
-                            </chart:SfCircularChart>-->
+                            </chart:SfCircularChart>
                             <chart:SfCartesianChart VerticalOptions="FillAndExpand" HeightRequest="300">
                                 <chart:SfCartesianChart.Title>
                                     <Label Text="Events By Year" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
@@ -90,7 +101,7 @@
                          IsPullToRefreshEnabled="true"
                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                          CachingStrategy="RecycleElement"
-                         ItemSelected="PlayersListView_ItemSelected">           
+                         ItemSelected="PlayersListView_ItemSelected">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
