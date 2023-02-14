@@ -48,9 +48,6 @@ namespace Ifpa.Views
             calendar.HeaderView.TextStyle.SetAppTheme(SchedulerTextStyle.TextColorProperty,
                 colorResources["PrimaryTextColor"],
                 colorResources["PrimaryTextColorDark"]);
-
-
-            //TODO: actually restrict calendar not to go to months in the past.
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)

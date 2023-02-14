@@ -6,6 +6,7 @@
              x:Class="Ifpa.Views.CalendarPage"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"    
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Title="Calendar">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -20,9 +21,10 @@
         <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="{fluent:Icon Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
         <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
-    <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        <Grid IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+    <!--<Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />-->
+        <!-- IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" -->
+        <Grid >
             <Grid x:Name="MapLayout" RowDefinitions="*,*" >
 
                 <Map x:Name="calendarMap" MapType="Street" Grid.Row="0" />
@@ -48,11 +50,11 @@
                 </CollectionView>
 
             </Grid>
-            <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
-                                MinimumDateTime="{Binding DateTime.Today}"
+            <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand"                                   
+                                MinimumDateTime="{Binding Source={x:Static sys:DateTime.Now}}"
                                 View="Month"                                                               
                                 AppointmentsSource="{Binding TournamentCalenderItems, Mode=OneWay}" 
-                               Tapped="calendar_Tapped"
+                                Tapped="calendar_Tapped"
                                 BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
                 <scheduler:SfScheduler.MonthView>
                     <scheduler:SchedulerMonthView>
@@ -76,5 +78,5 @@
                 </scheduler:SfScheduler.MonthView>
             </scheduler:SfScheduler>
         </Grid>
-    </Grid>
+    <!--</Grid>-->
 </ContentPage>
