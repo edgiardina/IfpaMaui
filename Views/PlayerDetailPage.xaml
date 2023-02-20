@@ -83,9 +83,8 @@
                     </toolkit:AvatarView>
                 </Grid>
 
-                <StackLayout Spacing="10" Margin="15">
-
-                    <Grid>
+                <StackLayout Spacing="10" Margin="10">
+                    <Grid ColumnSpacing="10">
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
                                 Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}" Value="True">
@@ -96,9 +95,9 @@
                                 <Setter Property="ColumnDefinitions" Value="*,*" />
                             </DataTrigger>
                         </Grid.Triggers>
-                        <Button Grid.Column="0" Margin="10,0" Text="Results" HorizontalOptions="FillAndExpand" Clicked="TournamentResults_Button_Clicked" />
-                        <Button Grid.Column="1" Margin="10,0" Text="PVP" HorizontalOptions="FillAndExpand" Clicked="Pvp_Button_Clicked" />
-                        <Button Grid.Column="2" Margin="10,0" Text="Champ. Series" x:Name="ChampButton" HorizontalOptions="FillAndExpand" Clicked="CS_Button_Clicked" 
+                        <Button HeightRequest="50" Grid.Column="0" Text="Tournament Results" LineBreakMode="WordWrap" Clicked="TournamentResults_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="1" Text="Player vs Player" LineBreakMode="WordWrap" Clicked="Pvp_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="2" Text="Championship Series" LineBreakMode="WordWrap"  x:Name="ChampButton" Clicked="CS_Button_Clicked" 
                             IsVisible="{Binding HasChampionshipSeriesData}" />
                     </Grid>
 
