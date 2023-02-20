@@ -36,6 +36,21 @@ namespace Maui.FixesAndWorkarounds
         }
     }
 
+    public class CustomShellSectionRootRenderer : ShellSectionRootRenderer
+    {
+        CustomShellSectionRenderer _customShellSectionRenderer;
+        public CustomShellSectionRootRenderer(ShellSection shellSection, IShellContext shellContext, CustomShellSectionRenderer customShellSectionRenderer) : base(shellSection, shellContext)
+        {
+            _customShellSectionRenderer = customShellSectionRenderer;
+        }
+
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            _customShellSectionRenderer.SnagTracker();
+        }
+    }
+
     public class CustomShellSectionRenderer : ShellSectionRenderer
     {
         readonly Dictionary<Element, IShellPageRendererTracker> _trackers =
@@ -51,8 +66,12 @@ namespace Maui.FixesAndWorkarounds
 
         public IShellContext Context { get; }
 
+        protected override IShellSectionRootRenderer CreateShellSectionRootRenderer(ShellSection shellSection, IShellContext shellContext)
+        {
+            return new CustomShellSectionRootRenderer(shellSection, shellContext, this);
+        }
 
-        void SnagTracker()
+        public void SnagTracker()
         {
             if (ShellWorkarounds.Tracker is null)
                 return;
