@@ -29,9 +29,14 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
 		<UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
-	  <CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
-	  <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
+	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Release'">
+	  <CodesignKey>Apple Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
+	  <CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
+	  <ProvisioningType>manual</ProvisioningType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Debug'">
+		<CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
+		<CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
 	</PropertyGroup>
 
 	<PropertyGroup>
