@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Ifpa.Interfaces;
-using Microsoft.Extensions.Configuration;
 using PinballApi;
 
 namespace Ifpa.ViewModels
@@ -84,7 +83,7 @@ namespace Ifpa.ViewModels
                 EndDate = calendarEntry.EndDate;
                 TournamentId = calendarEntry.TournamentId;
 
-                GeocodedLocation = (await Geocoding.GetLocationsAsync(Address1 + " " + City + ", " + State)).FirstOrDefault();
+                GeocodedLocation = new Location(calendarEntry.Latitude, calendarEntry.Longitude);
                 Latitude = GeocodedLocation.Latitude;
                 Longitude = GeocodedLocation.Longitude;
 
@@ -138,8 +137,5 @@ namespace Ifpa.ViewModels
                 await Shell.Current.DisplayAlert("Permission Required", "IFPA Companion requires your permission before adding items to your Calendar", "OK");
             }
         }
-
-
-
     }
 }
