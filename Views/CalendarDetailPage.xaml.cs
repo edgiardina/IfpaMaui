@@ -22,17 +22,21 @@ namespace Ifpa.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.CalendarId = CalendarId;
-            await ViewModel.ExecuteLoadItemsCommand();
 
             try
             {
-                //TODO: I don't know why but you have to call a geolocation call here for this map to work on android
-                //it's likely a timing or threading bug.
-                //if (DeviceInfo.Current.Platform == DevicePlatform.Android)
-                //{
-                //    _ = await Geocoding.GetLocationsAsync("Boston, MA");
-                //}
+                var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
+                var distance = Preferences.Get("LastCalendarDistance", 150);
+
+                Preferences.Set("LastCalendarLocation", location);
+                Preferences.Set("LastCalendarDistance", distance);
+
+                var geoLocation = await Geocoding.GetLocationsAsync(location);
+                calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                                                                        Microsoft.Maui.Maps.Distance.FromMiles(distance)));
+
+                ViewModel.CalendarId = CalendarId;
+                await ViewModel.ExecuteLoadItemsCommand();
 
                 MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
                 calendarMap.MoveToRegion(mapSpan);
