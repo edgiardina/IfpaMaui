@@ -68,13 +68,6 @@ namespace Ifpa.Views
                                                                         Microsoft.Maui.Maps.Distance.FromMiles(distance)));
 
                 await ViewModel.ExecuteLoadItemsCommand(location, distance);
-
-                List<Task> listOfTasks = new List<Task>();
-                foreach (var detail in ViewModel.CalendarDetails)
-                {
-                    listOfTasks.Add(LoadEventOntoCalendar(detail));
-                }
-                await Task.WhenAll(listOfTasks);
             }
             catch (Exception e)
             {
@@ -82,24 +75,6 @@ namespace Ifpa.Views
                 Debug.WriteLine(e.Message);
             }
         }
-
-        private async Task LoadEventOntoCalendar(CalendarDetails detail)
-        {
-            var pin = new Pin();
-            var locations = await Geocoding.GetLocationsAsync(detail.Address1 + " " + detail.City + ", " + detail.State);
-            pin.Location = new Location(locations.First().Latitude, locations.First().Longitude);
-            pin.Label = detail.TournamentName;
-            pin.Type = PinType.Place;
-
-            //TODO: on pinpress scroll listview to find item. 
-            pin.MarkerClicked += (sender, e) =>
-            {
-                TournamentListView.ScrollTo(ViewModel.CalendarDetails.IndexOf(detail), position: ScrollToPosition.MakeVisible, animate: true);
-            };
-
-            calendarMap.Pins.Add(pin);
-        }
-
 
         private void ToggleView_Clicked(object sender, EventArgs e)
         {
@@ -144,6 +119,13 @@ namespace Ifpa.Views
 
             // Manually deselect item.
             TournamentListView.SelectedItem = null;
+        }
+
+        private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
+        {
+            var pin = (Pin)sender;
+            var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
+            TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);
         }
     }
 }
