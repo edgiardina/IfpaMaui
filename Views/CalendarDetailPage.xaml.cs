@@ -29,10 +29,10 @@ namespace Ifpa.Views
             {
                 //TODO: I don't know why but you have to call a geolocation call here for this map to work on android
                 //it's likely a timing or threading bug.
-                if (DeviceInfo.Current.Platform == DevicePlatform.Android)
-                {
-                    _ = await Geocoding.GetLocationsAsync("Boston, MA");
-                }
+                //if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+                //{
+                //    _ = await Geocoding.GetLocationsAsync("Boston, MA");
+                //}
 
                 MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
                 calendarMap.MoveToRegion(mapSpan);
