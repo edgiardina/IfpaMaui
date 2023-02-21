@@ -53,7 +53,7 @@ jobs:
           then
               echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
           else
-              echo "VERSION=${versionNumber}" >> $GITHUB_ENV
+              echo "VERSION=${github.event.inputs.versionNumber}" >> $GITHUB_ENV
           fi
           echo "${VERSION} is our version number"
           
