@@ -70,15 +70,6 @@ jobs:
     
       - name: Restore nuget packages
         run:  dotnet restore IfpaMaui.sln
-      
-      - name: Set VERSION variable from tag
-        run: |
-          if [[ -z "${DEPLOY_ENV}" ]]; then
-            MY_SCRIPT_VARIABLE="Some default value because DEPLOY_ENV is undefined"
-          else
-            MY_SCRIPT_VARIABLE="${DEPLOY_ENV}"
-          fi
-          echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
         
         # https://docs.microsoft.com/en-us/dotnet/maui/ios/deployment/overview
       - name : Build iOS App
