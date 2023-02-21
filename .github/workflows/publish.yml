@@ -75,10 +75,11 @@ jobs:
       - name : Build iOS App
         shell: bash
         run: |
-          dotnet build -f net7.0-ios -c Release /p:Version=${VERSION}
+          dotnet build -f net7.0-ios -c Release /p:ArchiveOnBuild=true /p:Version=${VERSION}
 
       - uses: actions/upload-artifact@v2
         with:
           name: artifacts-ios
+          if-no-files-found: error
           path: |
             bin/Release/net7.0-ios/**/*.ipa
