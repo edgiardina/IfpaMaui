@@ -50,8 +50,7 @@ jobs:
         shell: bash
         run: |
           dotnet nuget locals all --clear 
-          dotnet workload install maui --source https://api.nuget.org/v3/index.json
-          dotnet workload install android ios maccatalyst tvos macos maui wasm-tools --source https://api.nuget.org/v3/index.json
+          dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
     
       - name: Restore nuget packages
         run:  dotnet restore IfpaMaui.sln
@@ -60,7 +59,7 @@ jobs:
       - name : Build iOS App
         shell: bash
         run: |
-          dotnet build -f net7.0-ios -c Release /p:ArchiveOnBuild=true   
+          dotnet build -f net7.0-ios -c Release -p:PublishTrimmed=false /p:ArchiveOnBuild=true   
 
       - uses: actions/upload-artifact@v2
         with:
