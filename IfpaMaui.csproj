@@ -31,7 +31,7 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Release'">
 		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
-		<CodesignKey>Apple Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
+		<CodesignKey>Ed Giardina</CodesignKey>
 		<CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
 		<ArchiveOnBuild>true</ArchiveOnBuild>
 	</PropertyGroup>
