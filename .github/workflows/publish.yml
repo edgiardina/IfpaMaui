@@ -2,7 +2,9 @@ name: publish signed mobile artifacts
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+" 
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+  
 jobs:
   publish: 
     runs-on: macos-11
