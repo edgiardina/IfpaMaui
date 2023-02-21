@@ -81,4 +81,4 @@ jobs:
         with:
           name: artifacts-ios
           path: |
-            /bin/Release/net7.0-ios/**/*.app
+            /bin/Release/net7.0-ios/**/*.ipa
