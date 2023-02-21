@@ -30,9 +30,10 @@
 		<UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Release'">
-	  <CodesignKey>Apple Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
-	  <CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
-	  <ProvisioningType>manual</ProvisioningType>
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<CodesignKey>Apple Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
+		<CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
+		<ArchiveOnBuild>true</ArchiveOnBuild>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Debug'">
 		<CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
@@ -61,7 +62,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Remove="Controls\PlayerRankLabel.xaml" />
+		<MauiXaml Remove="Controls\PlayerRankLabel.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -95,7 +96,7 @@
 	<ItemGroup>
 		<MauiAsset Include="appsettings.json" />
 		<EmbeddedResource Include="Controls\PlayerRankLabel.xaml">
-		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+			<Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 		</EmbeddedResource>
 	</ItemGroup>
 
@@ -128,10 +129,10 @@
 
 	<ItemGroup>
 		<Compile Update="Views\DataTemplates\ActivityFeedRankChangeDataTemplate.xaml.cs">
-		  <DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
+			<DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
 		</Compile>
 		<Compile Update="Views\DataTemplates\ActivityFeedTournamentResultDataTemplate.xaml.cs">
-		  <DependentUpon>ActivityFeedTournamentResultDataTemplate.xaml</DependentUpon>
+			<DependentUpon>ActivityFeedTournamentResultDataTemplate.xaml</DependentUpon>
 		</Compile>
 		<Compile Update="Views\DataTemplates\PlayerResultDataTemplate.xaml.cs">
 			<DependentUpon>PlayerResultDataTemplate.xaml</DependentUpon>
@@ -140,7 +141,7 @@
 
 	<ItemGroup>
 		<MauiXaml Update="Controls\CityStateCountryView.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\AboutPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
