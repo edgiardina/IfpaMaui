@@ -8,6 +8,7 @@ on:
 jobs:
   publish: 
     runs-on: macos-11
+    environment: Release
     name: iOS Build
     steps:
       - uses: actions/checkout@v2
