@@ -59,7 +59,7 @@ jobs:
       - name : Build iOS App
         shell: bash
         run: |
-          dotnet build -f net7.0-ios -c Release -p:PublishTrimmed=false /p:ArchiveOnBuild=true   
+          dotnet build -f net7.0-ios -c Release
 
       - uses: actions/upload-artifact@v2
         with:
