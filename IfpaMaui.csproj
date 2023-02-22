@@ -46,7 +46,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#062C53" BaseSize="256,88" />
@@ -67,6 +67,7 @@
 
 	<ItemGroup>
 		<None Remove="appsettings.json" />
+		<None Remove="Resources\AppIcon\appicon.png" />
 		<None Remove="Resources\Images\about.svg" />
 		<None Remove="Resources\Images\activity_feed.svg" />
 		<None Remove="Resources\Images\calendar.svg" />
@@ -98,6 +99,10 @@
 		<EmbeddedResource Include="Controls\PlayerRankLabel.xaml">
 			<Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiIcon Include="Resources\AppIcon\appicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
