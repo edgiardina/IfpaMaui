@@ -11,7 +11,57 @@ on:
           default: '0.1.1'
   
 jobs:
-  publish: 
+  publish-android:
+    runs-on: windows-2022
+    name: Android Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'appsettings.json'
+        env:
+          AppSettings.SyncFusionLicenseKey: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
+          AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
+
+      - name: Setup .NET 7
+        uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
+        with:
+          dotnet-version: 7.0.x
+          
+      - name: Install MAUI Workload
+        run: dotnet workload install maui android
+
+      - name: Restore Dependencies
+        run: dotnet restore IfpaMaui.csproj
+
+      - name: Build MAUI Android
+        run: dotnet publish IfpaMaui.csproj -c Release -f net7.0-android --no-restore
+        
+        # # Store Android Signing Keystore and password in Secrets using base64 encoding
+        # # https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/certutil
+        # # commandline util to encode to base64 on windows
+        # - name: Extract Android signing key from env
+        #   shell: bash
+        #   run: |
+        #     echo "${{ secrets.RELEASE_KEYSTORE }}" > android/release.jks.base64
+        #     base64 -d android/release.jks.base64 > android/release.decrypted.jks
+
+        # # check android SDK paths etc in installed VM : https://github.com/actions/virtual-environments#available-environments
+        # - name: Sign dev build
+        #   shell: bash
+        #   run: jarsigner -keystore android/release.decrypted.jks -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" -signedjar ./android/app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab release
+
+
+      - name: Upload Android Artifact
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
+        with:
+          name: ifpamaui-android-ci-build
+          path: bin/Release/net7.0-android/*Signed.a*
+
+  publish-ios: 
     runs-on: macos-latest
     environment: Release
     name: iOS Build
