@@ -18,15 +18,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Determine build version number
-        shell: bash
+      - name: Determine build version number        
         run: |
-          if [ -z "${GITHUB_REF/refs\/tags\/v/}" ]
-          then
-              echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
-          else
-              echo "VERSION=${{github.event.inputs.versionNumber}}" >> $GITHUB_ENV
-          fi
+          if([string]::IsNullOrEmpty("${GITHUB_REF/refs\/tags\/v/}")) {                      
+              echo "VERSION=${{github.event.inputs.versionNumber}}" >> $env:GITHUB_ENV}
+          else{
+              echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $env:GITHUB_ENV  }        
+          
           echo "${VERSION} is our version number"
 
       - name: App Settings Variable Substitution
