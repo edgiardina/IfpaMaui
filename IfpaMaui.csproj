@@ -30,6 +30,7 @@
 		<UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Release'">
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
 		<CodesignKey>iPhone Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
 		<CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
 		<ArchiveOnBuild>true</ArchiveOnBuild>

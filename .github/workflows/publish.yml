@@ -53,7 +53,7 @@ jobs:
           then
               echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
           else
-              echo "VERSION=${versionNumber}" >> $GITHUB_ENV
+              echo "VERSION=${{github.event.inputs.versionNumber}}" >> $GITHUB_ENV
           fi
           echo "${VERSION} is our version number"
           
@@ -72,13 +72,14 @@ jobs:
         run:  dotnet restore IfpaMaui.sln
         
         # https://docs.microsoft.com/en-us/dotnet/maui/ios/deployment/overview
-      - name : Build iOS App
+      - name : Publish iOS App
         shell: bash
         run: |
-          dotnet build -f net7.0-ios -c Release /p:Version=${VERSION}
+          dotnet publish -f net7.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{github.run_number}}
 
       - uses: actions/upload-artifact@v2
         with:
           name: artifacts-ios
+          if-no-files-found: error
           path: |
-            /bin/Release/net7.0-ios/**/*.app
+            bin/Release/net7.0-ios/**/*.ipa
