@@ -43,13 +43,6 @@ jobs:
       - name: Build MAUI Android
         run: dotnet build IfpaMaui.csproj -c Debug -f net7.0-android --no-restore
 
-      - name: Upload Android Artifact
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
-        with:
-          if-no-files-found: error
-          name: ifpamaui-android-ci-build
-          path: bin/Release/net7.0-android/*Signed.a*
-
 # MAUI iOS Build
   build-ios:
     runs-on: macos-12
@@ -101,10 +94,3 @@ jobs:
 
       - name: Build MAUI iOS
         run: dotnet build IfpaMaui.csproj -c Release -f net7.0-ios --no-restore
-
-      - name: Upload iOS Artifact
-        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
-        with:
-          if-no-files-found: error
-          name: ifpamaui-ios-ci-build
-          path: bin/Release/net7.0-ios/iossimulator-x64/**/*.app
