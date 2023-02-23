@@ -10,10 +10,6 @@ namespace Ifpa.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        IConfiguration configuration;
-
-        protected AppSettings AppSettings { get; set; }
-
         public PinballRankingApiV1 PinballRankingApi { get; private set; } 
         public PinballRankingApiV2 PinballRankingApiV2 { get; private set; } 
 
@@ -31,14 +27,11 @@ namespace Ifpa.ViewModels
             set { SetProperty(ref title, value); }
         }
 
-        public BaseViewModel(IConfiguration config)
-        {
-            configuration = config;
+        public BaseViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2)
+        {         
 
-            AppSettings = configuration.GetRequiredSection("AppSettings").Get<AppSettings>();
-
-            PinballRankingApi = new PinballRankingApiV1(AppSettings.IfpaApiKey);
-            PinballRankingApiV2 = new PinballRankingApiV2(AppSettings.IfpaApiKey);
+            PinballRankingApi = pinballRankingApiV1;
+            PinballRankingApiV2 = pinballRankingApiV2;
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,

@@ -30,5 +30,19 @@
 	<string>This app will use your location to show nearby tournaments</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.shiny.job</string>
+        <string>com.shiny.jobpower</string>
+        <string>com.shiny.jobnet</string>
+        <string>com.shiny.jobpowernet</string>
+    </array>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>processing</string>
+        <string>fetch</string>
+    </array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Players;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -17,7 +17,7 @@ namespace Ifpa.ViewModels
         public int PlayerOneId { get; set; }
         public int PlayerTwoId { get; set; }
 
-        public PlayerVersusPlayerDetailViewModel(IConfiguration config) : base(config)
+        public PlayerVersusPlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             PlayerVersusPlayer = new ObservableCollection<PlayerVersusPlayerComparisonRecord>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());

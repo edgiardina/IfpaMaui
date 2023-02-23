@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Ifpa.Interfaces;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -42,19 +42,21 @@ namespace Ifpa.ViewModels
 
         public string Location => $"{Address1} {Address2} {City}{(!string.IsNullOrEmpty(City) && !string.IsNullOrEmpty(State) ? "," : string.Empty)} {State} {CountryName}".Trim().Replace("  ", " ");
 
+        public Location GeocodedLocation { get; set; } = new Location();
+
         public Command LoadItemsCommand { get; set; }
 
         public int CalendarId { get; set; }
 
         private readonly IReminderService ReminderService;
 
-        public CalendarDetailViewModel(IReminderService reminderService, IConfiguration config) : base(config)
+        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             ReminderService = reminderService;
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        public async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;
@@ -81,9 +83,9 @@ namespace Ifpa.ViewModels
                 EndDate = calendarEntry.EndDate;
                 TournamentId = calendarEntry.TournamentId;
 
-                var location = (await Geocoding.GetLocationsAsync(Address1 + " " + City + ", " + State)).FirstOrDefault();
-                Latitude = location.Latitude;
-                Longitude = location.Longitude;
+                GeocodedLocation = new Location(calendarEntry.Latitude, calendarEntry.Longitude);
+                Latitude = GeocodedLocation.Latitude;
+                Longitude = GeocodedLocation.Longitude;
 
                 OnPropertyChanged(null);
             }
@@ -135,8 +137,5 @@ namespace Ifpa.ViewModels
                 await Shell.Current.DisplayAlert("Permission Required", "IFPA Companion requires your permission before adding items to your Calendar", "OK");
             }
         }
-
-
-
     }
 }

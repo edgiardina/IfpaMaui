@@ -7,133 +7,113 @@
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              Title="{Binding Title}"
              x:Name="SearchPlayersPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="BoolConverter" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <tabView:SfTabView Style="{StaticResource TabView}">
-            <tabView:SfTabItem Header="Rankings">
-                <tabView:SfTabItem.Content>
-                    <ListView x:Name="RankingsListView" 
-                        IsVisible="{Binding IsPopulated}"
-                        ItemsSource="{Binding ViewResults}"
-                        VerticalOptions="FillAndExpand"                    
-                        HasUnevenRows="true"
-                        RefreshCommand="{Binding LoadItemsCommand}"
-                        IsPullToRefreshEnabled="true"
-                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                        CachingStrategy="RecycleElement"
-                        ItemSelected="RankingsListView_ItemSelected">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Margin="10" Orientation="Horizontal" >
-                                        <StackLayout Orientation="Vertical" VerticalOptions="Center" Padding="10,0,0,0" HorizontalOptions="StartAndExpand">
-                                            <Label LineBreakMode="NoWrap"  FontSize="16">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="{Binding FirstName}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding LastName}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="{Binding City}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding StateProvince}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding CountryName}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
+        <Grid>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+            <tabView:SfTabView Style="{StaticResource TabView}" 
+                               IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+                <tabView:SfTabItem Header="Rankings">
+                    <tabView:SfTabItem.Content>
+                        <CollectionView x:Name="RankingsListView" 
+                                        IsVisible="{Binding IsPopulated}"
+                                        ItemsSource="{Binding ViewResults}"
+                                        SelectionMode="Single"
+                                        SelectionChanged="RankingsListView_SelectionChanged">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout>
+                                        <StackLayout Margin="15,10" Orientation="Horizontal" >
+                                            <StackLayout Orientation="Vertical" VerticalOptions="Center"  HorizontalOptions="StartAndExpand">
+                                                <Label LineBreakMode="NoWrap"  FontSize="16">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <FormattedString.Spans>
+                                                                <Span Text="{Binding FirstName}" />
+                                                                <Span Text=" " />
+                                                                <Span Text="{Binding LastName}" />
+                                                            </FormattedString.Spans>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                
+                                                <controls:CityStateCountryView />
+                                  
+                                            </StackLayout>
+                                            <StackLayout HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,15, 0">
+                                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" FontSize="12">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <FormattedString.Spans>
+                                                                <Span Text="Events: " TextColor="{DynamicResource SecondaryTextColor}"/>
+                                                                <Span Text=" " />
+                                                                <Span Text="{Binding EventCount}" />
+                                                            </FormattedString.Spans>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" FontSize="12" >
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <FormattedString.Spans>
+                                                                <Span Text="Rank: " TextColor="{DynamicResource SecondaryTextColor}" />
+                                                                <Span Text=" " />
+                                                                <Span Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}" />
+                                                            </FormattedString.Spans>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </StackLayout>
+                                            <StackLayout HorizontalOptions="End"  VerticalOptions="Center">
+                                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
+                                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+                                            </StackLayout>
                                         </StackLayout>
-                                        <StackLayout HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,15, 0">
-                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" FontSize="12">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Events: " TextColor="{DynamicResource SecondaryTextColor}"/>
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding EventCount}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" FontSize="12" >
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <FormattedString.Spans>
-                                                            <Span Text="Rank: " TextColor="{DynamicResource SecondaryTextColor}" />
-                                                            <Span Text=" " />
-                                                            <Span Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}" />
-                                                        </FormattedString.Spans>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
+                                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <tabView:SfTabItem Header="Filters">
+                    <tabView:SfTabItem.Content>
+                        <CollectionView x:Name="FilterListView" 
+                            IsVisible="{Binding IsPopulated}"
+                            ItemsSource="{Binding ViewFilters}"
+                            SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <VerticalStackLayout>
+                                        <StackLayout Margin="15" Orientation="Horizontal">
+                                            <Label Text="{Binding Name}" TextColor="{DynamicResource SecondaryTextColor}" HorizontalOptions="Start" />
+                                            <Label Text="{Binding Setting}" HorizontalOptions="EndAndExpand" />
                                         </StackLayout>
-                                        <StackLayout HorizontalOptions="End"  VerticalOptions="Center">
-                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
-                                            <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                        </StackLayout>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-            <tabView:SfTabItem Header="Filters">
-                <tabView:SfTabItem.Content>
-                    <ListView x:Name="FilterListView" 
-                        IsVisible="{Binding IsPopulated}"
-                        ItemsSource="{Binding ViewFilters}"
-                        VerticalOptions="FillAndExpand"
-                        HasUnevenRows="True" 
-                        SelectionMode="None"
-                        RefreshCommand="{Binding LoadItemsCommand}"
-                        IsPullToRefreshEnabled="true"
-                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                        CachingStrategy="RecycleElement">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Margin="15" Orientation="Horizontal">
-                                        <Label Text="{Binding Name}" TextColor="{DynamicResource SecondaryTextColor}" HorizontalOptions="Start" />
-                                        <Label Text="{Binding Setting}" HorizontalOptions="EndAndExpand" />
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-            <tabView:SfTabItem Header="Tournaments">
-                <tabView:SfTabItem.Content>
-                    <ListView x:Name="TournamentListView" 
+                                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <tabView:SfTabItem Header="Tournaments">
+                    <tabView:SfTabItem.Content>
+                        <CollectionView x:Name="TournamentListView" 
                         IsVisible="{Binding IsPopulated}"
                         ItemsSource="{Binding Tournaments}"
                         VerticalOptions="FillAndExpand"
-                        HasUnevenRows="true"
-                        RefreshCommand="{Binding LoadItemsCommand}"
-                        IsPullToRefreshEnabled="true"
-                        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                        CachingStrategy="RecycleElement"
-                        ItemSelected="TournamentListView_ItemSelected">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
+                        SelectionMode="Single"
+                        SelectionChanged="TournamentListView_SelectionChanged">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
                                     <StackLayout Orientation="Vertical" Margin="10">
 
                                         <Label Text="{Binding TournamentName}"  FontSize="16"  HorizontalOptions="StartAndExpand" />
@@ -148,13 +128,15 @@
                                             <Label Grid.Column="1" Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12"  HorizontalTextAlignment="Center" TextColor="{DynamicResource SecondaryTextColor}" />
                                             <Label Grid.Column="2" LineBreakMode="NoWrap" Text="{Binding City}" FontSize="12"  HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}" />
                                         </Grid>
+                                        <BoxView Style="{StaticResource BoxSeperator}"/>
                                     </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-        </tabView:SfTabView>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+            </tabView:SfTabView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -9,65 +9,63 @@ namespace Ifpa.Views
     public partial class CalendarDetailPage : ContentPage
     {
         CalendarDetailViewModel ViewModel;
-        
+
         public int CalendarId { get; set; }
 
         public CalendarDetailPage(CalendarDetailViewModel viewModel)
-        {       
+        {
             InitializeComponent();
 
             BindingContext = this.ViewModel = viewModel;
-
-            ((CalendarDetailViewModel)BindingContext).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(async (s, e) => await CalendarDetailPage_PropertyChanged(s, e)) ;            
         }
 
-
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.CalendarId = CalendarId;
-            ViewModel.LoadItemsCommand.Execute(null);            
+
+            try
+            {
+                var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
+                var distance = Preferences.Get("LastCalendarDistance", 150);
+
+                Preferences.Set("LastCalendarLocation", location);
+                Preferences.Set("LastCalendarDistance", distance);
+
+                var geoLocation = await Geocoding.GetLocationsAsync(location);
+                calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                                                                        Microsoft.Maui.Maps.Distance.FromMiles(distance)));
+
+                ViewModel.CalendarId = CalendarId;
+                await ViewModel.ExecuteLoadItemsCommand();
+
+                MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
+                calendarMap.MoveToRegion(mapSpan);
+                var pin = new Pin
+                {
+                    Label = ViewModel.TournamentName,
+                    Location = ViewModel.GeocodedLocation,
+                    Address = ViewModel.Location,
+                    Type = PinType.Generic
+                };
+
+                pin.InfoWindowClicked += Pin_Clicked;
+                pin.MarkerClicked += Pin_Clicked;
+
+                calendarMap.Pins.Add(pin);
+            }
+            //unable to geocode position on the map, ignore. 
+            catch (Exception)
+            {
+            }
         }
+
 
         protected override void OnNavigatedTo(NavigatedToEventArgs args)
         {
             base.OnNavigatedTo(args);
         }
 
-        private async Task CalendarDetailPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            //when busy is flipped back to false it means we are done loading the address
-            if (e.PropertyName == "IsBusy" && ViewModel.IsBusy == false)
-            {
-                try
-                {
-                    var locations = await Geocoding.GetLocationsAsync(ViewModel.Address1 + " " + ViewModel.City + ", " + ViewModel.State);
-
-                    var position = new Location(locations.First().Latitude, locations.First().Longitude);
-                    calendarMap.MoveToRegion(new MapSpan(position, 0.1, 0.1));
-                    var pin = new Pin
-                    {
-                        Label = ViewModel.TournamentName,
-                        Location = position,
-                        Address = ViewModel.Location,
-                        Type = PinType.Generic
-                    };
-
-                    pin.InfoWindowClicked += Pin_Clicked;
-
-                    calendarMap.Pins.Add(pin);
-
-                    calendarMap.IsVisible = true;
-                }
-                //unable to geocode position on the map, ignore. 
-                catch (Exception)
-                {
-                    calendarMap.IsVisible = false;
-                }
-            }
-        }
-
-        private void Pin_Clicked(object sender, EventArgs e)
+        private void Pin_Clicked(object sender, PinClickedEventArgs e)
         {
             Address_Tapped(sender, e);
         }
@@ -86,7 +84,7 @@ namespace Ifpa.Views
                 Thoroughfare = ViewModel.Address1,
                 Locality = ViewModel.City
             };
-            var options = new MapLaunchOptions { Name = ViewModel.TournamentName };  
+            var options = new MapLaunchOptions { Name = ViewModel.TournamentName };
 
             await Microsoft.Maui.ApplicationModel.Map.OpenAsync(placemark, options);
         }

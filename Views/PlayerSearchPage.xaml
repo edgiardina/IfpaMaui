@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.PlayerSearchPage"             
              xmlns:local="clr-namespace:Ifpa.Converters"
-              Title="{Binding Title}"
+             Title="{Binding Title}"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              x:Name="FavoritesPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -48,26 +49,13 @@
                                         </Label.FormattedText>
                                     </Label>
 
-                                    <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{StaticResource SecondaryTextColor}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding City}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding State}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding CountryName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
+                                    <controls:CityStateCountryView />
                                 </StackLayout>
                                 <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
-                                        LineBreakMode="NoWrap" FontSize="18" WidthRequest="80" />
+                                        LineBreakMode="NoWrap" FontSize="18" />
                             </StackLayout>
-                            <BoxView HeightRequest=".5" Margin="0"
-                                   BackgroundColor="{StaticResource SecondaryTextColor}"                
-                                   VerticalOptions="End"/>
+
+                            <BoxView Style="{StaticResource BoxSeperator}"/>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

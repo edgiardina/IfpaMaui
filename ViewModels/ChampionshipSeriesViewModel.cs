@@ -8,13 +8,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui;
 using Microsoft.Extensions.Configuration;
+using System.Windows.Input;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
     public class ChampionshipSeriesViewModel : BaseViewModel
     {
         public ObservableCollection<SeriesOverallResult> SeriesOverallResults { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        public ICommand LoadItemsCommand { get; set; }
 
         public List<int> AvailableYears { get; set; }
 
@@ -22,7 +24,7 @@ namespace Ifpa.ViewModels
 
         public string SeriesCode { get; set; }
         
-        public ChampionshipSeriesViewModel(IConfiguration config) : base(config)
+        public ChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {    
             this.AvailableYears = new List<int>();
 

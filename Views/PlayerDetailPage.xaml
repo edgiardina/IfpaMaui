@@ -4,9 +4,10 @@
              x:Class="Ifpa.Views.PlayerDetailPage"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
-             Title="{Binding Name}">
+             Title="{Binding Initials, Mode=OneWay}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
@@ -19,7 +20,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{fluent:Icon Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=Heart48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{fluent:Icon Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
@@ -31,7 +32,7 @@
                       ColumnDefinitions="3*,*">
                     <Grid Grid.Column="0" RowDefinitions="*,*,*" Margin="10">
 
-                        <Label Grid.Row="0" Text="{Binding Initials, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
+                        <Label Grid.Row="0" Text="{Binding Name, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
 
                         <StackLayout  Grid.Row="1" Orientation="Horizontal" VerticalOptions="Center">
                             <Label LineBreakMode="NoWrap" HorizontalOptions="StartAndExpand" Style="{StaticResource playerHeader}" FontSize="16" >
@@ -71,7 +72,9 @@
                     <toolkit:AvatarView Grid.Column="1" ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" Margin="10" 
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
-                                        BorderWidth="0"
+                                        BorderWidth="0" CornerRadius="8"
+                                        WidthRequest="80"
+                                        HeightRequest="80"
                                         TextColor="{StaticResource ButtonTextColor}">
                         <toolkit:AvatarView.Shadow>
                             <Shadow Brush="Black"                                      
@@ -80,9 +83,8 @@
                     </toolkit:AvatarView>
                 </Grid>
 
-                <StackLayout Spacing="10" Margin="15">
-
-                    <Grid>
+                <StackLayout Spacing="10" Margin="10">
+                    <Grid ColumnSpacing="10">
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
                                 Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}" Value="True">
@@ -93,9 +95,9 @@
                                 <Setter Property="ColumnDefinitions" Value="*,*" />
                             </DataTrigger>
                         </Grid.Triggers>
-                        <Button Grid.Column="0" Margin="10,0" Text="Results" HorizontalOptions="FillAndExpand" Clicked="TournamentResults_Button_Clicked" />
-                        <Button Grid.Column="1" Margin="10,0" Text=" PVP " HorizontalOptions="FillAndExpand" Clicked="Pvp_Button_Clicked" />
-                        <Button Grid.Column="2" Margin="10,0" Text="Champ. Series" x:Name="ChampButton" HorizontalOptions="FillAndExpand" Clicked="CS_Button_Clicked" 
+                        <Button HeightRequest="50" Grid.Column="0" Text="Tournament Results" LineBreakMode="WordWrap" Clicked="TournamentResults_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="1" Text="Player vs Player" LineBreakMode="WordWrap" Clicked="Pvp_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="2" Text="Championship Series" LineBreakMode="WordWrap"  x:Name="ChampButton" Clicked="CS_Button_Clicked" 
                             IsVisible="{Binding HasChampionshipSeriesData}" />
                     </Grid>
 
@@ -113,7 +115,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rank" />
-                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Rank, Mode=OneWay}" HorizontalTextAlignment="Center"/>
+                        <controls:PlayerRankLabel TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" Grid.Column="1" Grid.Row="0" Rank="{Binding Rank, Mode=OneWay}" HorizontalTextAlignment="Center"/>
                         <Label Grid.Column="2" Grid.Row="0" Text="{Binding CurrentWpprValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
 
                         <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rating" />
@@ -121,7 +123,7 @@
                         <Label Grid.Column="2" Grid.Row="1" Text="{Binding RatingValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
 
                         <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Eff percent" />
-                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding EffPercent, Mode=OneWay}" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding PlayerRecord.PlayerStats.EfficiencyRank, TargetNullValue='Not Ranked', Mode=OneWay}" HorizontalTextAlignment="Center"/>
                         <Label Grid.Column="2" Grid.Row="2" Text="{Binding EfficiencyValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
                     </Grid>
 

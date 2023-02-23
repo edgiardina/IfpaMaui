@@ -4,6 +4,7 @@ using System.ServiceModel.Syndication;
 using Ifpa.Services;
 using System.Xml;
 using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Ifpa.ViewModels
         private BlogPostService BlogPostService { get; set; }
 
         //TODO: convert IConfiguration to IOptions?
-        public NewsDetailViewModel(IConfiguration config, BlogPostService blogPostService) : base(config)
+        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "News";
             BlogPostService = blogPostService;

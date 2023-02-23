@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Label xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+       xmlns:local="clr-namespace:Ifpa.Converters" xmlns:controls="clr-namespace:Ifpa.Controls" 
+       x:DataType="controls:PlayerRankLabel"
+       x:Class="Ifpa.Controls.PlayerRankLabel"
+       Text="{Binding Rank}"
+       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}">
+    <Label.Resources>
+        <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />            
+        </ResourceDictionary>
+    </Label.Resources>
+    <Label.Triggers>
+        <DataTrigger Binding="{Binding Rank}" Value="0" TargetType="Label">
+            <Setter Property="Text" Value="Not Ranked" />
+        </DataTrigger>
+    </Label.Triggers>
+</Label>

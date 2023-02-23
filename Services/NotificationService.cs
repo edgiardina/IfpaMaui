@@ -1,23 +1,23 @@
 ﻿using Ifpa.Models;
 using PinballApi;
 using PinballApi.Extensions;
-using Plugin.LocalNotification;
 using Microsoft.Extensions.Configuration;
+using Shiny.Notifications;
 
 namespace Ifpa.Services
 {
     public class NotificationService
     {
-        protected AppSettings AppSettings { get; set; }
-        protected BlogPostService BlogPostService { get; set; } 
+        protected BlogPostService BlogPostService { get; set; }
 
-        public NotificationService(IConfiguration config, BlogPostService blogPostService)
+        readonly INotificationManager notificationManager;
+
+        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager)
         {
-            AppSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
-
-            PinballRankingApi = new PinballRankingApiV1(AppSettings.IfpaApiKey);
+            PinballRankingApi = pinballRankingApi;
 
             BlogPostService = blogPostService;
+            this.notificationManager = notificationManager;
         }
         private PinballRankingApiV1 PinballRankingApi { get; set; }
 
@@ -161,14 +161,21 @@ namespace Ifpa.Services
 
         public async Task SendNotification(string title, string description, string url)
         {
-            var notification = new NotificationRequest
+            var payload = new Dictionary<string, string>();
+            payload.Add("url", url);
+
+            var notification = new Notification
             {
                 Title = title,
-                Description = description,
-                ReturningData = url
+                Message = description,
+                Payload = payload
             };
 
-            await LocalNotificationCenter.Current.Show(notification);
+            var result = await notificationManager.RequestRequiredAccess(notification);
+            if (result == AccessState.Available)
+            {
+                await notificationManager.Send(notification);
+            }
         }
     }
 }

@@ -1,26 +1,33 @@
-﻿using Microsoft.Maui.Handlers;
-using Plugin.LocalNotification;
-using Plugin.LocalNotification.EventArgs;
+﻿using Ifpa.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Maui.Handlers;
+using Shiny.Notifications;
 using System.Web;
 
 namespace Ifpa;
 
 public partial class App : Application
 {
-    //This service provider is so platform specific code like BackgroundReceiver can get NotificationService et al
-    public static IServiceProvider ServiceProvider { get; set; }
+    protected INotificationManager NotificationManager { get; set; }
 
-    public App(IServiceProvider serviceProvider)
+    public App(AppSettings appSettings, INotificationManager notificationManager)
     {
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
+
+        NotificationManager = notificationManager;
+
         InitializeComponent();
 
         MainPage = new AppShell();
-
-        ServiceProvider = serviceProvider;
-
-        LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationActionTapped;
     }
-        
+
+    protected override async void OnStart()
+    {
+        base.OnStart();
+
+        await NotificationManager.RequestAccess();
+    }
+
     public static void HandleAppActions(AppAction appAction)
     {
         App.Current.Dispatcher.Dispatch(async () =>
@@ -55,10 +62,5 @@ public partial class App : Application
                 await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
             }
         }
-    }
-
-    private async void OnNotificationActionTapped(NotificationEventArgs e)
-    {
-        await Shell.Current.GoToAsync(e.Request.ReturningData);
     }
 }

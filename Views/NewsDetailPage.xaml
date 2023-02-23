@@ -9,7 +9,6 @@
              Title="{Binding Title}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:AlternatingRowListViewConverter x:Key="alternatingRowListViewIndexConverter" />
             <local:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -53,7 +52,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="5" BackgroundColor="{Binding ., Converter={StaticResource alternatingRowListViewIndexConverter}, ConverterParameter={x:Reference ItemsListView}}">
+                        <StackLayout Padding="5">
                             <Label HorizontalTextAlignment="Start"  FontSize="Small" Text="{Binding Summary.Text, Converter={StaticResource HtmlDecodeConverter}}" Margin="0" />
                             <Label HorizontalTextAlignment="Start"  FontSize="Small" Text="{Binding Title.Text}" Margin="0" />
                         </StackLayout>

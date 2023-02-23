@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Ifpa.Models;
 using PinballApi.Models.WPPR.v2.Players;
 using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public FavoritesViewModel(IConfiguration config) : base(config)
+        public FavoritesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Favorites";
             Players = new ObservableCollection<Player>();

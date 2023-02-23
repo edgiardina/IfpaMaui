@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
+using Microsoft.Maui.Controls.Maps;
 
 namespace Ifpa.ViewModels
 {
@@ -11,19 +12,19 @@ namespace Ifpa.ViewModels
         public ObservableCollection<InlineCalendarItem> TournamentCalenderItems { get; set; } 
         public ObservableCollectionRange<CalendarDetails> CalendarDetails { get; set; }
 
+        public ObservableCollection<Pin> Pins { get; set; }
+
         public Command LoadItemsCommand { get; set; }
 
-        public CalendarViewModel(IConfiguration config) : base(config)
+        public CalendarViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Calendar";
-            CalendarDetails = new ObservableCollectionRange<CalendarDetails>();      
+            CalendarDetails = new ObservableCollectionRange<CalendarDetails>();
+            Pins = new ObservableCollection<Pin>();
         }
 
         public async Task ExecuteLoadItemsCommand(string address, int distance)
-        {
-            if (IsBusy)
-                return;
-
+        {           
             IsBusy = true;
 
             try
@@ -39,6 +40,11 @@ namespace Ifpa.ViewModels
                 if (items.Calendar.Any())
                 {
                     CalendarDetails.AddRange(items.Calendar.OrderBy(n => n.EndDate));
+
+                    foreach (var detail in CalendarDetails)
+                    {
+                        LoadEventOntoCalendar(detail);
+                    }
 
                     TournamentCalenderItems = new ObservableCollection<InlineCalendarItem>();
 
@@ -56,6 +62,8 @@ namespace Ifpa.ViewModels
                     }
 
                     OnPropertyChanged("TournamentCalenderItems");
+                    OnPropertyChanged("CalendarDetails");
+                    OnPropertyChanged("Pins");
                 }
 
                 Console.WriteLine("Collections loaded at {0}", sw.ElapsedMilliseconds);
@@ -68,6 +76,18 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private void LoadEventOntoCalendar(CalendarDetails detail)
+        {
+            var pin = new Pin();
+           
+            pin.Location = new Location(detail.Latitude, detail.Longitude);
+            pin.Label = detail.TournamentName;            
+            pin.Address = detail.Address1 + " " + detail.City + ", " + detail.State;
+            pin.Type = PinType.Generic;
+
+            Pins.Add(pin);
         }
     }
 }

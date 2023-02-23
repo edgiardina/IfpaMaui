@@ -10,9 +10,9 @@ using Microsoft.Maui;
 namespace Ifpa.Views.DataTemplates
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PlayerResultViewCell : ViewCell
-	{
-		public PlayerResultViewCell()
+	public partial class PlayerResultDataTemplate : DataTemplate
+    {
+		public PlayerResultDataTemplate()
 		{
 			InitializeComponent ();
 		}

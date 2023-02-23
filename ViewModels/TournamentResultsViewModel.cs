@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Tournaments;
 using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -14,7 +14,7 @@ namespace Ifpa.ViewModels
 
         public int TournamentId { get; set; }
 
-        public TournamentResultsViewModel(IConfiguration config) : base(config)
+        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Tournament Results";
             Results = new ObservableCollectionRange<TournamentResult>();

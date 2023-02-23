@@ -2,7 +2,7 @@
 using PinballApi.Models.WPPR.v2.Players;
 using PinballApi.Models.WPPR.v2;
 using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -23,7 +23,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
 
-        public PlayerResultsViewModel(IConfiguration config) : base(config)
+        public PlayerResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Results";
             State = ResultType.Active;

@@ -32,7 +32,7 @@ namespace Ifpa.Views
             {
                 var championshipSeries = e.CurrentSelection.FirstOrDefault() as Series;
 
-                await Shell.Current.GoToAsync($"champ-series?seriesCode={championshipSeries.Code}");
+                await Shell.Current.GoToAsync($"champ-series?seriesCode={championshipSeries.Code}&year={championshipSeries.Years.Max()}");
 
                 //Deselect Item
                 ((CollectionView)sender).SelectedItem = null;

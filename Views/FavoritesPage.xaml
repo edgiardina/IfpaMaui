@@ -3,76 +3,58 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.FavoritesPage"             
              xmlns:local="clr-namespace:Ifpa.Converters"             
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"             
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              Title="{Binding Title}"
              x:Name="SearchPlayersPage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="BoolConverter" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
+            <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
+                <toolkit:IsStringNullOrEmptyConverter />
+                <toolkit:InvertedBoolConverter />
+            </toolkit:MultiConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Label Margin="10,0,10,0"
-                IsVisible="{Binding IsPopulated, Converter={StaticResource BoolConverter}}"
-                VerticalTextAlignment="Center"
-                HorizontalTextAlignment="Center"
-                FontAttributes="Italic"
-                Text="You have no favorite players selected. Use the heart icon to add a player to your favorites." />
-            
-            <ListView x:Name="PlayersListView" 
-                      IsVisible="{Binding IsPopulated}"
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <CollectionView x:Name="PlayersListView" 
+                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding Players}"
                         VerticalOptions="FillAndExpand"
-                         HasUnevenRows="true"
-                         RefreshCommand="{Binding LoadItemsCommand}"
-                         IsPullToRefreshEnabled="true"
-                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
-                         ItemSelected="OnItemSelected">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Padding="10" Orientation="Horizontal" >
-                                <StackLayout Padding="10" Orientation="Vertical">
-                                    <Label LineBreakMode="NoWrap"  FontSize="16">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding FirstName}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding LastName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding City}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding StateProvince}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding CountryName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </StackLayout>
-                                <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" 
-                                   LineBreakMode="NoWrap" 
-                                    
-                                   FontSize="18" WidthRequest="80" />
+                        SelectionMode="Single" 
+                        EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites."
+                        SelectionChanged="PlayersListView_SelectionChanged">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout>
+                        <StackLayout Padding="15,10" Orientation="Horizontal" >
+                            <StackLayout Orientation="Vertical">
+                                <Label LineBreakMode="NoWrap"  FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="{Binding FirstName}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding LastName}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <controls:CityStateCountryView />
                             </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
-    </ContentPage.Content>
+                            <controls:PlayerRankLabel HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
+                                   Rank="{Binding PlayerStats.CurrentWpprRank}" 
+                                   LineBreakMode="NoWrap"                                     
+                                   FontSize="18" />
+                        </StackLayout>
+                        
+                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

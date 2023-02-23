@@ -4,54 +4,78 @@
              xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"               
              xmlns:controls="clr-namespace:Ifpa.Views.Controls"
              x:Class="Ifpa.Views.CalendarPage"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"    
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Title="Calendar">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="scheduler:SchedulerTextStyle" x:Key="CalendarHeaderStyle">
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                <Setter Property="FontSize" Value="200"/> 
+                <Setter Property="FontSize" Value="200"/>
             </Style>
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="{fluent:Icon Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
-        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />        
-    </ContentPage.ToolbarItems>    
-    <Grid>
-        <StackLayout x:Name="MapLayout" Spacing="0" VerticalOptions="Fill">
-            
-            <Map x:Name="calendarMap" MapType="Street" />
-            
-            <ListView x:Name="TournamentListView"                  
-                    ItemsSource="{Binding CalendarDetails}"         
-                    HasUnevenRows="true"       
-                    IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                    CachingStrategy="RecycleElement"
-                    ItemSelected="TournamentListView_ItemSelected">
-                <ListView.ItemTemplate 
-                        VerticalOptions="Fill"
-                        HasUnevenRows="true">
+        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
+    </ContentPage.ToolbarItems>
+    <!--<Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />-->
+    <!-- IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" -->
+    <Grid >
+        <Grid x:Name="MapLayout" RowDefinitions="*,*" >
+
+            <Map x:Name="calendarMap" MapType="Street" Grid.Row="0"
+                     ItemsSource="{Binding Pins}">
+                <Map.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <Pin MarkerClicked="Pin_MarkerClicked"
+                              MarkerId="{Binding MarkerId}"
+                              Location="{Binding Location}"
+                              Address="{Binding Address}"
+                              Label="{Binding Label}" />
+                    </DataTemplate>
+                </Map.ItemTemplate>
+            </Map>
+
+            <CollectionView x:Name="TournamentListView" 
+                                 Grid.Row="1"
+                    ItemsSource="{Binding CalendarDetails}"         
+                    SelectionMode="Single"
+                    SelectionChanged="TournamentListView_SelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout>
                             <Grid Margin="10" ColumnSpacing="10" ColumnDefinitions="*,90">
                                 <Label Grid.Column="0" Text="{Binding TournamentName}" />
                                 <Label Grid.Column="1" MinimumWidthRequest="90" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}" 
                                        Text="{Binding EndDate, StringFormat='{0:d}'}" LineBreakMode="NoWrap" />
                             </Grid>
-                        </ViewCell>
+
+                            <BoxView Style="{StaticResource BoxSeperator}"/>
+                        </VerticalStackLayout>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
-        <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand" 
-                                MinimumDateTime="{Binding DateTime.Today}"
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+        <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand"                                   
+                                MinimumDateTime="{Binding Source={x:Static sys:DateTime.Now}}"
                                 View="Month"                                                               
                                 AppointmentsSource="{Binding TournamentCalenderItems, Mode=OneWay}" 
-                               Tapped="calendar_Tapped"
+                                Tapped="calendar_Tapped"
                                 BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
+            <scheduler:SfScheduler.HeaderView>
+                <scheduler:SchedulerHeaderView >
+                    <scheduler:SchedulerHeaderView.TextStyle>
+                        <scheduler:SchedulerTextStyle FontSize="18" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"  />
+                    </scheduler:SchedulerHeaderView.TextStyle>
+                </scheduler:SchedulerHeaderView>
+            </scheduler:SfScheduler.HeaderView>
             <scheduler:SfScheduler.MonthView>
-                <scheduler:SchedulerMonthView>                      
+                <scheduler:SchedulerMonthView>
                     <scheduler:SchedulerMonthView.ViewHeaderTemplate>
                         <DataTemplate>
                             <Grid>
@@ -70,6 +94,7 @@
                     </scheduler:SchedulerMonthView.CellTemplate>
                 </scheduler:SchedulerMonthView>
             </scheduler:SfScheduler.MonthView>
-        </scheduler:SfScheduler>             
+        </scheduler:SfScheduler>
     </Grid>
+    <!--</Grid>-->
 </ContentPage>

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Players;
 using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
+using PinballApi;
 
 namespace Ifpa.ViewModels
 {
@@ -19,7 +19,7 @@ namespace Ifpa.ViewModels
 
         public bool HasNoPvpData { get; set; }
 
-        public PlayerVersusPlayerViewModel(IConfiguration config) : base(config)
+        public PlayerVersusPlayerViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "PVP";
             AllResults = new ObservableCollection<Grouping<char, PlayerVersusRecord>>();

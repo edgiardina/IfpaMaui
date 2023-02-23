@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              x:Class="Ifpa.Views.RankingsPage"
              Title="{Binding Title}"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
@@ -14,58 +15,62 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <local:PlayerListViewIndexConverter x:Key="playerListViewIndexConverter" x:Name="PlayerListViewIndexConverter" StartingRank="{Binding StartingPosition, Mode=TwoWay}" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />               
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ListView x:Name="PlayersListView" 
-                 ItemsSource="{Binding Players}"              
-                 RefreshCommand="{Binding LoadItemsCommand}"
-                 IsPullToRefreshEnabled="true"
-                 HasUnevenRows="True"
-                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                 ItemSelected="OnItemSelected"              
-                 CachingStrategy="RetainElement">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <Grid ColumnDefinitions="Auto,*,60" RowDefinitions="*,*" Margin="0,5">
-                        <Label Grid.Column="0" Grid.RowSpan="2" Margin="10,5" VerticalTextAlignment="Center" 
-                               Text="{Binding ., Converter={StaticResource playerListViewIndexConverter}, ConverterParameter={x:Reference PlayersListView}}" 
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <CollectionView x:Name="PlayersListView" 
+                 ItemsSource="{Binding Players}"
+                 IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"  
+                 SelectionMode="Single"
+                 EmptyView="No players returned for the selected filter criteria"
+                 SelectionChanged="PlayersListView_SelectionChanged">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Grid ColumnDefinitions="Auto,*,60" RowDefinitions="*,*" Margin="0,5">
+                            <Label Grid.Column="0" Grid.RowSpan="2" Margin="10,5" VerticalTextAlignment="Center" 
+                               Text="{Binding CurrentRank, Converter={StaticResource intToOrdinalString}}" 
                                    LineBreakMode="NoWrap"                                     
                                    FontSize="24" MinimumWidthRequest="58" />
 
-                        <Label LineBreakMode="NoWrap" FontSize="16" Grid.Column="1" Grid.Row="0">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span Text="{Binding FirstName}" />
-                                        <Span Text=" " />
-                                        <Span Text="{Binding LastName}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
+                            <Label LineBreakMode="NoWrap" FontSize="16" Grid.Column="1" Grid.Row="0">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="{Binding FirstName}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding LastName}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
 
-                        <Label Grid.Column="1" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Location}" LineBreakMode="NoWrap"  FontSize="12"  VerticalTextAlignment="Center" />
-                        <Label Grid.Column="2" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Margin="10,0" HorizontalTextAlignment="End" 
+                            <controls:CityStateCountryView Grid.Row="1" Grid.Column="1" />
+                           
+                            <Label Grid.Column="2" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Margin="10,0" HorizontalTextAlignment="End" 
                                Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap"  VerticalTextAlignment="Center" FontSize="10" />
 
-                        <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{DynamicResource SecondaryTextColor}"
+                            <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{DynamicResource SecondaryTextColor}"
                                Margin="10,0" FontSize="10" HorizontalTextAlignment="End" VerticalTextAlignment="Center" 
                                IsVisible="{Binding Source={x:Reference BrowseItemsPage}, Path=BindingContext.ShowOverallRank}">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span Text="Overall Rank:" />
-                                        <Span Text=" " />
-                                        <Span Text="{Binding CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Grid>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="Overall Rank:" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+
+                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>
