@@ -21,8 +21,10 @@ jobs:
       - name: Determine build version number        
         run: |
           $branchName = $Env:GITHUB_REF -replace "refs/heads/v", ""
-          if([string]::IsNullOrEmpty("${{github.event.inputs.versionNumber}}")) { echo "VERSION=$branchName" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append   } else {echo "VERSION=${{github.event.inputs.versionNumber}}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append }        
-          echo "$branchName is our version number"
+          if([string]::IsNullOrEmpty("${{github.event.inputs.versionNumber}}")) { echo "VERSION=$branchName" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append   } else {echo "VERSION=${{github.event.inputs.versionNumber}}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append }                  
+          
+      - name: Determine build version number        
+        run: echo "$VERSION is our version number"
 
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
@@ -52,7 +54,7 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f net7.0-android -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{github.run_number}} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
+        run: dotnet publish IfpaMaui.csproj -c Release -f net7.0-android -p:Version=$VERSION -p:ApplicationDisplayVersion=$VERSION -p:ApplicationVersion=${{ github.run_number }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
