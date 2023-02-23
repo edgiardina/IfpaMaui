@@ -35,7 +35,14 @@ jobs:
         env:
           AppSettings.SyncFusionLicenseKey: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
-          
+      
+      - name: Add Google Maps API Key to Android Manifest
+        run: |
+          $pathToXml = "Platforms/Android/AndroidManifest.xml"
+          $xml=[xml](Get-Content $pathToXml)
+          $xml.manifest.application."meta-data".value = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
+          $xml.Save($pathToXml)       
+       
         # # Store Android Signing Keystore and password in Secrets using base64 encoding
         # # https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/certutil
         # # commandline util to encode to base64 on windows
