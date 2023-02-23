@@ -20,12 +20,9 @@ jobs:
 
       - name: Determine build version number        
         run: |
-          if([string]::IsNullOrEmpty("${GITHUB_REF/refs\/tags\/v/}")) {                      
-              echo "VERSION=${{github.event.inputs.versionNumber}}" >> $env:GITHUB_ENV}
-          else{
-              echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $env:GITHUB_ENV  }        
-          
-          echo "${VERSION} is our version number"
+          $branchName = $Env:GITHUB_REF -replace "refs/heads/v", ""
+          if([string]::IsNullOrEmpty($branchName)) { echo "VERSION=${{github.event.inputs.versionNumber}}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append } else { echo "VERSION=$branchName" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append  }        
+          echo "$branchName is our version number"
 
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
