@@ -62,7 +62,7 @@ jobs:
           path: bin/Release/net7.0-android/publish/com.edgiardina.ifpa-Signed.aab
       
       - name: Create service_account.json
-        run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
+        run: echo "${{ secrets.SERVICE_ACCOUNT_JSON }}" | Out-File -FilePath service_account.json -Encoding utf8 -Append 
       
       - name: Deploy to Google Play (Alpha)
         uses: r0adkll/upload-google-play@v1
