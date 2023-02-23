@@ -22,9 +22,11 @@ jobs:
         run: |
           $branchName = $Env:GITHUB_REF -replace "refs/heads/v", ""
           if([string]::IsNullOrEmpty("${{github.event.inputs.versionNumber}}")) { echo "VERSION=$branchName" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append   } else {echo "VERSION=${{github.event.inputs.versionNumber}}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append }                  
-          
-      - name: Determine build version number        
-        run: echo "$VERSION is our version number"
+        
+      - name: create a custom version using run number offset by 1000 (run_number + 1000)
+        shell: bash
+        run: |
+          echo "VERSION_NUMBER_WITH_OFFSET=$((1000+GITHUB_RUN_NUMBER))" >> $GITHUB_ENV
 
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
@@ -54,7 +56,7 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f net7.0-android -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ github.run_id }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
+        run: dotnet publish IfpaMaui.csproj -c Release -f net7.0-android -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
@@ -118,6 +120,10 @@ jobs:
           fi
           echo "${VERSION} is our version number"
           
+      - name: create a custom version using run number offset by 1000 (run_number + 1000)
+        run: |
+          echo "VERSION_NUMBER_WITH_OFFSET=$((1000+GITHUB_RUN_NUMBER))" >> $GITHUB_ENV   
+          
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
@@ -144,7 +150,7 @@ jobs:
       - name : Publish iOS App
         shell: bash
         run: |
-          dotnet publish -f net7.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ github.run_id }}
+          dotnet publish -f net7.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }}
 
       - uses: actions/upload-artifact@v2
         with:
