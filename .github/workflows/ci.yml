@@ -1,14 +1,14 @@
-name: CI Build
+name: dotnet continuous integration build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths-ignore:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -41,11 +41,12 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f net7.0-android --no-restore
+        run: dotnet build IfpaMaui.csproj -c Release -f net7.0-android --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
+          if-no-files-found: error
           name: ifpamaui-android-ci-build
           path: bin/Release/net7.0-android/*Signed.a*
 
@@ -75,5 +76,6 @@ jobs:
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
+          if-no-files-found: error
           name: ifpamaui-ios-ci-build
           path: bin/Release/net7.0-ios/iossimulator-x64/**/*.app
