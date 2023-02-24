@@ -93,4 +93,4 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Build MAUI iOS
-        run: dotnet publish IfpaMaui.csproj -c Release -f net7.0-ios -p:ArchiveOnBuild=true --no-restore
+        run: dotnet build IfpaMaui.csproj -c Release -f net7.0-ios -p:ArchiveOnBuild=true
