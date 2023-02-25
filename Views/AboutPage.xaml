@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.AboutPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="About">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsListNotNullOrEmptyConverter x:Key="isListNotNullOrEmptyConverter" />            
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -80,28 +86,29 @@
                         <Button Grid.Column="0" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Learn More" Clicked="LearnMore_Clicked" />
                         <Button Grid.Column="1" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Leave a Review" Clicked="ReviewButton_Clicked" />
                     </Grid>
-
-                    <Label Text="Thank you to the Github Sponsors!" />
-                    <CollectionView ItemsSource="{Binding Sponsors}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Label TextColor="{StaticResource LinkTextColor}">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="PlayerLabel_Tapped" CommandParameter="{Binding PlayerId}"/>
-                                    </Label.GestureRecognizers>
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <FormattedString.Spans>
-                                                <Span Text="{Binding FirstName}" />
-                                                <Span Text=" " />
-                                                <Span Text="{Binding LastName}" />
-                                            </FormattedString.Spans>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                    <StackLayout IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}">
+                        <Label Text="Thank you to the Github Sponsors!" Margin="0,0,0,10" />
+                        <CollectionView ItemsSource="{Binding Sponsors}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Label TextColor="{StaticResource LinkTextColor}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped" CommandParameter="{Binding PlayerId}"/>
+                                        </Label.GestureRecognizers>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding FirstName}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding LastName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
                 </StackLayout>
             </ScrollView>
         </Grid>
