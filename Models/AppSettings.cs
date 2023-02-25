@@ -14,5 +14,7 @@ namespace Ifpa.Models
         public string PlayStoreAppId { get; set; }
         public string IfpaRssFeedUrl { get; set; }
         public string IfpaPlayerNoProfilePicUrl { get; set; }
+
+        public List<int> Sponsors { get; set; }
     }
 }
