@@ -3,54 +3,63 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.AboutPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="About">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsListNotNullOrEmptyConverter x:Key="isListNotNullOrEmptyConverter" />            
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <StackLayout Padding="0,5" HorizontalOptions="Fill" BackgroundColor="{StaticResource BannerTextColor}">
-                <Image Source="https://www.ifpapinball.com/images/ifpa_logo.jpg" VerticalOptions="Center" HeightRequest="100" />            
-        </StackLayout>
-        <ScrollView Grid.Row="1">
-            <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
-                <Label FontSize="22">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="IFPA Companion" FontAttributes="Bold" FontSize="22" />
-                                <Span Text=" " />
+                <Image Source="https://www.ifpapinball.com/images/ifpa_logo.jpg" VerticalOptions="Center" HeightRequest="100" />
+            </StackLayout>
+            <ScrollView Grid.Row="1">
+                <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
+                    <Label FontSize="22">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span Text="IFPA Companion" FontAttributes="Bold" />
+                                    <Span Text=" " />
                                     <Span Text="{Binding CurrentVersion}" TextColor="{StaticResource SecondaryTextColor}" />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="This app is written in C# and native APIs using" />
-                                <Span Text=" " />
-                                <Span Text=".NET MAUI" FontAttributes="Bold" />
-                                <Span Text="." />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label>
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="CreatorLabel_Tapped"/>
-                    </Label.GestureRecognizers>
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="This app was written by " />
+                                    <Span Text="   (" FontSize="12" TextColor="{StaticResource SecondaryTextColor}" />
+                                    <Span Text="{Binding MinorVersion}" FontSize="12" TextColor="{StaticResource SecondaryTextColor}" />
+                                    <Span Text=")" FontSize="12" TextColor="{StaticResource SecondaryTextColor}" />
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span Text="This app is written in C# and native APIs using" />
+                                    <Span Text=" " />
+                                    <Span Text=".NET MAUI" FontAttributes="Bold" />
+                                    <Span Text="." />
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped" CommandParameter="{Binding CreatorIfpaNumber}"/>
+                        </Label.GestureRecognizers>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span Text="This app was written by " />
                                     <Span Text="Ed Giardina" TextColor="{StaticResource LinkTextColor}" />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                     <!-- https://flagpedia.net -->
                     <Label>
                         <Label.GestureRecognizers>
@@ -66,19 +75,42 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Grid HorizontalOptions="FillAndExpand" Margin="0, 20, 0, 0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Learn More" Clicked="LearnMore_Clicked" />
-                    <Button Grid.Column="1" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Leave a Review" Clicked="ReviewButton_Clicked" />
-                </Grid>
-            </StackLayout>
-        </ScrollView>
-    </Grid>
+                    <Grid HorizontalOptions="FillAndExpand" Margin="0, 20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Learn More" Clicked="LearnMore_Clicked" />
+                        <Button Grid.Column="1" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Leave a Review" Clicked="ReviewButton_Clicked" />
+                    </Grid>
+                    <StackLayout IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}">
+                        <Label Text="Thank you to the Github Sponsors!" Margin="0,0,0,10" />
+                        <CollectionView ItemsSource="{Binding Sponsors}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Label TextColor="{StaticResource LinkTextColor}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped" CommandParameter="{Binding PlayerId}"/>
+                                        </Label.GestureRecognizers>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding FirstName}" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding LastName}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
