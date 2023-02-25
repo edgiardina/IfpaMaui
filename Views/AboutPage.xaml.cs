@@ -8,7 +8,7 @@ namespace Ifpa.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AboutPage : ContentPage
     {
-        private const int creatorIfpaNumber = 16927;
+        
         private readonly AboutViewModel ViewModel;
 
         public AboutPage(AboutViewModel viewModel)
@@ -18,9 +18,15 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        private async void CreatorLabel_Tapped(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={creatorIfpaNumber}");
+            base.OnAppearing();
+            Task.Run(ViewModel.LoadSponsors);
+        }
+
+        private async void PlayerLabel_Tapped(object sender, TappedEventArgs e)
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={e.Parameter}");
         }
 
         private async void ReviewButton_Clicked(object sender, EventArgs e)
