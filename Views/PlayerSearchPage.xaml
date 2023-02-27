@@ -13,8 +13,8 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <VerticalStackLayout>
-            <SearchBar Grid.Row="0" x:Name="SearchBar" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand"
-                       IsSpellCheckEnabled="False" 
+            <SearchBar x:Name="SearchBar" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand"
+                       IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
                        TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
                        PlaceholderColor="{StaticResource SecondaryTextColor}"   
                        CancelButtonColor="{StaticResource SecondaryTextColor}"                        
