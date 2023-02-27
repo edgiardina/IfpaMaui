@@ -110,23 +110,21 @@
 	<ItemGroup>
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.0.1" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="4.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.58" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.59" />
 		<PackageReference Include="PinballApi" Version="2.1.0" />
-		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.1.5" />
-		<PackageReference Include="Scrutor" Version="4.2.0" />
+		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.2.0" />
+		<PackageReference Include="Scrutor" Version="4.2.1" />
 		<PackageReference Include="Shiny.Core" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Jobs" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Notifications" Version="$(ShinyVersion)" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.2" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.2" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.2" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.2" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.4" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.4" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.4" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.4" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.4.51" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="20.4.51" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.4.51" />
