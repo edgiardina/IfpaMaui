@@ -86,7 +86,9 @@
                         <Button Grid.Column="0" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Learn More" Clicked="LearnMore_Clicked" />
                         <Button Grid.Column="1" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Leave a Review" Clicked="ReviewButton_Clicked" />
                     </Grid>
-                    <StackLayout IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}">
+                    <!-- TODO:  IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}" 
+                                hide the stacklayout if we have no sponsors. This crashes in iOS -->
+                    <StackLayout>
                         <Label Text="Thank you to the Github Sponsors!" Margin="0,0,0,10" />
                         <CollectionView ItemsSource="{Binding Sponsors}">
                             <CollectionView.ItemTemplate>
