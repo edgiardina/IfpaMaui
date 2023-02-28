@@ -12,13 +12,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <VerticalStackLayout>
-            <SearchBar x:Name="SearchBar" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand"
+        <Grid RowDefinitions="60, *">
+            <SearchBar Grid.Row="0" x:Name="SearchBar" SearchCommand="{Binding SearchCommand}"
                        IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
                        TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
                        PlaceholderColor="{StaticResource SecondaryTextColor}"   
                        CancelButtonColor="{StaticResource SecondaryTextColor}"                        
                        MaxLength="100"
+                       HeightRequest="60"
                        Keyboard="Text"   
                        Placeholder="Type a player's name to search"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
@@ -27,10 +28,12 @@
                 https://github.com/dotnet/maui/issues/8039
                 EmptyView="No players found."
                 -->
-            <CollectionView x:Name="PlayersListView"             
-                    IsVisible="{Binding IsPopulated}"
+            <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+            <CollectionView x:Name="PlayersListView"   
                     ItemsSource="{Binding Players}"                    
                     SelectionChanged="PlayersListView_SelectionChanged"
+                    IsVisible="{Binding IsLoaded}"
+                    Grid.Row="1"
                     SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -59,8 +62,12 @@
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="No players found" />
+                    </ContentView>
+                </CollectionView.EmptyView>
             </CollectionView>
-
-        </VerticalStackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

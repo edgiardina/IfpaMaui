@@ -10,7 +10,7 @@ namespace Ifpa.ViewModels
     {
         public ObservableCollection<PlayerSearchResult> Players { get; set; }
 
-        public bool IsPopulated => Players != null && Players.Count > 0;
+        public bool IsLoaded { get; set; } = false;
 
         public PlayerSearchViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
@@ -45,8 +45,8 @@ namespace Ifpa.ViewModels
                                 Players.Add(c);
                             }
                         }
-
-                        OnPropertyChanged("IsPopulated");
+                        IsLoaded = true;
+                        OnPropertyChanged("IsLoaded");
                     }
                     catch (Exception ex)
                     {
