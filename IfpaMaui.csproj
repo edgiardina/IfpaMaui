@@ -108,8 +108,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.0.1" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="4.0.0" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.59" />
 		<PackageReference Include="PinballApi" Version="2.1.0" />
@@ -125,10 +125,10 @@
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.4" />
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.4" />
 		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.4" />
-		<PackageReference Include="Syncfusion.Maui.Charts" Version="20.4.51" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="20.4.51" />
-		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="20.4.51" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="20.4.51" />
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="21.1.38" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="21.1.38" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="21.1.38" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="21.1.38" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="7.0.0" />
 	</ItemGroup>
 
