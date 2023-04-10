@@ -15,7 +15,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />               
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
@@ -28,14 +28,19 @@
                  SelectionChanged="PlayersListView_SelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout>
-                        <Grid ColumnDefinitions="Auto,*,60" RowDefinitions="*,*" Margin="0,5">
-                            <Label Grid.Column="0" Grid.RowSpan="2" Margin="10,5" VerticalTextAlignment="Center" 
-                               Text="{Binding CurrentRank, Converter={StaticResource intToOrdinalString}}" 
-                                   LineBreakMode="NoWrap"                                     
-                                   FontSize="24" MinimumWidthRequest="58" />
+                    <StackLayout Spacing="0">
+                        <Grid ColumnDefinitions="Auto,*,100" RowDefinitions="6*,4*, Auto" Margin="0,0,0,5" RowSpacing="0" ColumnSpacing="0" >
 
-                            <Label LineBreakMode="NoWrap" FontSize="16" Grid.Column="1" Grid.Row="0">
+                            <toolkit:AvatarView Grid.Column="0" Grid.RowSpan="2" ImageSource="{Binding ProfilePhoto, TargetNullValue='https://www.ifpapinball.com/images/noplayerpic.png', Mode=OneWay}" 
+                                        HorizontalOptions="Center" Margin="10,0"                                                                                
+                                        BorderWidth="0" CornerRadius="8"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        TextColor="{StaticResource ButtonTextColor}"> 
+                            </toolkit:AvatarView>
+
+                            <Label LineBreakMode="NoWrap" FontSize="16" Grid.Column="1" Grid.Row="0" VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
@@ -47,12 +52,17 @@
                                 </Label.FormattedText>
                             </Label>
 
-                            <controls:CityStateCountryView Grid.Row="1" Grid.Column="1" />
-                           
+                            <controls:CityStateCountryView Grid.Row="1" Grid.Column="1"  />
+
+                            <Label Grid.Column="2" Grid.Row="0" Margin="10,5" VerticalTextAlignment="Center" HorizontalTextAlignment="End" 
+                               Text="{Binding CurrentRank, Converter={StaticResource intToOrdinalString}}" 
+                                   LineBreakMode="NoWrap"                                     
+                                   FontSize="24" MinimumWidthRequest="58" />
+
                             <Label Grid.Column="2" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Margin="10,0" HorizontalTextAlignment="End" 
                                Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap"  VerticalTextAlignment="Center" FontSize="10" />
 
-                            <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{DynamicResource SecondaryTextColor}"
+                            <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{DynamicResource SecondaryTextColor}"
                                Margin="10,0" FontSize="10" HorizontalTextAlignment="End" VerticalTextAlignment="Center" 
                                IsVisible="{Binding Source={x:Reference BrowseItemsPage}, Path=BindingContext.ShowOverallRank}">
                                 <Label.FormattedText>

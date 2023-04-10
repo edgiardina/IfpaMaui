@@ -15,7 +15,7 @@
             </toolkit:MultiConverter>
         </ResourceDictionary>
     </ContentView.Resources>
-    <HorizontalStackLayout>
+    <HorizontalStackLayout Spacing="0">
         <!-- City -->
         <Label TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding City}" LineBreakMode="NoWrap" FontSize="12" VerticalTextAlignment="Center"
                                        IsVisible="{Binding City, Converter={StaticResource invertedNullOrEmptyConverter}}"
