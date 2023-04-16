@@ -28,19 +28,19 @@
                  SelectionChanged="PlayersListView_SelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Spacing="0">
-                        <Grid ColumnDefinitions="Auto,*,100" RowDefinitions="6*,4*, Auto" Margin="0,0,0,5" RowSpacing="0" ColumnSpacing="0" >
+                    <StackLayout Spacing="0" >
+                        <Grid ColumnDefinitions="Auto,*,100" RowDefinitions="*,*, Auto" Margin="0,3" RowSpacing="0" ColumnSpacing="0">
 
                             <toolkit:AvatarView Grid.Column="0" Grid.RowSpan="2" ImageSource="{Binding ProfilePhoto, TargetNullValue='https://www.ifpapinball.com/images/noplayerpic.png', Mode=OneWay}" 
                                         HorizontalOptions="Center" Margin="10,0"                                                                                
                                         BorderWidth="0" CornerRadius="8"
                                         BackgroundColor="Transparent"
-                                        WidthRequest="40"
-                                        HeightRequest="40"
+                                        WidthRequest="45"
+                                        HeightRequest="45"
                                         TextColor="{StaticResource ButtonTextColor}"> 
                             </toolkit:AvatarView>
 
-                            <Label LineBreakMode="NoWrap" FontSize="16" Grid.Column="1" Grid.Row="0" VerticalTextAlignment="Center">
+                            <Label LineBreakMode="NoWrap" FontSize="16" Grid.Column="1" Grid.Row="0" VerticalTextAlignment="End">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
@@ -52,15 +52,15 @@
                                 </Label.FormattedText>
                             </Label>
 
-                            <controls:CityStateCountryView Grid.Row="1" Grid.Column="1"  />
+                            <controls:CityStateCountryView Grid.Row="1" Grid.Column="1" Margin="0,-5,0,0"  />
 
                             <Label Grid.Column="2" Grid.Row="0" Margin="10,5" VerticalTextAlignment="Center" HorizontalTextAlignment="End" 
                                Text="{Binding CurrentRank, Converter={StaticResource intToOrdinalString}}" 
                                    LineBreakMode="NoWrap"                                     
-                                   FontSize="24" MinimumWidthRequest="58" />
+                                   FontSize="16" MinimumWidthRequest="58" />
 
                             <Label Grid.Column="2" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Margin="10,0" HorizontalTextAlignment="End" 
-                               Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap"  VerticalTextAlignment="Center" FontSize="10" />
+                               Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap"  VerticalTextAlignment="Start" FontSize="10" />
 
                             <Label Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{DynamicResource SecondaryTextColor}"
                                Margin="10,0" FontSize="10" HorizontalTextAlignment="End" VerticalTextAlignment="Center" 
