@@ -41,6 +41,7 @@ namespace Ifpa.ViewModels
                 {
                     CalendarDetails.AddRange(items.Calendar.OrderBy(n => n.EndDate));
 
+                    //Limit calendar to 100 future items. otherwise this page chugs
                     foreach (var detail in CalendarDetails)
                     {
                         LoadEventOntoCalendar(detail);
@@ -80,14 +81,21 @@ namespace Ifpa.ViewModels
 
         private void LoadEventOntoCalendar(CalendarDetails detail)
         {
-            var pin = new Pin();
-           
-            pin.Location = new Location(detail.Latitude, detail.Longitude);
-            pin.Label = detail.TournamentName;            
-            pin.Address = detail.Address1 + " " + detail.City + ", " + detail.State;
-            pin.Type = PinType.Generic;
+            var location = new Location(detail.Latitude, detail.Longitude);
 
-            Pins.Add(pin);
+            //check for duplicate pins at this location. Don't add another pin to the same place.
+            if (Pins.Any(n => n.Location == location) == false)
+            {
+                var pin = new Pin();
+
+                pin.Location = location;
+                pin.Label = detail.TournamentName;
+                pin.Address = detail.Address1 + " " + detail.City + ", " + detail.State;
+                pin.Type = PinType.Generic;
+                pin.MarkerId = detail.CalendarId.ToString();
+
+                Pins.Add(pin);
+            }
         }
     }
 }

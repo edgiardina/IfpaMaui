@@ -125,7 +125,15 @@ namespace Ifpa.Views
         {
             var pin = (Pin)sender;
             var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
-            TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);
+            TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);            
+        }
+
+        private async void Pin_InfoWindowClicked(object sender, PinClickedEventArgs e)
+        {
+            var pin = (Pin)sender;
+            var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
+
+            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarItem.CalendarId}");
         }
     }
 }

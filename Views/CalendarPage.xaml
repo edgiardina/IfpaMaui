@@ -31,7 +31,7 @@
                      ItemsSource="{Binding Pins}">
                 <Map.ItemTemplate>
                     <DataTemplate>
-                        <Pin MarkerClicked="Pin_MarkerClicked"
+                        <Pin MarkerClicked="Pin_MarkerClicked" InfoWindowClicked="Pin_InfoWindowClicked"
                               MarkerId="{Binding MarkerId}"
                               Location="{Binding Location}"
                               Address="{Binding Address}"
