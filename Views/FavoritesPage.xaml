@@ -10,6 +10,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <local:AddressFormatConverter x:Key="AddressFormatConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
             <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
@@ -44,7 +45,15 @@
                                     </Label.FormattedText>
                                 </Label>
 
-                                <controls:CityStateCountryView />
+                                <Label>
+                                    <Label.Text>
+                                        <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                            <Binding Path="City" />
+                                            <Binding Path="StateProvince" />
+                                            <Binding Path="CountryName" />
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
                             </StackLayout>
                             <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
                                    Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" 

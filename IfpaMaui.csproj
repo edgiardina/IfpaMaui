@@ -138,9 +138,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiXaml Update="Controls\CityStateCountryView.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Views\AboutPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
