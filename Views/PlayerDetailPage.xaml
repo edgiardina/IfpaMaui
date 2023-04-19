@@ -115,7 +115,8 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rank" />
-                        <controls:PlayerRankLabel TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" Grid.Column="1" Grid.Row="0" Rank="{Binding Rank, Mode=OneWay}" HorizontalTextAlignment="Center"/>
+                        <Label TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
+                               Grid.Column="1" Grid.Row="0" Text="{Binding Rank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" HorizontalTextAlignment="Center"/>
                         <Label Grid.Column="2" Grid.Row="0" Text="{Binding CurrentWpprValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
 
                         <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rating" />

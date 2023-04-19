@@ -9,6 +9,7 @@
              x:Name="SearchPlayersPage">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
             <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
@@ -45,8 +46,8 @@
 
                                 <controls:CityStateCountryView />
                             </StackLayout>
-                            <controls:PlayerRankLabel HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
-                                   Rank="{Binding PlayerStats.CurrentWpprRank}" 
+                            <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
+                                   Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" 
                                    LineBreakMode="NoWrap"                                     
                                    FontSize="18" />
                         </StackLayout>
