@@ -48,7 +48,7 @@
                                 </Label.FormattedText>
                             </Label>
 
-                            <Label Grid.Row="1" Grid.Column="1">
+                            <Label Grid.Row="1" Grid.Column="1" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
                                 <Label.Text>
                                     <MultiBinding Converter="{StaticResource AddressFormatConverter}">
                                         <Binding Path="City" />

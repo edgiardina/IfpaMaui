@@ -34,7 +34,7 @@ namespace Ifpa.Converters
             {
                 if (hasCity)
                 {
-                    sb.Append(" ");
+                    sb.Append(", ");
                 }
 
                 sb.Append(values[1]);
@@ -46,7 +46,7 @@ namespace Ifpa.Converters
             {
                 if (hasState || hasCity)
                 {
-                    sb.Append(", ");
+                    sb.Append(" ");
                 }
 
                 sb.Append(values[2]);
