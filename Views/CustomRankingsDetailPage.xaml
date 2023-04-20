@@ -14,6 +14,7 @@
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <local:AddressFormatConverter x:Key="AddressFormatConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -44,9 +45,17 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                                
-                                                <controls:CityStateCountryView />
-                                  
+
+                                                <Label>
+                                                    <Label.Text>
+                                                        <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                                            <Binding Path="City" />
+                                                            <Binding Path="StateProvince" />
+                                                            <Binding Path="CountryName" />
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
+
                                             </StackLayout>
                                             <StackLayout HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,15, 0">
                                                 <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" FontSize="12">

@@ -9,7 +9,7 @@ namespace Ifpa.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(object.Equals(value, null))
+            if(object.Equals(value, null) || object.Equals(value, 0))
             {
                 return "Not Ranked";
             }

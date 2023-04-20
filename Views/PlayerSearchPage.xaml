@@ -9,6 +9,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <local:AddressFormatConverter x:Key="AddressFormatConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -52,7 +53,15 @@
                                         </Label.FormattedText>
                                     </Label>
 
-                                    <controls:CityStateCountryView />
+                                    <Label>
+                                        <Label.Text>
+                                            <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                                <Binding Path="City" />
+                                                <Binding Path="StateProvince" />
+                                                <Binding Path="CountryName" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
                                 </StackLayout>
                                 <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
                                         LineBreakMode="NoWrap" FontSize="18" />

@@ -15,7 +15,8 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />               
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <local:AddressFormatConverter x:Key="AddressFormatConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
@@ -47,8 +48,16 @@
                                 </Label.FormattedText>
                             </Label>
 
-                            <controls:CityStateCountryView Grid.Row="1" Grid.Column="1" />
-                           
+                            <Label Grid.Row="1" Grid.Column="1" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                                <Label.Text>
+                                    <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                        <Binding Path="City" />
+                                        <Binding Path="StateProvince" />
+                                        <Binding Path="CountryName" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                            
                             <Label Grid.Column="2" Grid.Row="1" TextColor="{DynamicResource SecondaryTextColor}" Margin="10,0" HorizontalTextAlignment="End" 
                                Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap"  VerticalTextAlignment="Center" FontSize="10" />
 
