@@ -113,7 +113,6 @@
 		<PackageReference Include="PinballApi" Version="2.2.0" />
 		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.3.2" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
-		<PackageReference Include="Sharpnado.HorusSkeleton.Maui" Version="2.0.0" />
 		<PackageReference Include="Shiny.Core" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)" />
