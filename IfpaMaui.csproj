@@ -46,11 +46,6 @@
 		<ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios'">
-	  <CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
-	  <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" />
