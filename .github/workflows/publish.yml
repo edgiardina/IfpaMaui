@@ -82,10 +82,16 @@ jobs:
           track: production
 
   publish-ios: 
-    runs-on: macos-latest
+    runs-on: macos-13
     environment: Release
     name: iOS Build
     steps:
+
+      - name: Use Xcode Version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '14.3'
+
       - uses: actions/checkout@v2
 
       # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
