@@ -45,7 +45,7 @@ jobs:
 
 # MAUI iOS Build
   build-ios:
-    runs-on: macos-latest
+    runs-on: macos-13
     name: iOS Build
     environment: Release
     steps:
