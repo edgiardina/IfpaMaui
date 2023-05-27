@@ -6,6 +6,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"             
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent" 
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:shimmer="clr-namespace:Syncfusion.Maui.Shimmer;assembly=Syncfusion.Maui.Core"
              Title="Settings">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -24,9 +25,10 @@
                     </TableSection>
                     <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
                         <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                            <!--<Grid IsVisible="{OnPlatform Android=false}">
-                                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ZIndex="2" />-->
-                                <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{OnPlatform Android=false}" >
+                            <shimmer:SfShimmer x:Name="Shimmer" VerticalOptions="Fill" IsVisible="{OnPlatform Android=false}" IsActive="{Binding IsBusy}"
+                                               WaveColor="{StaticResource IconAccentColor}" Fill="{StaticResource SecondaryTextColor}"
+                                               Type="CirclePersona">
+                                <StackLayout Orientation="Horizontal" Margin="10">
                                     <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
                                             Text="{Binding Initials, Mode=OneWay}" 
                                             BackgroundColor="{StaticResource ButtonBackgroundColor}"
@@ -37,23 +39,27 @@
 
                                     <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
                                 </StackLayout>
-                            <!--</Grid>-->
+                            </shimmer:SfShimmer>
                         </ViewCell>
                     </TableSection>
                 </TableRoot>
             </controls:InsetTableView>
             <!-- TODO: there's a bug in Android where our custom viewcell won't display. so just render below -->
-            <StackLayout Orientation="Horizontal" Margin="10" IsVisible="{OnPlatform false, Android=true}">
-                <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
+            <shimmer:SfShimmer VerticalOptions="Fill" IsVisible="{OnPlatform false, Android=true}" IsActive="{Binding IsBusy}"
+                                    WaveColor="{StaticResource IconAccentColor}" Fill="{StaticResource SecondaryTextColor}"
+                                    Type="CirclePersona">
+                <StackLayout Orientation="Horizontal" Margin="10">
+                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
                                         Text="{Binding Initials, Mode=OneWay}" 
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
                                         CornerRadius="8"
                                         TextColor="{StaticResource ButtonTextColor}" />
-                <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
 
-                <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
-            </StackLayout>
+                    <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{fluent:Icon Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
+                </StackLayout>
+            </shimmer:SfShimmer>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
