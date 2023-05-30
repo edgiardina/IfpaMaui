@@ -82,7 +82,7 @@ jobs:
           track: production
 
   publish-ios: 
-    runs-on: macos-13
+    runs-on: macos-12
     environment: Release
     name: iOS Build
     steps:
@@ -90,7 +90,7 @@ jobs:
       - name: Use Xcode Version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '14.3'
+          xcode-version: '14.2'
 
       - uses: actions/checkout@v2
 
@@ -154,7 +154,7 @@ jobs:
         shell: bash
         run: |
           dotnet nuget locals all --clear 
-          dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
+          dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --from-rollback-file https://maui.blob.core.windows.net/metadata/rollbacks/7.0.2xx.json
     
       - name: Restore nuget packages
         run:  dotnet restore IfpaMaui.sln
