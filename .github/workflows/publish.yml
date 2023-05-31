@@ -18,11 +18,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Determine build version number        
+      - name: Pull Version from Tag
+        uses: nowsprinting/check-version-format-action@v3
+        id: version
+        with:
+          prefix: 'v'
+      
+      - name: Use Version From Tag
+        shell: bash
+        if: steps.version.outputs.is_valid == 'true'
+        run: |          
+              echo "VERSION=${{steps.version.outputs.full_without_prefix}}" >> $GITHUB_ENV          
+              echo "${VERSION} is our version number"
+          
+      - name: Use Version from User Input
+        shell: bash
+        if: steps.version.outputs.is_valid == 'false'
         run: |
-          $branchName = $Env:GITHUB_REF -replace "refs/heads/v", ""
-          if([string]::IsNullOrEmpty("${{github.event.inputs.versionNumber}}")) { echo "VERSION=$branchName" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append   } else {echo "VERSION=${{github.event.inputs.versionNumber}}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append }                  
-        
+              echo "VERSION=${{github.event.inputs.versionNumber}}" >> $GITHUB_ENV        
+              echo "${VERSION} is our version number"  
+              
       - name: create a custom version using run number offset by 1000 (run_number + 1000)
         shell: bash
         run: |
@@ -122,16 +137,25 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       
-      - name: Determine build version number
+      - name: Pull Version from Tag
+        uses: nowsprinting/check-version-format-action@v3
+        id: version
+        with:
+          prefix: 'v'
+      
+      - name: Use Version From Tag
         shell: bash
+        if: steps.version.outputs.is_valid == 'true'
+        run: |          
+              echo "VERSION=${{steps.version.outputs.full_without_prefix}}" >> $GITHUB_ENV          
+              echo "${VERSION} is our version number"
+          
+      - name: Use Version from User Input
+        shell: bash
+        if: steps.version.outputs.is_valid == 'false'
         run: |
-          if [ -z "${GITHUB_REF/refs\/tags\/v/}" ]
-          then
-              echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
-          else
-              echo "VERSION=${{github.event.inputs.versionNumber}}" >> $GITHUB_ENV
-          fi
-          echo "${VERSION} is our version number"
+              echo "VERSION=${{github.event.inputs.versionNumber}}" >> $GITHUB_ENV        
+              echo "${VERSION} is our version number"
           
       - name: create a custom version using run number offset by 1000 (run_number + 1000)
         run: |
