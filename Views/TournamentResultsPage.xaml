@@ -108,8 +108,8 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <VerticalStackLayout Spacing="0">
-                        <StackLayout Orientation="Horizontal" Margin="10,5">
-                            <Label LineBreakMode="NoWrap"  FontSize="16" VerticalTextAlignment="Center">
+                        <Grid ColumnDefinitions="*, 80" Margin="10,5">
+                            <Label Grid.Column="0" LineBreakMode="NoWrap"  FontSize="16" VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
@@ -120,11 +120,11 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <StackLayout HorizontalOptions="EndAndExpand">
+                            <StackLayout HorizontalOptions="EndAndExpand" Grid.Column="1">
                                 <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
                                 <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding Points, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
                             </StackLayout>
-                        </StackLayout>
+                        </Grid>
 
                         <BoxView Style="{StaticResource BoxSeperator}"/>
                     </VerticalStackLayout>
