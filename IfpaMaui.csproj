@@ -45,11 +45,10 @@
 	<PropertyGroup>
 		<ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
 	</PropertyGroup>
-
 	<!-- WidgetKit extension support -->
 	<ItemGroup>
 		<AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../NativeIFPA">
-			<Name>NativeWidgetExtension</Name>
+			<Name>RankWidgetExtension</Name>
 			<BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/IFPA/Build/Products/Debug-iphoneos</BuildOutput>
 			<BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/IFPA/Build/Products/Debug-iphonesimulator</BuildOutput>
 		</AdditionalAppExtensions>
