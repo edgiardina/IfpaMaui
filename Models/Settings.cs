@@ -71,7 +71,7 @@ namespace Ifpa.Models
                 {
                     Preferences.Set("PlayerId", playerId, groupName);
                 }
-                return Preferences.Get("PlayerId", 0);
+                return playerId;
             }
             private set
             {
