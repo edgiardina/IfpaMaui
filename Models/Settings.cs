@@ -12,6 +12,9 @@ namespace Ifpa.Models
     {
         static LocalDatabase localDatabase;
 
+        //Groupname is so we can share the player ID with the upcoming iOS Widget. 
+        private const string groupName = "group.com.edgiardina.ifpa";
+
         public static LocalDatabase LocalDatabase
         {
             get
@@ -60,8 +63,22 @@ namespace Ifpa.Models
 
         public static int MyStatsPlayerId
         {
-            get => Preferences.Get("PlayerId", 0);
-            private set => Preferences.Set("PlayerId", value);
+            get
+            {
+                var playerIdGroup = Preferences.Get("PlayerId", 0, groupName);
+                var playerId = Preferences.Get("PlayerId", 0);
+                if (playerId != 0 && playerIdGroup == 0)
+                {
+                    Preferences.Set("PlayerId", playerId, groupName);
+                }
+                return Preferences.Get("PlayerId", 0);
+            }
+            private set
+            {
+                Preferences.Set("PlayerId", value);
+                //Save to group for Widget access
+                Preferences.Set("PlayerId", value, groupName);
+            }
         }
 
         public static int MyStatsCurrentWpprRank
