@@ -21,6 +21,8 @@ namespace Ifpa.Platforms.Android
     {
         PinballRankingApiV2 pinballRankingApiV2 { get; set; }
 
+        private static string BackgroundClick = "BackgroundClickTag";
+
         public RankWidget()
         {
             //TODO: can we dependency inject this PinballRankingApiV2?
@@ -81,6 +83,40 @@ namespace Ifpa.Platforms.Android
             // Register click event for the Background
             var piBackground = PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.UpdateCurrent);
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
+
+            widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, GetPendingSelfIntent(context, BackgroundClick));
+
+        }
+
+        private PendingIntent GetPendingSelfIntent(Context context, string action)
+        {
+            var intent = new Intent(context, typeof(RankWidget));
+            intent.SetAction(action);
+            return PendingIntent.GetBroadcast(context, 0, intent, 0);
+        }
+
+        /// <summary>
+		/// This method is called when clicks are registered. Just launch the app for now
+		/// </summary>
+		public override void OnReceive(Context context, Intent intent)
+        {
+            if (BackgroundClick.Equals(intent.Action))
+            {
+                var pm = context.PackageManager;
+                try
+                {
+                    var packageName = "com.edgiardina.ifpa";
+                    var launchIntent = pm.GetLaunchIntentForPackage(packageName);
+                    context.StartActivity(launchIntent);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("ifpa", ex.Message);
+                }
+            }
+            base.OnReceive(context, intent);
+
+
         }
 
     }
