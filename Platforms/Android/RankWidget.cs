@@ -81,7 +81,8 @@ namespace Ifpa.Platforms.Android
             intent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, appWidgetIds);
 
             // Register click event for the Background
-            var piBackground = PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.UpdateCurrent);
+            var piBackground = PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
+
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
 
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, GetPendingSelfIntent(context, BackgroundClick));
@@ -92,7 +93,7 @@ namespace Ifpa.Platforms.Android
         {
             var intent = new Intent(context, typeof(RankWidget));
             intent.SetAction(action);
-            return PendingIntent.GetBroadcast(context, 0, intent, 0);
+            return PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
         }
 
         /// <summary>
