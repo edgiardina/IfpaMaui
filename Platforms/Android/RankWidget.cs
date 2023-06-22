@@ -82,6 +82,7 @@ namespace Ifpa.Platforms.Android
 
             // Register click event for the Background
             var piBackground = PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
+
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
 
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, GetPendingSelfIntent(context, BackgroundClick));
