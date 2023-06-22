@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/rounded_edge"
+    android:padding="10dp"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/ifpaAltText"
+        android:text="Please select a 'My Stats' player to see your rank in the Rank Widget"
+        android:visibility="gone"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:id="@+id/selectPlayerNotification"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="48sp"
+            android:layout_height="48sp"
+            android:contentDescription="IFPA Logo"
+            android:src="@drawable/widgeticon"
+            android:id="@+id/imageView2" />
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="24sp"
+            android:layout_height="48sp"
+            android:id="@+id/widgetName"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/ifpaAltText"
+            android:text="John Plunge"
+            android:textAlignment="center" />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/widgetRank"
+        android:textColor="@android:color/white"
+        android:text="125th"
+        android:textSize="72sp"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="24sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/widgetPoints"
+            android:textAlignment="center"
+            android:textColor="@color/ifpaAltText"
+            android:text="250.00"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="24sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/widgetIfpaNumber"
+            android:textColor="@color/ifpaAltText"
+            android:textAlignment="center"
+            android:layout_weight="1.0"
+            android:text="12345" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

@@ -65,6 +65,11 @@
 
 	<ItemGroup>
 		<None Remove="appsettings.json" />
+		<None Remove="Platforms\Android\Resources\drawable\rounded_edge.xml" />
+		<None Remove="Platforms\Android\Resources\drawable\widgeticon.png" />
+		<None Remove="Platforms\Android\Resources\drawable\widgetpreview.png" />
+		<None Remove="Platforms\Android\Resources\layout\rankwidget.axml" />
+		<None Remove="Platforms\Android\Resources\xml\appwidgetprovider.xml" />
 		<None Remove="Resources\AppIcon\appicon.png" />
 		<None Remove="Resources\Images\about.svg" />
 		<None Remove="Resources\Images\activity_feed.svg" />
