@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Appwidget;
 using Android.Content;
+using Android.Util;
 using Android.Widget;
 using PinballApi;
 using PinballApi.Extensions;
@@ -48,12 +49,20 @@ namespace Ifpa.Platforms.Android
 
             if (playerId != 0)
             {
-                var player = await pinballRankingApiV2.GetPlayer(playerId);
+                try
+                {
 
-                widgetView.SetTextViewText(Resource.Id.widgetName, $"{player.FirstName} {player.LastName}");
-                widgetView.SetTextViewText(Resource.Id.widgetRank, player.PlayerStats.CurrentWpprRank.OrdinalSuffix());
-                widgetView.SetTextViewText(Resource.Id.widgetIfpaNumber, $"# {player.PlayerId}");
-                widgetView.SetTextViewText(Resource.Id.widgetPoints, $"{player.PlayerStats.CurrentWpprValue}");
+                    var player = await pinballRankingApiV2.GetPlayer(playerId);
+
+                    widgetView.SetTextViewText(Resource.Id.widgetName, $"{player.FirstName} {player.LastName}");
+                    widgetView.SetTextViewText(Resource.Id.widgetRank, player.PlayerStats.CurrentWpprRank.OrdinalSuffix());
+                    widgetView.SetTextViewText(Resource.Id.widgetIfpaNumber, $"# {player.PlayerId}");
+                    widgetView.SetTextViewText(Resource.Id.widgetPoints, $"{player.PlayerStats.CurrentWpprValue}");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("ifpa", ex.Message);
+                }
             }
         }
 
