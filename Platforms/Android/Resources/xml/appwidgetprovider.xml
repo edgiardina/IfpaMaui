@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="288dip"
-    android:minHeight="72dip"
-    android:resizeMode="horizontal"
+    android:minHeight="56dip"
+    android:resizeMode="none"
     android:minResizeWidth="144dip"
     android:updatePeriodMillis="1000"
     android:initialLayout="@layout/rankwidget"
-    android:previewImage="@drawable/about" />
+    android:previewImage="@drawable/widgetpreview" />

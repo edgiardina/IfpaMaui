@@ -21,36 +21,39 @@ namespace Ifpa.Platforms.Android
 
         public RankWidget()
         {
-            pinballRankingApiV2 = new PinballRankingApiV2("585c0438147e11520622277d2ac7b298");
+            //TODO: can we dependency inject this PinballRankingApiV2?
+            var settings = App.GetAppSettings();
+            pinballRankingApiV2 = new PinballRankingApiV2(settings.IfpaApiKey);
         }
 
-        public override void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+        public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
         {
             var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(RankWidget)).Name);
-            appWidgetManager.UpdateAppWidget(me, BuildRemoteViews(context, appWidgetIds));
+            appWidgetManager.UpdateAppWidget(me, await BuildRemoteViews(context, appWidgetIds));
         }
 
-        private RemoteViews BuildRemoteViews(Context context, int[] appWidgetIds)
+        private async Task<RemoteViews> BuildRemoteViews(Context context, int[] appWidgetIds)
         {
             var widgetView = new RemoteViews(context.PackageName, Resource.Layout.rankwidget);
 
-            SetTextViewText(widgetView);
+            await SetTextViewText(widgetView);
             RegisterClicks(context, appWidgetIds, widgetView);
 
             return widgetView;
         }
 
-        private void SetTextViewText(RemoteViews widgetView)
+        private async Task SetTextViewText(RemoteViews widgetView)
         {
             var playerId = Models.Settings.MyStatsPlayerId;
 
             if (playerId != 0)
             {
-                var player = pinballRankingApiV2.GetPlayer(playerId).Result;
+                var player = await pinballRankingApiV2.GetPlayer(playerId);
 
                 widgetView.SetTextViewText(Resource.Id.widgetName, $"{player.FirstName} {player.LastName}");
-                widgetView.SetTextViewText(Resource.Id.widgetRank,
-                    string.Format(player.PlayerStats.CurrentWpprRank.OrdinalSuffix(), DateTime.Now));
+                widgetView.SetTextViewText(Resource.Id.widgetRank, player.PlayerStats.CurrentWpprRank.OrdinalSuffix());
+                widgetView.SetTextViewText(Resource.Id.widgetIfpaNumber, $"# {player.PlayerId}");
+                widgetView.SetTextViewText(Resource.Id.widgetPoints, $"{player.PlayerStats.CurrentWpprValue}");
             }
         }
 
@@ -65,9 +68,5 @@ namespace Ifpa.Platforms.Android
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
         }
 
-
-
     }
-
-   
 }

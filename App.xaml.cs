@@ -36,6 +36,17 @@ public partial class App : Application
         });
     }
 
+    //Some places we can't Dependency Inject so we add this static helper
+    public static AppSettings GetAppSettings()
+    {
+        var config = new ConfigurationBuilder()
+           .SetBasePath(AppContext.BaseDirectory)
+           .AddJsonPlatformBundle()
+           .Build();
+
+        return config.GetSection("AppSettings").Get<AppSettings>();
+    }
+
     protected override async void OnAppLinkRequestReceived(Uri uri)
     {
         base.OnAppLinkRequestReceived(uri);
