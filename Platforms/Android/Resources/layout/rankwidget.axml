@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/ifpaBackground"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="24sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/widgetName"
+        android:text="John Plunge"
+        android:textAlignment="center" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/widgetRank"
+        android:text="648th"
+        android:textSize="72sp"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:textSize="24sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/widgetPoints"
+            android:textAlignment="center"
+            android:text="193.39"
+            android:layout_weight="2" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1.0"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="24sp"
+                android:layout_height="wrap_content"
+                android:id="@+id/widgetRating"
+                android:textAlignment="center"
+                android:layout_weight="1.0"
+                android:text="Rating" />
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="24sp"
+                android:layout_height="wrap_content"
+                android:id="@+id/widgetRatingPosition"
+                android:textAlignment="center"
+                android:layout_weight="1.0"
+                android:text="1144th" />
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="24sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:id="@+id/widgetRatingPoints"
+                android:textAlignment="center"
+                android:text="546.97" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
