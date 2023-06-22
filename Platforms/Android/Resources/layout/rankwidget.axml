@@ -9,6 +9,17 @@
     android:background="@drawable/rounded_edge"
     android:padding="10dp"
     >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/ifpaAltText"
+        android:text="Please select a 'My Stats' player to see your rank in the Rank Widget"
+        android:visibility="gone"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:id="@+id/selectPlayerNotification"
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

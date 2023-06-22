@@ -2,6 +2,7 @@
 using Android.Appwidget;
 using Android.Content;
 using Android.Util;
+using Android.Views;
 using Android.Widget;
 using PinballApi;
 using PinballApi.Extensions;
@@ -51,6 +52,7 @@ namespace Ifpa.Platforms.Android
             {
                 try
                 {
+                    widgetView.SetViewVisibility(Resource.Id.selectPlayerNotification, ViewStates.Gone);
 
                     var player = await pinballRankingApiV2.GetPlayer(playerId);
 
@@ -63,6 +65,10 @@ namespace Ifpa.Platforms.Android
                 {
                     Log.Error("ifpa", ex.Message);
                 }
+            }
+            else
+            {
+                widgetView.SetViewVisibility(Resource.Id.selectPlayerNotification, ViewStates.Visible);
             }
         }
 

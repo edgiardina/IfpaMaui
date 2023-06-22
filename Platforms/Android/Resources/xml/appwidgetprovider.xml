@@ -4,6 +4,6 @@
     android:minHeight="56dip"
     android:resizeMode="none"
     android:minResizeWidth="144dip"
-    android:updatePeriodMillis="1000"
+    android:updatePeriodMillis="3600000"
     android:initialLayout="@layout/rankwidget"
     android:previewImage="@drawable/widgetpreview" />
