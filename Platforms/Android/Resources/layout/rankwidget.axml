@@ -15,12 +15,14 @@
         android:textColor="@color/ifpaAltText"
         android:text="Please select a 'My Stats' player to see your rank in the Rank Widget"
         android:visibility="gone"
-        android:textSize="24sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="30sp"
+        android:autoSizeTextType="uniform"
         android:textAlignment="center"
         android:layout_gravity="center"
         android:id="@+id/selectPlayerNotification"
         />
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -31,47 +33,69 @@
             android:src="@drawable/widgeticon"
             android:id="@+id/imageView2" />
         <TextView
-            android:layout_width="match_parent"
-            android:textSize="24sp"
-            android:layout_height="48sp"
-            android:id="@+id/widgetName"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_width="match_parent"       
+            android:layout_height="match_parent"
+            android:id="@+id/widgetName" 
             android:textColor="@color/ifpaAltText"
-            android:text="John Plunge"
-            android:textAlignment="center" />
-    </RelativeLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/widgetRank"
-        android:textColor="@android:color/white"
-        android:text="125th"
-        android:textSize="72sp"
-        android:textStyle="bold"
-        android:textAlignment="center"/>
+            android:text="Ed Giardina"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="30sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:layout_weight=".6"
+            android:layout_marginLeft="20sp"
+            android:textAlignment="viewStart" />
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/widgetRank"
+            android:textColor="@android:color/white"
+            android:text="125th"
+            android:layout_height="48sp"
+            android:textAlignment="viewEnd"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="50sp"
+            android:autoSizeTextType="uniform"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="10sp"
+            android:textStyle="bold"
+           />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="48sp"
+            android:layout_height="match_parent"
+            android:textAlignment="viewStart"
+            android:textColor="@color/ifpaAltText"
+            android:text=""
+           />
+
         <TextView
             android:layout_width="match_parent"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:layout_height="wrap_content"
             android:id="@+id/widgetPoints"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textColor="@color/ifpaAltText"
+            android:layout_weight="1"
             android:text="250.00"
-            android:layout_weight="1" />
+            android:layout_marginLeft="20sp"
+           />
+
         <TextView
             android:layout_width="match_parent"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:layout_height="wrap_content"
             android:id="@+id/widgetIfpaNumber"
             android:textColor="@color/ifpaAltText"
-            android:textAlignment="center"
-            android:layout_weight="1.0"
-            android:text="12345" />
+            android:textAlignment="viewEnd"
+            android:layout_weight="1"
+            android:text="# 12345" />
 
     </LinearLayout>
 
