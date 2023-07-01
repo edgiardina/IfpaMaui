@@ -33,9 +33,9 @@
             android:src="@drawable/widgeticon"
             android:id="@+id/imageView2" />
         <TextView
-            android:layout_width="match_parent"       
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/widgetName" 
+            android:id="@+id/widgetName"
             android:textColor="@color/ifpaAltText"
             android:text="Ed Giardina"
             android:autoSizeMinTextSize="12sp"
@@ -45,11 +45,11 @@
             android:layout_weight=".6"
             android:layout_marginLeft="20sp"
             android:textAlignment="viewStart" />
-        <TextView
-            android:layout_width="match_parent"
-            android:id="@+id/widgetRank"
-            android:textColor="@android:color/white"
-            android:text="125th"
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/widgetRank"
+        android:textColor="@android:color/white"
+        android:text="125th"
             android:layout_height="48sp"
             android:textAlignment="viewEnd"
             android:autoSizeMinTextSize="12sp"
@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingLeft="10sp"
-            android:textStyle="bold"
+        android:textStyle="bold"
            />
     </LinearLayout>
 
