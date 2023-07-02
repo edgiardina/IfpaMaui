@@ -24,11 +24,13 @@
         />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48sp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
         <ImageView
+            android:maxWidth="48dp"
+            android:maxHeight="48dp"
             android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:contentDescription="IFPA Logo"
             android:src="@drawable/widgeticon"
             android:id="@+id/imageView2" />
