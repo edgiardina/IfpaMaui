@@ -28,7 +28,7 @@
         <Grid x:Name="MapLayout" RowDefinitions="*,*" >
 
             <Map x:Name="calendarMap" MapType="Street" Grid.Row="0"
-                     ItemsSource="{Binding Pins}">
+                     ItemsSource="{Binding Pins}" MinimumHeightRequest="300">
                 <Map.ItemTemplate>
                     <DataTemplate>
                         <Pin MarkerClicked="Pin_MarkerClicked" InfoWindowClicked="Pin_InfoWindowClicked"
