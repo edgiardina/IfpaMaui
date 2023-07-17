@@ -46,6 +46,14 @@
 		<ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
+	  <MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
+	  <MtouchLink>SdkOnly</MtouchLink>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" />
@@ -109,7 +117,7 @@
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.1.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.86" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.92" />
 		<PackageReference Include="PinballApi" Version="2.2.0" />
 		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.4.9" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
