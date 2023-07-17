@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:id="@+id/widgetName"
             android:textColor="@color/ifpaAltText"
-            android:text="Ed Giardina"
+            android:text="John Q Plunge"
             android:autoSizeMinTextSize="12dp"
             android:autoSizeMaxTextSize="30dp"
             android:autoSizeTextType="uniform"
