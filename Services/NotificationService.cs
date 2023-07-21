@@ -45,6 +45,9 @@ namespace Ifpa.Services
                         // Five here is a proxy for 
                         // "did we switch users and therefore are adding all historical events to activity log"
                         // We need historical data to know when a user should get alerted due to a new tournament
+
+                        // Note: this is deprecated as we pre-populate tournaments at the time of user selection. However, we'll leave 
+                        // it here in case somehow a user is added without tourney results
                         var isHistoricalEventPopulation = unseenTournaments.Count() >= 5;
 
                         foreach (var unseenTournament in unseenTournaments.OrderBy(n => n))

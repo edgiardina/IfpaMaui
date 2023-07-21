@@ -1,5 +1,4 @@
 ﻿using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
 using PinballApi;
 using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
@@ -134,6 +133,25 @@ namespace Ifpa.ViewModels
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task PrepopulateTourneyResults(int playerId)
+        {
+            var results = await PinballRankingApi.GetPlayerResults(playerId);
+
+            foreach(var result in results.Results) 
+            {
+                var record = new ActivityFeedItem
+                {
+                    CreatedDateTime = result.EventDate,
+                    HasBeenSeen = true,
+                    RecordID = result.TournamentId,
+                    IntOne = result.Position,
+                    ActivityType = ActivityFeedType.TournamentResult,
+                    Description = result.TournamentName
+                };
+                await Settings.LocalDatabase.CreateActivityFeedRecord(record);
             }
         }
 
