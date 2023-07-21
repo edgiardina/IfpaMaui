@@ -211,9 +211,6 @@
 		<MauiXaml Update="Views\PlayerResultsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Views\PlayerSearchPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
 		<MauiXaml Update="Views\PlayerVersusPlayerDetailPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

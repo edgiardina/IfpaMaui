@@ -38,11 +38,6 @@ namespace Ifpa.Views
             await Shell.Current.GoToAsync("rankings-filter");
         }
 
-        private async void SearchButton_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("player-search");
-        }
-
         private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var player = e.CurrentSelection.FirstOrDefault() as RankingResult;

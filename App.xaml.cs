@@ -12,6 +12,7 @@ public partial class App : Application
 
     public App(AppSettings appSettings, INotificationManager notificationManager)
     {
+        //TODO: can we move this to MauiProgram.cs?
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
 
         NotificationManager = notificationManager;

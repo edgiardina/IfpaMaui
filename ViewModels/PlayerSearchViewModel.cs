@@ -3,6 +3,8 @@ using System.Diagnostics;
 using Ifpa.Models;
 using Newtonsoft.Json;
 using PinballApi;
+using PinballApi.Models.WPPR.v1.Players;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Ifpa.ViewModels
 {
@@ -57,6 +59,19 @@ namespace Ifpa.ViewModels
                         IsBusy = false;
                     }
                 }));
+            }
+        }
+
+        public async Task<PlayerSearch> SearchForPlayer(string name)
+        {
+            try
+            {
+                return await PinballRankingApi.SearchForPlayerByName(name.Trim());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return new PlayerSearch(); 
             }
         }
 

@@ -9,7 +9,6 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Name="BrowseItemsPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filter" x:Name="SearchButton" Clicked="SearchButton_Clicked" IconImageSource="{fluent:Icon Icon=Search48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Filter" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="{fluent:Icon Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
@@ -19,6 +18,49 @@
             <local:AddressFormatConverter x:Key="AddressFormatConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <Shell.SearchHandler>
+        <controls:PlayerSearchHandler x:Name="searchHandler"
+                                      SearchBoxVisibility="Collapsible"
+                                      Placeholder="Type a player's name to search"
+                                      ShowsResults="true"
+                                      Keyboard="Plain">
+            <controls:PlayerSearchHandler.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10,0">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Padding="10" Orientation="Vertical">
+                                <Label LineBreakMode="NoWrap"  FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="{Binding FirstName}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding LastName}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label>
+                                    <Label.Text>
+                                        <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                            <Binding Path="City" />
+                                            <Binding Path="StateProvince" />
+                                            <Binding Path="CountryName" />
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                            </StackLayout>
+                            <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
+                                        LineBreakMode="NoWrap" FontSize="18" />
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                    </StackLayout>
+                </DataTemplate>
+            </controls:PlayerSearchHandler.ItemTemplate>
+        </controls:PlayerSearchHandler>
+    </Shell.SearchHandler>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
         <CollectionView x:Name="PlayersListView" 
