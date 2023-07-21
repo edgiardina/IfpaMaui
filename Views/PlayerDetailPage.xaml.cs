@@ -99,23 +99,31 @@ namespace Ifpa.Views
 
         private async void StarButton_Clicked(object sender, EventArgs e)
         {
-            if (!Settings.HasConfiguredMyStats)
+            try
             {
-                await ChangePlayerAndRedirect();
-            }
-            else
-            {
-                var result = await DisplayAlert("Caution", "You have already configured your Stats page, do you wish to change your Stats to this player?", "OK", "Cancel");
-                if (result)
+                if (!Settings.HasConfiguredMyStats)
                 {
                     await ChangePlayerAndRedirect();
                 }
+                else
+                {
+                    var result = await DisplayAlert("Caution", "You have already configured your Stats page, do you wish to change your Stats to this player?", "OK", "Cancel");
+                    if (result)
+                    {
+                        await ChangePlayerAndRedirect();
+                    }
+                }
+            }
+            catch
+            {
+                await DisplayAlert("Error", "There was an error trying to select this player as your 'My Stats' player.", "OK");
             }
         }
 
         private async Task ChangePlayerAndRedirect()
         {
             await Settings.SetMyStatsPlayer(ViewModel.PlayerId, ViewModel.PlayerRecord.PlayerStats.CurrentWpprRank);
+            await ViewModel.PrepopulateTourneyResults(ViewModel.PlayerId);
 
             await DisplayAlert("Congratulations", "You have now configured your Stats page!", "OK");
 
@@ -164,12 +172,12 @@ namespace Ifpa.Views
             var colorDictionary = Application.Current.Resources.MergedDictionaries.First();
             var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
             var filledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Heart48, IconColor = toolbarIconColor };
-            var unfilledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.HeartBroken24, IconColor = toolbarIconColor };           
+            var unfilledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.HeartBroken24, IconColor = toolbarIconColor };
 
             if (isFavorite)
             {
                 //if player is in the existing favorites list, fill the heart icon.
-                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = unfilledHeartIcon;                
+                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = unfilledHeartIcon;
             }
             else
             {
