@@ -38,6 +38,9 @@ namespace Ifpa.Controls
 
             this.Unfocus();
 
+            //TODO: Remove when https://github.com/dotnet/maui/issues/16298 is fixed
+            Platforms.KeyboardHelper.HideKeyboard();
+
             // The following route works because route names are unique in this app.
             await Shell.Current.GoToAsync($"player-details?playerId={((Search)item).PlayerId}");            
         }
