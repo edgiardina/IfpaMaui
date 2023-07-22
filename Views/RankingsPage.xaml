@@ -22,6 +22,7 @@
         <controls:PlayerSearchHandler x:Name="searchHandler"
                                       SearchBoxVisibility="Collapsible"
                                       Placeholder="Type a player's name to search"
+                                      QueryIcon="{fluent:Icon Icon=Search48, IconColor={StaticResource IconAccentColor}}"
                                       ShowsResults="true"
                                       Keyboard="Plain">
             <controls:PlayerSearchHandler.ItemTemplate>
