@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <controls:IsBusyAndLoadedActivityIndicator />
         <CollectionView x:Name="PlayersListView" 
                  ItemsSource="{Binding Players}"
                  IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"  

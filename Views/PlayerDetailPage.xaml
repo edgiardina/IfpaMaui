@@ -25,7 +25,7 @@
         <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <controls:IsBusyAndLoadedActivityIndicator />
         <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
             <StackLayout>
                 <Grid ColumnSpacing="10" BackgroundColor="{StaticResource SecondaryBanner}"                     

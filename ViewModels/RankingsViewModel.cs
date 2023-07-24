@@ -172,6 +172,7 @@ namespace Ifpa.ViewModels
             finally
             {
                 IsBusy = false;
+                IsLoaded = true;
             }
         }
     }

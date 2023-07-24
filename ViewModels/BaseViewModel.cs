@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
 using PinballApi;
 
 namespace Ifpa.ViewModels
@@ -18,6 +14,13 @@ namespace Ifpa.ViewModels
         {
             get { return isBusy; }
             set { SetProperty(ref isBusy, value); }
+        }
+
+        bool isLoaded = false;
+        public bool IsLoaded
+        {
+            get { return isLoaded; }
+            set { SetProperty(ref isLoaded, value); }
         }
 
         string title = string.Empty;
