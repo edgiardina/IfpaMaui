@@ -27,12 +27,12 @@ namespace Ifpa.Views
             RankingsListView.SelectedItem = null;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            if(ViewModel.CustomRankings.Count == 0)
-                ViewModel.LoadItemsCommand.Execute(null);
+            base.OnNavigatedTo(args);
 
-            base.OnAppearing();
+            if (ViewModel.CustomRankings.Count == 0)
+                ViewModel.LoadItemsCommand.Execute(null);
         }
     }
 }

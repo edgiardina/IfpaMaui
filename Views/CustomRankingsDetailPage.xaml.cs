@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui;
-
-using Ifpa.ViewModels;
+﻿using Ifpa.ViewModels;
 using PinballApi.Models.WPPR.v2.Rankings;
 
 namespace Ifpa.Views
@@ -20,10 +18,9 @@ namespace Ifpa.Views
             BindingContext = ViewModel = viewModel;
         }
 
-
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             ViewModel.ViewId = ViewId;
 

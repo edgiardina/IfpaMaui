@@ -19,9 +19,9 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override async void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);        
 
             try
             {
@@ -57,12 +57,6 @@ namespace Ifpa.Views
             catch (Exception)
             {
             }
-        }
-
-
-        protected override void OnNavigatedTo(NavigatedToEventArgs args)
-        {
-            base.OnNavigatedTo(args);
         }
 
         private void Pin_Clicked(object sender, PinClickedEventArgs e)

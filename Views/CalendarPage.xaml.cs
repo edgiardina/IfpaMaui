@@ -31,11 +31,8 @@ namespace Ifpa.Views
             BindingContext = ViewModel = viewModel;
             viewModel.IsBusy = true;
         }
-
-        protected async override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
-
             if (ViewModel.CalendarDetails.Count == 0)
             {
                 await UpdateCalendarData();

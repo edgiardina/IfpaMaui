@@ -17,9 +17,9 @@ namespace Ifpa.Views
             BindingContext = activityFeedViewModel = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);        
 
             activityFeedViewModel.LoadItemsCommand.Execute(null);
         }

@@ -1,9 +1,5 @@
 ﻿using Ifpa.ViewModels;
-using System;
 using System.Collections;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
@@ -21,18 +17,18 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override async void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             if (ViewModel.NewsItem == null)
             {
-                ViewModel.NewsItemUrl = new System.Uri(NewsUri);
+                ViewModel.NewsItemUrl = new Uri(NewsUri);
                 await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
             }
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             if (ViewModel.CommentCounts > 0)
             {

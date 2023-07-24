@@ -29,10 +29,11 @@ namespace Ifpa.Views
             ((ListView)sender).SelectedItem = null;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            ViewModel.LoadItemsCommand.Execute(null);
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
+
+            ViewModel.LoadItemsCommand.Execute(null);            
         }
     }
 }

@@ -15,9 +15,9 @@ namespace Ifpa.Views
             InitializeComponent();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             RulesWebView.Source = "https://docs.google.com/viewer?embedded=true&url=https://www.ifpapinball.com/wp/wp-content/uploads/2021/04/PAPA_IFPA-Complete-Competition-Rules-2021.04.06.pdf";
         }

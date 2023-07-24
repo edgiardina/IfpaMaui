@@ -21,9 +21,9 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected async override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             if (PlayerId == 0)
                 LoadMyStats = true;

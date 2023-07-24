@@ -16,8 +16,10 @@ namespace Ifpa.Views
             BindingContext = ViewModel = viewModel;
         }
 
-        protected override async void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
+            base.OnNavigatedTo(args);
+
             if (ViewModel.Players.Count == 0)
             {
                 ViewModel.CountOfItemsToFetch = Preferences.Get("PlayerCount", ViewModel.CountOfItemsToFetch);
@@ -30,7 +32,6 @@ namespace Ifpa.Views
                 //await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
                 ViewModel.LoadItemsCommand.Execute(null);
             }
-            base.OnAppearing();
         }
 
         private async void InfoButton_Clicked(object sender, EventArgs e)

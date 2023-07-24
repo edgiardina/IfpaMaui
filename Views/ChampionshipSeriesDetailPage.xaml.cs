@@ -37,9 +37,9 @@ namespace Ifpa.Views
             //Deselect Item
             ((CollectionView)sender).SelectedItem = null;
         }
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             ViewModel.Year = Year;
             ViewModel.RegionCode = RegionCode;

@@ -18,10 +18,11 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
-            Task.Run(ViewModel.LoadSponsors);
+            base.OnNavigatedTo(args);
+        
+            await ViewModel.LoadSponsors();
         }
 
         private async void PlayerLabel_Tapped(object sender, TappedEventArgs e)

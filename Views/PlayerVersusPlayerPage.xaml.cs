@@ -29,9 +29,9 @@ namespace Ifpa.Views
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
         }
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             if (ViewModel.AllResults.Count == 0)
             {

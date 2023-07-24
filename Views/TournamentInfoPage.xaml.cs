@@ -16,15 +16,15 @@ namespace Ifpa.Views
             BindingContext = this.viewModel = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             if (viewModel.Results.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
 
-        private async void CloseButton_Clicked(object sender, System.EventArgs e)
+        private async void CloseButton_Clicked(object sender, EventArgs e)
         {
             //TODO: Remove all PopModals in favor of Shell.Current.GoToAsync("..");
             await Navigation.PopModalAsync();

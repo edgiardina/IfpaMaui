@@ -15,9 +15,10 @@ namespace Ifpa.Views
             this.BindingContext = ViewModel = viewModel;
 		}
 
-        protected override async void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
+
             await ViewModel.LoadPlayer();
         }
 

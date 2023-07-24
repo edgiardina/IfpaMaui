@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui;
-using Ifpa.ViewModels;
+﻿using Ifpa.ViewModels;
 using PinballApi.Models.WPPR.v1.Players;
 
 namespace Ifpa.Views
@@ -14,11 +13,6 @@ namespace Ifpa.Views
             InitializeComponent();
 
             BindingContext = ViewModel = viewModel;
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
         }
 
         private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -20,9 +20,9 @@ namespace Ifpa.Views
             BindingContext = this.viewModel = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             viewModel.PlayerId = PlayerId;
 
