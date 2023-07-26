@@ -25,6 +25,8 @@
     <Color x:Key="BannerTextColor">#072C53</Color>
     <Color x:Key="IconAccentColor">#4579FB</Color>
 
+    <Color x:Key="DeleteBackgroundColor">#FE2E2E</Color>
+
     <!-- Dark Colors -->
 
     <Color x:Key="TieRecordDark">#999999</Color>
