@@ -12,6 +12,7 @@ using Ifpa.Controls;
 using Shiny.Infrastructure;
 using PinballApi;
 using Maui.FixesAndWorkarounds;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace Ifpa;
 
@@ -53,6 +54,21 @@ public static class MauiProgram
 
                 essentials.UseVersionTracking();
             })
+            /*
+            .ConfigureLifecycleEvents(events =>
+            {
+#if IOS
+                events.AddiOS(ios => ios
+                    .OpenUrl((app,url,opion) => LogEvent(app, url, opion)));
+
+                static bool LogEvent(UIKit.UIApplication application, Foundation.NSUrl url, Foundation.NSDictionary options)
+                {
+                    Microsoft.Maui.Controls.Application.Current.SendOnAppLinkRequestReceived(url);
+                    return true;
+                }
+#endif
+            })
+            */
             //It's a real bummer that we have to port fixes like this and then wait an entire year for .NET MAUI releases
             .ConfigureShellWorkarounds()
             .RegisterShinyServices()
@@ -91,12 +107,8 @@ public static class MauiProgram
         s.AddSingleton<NotificationService>();
         s.AddTransient<IReminderService, ReminderService>();
 
-        //TODO: PinballrankingsApi should support IOptions
-        var pinballRankingApiV1 = new PinballRankingApiV1(appSettings.IfpaApiKey);
-        s.AddSingleton(pinballRankingApiV1);
-
-        var pinballRankingApiV2 = new PinballRankingApiV2(appSettings.IfpaApiKey);
-        s.AddSingleton(pinballRankingApiV2);
+        s.AddSingleton(x => new PinballRankingApiV1(appSettings.IfpaApiKey));
+        s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
 
         return builder;
     }
