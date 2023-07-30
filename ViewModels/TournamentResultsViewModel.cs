@@ -61,8 +61,7 @@ namespace Ifpa.ViewModels
                 Description = TournamentDetails.EventName,
                 AppLinkUri = new Uri(url, UriKind.RelativeOrAbsolute),
                 IsLinkActive = true
-                //TODO: show thumbnail?
-                //Thumbnail = ImageSource.FromUri(new Uri(TournamentDetails., UriKind.RelativeOrAbsolute))
+                //No thumbnail for Tournament Results
             };
 
             entry.KeyValues.Add("contentType", "Tournament Result");
@@ -73,7 +72,7 @@ namespace Ifpa.ViewModels
             }
             catch(Exception ex)
             {
-                //TODO: No IAppIndexingProvider
+                Debug.WriteLine(ex);
             }
         }
     }

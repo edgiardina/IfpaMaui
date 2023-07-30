@@ -19,6 +19,12 @@ public partial class App : Application
         InitializeComponent();
 
         MainPage = new AppShell();
+
+        //TODO: this conditional compilation should be removed when this bug is fixed
+        //https://github.com/dotnet/maui/issues/12295
+#if IOS
+        (Application.Current as IApplicationController)?.SetAppIndexingProvider(new Microsoft.Maui.Controls.Compatibility.Platform.iOS.IOSAppIndexingProvider());
+#endif
     }
 
     protected override async void OnStart()

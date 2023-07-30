@@ -162,7 +162,7 @@ namespace Ifpa.ViewModels
             var entry = new AppLinkEntry
             {
                 Title = Name,
-                Description = Rank.ToString(),
+                Description = Rank.OrdinalSuffix(),
                 AppLinkUri = new Uri(url, UriKind.RelativeOrAbsolute),
                 IsLinkActive = true,
                 Thumbnail = ImageSource.FromUri(new Uri(PlayerAvatar, UriKind.RelativeOrAbsolute))
@@ -174,9 +174,9 @@ namespace Ifpa.ViewModels
             {
                 Application.Current.AppLinks.RegisterLink(entry);
             }
-            catch(ArgumentException ex)
+            catch(Exception ex)
             {
-                //TODO: resolve "No IAppIndexingProvider was provided" exception
+                Debug.WriteLine(ex.Message);
             }
         }
 
