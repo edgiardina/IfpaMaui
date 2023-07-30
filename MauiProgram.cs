@@ -13,6 +13,7 @@ using Shiny.Infrastructure;
 using PinballApi;
 using Maui.FixesAndWorkarounds;
 using Microsoft.Maui.LifecycleEvents;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
 
 namespace Ifpa;
 
@@ -27,6 +28,7 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
+            .UseMauiCompatibility()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
             .UseFluentMauiIcons()
