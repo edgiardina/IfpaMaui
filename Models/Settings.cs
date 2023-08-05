@@ -123,10 +123,7 @@ namespace Ifpa.Models
         public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<Result> results)
         {
             return await LocalDatabase.ParseNewTournaments(results.Select(n => n.TournamentId));
-        }
-
-        public static async Task<>
-        
+        }      
 
     }
 }
