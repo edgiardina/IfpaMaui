@@ -19,6 +19,7 @@ namespace Ifpa.BackgroundJobs
                 await notificationService.NotifyIfUsersRankChanged();
                 await notificationService.NotifyIfUserHasNewlySubmittedTourneyResults();
                 await notificationService.NotifyIfNewBlogItemPosted();
+                await notificationService.NotifyIfNewCalendarEntry();
             }
 
         }
