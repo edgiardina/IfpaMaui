@@ -95,5 +95,15 @@ namespace Ifpa.ViewModels
                 OnPropertyChanged(nameof(NotifyOnNewBlogPost));
             }
         }
+
+        public bool NotifyOnNewCalendarEntry
+        {
+            get => Settings.NotifyOnNewCalendarEntry;
+            set
+            {
+                Settings.NotifyOnNewCalendarEntry = value;
+                OnPropertyChanged(nameof(NotifyOnNewCalendarEntry));
+            }
+        }
     }
 }
