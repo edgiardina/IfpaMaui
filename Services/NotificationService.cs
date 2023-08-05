@@ -168,9 +168,12 @@ namespace Ifpa.Services
                     {
                         Settings.LastCalendarIdSeen = newestCalendarItemId;
 
-                        var newestCalendarItem = items.Calendar.Single(n => n.CalendarId == newestCalendarItemId);
-
-                        await SendNotification(NewTournamentOnCalendarTitle, string.Format(NewTournamentOnCalendarDescription, newestCalendarItem.TournamentName, newestCalendarItem.StartDate.ToShortDateString()), "///calendar");
+                        foreach (var calendarItem in items.Calendar.Where(n => n.CalendarId > newestCalendarItemId))
+                        {
+                            await SendNotification(NewTournamentOnCalendarTitle, 
+                                                   string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.StartDate.ToShortDateString()), 
+                                                   $"///calendar/calendar-detail?calendarId={calendarItem.CalendarId}");
+                        }
                         
                         //TODO: Add badge to calendar tab item
                         //await UpdateBadgeIfNeeded();
