@@ -1,9 +1,6 @@
 ﻿using Ifpa.ViewModels;
 using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Rankings;
-using System;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {

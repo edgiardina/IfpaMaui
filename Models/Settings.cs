@@ -50,10 +50,34 @@ namespace Ifpa.Models
             set => Preferences.Set("NotifyOnNewBlogPost", value);
         }
 
+        public static bool NotifyOnNewCalendarEntry
+        {
+            get => Preferences.Get("NotifyOnNewCalendarEntry", false);
+            set => Preferences.Set("NotifyOnNewCalendarEntry", value);
+        }
+
         public static int LastBlogPostGuid
         {
             get => Preferences.Get("LastBlogPostGuid", 0);
             set => Preferences.Set("LastBlogPostGuid", value);
+        }
+
+        public static string LastCalendarLocation
+        {
+            get => Preferences.Get("LastCalendarLocation", "Chicago, Il");
+            set => Preferences.Set("LastCalendarLocation", value);
+        }
+
+        public static int LastCalendarDistance
+        {
+            get => Preferences.Get("LastCalendarDistance", 150);
+            set => Preferences.Set("LastCalendarDistance", value);
+        }
+
+        public static int LastCalendarIdSeen
+        {
+            get => Preferences.Get("LastCalendarIdSeen", 0);
+            set => Preferences.Set("LastCalendarIdSeen", value);
         }
 
         public static bool HasConfiguredMyStats
@@ -90,7 +114,7 @@ namespace Ifpa.Models
         public static async Task SetMyStatsPlayer(int playerId, int currentWpprRank)
         {
             //Clear Activity Log as we are switching players
-            await Settings.LocalDatabase.ClearActivityFeed();
+            await LocalDatabase.ClearActivityFeed();
 
             MyStatsPlayerId = playerId;
             MyStatsCurrentWpprRank = currentWpprRank;
@@ -99,7 +123,7 @@ namespace Ifpa.Models
         public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<Result> results)
         {
             return await LocalDatabase.ParseNewTournaments(results.Select(n => n.TournamentId));
-        }
+        }      
 
     }
 }
