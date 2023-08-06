@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui;
+﻿using System.Diagnostics;
+using Ifpa.Models;
 
 
 namespace Ifpa.Views
@@ -20,18 +15,12 @@ namespace Ifpa.Views
         {
             InitializeComponent();
 
-            var lastCalendarLocation = Preferences.Get("LastCalendarLocation", "Unset");
-            var lastCalendarDistance = Preferences.Get("LastCalendarDistance", 0);
-            if (lastCalendarLocation == "Unset" || lastCalendarDistance == 0)
-            {
-                PollAndUpdateUserLocation();
-            }
-            else
-            {
-                DistanceSlider.Value = lastCalendarDistance;
-                LocationEntry.Text = lastCalendarLocation;
-                DistanceText.Text = ((int)DistanceSlider.Value).ToString();
-            }
+            var lastCalendarLocation = Settings.LastCalendarLocation;
+            var lastCalendarDistance = Settings.LastCalendarDistance;
+
+            DistanceSlider.Value = lastCalendarDistance;
+            LocationEntry.Text = lastCalendarLocation;
+            DistanceText.Text = ((int)DistanceSlider.Value).ToString();
         }
 
         private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -87,8 +76,8 @@ namespace Ifpa.Views
 
         private async void FindButton_Clicked(object sender, EventArgs e)
         {
-            Preferences.Set("LastCalendarLocation", LocationEntry.Text);
-            Preferences.Set("LastCalendarDistance", (int)DistanceSlider.Value);
+            Settings.LastCalendarLocation = LocationEntry.Text;
+            Settings.LastCalendarDistance = (int)DistanceSlider.Value;
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();

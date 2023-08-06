@@ -57,9 +57,12 @@ namespace Ifpa.ViewModels
                             ViewResults.Add(viewResult);
                         }
 
-                        foreach (var viewFilters in tempList.ViewFilters)
+                        foreach (var viewFilter in tempList.ViewFilters)
                         {
-                            ViewFilters.Add(viewFilters);
+                            //For some reason some of these have carriage return / line feed. so strip that out.
+                            viewFilter.Name = viewFilter.Name.Trim();
+
+                            ViewFilters.Add(viewFilter);
                         }
 
                         Title = tempList.Title;

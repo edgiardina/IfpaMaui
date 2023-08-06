@@ -22,6 +22,7 @@
                         <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="IFPA Rank Change" On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
                         <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="Tournament Result Posted" On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
                         <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="News Item Posted" On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />
+                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="New Tournament on Calendar" On="{Binding NotifyOnNewCalendarEntry, Mode=TwoWay}" />
                     </TableSection>
                     <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
                         <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
