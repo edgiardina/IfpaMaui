@@ -59,7 +59,6 @@ public partial class App : Application
 
             if (!string.IsNullOrEmpty(id))
             {
-                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items[0];
                 await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}");
             }
         }
@@ -69,7 +68,6 @@ public partial class App : Application
             var id = HttpUtility.ParseQueryString(uri.Query)["t"];
             if (!string.IsNullOrEmpty(id))
             {
-                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items[0];
                 await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
             }
         }
