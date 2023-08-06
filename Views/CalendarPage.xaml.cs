@@ -2,11 +2,9 @@
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
-using Syncfusion.Maui.Scheduler;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
-using Microsoft.Maui.Controls;
 
 namespace Ifpa.Views
 {
@@ -55,19 +53,13 @@ namespace Ifpa.Views
         {
             try
             {
-                var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
-                var distance = Preferences.Get("LastCalendarDistance", 150);
-
-                Preferences.Set("LastCalendarLocation", location);
-                Preferences.Set("LastCalendarDistance", distance);
-
                 calendarMap.Pins.Clear();
 
-                var geoLocation = await Geocoding.GetLocationsAsync(location);
+                var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
                 calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Microsoft.Maui.Maps.Distance.FromMiles(distance)));
+                                                                        Microsoft.Maui.Maps.Distance.FromMiles(Settings.LastCalendarDistance)));
 
-                await ViewModel.ExecuteLoadItemsCommand(location, distance);
+                await ViewModel.ExecuteLoadItemsCommand(Settings.LastCalendarLocation, Settings.LastCalendarDistance);
             }
             catch (Exception e)
             {
