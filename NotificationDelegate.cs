@@ -6,7 +6,10 @@ namespace Ifpa
     {
         public async Task OnEntry(NotificationResponse response)
         {
-            await Shell.Current.GoToAsync(response.Notification.Payload["url"]);
+            App.Current.Dispatcher.Dispatch(async () =>
+            {
+                await Shell.Current.GoToAsync(response.Notification.Payload["url"]);
+            });
         }
     }
 }
