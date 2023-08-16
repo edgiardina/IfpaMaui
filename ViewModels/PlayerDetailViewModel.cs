@@ -54,9 +54,18 @@ namespace Ifpa.ViewModels
         {
             new Axis
             {
-                MaxLimit = 50_000,
-                MinLimit = 1,
+                IsInverted = true,
                 Labeler = value => Math.Pow(s_logBase, value).ToString("F0")                
+            }
+        };
+
+        public Axis[] RatingAxis { get; set; } =
+        {
+            new Axis
+            {
+                MinLimit = 1,
+                MinStep = 1,
+                ForceStepToMin = true
             }
         };
 

@@ -226,7 +226,7 @@
                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
 
                         <lvc:CartesianChart HeightRequest="300"
-                            Series="{Binding PlayerRatingHistoryLineSeries}" XAxes="{Binding TimeAxis}">
+                            Series="{Binding PlayerRatingHistoryLineSeries}" XAxes="{Binding TimeAxis}" YAxes="{Binding RatingAxis}">            
                         </lvc:CartesianChart>
                     </StackLayout>
 
