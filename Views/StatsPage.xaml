@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="Ifpa.Views.StatsPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
@@ -12,81 +12,30 @@
             <tabView:SfTabItem Header="Aggregates">
                 <tabView:SfTabItem.Content>
                     <ScrollView>
-                        <StackLayout Spacing="20" Margin="15, 30">
-                            <!-- TODO: CircularChart is throwing a tapGestureRecognizer exception in .NET 7 -->
-                            <chart:SfCircularChart VerticalOptions="FillAndExpand" HeightRequest="350" >
-                                <chart:SfCircularChart.Title>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Rectangle HeightRequest="12" WidthRequest="12" Margin="3"
-                                            Background="{Binding IconBrush}"/>
-                                        <Label Margin="3" Text="Players By Country" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                                    </StackLayout>
-                                </chart:SfCircularChart.Title>
-                                <!--GroupMode="Percentage" GroupTo="2" 
-                                                 ExplodeOnTouch="True" DataMarkerPosition="OutsideExtended"-->
-                                <chart:SfCircularChart.Legend>
-                                    <chart:ChartLegend>
-                                        <chart:ChartLegend.ItemTemplate>
-                                            <DataTemplate>
-                                                <Label Text="{Binding Text}" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                                            </DataTemplate>
-                                        </chart:ChartLegend.ItemTemplate>
-                                    </chart:ChartLegend>
-                                </chart:SfCircularChart.Legend>
+                        <StackLayout Spacing="0" Margin="15, 30">
+                            <Label Text="Players By Country"
+                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                            <lvc:PieChart HeightRequest="300" 
+                                Series="{Binding PlayersByCountrySeries}">
+                            </lvc:PieChart>
 
-                                <chart:PieSeries EnableAnimation="True" ShowDataLabels="True"  EnableTooltip="True"
-                                                 ExplodeOnTouch="True"                               
-                                                 ItemsSource="{Binding PlayersByCountry}" XBindingPath="CountryName" YBindingPath="Count">
-                                    <chart:PieSeries.DataLabelSettings>
-                                        <chart:CircularDataLabelSettings LabelPlacement="Auto"/>
-                                    </chart:PieSeries.DataLabelSettings>
-                                </chart:PieSeries>
+                            <Label Text="Events By Year"
+                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                            <lvc:CartesianChart HeightRequest="300" 
+                                Series="{Binding EventsByYearSeries}"
+                                XAxes="{Binding EventsByYearAxis}"
+                                LegendPosition="Hidden" />
 
-                            </chart:SfCircularChart>
-                            <chart:SfCartesianChart VerticalOptions="FillAndExpand" HeightRequest="300">
-                                <chart:SfCartesianChart.Title>
-                                    <Label Text="Events By Year" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                                </chart:SfCartesianChart.Title>
-                                <chart:SfCartesianChart.XAxes>
-                                    <chart:NumericalAxis>
-                                        <chart:NumericalAxis.LabelStyle>
-                                            <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                        </chart:NumericalAxis.LabelStyle>
-                                    </chart:NumericalAxis>
-                                </chart:SfCartesianChart.XAxes>
-                                <chart:SfCartesianChart.YAxes>
-                                    <chart:NumericalAxis>
-                                        <chart:NumericalAxis.LabelStyle>
-                                            <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                        </chart:NumericalAxis.LabelStyle>
-                                    </chart:NumericalAxis>
-                                </chart:SfCartesianChart.YAxes>
-                                <chart:ColumnSeries ItemsSource="{Binding EventsByYear}" XBindingPath="Year" YBindingPath="Count"/>
-                            </chart:SfCartesianChart>
-                            <chart:SfCartesianChart VerticalOptions="FillAndExpand" HeightRequest="300">
-                                <chart:SfCartesianChart.Title>
-                                    <Label Text="Players By Year" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                                </chart:SfCartesianChart.Title>
-                                <chart:SfCartesianChart.XAxes>
-                                    <chart:NumericalAxis>
-                                        <chart:NumericalAxis.LabelStyle>
-                                            <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                        </chart:NumericalAxis.LabelStyle>
-                                    </chart:NumericalAxis>
-                                </chart:SfCartesianChart.XAxes>
-                                <chart:SfCartesianChart.YAxes>
-                                    <chart:NumericalAxis>
-                                        <chart:NumericalAxis.LabelStyle>
-                                            <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                        </chart:NumericalAxis.LabelStyle>
-                                    </chart:NumericalAxis>
-                                </chart:SfCartesianChart.YAxes>
-                                <chart:ColumnSeries ItemsSource="{Binding PlayersByYear}" XBindingPath="Year" YBindingPath="Count"/>
-                            </chart:SfCartesianChart>
+                            <Label Text="Players By Year"
+                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+
+                            <lvc:CartesianChart HeightRequest="300" 
+                                Series="{Binding PlayersByYearSeries}"
+                                XAxes="{Binding PlayersByYearAxis}"
+                                LegendPosition="Hidden" />
                         </StackLayout>
                     </ScrollView>
                 </tabView:SfTabItem.Content>
