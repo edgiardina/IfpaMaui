@@ -63,6 +63,7 @@ namespace Ifpa.ViewModels
         {
             new Axis
             {
+                CustomSeparators = new double[] { 1, 500, 1000, 1500, 2000, 2500 },
                 MinLimit = 1,
                 MinStep = 1,
                 ForceStepToMin = true
