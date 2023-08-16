@@ -95,10 +95,9 @@
                                 <Setter Property="ColumnDefinitions" Value="*,*" />
                             </DataTrigger>
                         </Grid.Triggers>
-                        <!-- Maximum width hack here -->
-                        <Button MaximumWidthRequest="20" HeightRequest="50" Grid.Column="0" Text="Tournament Results" LineBreakMode="WordWrap" Clicked="TournamentResults_Button_Clicked" />
-                        <Button MaximumWidthRequest="20" HeightRequest="50" Grid.Column="1" Text="Player vs Player" LineBreakMode="WordWrap" Clicked="Pvp_Button_Clicked" />
-                        <Button MaximumWidthRequest="20" HeightRequest="50" Grid.Column="2" Text="Championship Series" LineBreakMode="WordWrap"  x:Name="ChampButton" Clicked="CS_Button_Clicked" 
+                        <Button HeightRequest="50" Grid.Column="0" Text="Tournament Results" LineBreakMode="WordWrap" Clicked="TournamentResults_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="1" Text="Player vs Player" LineBreakMode="WordWrap" Clicked="Pvp_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="2" Text="Championship Series" LineBreakMode="WordWrap"  x:Name="ChampButton" Clicked="CS_Button_Clicked" 
                             IsVisible="{Binding HasChampionshipSeriesData}" />
                     </Grid>
 
