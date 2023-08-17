@@ -30,16 +30,12 @@ namespace Ifpa.ViewModels
 
         public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
 
-        public Command LoadItemsCommand { get; set; }
-
         public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             Title = "Stats";
             MostPointsPlayers = new ObservableCollectionRange<PointsThisYearStat>();
             MostEventsPlayers = new ObservableCollectionRange<MostEventsStat>();
             BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
         public async Task ExecuteLoadItemsCommand()
@@ -55,12 +51,24 @@ namespace Ifpa.ViewModels
                 MostEventsPlayers.Clear();
                 BiggestMovers.Clear();
 
-                var playersByCountry = await PinballRankingApi.GetPlayersByCountryStat();
-                var eventsByYear = await PinballRankingApi.GetEventsPerYearStat();
-                var playersByYear = await PinballRankingApi.GetPlayersPerYearStat();
-                var mostPointsPlayers = await PinballRankingApi.GetPointsThisYearStats();
-                var mostEventsPlayers = await PinballRankingApi.GetMostEventsStats();
-                var biggestMovers = await PinballRankingApi.GetBiggestMoversStat();
+                var playersByCountry = new List<PlayersByCountryStat>();
+                var eventsByYear = new List<EventsByYearStat>();
+                var playersByYear = new List<PlayersByYearStat>();
+                var mostPointsPlayers = new List<PointsThisYearStat>();
+                var mostEventsPlayers = new List<MostEventsStat>();
+                var biggestMovers = new List<BiggestMoversStat>();
+
+                var loadDataTasks = new Task[]
+                {
+                    Task.Run(async () => playersByCountry = await PinballRankingApi.GetPlayersByCountryStat()),
+                    Task.Run(async () => eventsByYear = await PinballRankingApi.GetEventsPerYearStat()),
+                    Task.Run(async () => playersByYear = await PinballRankingApi.GetPlayersPerYearStat()),
+                    Task.Run(async () => mostPointsPlayers = await PinballRankingApi.GetPointsThisYearStats()),
+                    Task.Run(async () => mostEventsPlayers = await PinballRankingApi.GetMostEventsStats()),
+                    Task.Run(async () => biggestMovers = await PinballRankingApi.GetBiggestMoversStat()),
+                };
+
+                await Task.WhenAll(loadDataTasks);
 
                 var groupedStats = playersByCountry.GroupBy(
                     stat => stat.Count < 100 ? "Other" : stat.CountryName,
@@ -79,7 +87,7 @@ namespace Ifpa.ViewModels
                     };
 
                     PlayersByCountrySeries.Add(series);
-                }                
+                }
 
                 EventsByYearSeries.Add(new ColumnSeries<int>
                 {
@@ -93,7 +101,7 @@ namespace Ifpa.ViewModels
                     LabelsRotation = 0,
                     SeparatorsAtCenter = false,
                     TicksAtCenter = true
-                });     
+                });
 
                 PlayersByYearAxis.Add(new Axis
                 {
