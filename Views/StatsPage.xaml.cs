@@ -16,11 +16,11 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            ViewModel.LoadItemsCommand.Execute(null);
+            await ViewModel.ExecuteLoadItemsCommand();
         }
 
         private async void PlayersListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

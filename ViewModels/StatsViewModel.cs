@@ -20,12 +20,7 @@ namespace Ifpa.ViewModels
 
         public List<Axis> EventsByYearAxis { get; set; } = new List<Axis>();
 
-        public List<ISeries> PlayersByYearSeries { get; set; } = new List<ISeries> {
-            new ColumnSeries<int>
-            {
-                    Name = "Players" 
-            }
-        };
+        public List<ISeries> PlayersByYearSeries { get; set; } = new List<ISeries>();
 
         public List<Axis> PlayersByYearAxis { get; set; } = new List<Axis>();
 
@@ -47,7 +42,7 @@ namespace Ifpa.ViewModels
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        public async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;
@@ -61,6 +56,11 @@ namespace Ifpa.ViewModels
                 BiggestMovers.Clear();
 
                 var playersByCountry = await PinballRankingApi.GetPlayersByCountryStat();
+                var eventsByYear = await PinballRankingApi.GetEventsPerYearStat();
+                var playersByYear = await PinballRankingApi.GetPlayersPerYearStat();
+                var mostPointsPlayers = await PinballRankingApi.GetPointsThisYearStats();
+                var mostEventsPlayers = await PinballRankingApi.GetMostEventsStats();
+                var biggestMovers = await PinballRankingApi.GetBiggestMoversStat();
 
                 var groupedStats = playersByCountry.GroupBy(
                     stat => stat.Count < 100 ? "Other" : stat.CountryName,
@@ -79,52 +79,41 @@ namespace Ifpa.ViewModels
                     };
 
                     PlayersByCountrySeries.Add(series);
-                }
+                }                
 
-                var eventsByYear = await PinballRankingApi.GetEventsPerYearStat();
-
-                var eventsByYearColumnSeries = new ColumnSeries<int>
+                EventsByYearSeries.Add(new ColumnSeries<int>
                 {
                     Name = "Events",
                     Values = eventsByYear.OrderBy(x => x.Year).Select(x => x.Count).ToArray()
-                };
+                });
 
-                var eventsByYearAxis = new Axis
+                EventsByYearAxis.Add(new Axis
                 {
                     Labels = eventsByYear.OrderBy(x => x.Year).Select(x => x.Year.ToString()).ToList(),
                     LabelsRotation = 0,
                     SeparatorsAtCenter = false,
                     TicksAtCenter = true
-                };
+                });     
 
-                EventsByYearSeries.Add(eventsByYearColumnSeries);
-                EventsByYearAxis.Add(eventsByYearAxis);
-
-                var playersByYear = await PinballRankingApi.GetPlayersPerYearStat();
-
-                PlayersByYearSeries[0].Values = playersByYear.OrderBy(x => x.Year).Select(x => x.Count).ToArray();           
-
-                var playersByYearAxis = new Axis
+                PlayersByYearAxis.Add(new Axis
                 {
                     Labels = playersByYear.OrderBy(x => x.Year).Select(x => x.Year.ToString()).ToList(),
                     LabelsRotation = 0,
                     SeparatorsAtCenter = false,
                     TicksAtCenter = true,
-                };
+                });
 
-                PlayersByYearAxis.Add(playersByYearAxis);
+                PlayersByYearSeries.Add(new ColumnSeries<int>
+                {
+                    Name = "Players",
+                    Values = playersByYear.OrderBy(x => x.Year).Select(x => x.Count).ToArray()
+                });
 
                 OnPropertyChanged();
 
-                var mostPointsPlayers = await PinballRankingApi.GetPointsThisYearStats();
                 MostPointsPlayers.AddRange(mostPointsPlayers);
-
-                var mostEventsPlayers = await PinballRankingApi.GetMostEventsStats();
                 MostEventsPlayers.AddRange(mostEventsPlayers);
-
-                var biggestMovers = await PinballRankingApi.GetBiggestMoversStat();
                 BiggestMovers.AddRange(biggestMovers);
-
             }
             catch (Exception ex)
             {
