@@ -36,9 +36,9 @@ namespace Ifpa.ViewModels
                 OnPropertyChanged(null);
             }
         }
-        public List<ISeries> PlayerRankHistoryLineSeries { get; set; } = new List<ISeries>();
+        public ObservableCollection<ISeries> PlayerRankHistoryLineSeries { get; set; } = new ObservableCollection<ISeries>();
 
-        public List<ISeries> PlayerRatingHistoryLineSeries { get; set; } = new List<ISeries>();
+        public ObservableCollection<ISeries> PlayerRatingHistoryLineSeries { get; set; } = new ObservableCollection<ISeries>();
 
         public Axis[] TimeAxis { get; set; } =
         {
@@ -63,7 +63,7 @@ namespace Ifpa.ViewModels
         {
             new Axis
             {
-                CustomSeparators = new double[] { 1, 500, 1000, 1500, 2000, 2500 },
+                CustomSeparators = new double[] { 0, 500, 1000, 1500, 2000, 2500 },
                 MinLimit = 1,
                 MinStep = 1,
                 ForceStepToMin = true
