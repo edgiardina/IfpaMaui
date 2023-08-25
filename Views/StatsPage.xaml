@@ -63,7 +63,7 @@
                                 <DataTemplate>
                                     <ViewCell>
                                         <StackLayout Padding="10" Orientation="Horizontal" >
-                                            <StackLayout Padding="10" Orientation="Vertical">
+                                            <StackLayout Orientation="Vertical">
                                                 <Label LineBreakMode="NoWrap" FontSize="16">
                                                     <Label.FormattedText>
                                                         <FormattedString>
@@ -95,7 +95,7 @@
                         </ListView>
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>
-                <tabView:SfTabItem Header="Most Events">
+                <!--<tabView:SfTabItem Header="Most Events">
                     <tabView:SfTabItem.Content>
                         <ListView x:Name="MostEventsListView" 
                         ItemsSource="{Binding MostEventsPlayers}"
@@ -133,15 +133,15 @@
                                                 </Label>
                                             </StackLayout>
                                             <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding Count}" 
-                                   LineBreakMode="NoWrap" 
-                                   FontSize="18" WidthRequest="80" />
+                                                   LineBreakMode="NoWrap" 
+                                                   FontSize="18" WidthRequest="80" />
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
                     </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>
+                </tabView:SfTabItem>-->
                 <tabView:SfTabItem Header="Biggest Movers">
                     <tabView:SfTabItem.Content>
                         <ListView x:Name="BiggestMoversListView" 
@@ -151,13 +151,13 @@
                          RefreshCommand="{Binding LoadItemsCommand}"
                          IsPullToRefreshEnabled="true"
                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
+                         CachingStrategy="RetainElement"
                          ItemSelected="BiggestMoversListView_ItemSelected">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <StackLayout Padding="10" Orientation="Horizontal" >
-                                            <StackLayout Padding="10" Orientation="Vertical">
+                                        <StackLayout Padding="10" Orientation="Horizontal">
+                                            <StackLayout Orientation="Vertical">
                                                 <Label LineBreakMode="NoWrap" FontSize="16">
                                                     <Label.FormattedText>
                                                         <FormattedString>
@@ -180,8 +180,7 @@
                                                 </Label>
                                             </StackLayout>
                                             <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding StatsRank}" 
-                                   LineBreakMode="NoWrap" 
-                                   FontSize="18" WidthRequest="80" />
+                                                   LineBreakMode="NoWrap" FontSize="18" />
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
