@@ -14,6 +14,7 @@ using PinballApi;
 using Maui.FixesAndWorkarounds;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace Ifpa;
 
@@ -35,6 +36,7 @@ public static class MauiProgram
             .UseMauiMaps()
             .UseFluentMauiIcons()
             .UseShiny()
+            .UseSkiaSharp(true)
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
