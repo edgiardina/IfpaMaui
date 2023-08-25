@@ -151,7 +151,7 @@
                          RefreshCommand="{Binding LoadItemsCommand}"
                          IsPullToRefreshEnabled="true"
                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RetainElement"
+                         CachingStrategy="RecycleElement"
                          ItemSelected="BiggestMoversListView_ItemSelected">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
