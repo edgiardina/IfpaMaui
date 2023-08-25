@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.PlayerDetailPage"
-             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              xmlns:local="clr-namespace:Ifpa.Converters"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -211,53 +211,22 @@
 
                     </Grid>
 
-                    <StackLayout x:Name="ChartLayout">
-                        <chart:SfCartesianChart  x:Name="RankProgressChart" HeightRequest="250" Margin="0,20">
-                            <chart:SfCartesianChart.Title>
-                                <Label Text="Rank Progress" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                            </chart:SfCartesianChart.Title>
-                            <chart:SfCartesianChart.XAxes>
-                                <chart:DateTimeAxis>
-                                    <chart:DateTimeAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:DateTimeAxis.LabelStyle>
-                                </chart:DateTimeAxis>
-                            </chart:SfCartesianChart.XAxes>
-                            <chart:SfCartesianChart.YAxes>
-                                <chart:LogarithmicAxis IsInversed="True">
-                                    <chart:LogarithmicAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:LogarithmicAxis.LabelStyle>
-                                </chart:LogarithmicAxis>
-                                <!--
-                            TODO: When Syncfusion supports Logarithmic charts, implement
-                            <chart:LogarithmicAxis IsInversed="True" />
-                            -->
-                            </chart:SfCartesianChart.YAxes>
-                            <chart:LineSeries ItemsSource="{Binding PlayerRankHistory}" XBindingPath="RankDate" YBindingPath="RankPosition" />
-                        </chart:SfCartesianChart>
-                        <chart:SfCartesianChart x:Name="RatingProgressChart"  HeightRequest="250">
-                            <chart:SfCartesianChart.Title>
-                                <Label Text="Rating Progress" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                            </chart:SfCartesianChart.Title>
-                            <chart:SfCartesianChart.XAxes>
-                                <chart:DateTimeAxis>
-                                    <chart:DateTimeAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:DateTimeAxis.LabelStyle>
-                                </chart:DateTimeAxis>
-                            </chart:SfCartesianChart.XAxes>
-                            <chart:SfCartesianChart.YAxes>
-                                <chart:NumericalAxis>
-                                    <chart:NumericalAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                    </chart:NumericalAxis.LabelStyle>
-                                </chart:NumericalAxis>
-                            </chart:SfCartesianChart.YAxes>
-                            <chart:LineSeries ItemsSource="{Binding PlayerRatingHistory}" XBindingPath="RatingDate" YBindingPath="Rating"/>
-                        </chart:SfCartesianChart>
+                    <StackLayout x:Name="ChartLayout" Margin="0,10,0,0">
+                        <Label Text="Rank History"
+                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+
+                        <lvc:CartesianChart HeightRequest="300" YAxes="{Binding RankAxis}" LegendPosition="Hidden"
+                            Series="{Binding PlayerRankHistoryLineSeries}" XAxes="{Binding TimeAxis}">
+                        </lvc:CartesianChart>
+
+                        <Label Text="Rating Progress"
+                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+
+                        <lvc:CartesianChart HeightRequest="300"
+                            Series="{Binding PlayerRatingHistoryLineSeries}" XAxes="{Binding TimeAxis}" YAxes="{Binding RatingAxis}">            
+                        </lvc:CartesianChart>
                     </StackLayout>
 
                 </StackLayout>
