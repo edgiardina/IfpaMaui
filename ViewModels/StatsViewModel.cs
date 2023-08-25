@@ -51,24 +51,26 @@ namespace Ifpa.ViewModels
                 MostEventsPlayers.Clear();
                 BiggestMovers.Clear();
 
-                var playersByCountry = new List<PlayersByCountryStat>();
-                var eventsByYear = new List<EventsByYearStat>();
-                var playersByYear = new List<PlayersByYearStat>();
-                var mostPointsPlayers = new List<PointsThisYearStat>();
-                var mostEventsPlayers = new List<MostEventsStat>();
-                var biggestMovers = new List<BiggestMoversStat>();
+                var playersByCountryTask = PinballRankingApi.GetPlayersByCountryStat();
+                var eventsByYearTask = PinballRankingApi.GetEventsPerYearStat();
+                var playersByYearTask = PinballRankingApi.GetPlayersPerYearStat();
+                var mostPointsPlayersTask = PinballRankingApi.GetPointsThisYearStats();
+                //var mostEventsPlayersTask = PinballRankingApi.GetMostEventsStats();
+                var biggestMoversTask = PinballRankingApi.GetBiggestMoversStat();
 
-                var loadDataTasks = new Task[]
-                {
-                    Task.Run(async () => playersByCountry = await PinballRankingApi.GetPlayersByCountryStat()),
-                    Task.Run(async () => eventsByYear = await PinballRankingApi.GetEventsPerYearStat()),
-                    Task.Run(async () => playersByYear = await PinballRankingApi.GetPlayersPerYearStat()),
-                    Task.Run(async () => mostPointsPlayers = await PinballRankingApi.GetPointsThisYearStats()),
-                    Task.Run(async () => mostEventsPlayers = await PinballRankingApi.GetMostEventsStats()),
-                    Task.Run(async () => biggestMovers = await PinballRankingApi.GetBiggestMoversStat()),
-                };
+                await Task.WhenAll(playersByCountryTask, 
+                                   eventsByYearTask,
+                                   playersByYearTask,
+                                   mostPointsPlayersTask,
+                                   //mostEventsPlayersTask,
+                                   biggestMoversTask);
 
-                await Task.WhenAll(loadDataTasks);
+                var playersByCountry = await playersByCountryTask;
+                var eventsByYear = await eventsByYearTask;
+                var playersByYear = await playersByYearTask;
+                var mostPointsPlayers = await mostPointsPlayersTask;
+                //var mostEventsPlayers = await mostEventsPlayersTask;
+                var biggestMovers = await biggestMoversTask;
 
                 var groupedStats = playersByCountry.GroupBy(
                     stat => stat.Count < 100 ? "Other" : stat.CountryName,
@@ -120,7 +122,7 @@ namespace Ifpa.ViewModels
                 OnPropertyChanged();
 
                 MostPointsPlayers.AddRange(mostPointsPlayers);
-                MostEventsPlayers.AddRange(mostEventsPlayers);
+                //MostEventsPlayers.AddRange(mostEventsPlayers);
                 BiggestMovers.AddRange(biggestMovers);
             }
             catch (Exception ex)
