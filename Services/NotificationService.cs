@@ -168,7 +168,7 @@ namespace Ifpa.Services
                     {
                         Settings.LastCalendarIdSeen = newestCalendarItemId;
 
-                        foreach (var calendarItem in items.Calendar.Where(n => n.CalendarId > newestCalendarItemId))
+                        foreach (var calendarItem in items.Calendar.Where(n => n.CalendarId >= newestCalendarItemId))
                         {
                             await SendNotification(NewTournamentOnCalendarTitle, 
                                                    string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.StartDate.ToShortDateString()), 
