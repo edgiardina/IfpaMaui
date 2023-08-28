@@ -10,7 +10,7 @@
              Title="Stats">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />           
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -25,25 +25,25 @@
                                    HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
                                 <lvc:PieChart HeightRequest="300" 
-                                Series="{Binding PlayersByCountrySeries}">
+                                    Series="{Binding PlayersByCountrySeries}">
                                 </lvc:PieChart>
 
                                 <Label Text="Events By Year"
                                    HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                                <lvc:CartesianChart HeightRequest="300" 
-                                Series="{Binding EventsByYearSeries}"
-                                XAxes="{Binding EventsByYearAxis}"
-                                LegendPosition="Hidden" />
+                                <lvc:CartesianChart HeightRequest="300" ZoomMode="None"
+                                        Series="{Binding EventsByYearSeries}"
+                                        XAxes="{Binding EventsByYearAxis}"
+                                        LegendPosition="Hidden" />
 
                                 <Label Text="Players By Year"
                                    HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
 
-                                <lvc:CartesianChart HeightRequest="300" 
-                                Series="{Binding PlayersByYearSeries}"
-                                XAxes="{Binding PlayersByYearAxis}"
-                                LegendPosition="Hidden" />
+                                <lvc:CartesianChart HeightRequest="300" ZoomMode="None"
+                                        Series="{Binding PlayersByYearSeries}"
+                                        XAxes="{Binding PlayersByYearAxis}"
+                                        LegendPosition="Hidden" />
                             </StackLayout>
                         </ScrollView>
                     </tabView:SfTabItem.Content>

@@ -216,7 +216,7 @@
                                    HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
 
-                        <lvc:CartesianChart HeightRequest="300" YAxes="{Binding RankAxis}" LegendPosition="Hidden"
+                        <lvc:CartesianChart HeightRequest="300" YAxes="{Binding RankAxis}" LegendPosition="Hidden" ZoomMode="None"
                             Series="{Binding PlayerRankHistoryLineSeries}" XAxes="{Binding TimeAxis}">
                         </lvc:CartesianChart>
 
@@ -224,7 +224,7 @@
                                    HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
                                    TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
 
-                        <lvc:CartesianChart HeightRequest="300"
+                        <lvc:CartesianChart HeightRequest="300" ZoomMode="None"
                             Series="{Binding PlayerRatingHistoryLineSeries}" XAxes="{Binding TimeAxis}" YAxes="{Binding RatingAxis}">            
                         </lvc:CartesianChart>
                     </StackLayout>
