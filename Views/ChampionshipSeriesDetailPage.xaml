@@ -31,7 +31,7 @@
                                     <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
                                                https://github.com/dotnet/maui/issues/16877 -->
                                     <Grid RowDefinitions="Auto, 1">
-                                        <Grid ColumnDefinitions="Auto, 2*, *" Margin="10" Grid.Row="0">
+                                        <Grid ColumnDefinitions="Auto, 2*, *" Margin="10" Grid.Row="0"  HeightRequest="40">
                                             <Label Grid.Column="0" VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
                                                    LineBreakMode="NoWrap" FontSize="24" HorizontalOptions="Start" Margin="0,0,10,0" />
                                             <Grid RowDefinitions="*,*" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
@@ -83,9 +83,11 @@
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid RowDefinitions="Auto, 1">
-                                        <Grid Margin="10" ColumnDefinitions="*, 100" Grid.Row="0">
+                                        <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
+                                               https://github.com/dotnet/maui/issues/16877 -->
+                                        <Grid Margin="10" ColumnDefinitions="*, 100" Grid.Row="0" HeightRequest="45">
                                             <Grid RowDefinitions="*,*" Grid.Column="0">
-                                                <Label Grid.Row="0" FontSize="Medium" Text="{Binding TournamentName}" />
+                                                <Label Grid.Row="0" FontSize="Medium" Text="{Binding TournamentName}" LineBreakMode="TailTruncation" />
                                                 <Label Grid.Row="1" FontSize="Small" Text="{Binding EventName}"  TextColor="{StaticResource SecondaryTextColor}" />
                                             </Grid>
 
