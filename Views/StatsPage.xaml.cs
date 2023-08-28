@@ -16,11 +16,11 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            ViewModel.LoadItemsCommand.Execute(null);
+            await ViewModel.ExecuteLoadItemsCommand();
         }
 
         private async void PlayersListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -35,17 +35,17 @@ namespace Ifpa.Views
             PlayersListView.SelectedItem = null;
         }
 
-        private async void MostEventsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var player = e.SelectedItem as MostEventsStat;
-            if (player == null)
-                return;
+        //private async void MostEventsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    var player = e.SelectedItem as MostEventsStat;
+        //    if (player == null)
+        //        return;
 
-            await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
+        //    await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
 
-            // Manually deselect item.
-            MostEventsListView.SelectedItem = null;
-        }
+        //    // Manually deselect item.
+        //    MostEventsListView.SelectedItem = null;
+        //}
 
         
         private async void BiggestMoversListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
