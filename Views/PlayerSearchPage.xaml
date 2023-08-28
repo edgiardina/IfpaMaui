@@ -24,11 +24,6 @@
                        Keyboard="Text"   
                        Placeholder="Type a player's name to search"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
-            <!--
-                TODO: emptyview and selectionmode cannot be used at the same time due to a maui bug
-                https://github.com/dotnet/maui/issues/8039
-                EmptyView="No players found."
-                -->
             <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
             <CollectionView x:Name="PlayersListView"   
                     ItemsSource="{Binding Players}"                    
@@ -53,7 +48,7 @@
                                         </Label.FormattedText>
                                     </Label>
 
-                                    <Label>
+                                    <Label TextColor="{StaticResource SecondaryTextColor}">
                                         <Label.Text>
                                             <MultiBinding Converter="{StaticResource AddressFormatConverter}">
                                                 <Binding Path="City" />
