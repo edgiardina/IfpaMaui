@@ -2,6 +2,7 @@
 using PinballApi.Models.WPPR.v2.Tournaments;
 using Ifpa.Models;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -14,7 +15,7 @@ namespace Ifpa.ViewModels
 
         public int TournamentId { get; set; }
 
-        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Tournament Results";
             Results = new ObservableCollectionRange<TournamentResult>();
@@ -43,7 +44,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading tournament results id {0}", TournamentId);
             }
             finally
             {
@@ -72,7 +73,7 @@ namespace Ifpa.ViewModels
             }
             catch(Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error registering app link {0}", entry);
             }
         }
     }

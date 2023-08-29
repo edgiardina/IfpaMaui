@@ -1,4 +1,5 @@
 ﻿using Ifpa.Models;
+using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
@@ -23,7 +24,7 @@ namespace Ifpa.ViewModels
             }
         }
 
-        public SettingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public SettingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             AppSettings = appSettings;
         }
@@ -47,7 +48,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                logger.LogError(ex, "Error loading player id {0} in settings", Settings.MyStatsPlayerId);
             }
             finally
             {

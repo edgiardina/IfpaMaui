@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Ifpa.Models;
-
+using Serilog;
 
 namespace Ifpa.Views
 {
@@ -44,7 +44,8 @@ namespace Ifpa.Views
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    //TODO: dependency inject this
+                    Log.Logger.Error(e, "Error loading calendar filter data");
                 }
 
                 IsBusy = false;
