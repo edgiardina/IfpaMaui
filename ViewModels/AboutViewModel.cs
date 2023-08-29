@@ -1,4 +1,5 @@
 ﻿using Ifpa.Models;
+using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Players;
 using System.Collections.ObjectModel;
@@ -9,15 +10,17 @@ namespace Ifpa.ViewModels
     public class AboutViewModel : BaseViewModel
     {
         AppSettings AppSettings { get; set; }
+        private readonly ILogger<AboutViewModel> _logger;
 
         public ObservableCollection<Player> Sponsors { get; set; }
 
         public int CreatorIfpaNumber => 16927;
 
-        public AboutViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public AboutViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2)
         {
             AppSettings = appSettings;
             Sponsors = new ObservableCollection<Player>();
+            _logger = logger;
         }
 
         public async Task LoadSponsors()
@@ -39,10 +42,11 @@ namespace Ifpa.ViewModels
                 }
 
                 OnPropertyChanged("Sponsors");
+                _logger.LogDebug("Loaded {0} sponsors", Sponsors.Count);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                _logger.LogError(ex, "Error loading sponsors");
             }
             finally
             {
