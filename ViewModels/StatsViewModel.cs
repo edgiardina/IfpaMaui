@@ -7,6 +7,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -30,7 +31,7 @@ namespace Ifpa.ViewModels
 
         public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
 
-        public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Stats";
             MostPointsPlayers = new ObservableCollectionRange<PointsThisYearStat>();
@@ -127,7 +128,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading stats");
             }
             finally
             {

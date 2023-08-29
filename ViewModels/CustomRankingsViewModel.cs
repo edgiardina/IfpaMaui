@@ -3,6 +3,7 @@ using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Rankings;
 using Microsoft.Extensions.Configuration;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public CustomRankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Custom Rankings";
             CustomRankings = new ObservableCollection<CustomRankingView>();
@@ -48,7 +49,7 @@ namespace Ifpa.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex);
+                        logger.LogError(ex, "Error loading custom rankings");
                     }
                     finally
                     {

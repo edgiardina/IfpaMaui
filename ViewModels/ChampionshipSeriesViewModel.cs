@@ -10,6 +10,7 @@ using Microsoft.Maui;
 using Microsoft.Extensions.Configuration;
 using System.Windows.Input;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -24,7 +25,7 @@ namespace Ifpa.ViewModels
 
         public string SeriesCode { get; set; }
         
-        public ChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public ChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {    
             this.AvailableYears = new List<int>();
 
@@ -71,7 +72,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading championship series {0} {1}", SeriesCode, Year);
             }
             finally
             {
