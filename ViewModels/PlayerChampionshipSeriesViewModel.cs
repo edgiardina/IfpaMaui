@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Maui;
 using Microsoft.Extensions.Configuration;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -17,7 +18,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
 
-        public PlayerChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public PlayerChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             ChampionshipSeries = new ObservableCollection<ChampionshipSeries>();
 
@@ -44,7 +45,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading championship series for player {0}", PlayerId);
             }
             finally
             {

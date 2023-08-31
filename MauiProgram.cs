@@ -15,6 +15,7 @@ using Maui.FixesAndWorkarounds;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Serilog;
 
 namespace Ifpa;
 
@@ -49,6 +50,7 @@ public static class MauiProgram
                 handlers.AddHandler(typeof(InsetTableView), typeof(iOS.Renderers.InsetTableViewRenderer));
 #endif
             })
+            .ConfigureLogging()
             .ConfigureEssentials(essentials =>
             {
                 //TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
@@ -130,6 +132,31 @@ public static class MauiProgram
 
         // shiny.notifications
         s.AddNotifications(typeof(NotificationDelegate));
+
+        return builder;
+    }
+
+    static MauiAppBuilder ConfigureLogging(this MauiAppBuilder builder)
+    {
+        Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Debug()
+        .WriteTo.Console()
+#if ANDROID
+		.WriteTo.AndroidLog()
+        .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")
+#endif
+#if IOS
+        .WriteTo.NSLog()
+        .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")  
+#endif
+#if DEBUG
+        .WriteTo.Debug()
+#endif
+        .CreateLogger();
+
+        builder.Logging.AddSerilog(dispose: true);
+
+        Log.Logger.Debug("Logger attached to services");
 
         return builder;
     }
