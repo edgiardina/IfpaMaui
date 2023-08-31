@@ -4,6 +4,7 @@ using Ifpa.Models;
 using PinballApi.Models.WPPR.v2.Players;
 using Microsoft.Extensions.Configuration;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -14,7 +15,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public FavoritesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public FavoritesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<FavoritesViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Favorites";
             Players = new ObservableCollection<Player>();
@@ -56,7 +57,7 @@ namespace Ifpa.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex);
+                        logger.LogError(ex, "Error loading favorites");
                     }
                     finally
                     {

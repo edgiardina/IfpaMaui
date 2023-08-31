@@ -5,6 +5,8 @@ using Ifpa.Models;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
+using Serilog.Core;
+using Serilog;
 
 namespace Ifpa.Views
 {
@@ -64,7 +66,8 @@ namespace Ifpa.Views
             catch (Exception e)
             {
                 //don't let the calendar crash our entire app
-                Debug.WriteLine(e.Message);
+                //TODO: dependency inject this?
+                Log.Logger.Error(e, "Error loading calendar data");
             }
         }
 
