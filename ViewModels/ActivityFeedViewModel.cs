@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Ifpa.Models;
+using Microsoft.Extensions.Logging;
 using PinballApi;
 
 namespace Ifpa.ViewModels
@@ -10,7 +11,7 @@ namespace Ifpa.ViewModels
         public ObservableCollection<ActivityFeedItem> ActivityFeedItems { get; set; }
         public Command LoadItemsCommand { get; set; }
                 
-        public ActivityFeedViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public ActivityFeedViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ActivityFeedViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Activity Feed";
             ActivityFeedItems = new ObservableCollection<ActivityFeedItem>();
@@ -33,10 +34,12 @@ namespace Ifpa.ViewModels
                 {
                     ActivityFeedItems.Add(item);
                 }
+
+                logger.LogDebug("loaded {0} activity feed items", ActivityFeedItems.Count);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading activity feed");
             }
             finally
             {

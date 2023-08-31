@@ -3,6 +3,7 @@ using LiveChartsCore;
 using LiveChartsCore.Kernel;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
@@ -130,7 +131,7 @@ namespace Ifpa.ViewModels
 
         public bool IsRegistered => PlayerRecord.IfpaRegistered;
 
-        public PlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public PlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             AppSettings = appSettings;
@@ -194,7 +195,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                logger.LogError(ex, "Error loading player details", PlayerId);
             }
             finally
             {
@@ -242,7 +243,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                logger.LogError(ex, "Error registering app link {0}", entry);
             }
         }
 

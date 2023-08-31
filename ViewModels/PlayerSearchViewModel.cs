@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Ifpa.Models;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PinballApi;
 
@@ -12,7 +13,7 @@ namespace Ifpa.ViewModels
 
         public bool IsLoaded { get; set; } = false;
 
-        public PlayerSearchViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public PlayerSearchViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Player Search";
             Players = new ObservableCollection<PlayerSearchResult>();
@@ -50,7 +51,7 @@ namespace Ifpa.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex);
+                        logger.LogError(ex, "Error searching for player", text);
                     }
                     finally
                     {
