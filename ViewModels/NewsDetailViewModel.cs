@@ -5,6 +5,7 @@ using Ifpa.Services;
 using System.Xml;
 using Microsoft.Extensions.Configuration;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -22,7 +23,7 @@ namespace Ifpa.ViewModels
         private BlogPostService BlogPostService { get; set; }
 
         //TODO: convert IConfiguration to IOptions?
-        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<NewsDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "News";
             BlogPostService = blogPostService;
@@ -65,7 +66,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading news item {0}", NewsItemUrl);
             }
             finally
             {

@@ -4,6 +4,7 @@ using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2;
 using System.Windows.Input;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -56,7 +57,7 @@ namespace Ifpa.ViewModels
 
         public readonly Country DefaultCountry = new Country { CountryName = "United States" };        
 
-        public RankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public RankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<RankingsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Rankings";
             CountOfItemsToFetch = 100;
@@ -167,7 +168,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading rankings for {0}", CurrentRankingType);
             }
             finally
             {

@@ -3,6 +3,7 @@ using PinballApi;
 using PinballApi.Extensions;
 using Shiny.Notifications;
 using PinballApi.Models.WPPR.v1.Calendar;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.Services
 {
@@ -11,13 +12,15 @@ namespace Ifpa.Services
         protected BlogPostService BlogPostService { get; set; }
 
         readonly INotificationManager notificationManager;
+        private readonly ILogger<NotificationService> logger;
 
-        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager)
+        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager, ILogger<NotificationService> logger)
         {
             PinballRankingApi = pinballRankingApi;
 
             BlogPostService = blogPostService;
             this.notificationManager = notificationManager;
+            this.logger = logger;
         }
         private PinballRankingApiV1 PinballRankingApi { get; set; }
 
@@ -79,7 +82,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfUserHasNewlySubmittedTourneyResults");
                 }
             }
         }
@@ -119,7 +122,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfUsersRankChanged");
                 }
             }
         }
@@ -149,7 +152,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfNewBlogItemPosted");
                 }
             }
         }
@@ -181,7 +184,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfNewCalendarEntry");
                 }
             }
         }

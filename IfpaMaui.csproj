@@ -122,6 +122,7 @@
 		<PackageReference Include="PinballApi" Version="2.2.0" />
 		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.4.9" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
+		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
 		<PackageReference Include="Shiny.Core" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)" />
 		<PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)" />
@@ -136,6 +137,11 @@
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="21.2.6" />
 		<PackageReference Include="Syncfusion.Maui.TabView" Version="21.2.6" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Serilog" Version="3.0.1" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
