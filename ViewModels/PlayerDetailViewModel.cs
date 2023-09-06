@@ -165,6 +165,7 @@ namespace Ifpa.ViewModels
                             point.Coordinate = new Coordinate(history.RankDate.Ticks, Math.Log(history.RankPosition, s_logBase));
                         }
                     };
+                    PlayerRankHistoryLineSeries.Clear();
                     PlayerRankHistoryLineSeries.Add(playerRankSeries);
 
 
@@ -180,6 +181,7 @@ namespace Ifpa.ViewModels
                             point.Coordinate = new Coordinate(history.RatingDate.Ticks, history.Rating);
                         }
                     };
+                    PlayerRatingHistoryLineSeries.Clear();
                     PlayerRatingHistoryLineSeries.Add(playerRatingSeries);
 
                     OnPropertyChanged();
