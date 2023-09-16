@@ -85,7 +85,7 @@ jobs:
         with:
           if-no-files-found: error
           name: ifpamaui-android-signed-build
-          path: bin/Release/net7.0-android/publish/com.edgiardina.ifpa-Signed.aab
+          path: bin/Release/net7.0-android33.0/publish/com.edgiardina.ifpa-Signed.aab
 
       - name: Deploy to Google Play (Production)
         uses: r0adkll/upload-google-play@v1
