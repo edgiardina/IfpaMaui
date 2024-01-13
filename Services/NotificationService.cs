@@ -212,7 +212,7 @@ namespace Ifpa.Services
             };
 
             var result = await notificationManager.RequestRequiredAccess(notification);
-            if (result == AccessState.Available)
+            if (result == Shiny.AccessState.Available)
             {
                 await notificationManager.Send(notification);
             }
