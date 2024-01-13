@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net7.0-ios;net7.0-maccatalyst;net7.0-android33.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-ios;net8.0-maccatalyst;net8.0-android</TargetFrameworks>
 		<!--<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>-->
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
@@ -29,7 +29,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
 		<UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Release'">
+	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Release'">
 		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
 		<CodesignKey>iPhone Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
 		<CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
@@ -37,9 +37,13 @@
 		<MtouchLink>None</MtouchLink>
 		<UseInterpreter>true</UseInterpreter>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0-ios' and '$(Configuration)' == 'Debug'">
+	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Debug'">
 		<CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
 		<CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -47,17 +51,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
-	  <MtouchLink>None</MtouchLink>
+		<MtouchLink>None</MtouchLink>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
-	  <MtouchLink>SdkOnly</MtouchLink>
+		<MtouchLink>SdkOnly</MtouchLink>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.png" />
-
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#062C53" BaseSize="256,88" />
 
@@ -78,7 +81,6 @@
 		<None Remove="Platforms\Android\Resources\drawable\widgetpreview.png" />
 		<None Remove="Platforms\Android\Resources\layout\rankwidget.axml" />
 		<None Remove="Platforms\Android\Resources\xml\appwidgetprovider.xml" />
-		<None Remove="Resources\AppIcon\appicon.png" />
 		<None Remove="Resources\Images\about.svg" />
 		<None Remove="Resources\Images\activity_feed.svg" />
 		<None Remove="Resources\Images\calendar.svg" />
@@ -110,37 +112,34 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiIcon Include="Resources\AppIcon\appicon.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.1.0" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.92" />
-		<PackageReference Include="PinballApi" Version="2.2.0" />
-		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.4.9" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.3" />
+		<PackageReference Include="PinballApi" Version="2.3.0" />
+		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.5.0" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
-		<PackageReference Include="Shiny.Core" Version="$(ShinyVersion)" />
-		<PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)" />
-		<PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)" />
-		<PackageReference Include="Shiny.Jobs" Version="$(ShinyVersion)" />
-		<PackageReference Include="Shiny.Notifications" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Core" Version="3.2.2" />
+		<PackageReference Include="Shiny.Hosting.Maui" Version="3.2.2" />
+		<PackageReference Include="Shiny.Extensions.Configuration" Version="3.2.2" />
+		<PackageReference Include="Shiny.Jobs" Version="3.2.2" />
+		<PackageReference Include="Shiny.Notifications" Version="3.2.2" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.5" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.5" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.5" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.5" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="21.2.6" />
-		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="21.2.6" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="21.2.6" />
-		<PackageReference Include="System.ServiceModel.Syndication" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-		<PackageReference Include="Serilog" Version="3.0.1" />
-		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.7" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.7" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.7" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.7" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="24.1.45" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
+		<PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Serilog" Version="3.1.1" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
 		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
 	</ItemGroup>
 

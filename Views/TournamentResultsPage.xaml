@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.TournamentResultsPage"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{Binding Title}">
     <ContentPage.Resources>
@@ -95,8 +95,8 @@
         </DataTemplate>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="{fluent:Icon Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="{mi:Fluent Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />

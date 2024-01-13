@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:Ifpa.Converters"             
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"             
              xmlns:controls="clr-namespace:Ifpa.Controls"                     
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent" 
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
              Title="{Binding Title}"
@@ -37,7 +37,7 @@
                         <SwipeView.RightItems>
                             <SwipeItems>
                                 <SwipeItem Text="Delete"                                           
-                                   IconImageSource="{fluent:Icon Icon=Delete24}"
+                                   IconImageSource="{mi:Fluent Icon=Delete24}"
                                    BackgroundColor="{StaticResource DeleteBackgroundColor}"
                                    Invoked="SwipeItem_Invoked"
                                    CommandParameter="{Binding PlayerId}"/>
