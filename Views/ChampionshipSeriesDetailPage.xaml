@@ -91,7 +91,7 @@
                                                 <Label Grid.Row="1" FontSize="Small" Text="{Binding EventName}"  TextColor="{StaticResource SecondaryTextColor}" />
                                             </Grid>
 
-                                            <Grid RowDefinitions="*,*" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" Padding="10" MinimumWidthRequest="60" RowSpacing="5">
+                                            <Grid RowDefinitions="*,*" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" MinimumWidthRequest="60" RowSpacing="5">
                                                 <Label Grid.Row="0" LineBreakMode="NoWrap" FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" 
                                                        TextColor="{StaticResource SecondaryTextColor}"  />
 
