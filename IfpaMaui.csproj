@@ -119,7 +119,6 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.3" />
 		<PackageReference Include="PinballApi" Version="2.3.0" />
-		<PackageReference Include="PureWeen.Maui.FixesAndWorkarounds" Version="1.5.0" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
 		<PackageReference Include="Shiny.Core" Version="3.2.2" />
