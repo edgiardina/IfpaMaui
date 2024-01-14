@@ -11,8 +11,6 @@ using Ifpa.BackgroundJobs;
 using Ifpa.Controls;
 using Shiny.Infrastructure;
 using PinballApi;
-using Maui.FixesAndWorkarounds;
-using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Serilog;
@@ -78,8 +76,6 @@ public static class MauiProgram
 #endif
             })
             */
-            //It's a real bummer that we have to port fixes like this and then wait an entire year for .NET MAUI releases
-            .ConfigureShellWorkarounds()
             .RegisterShinyServices()
             .RegisterIfpaModels()
             .RegisterIfpaServices();
