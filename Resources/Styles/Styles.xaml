@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
 
     <Style TargetType="TabBar">
         <!-- Nav Bar Properties (Top) -->
@@ -64,6 +65,13 @@
 
     <Style TargetType="tabView:SfTabItem" ApplyToDerivedTypes="True">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+    </Style>
+
+    <Style TargetType="material:TabView">
+      
+    </Style>
+    <Style TargetType="Layout" Class="TabView.Header" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TabHeaderBackgroundColor}, Dark={StaticResource TabHeaderBackgroundColorDark}}" />
     </Style>
 
     <Style TargetType="StackLayout" Class="SettingsRow">

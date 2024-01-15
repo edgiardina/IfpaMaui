@@ -15,6 +15,7 @@ using Microsoft.Maui.Controls.Compatibility.Hosting;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Serilog;
 using Shiny;
+using UraniumUI;
 
 namespace Ifpa;
 
@@ -37,6 +38,8 @@ public static class MauiProgram
             .UseFluentMauiIcons()
             .UseShiny()
             .UseSkiaSharp(true)
+            .UseUraniumUI()
+            .UseUraniumUIMaterial()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {

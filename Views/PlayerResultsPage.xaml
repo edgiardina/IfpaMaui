@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Ifpa.Converters"
              xmlns:datatemplate="clr-namespace:Ifpa.Views.DataTemplates"
-             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="Ifpa.Views.PlayerResultsPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
@@ -20,37 +20,59 @@
     </ContentPage.Resources>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        <tabView:SfTabView Style="{StaticResource TabView}" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"  >
-            <tabView:SfTabItem Header="Active">
-                <tabView:SfTabItem.Content>
-                    <CollectionView x:Name="ActiveListView"
+        <material:TabView Style="{StaticResource TabView}" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" CachingStrategy="CacheOnLayout">
+            <material:TabView.TabHeaderItemTemplate>
+                <DataTemplate>
+                    <Button HeightRequest="50" HorizontalOptions="Center" Text="{Binding Title}" >
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="TextColor" Value="White"/>
+                                <Setter Property="Scale" Value="1.2"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="False">
+                                <Setter Property="TextColor" Value="Gray"/>
+                                <Setter Property="Scale" Value="0.8"/>
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </DataTemplate>
+            </material:TabView.TabHeaderItemTemplate>
+            <material:TabItem Title="Active">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <CollectionView x:Name="ActiveListView"
                                 ItemsSource="{Binding ActiveResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
                                 ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                 EmptyView="No active tournament results" />
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-            <tabView:SfTabItem Header="Unused">
-                <tabView:SfTabItem.Content>
-                    <CollectionView x:Name="UnusedListView"
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+            <material:TabItem Title="Unused">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <CollectionView x:Name="UnusedListView"
                                 ItemsSource="{Binding UnusedResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
                                 ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                 EmptyView="No unused tournament results"/>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-            <tabView:SfTabItem Header="Past">
-                <tabView:SfTabItem.Content>
-                    <CollectionView x:Name="PastListView"
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+            <material:TabItem Title="Past">
+                <material:TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <CollectionView x:Name="PastListView"
                                 ItemsSource="{Binding PastResults}"
                                 SelectionMode="Single"
                                 SelectionChanged="ActiveListView_SelectionChanged"
                                 ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                 EmptyView="No past tournament results"/>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-        </tabView:SfTabView>
+                    </DataTemplate>
+                </material:TabItem.ContentTemplate>
+            </material:TabItem>
+        </material:TabView>
     </Grid>
 </ContentPage>
