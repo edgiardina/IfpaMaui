@@ -11,11 +11,10 @@ using Ifpa.BackgroundJobs;
 using Ifpa.Controls;
 using Shiny.Infrastructure;
 using PinballApi;
-using Maui.FixesAndWorkarounds;
-using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Serilog;
+using Shiny;
 
 namespace Ifpa;
 
@@ -77,8 +76,6 @@ public static class MauiProgram
 #endif
             })
             */
-            //It's a real bummer that we have to port fixes like this and then wait an entire year for .NET MAUI releases
-            .ConfigureShellWorkarounds()
             .RegisterShinyServices()
             .RegisterIfpaModels()
             .RegisterIfpaServices();
@@ -128,7 +125,7 @@ public static class MauiProgram
         s.AddJobs();
         s.AddShinyCoreServices();
 
-        s.AddJob(typeof(NotificationJob));
+        s.AddJob(typeof(NotificationJob), requiredNetwork: Shiny.Jobs.InternetAccess.Any, runInForeground: true);
 
         // shiny.notifications
         s.AddNotifications(typeof(NotificationDelegate));
