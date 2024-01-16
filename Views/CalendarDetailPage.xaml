@@ -4,8 +4,9 @@
              xmlns:local="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.CalendarDetailPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"    
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"             
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"           
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              ios:Page.LargeTitleDisplay="Never">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,8 +18,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Add To Calendar" x:Name="AddToCalendarButton" Clicked="AddToCalendarButton_Clicked" IconImageSource="{fluent:Icon Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Add To Calendar" x:Name="AddToCalendarButton" Clicked="AddToCalendarButton_Clicked" IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
@@ -49,8 +50,8 @@
                     </Label.FormattedText>
                 </Label>
             </StackLayout>
-            
-            <Map x:Name="calendarMap" MapType="Street" IsZoomEnabled="False" IsScrollEnabled="False" />
+
+            <maps:Map x:Name="calendarMap" MapType="Street" IsZoomEnabled="False" IsScrollEnabled="False" />
             
             <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True" Padding="12,10">
                 <StackLayout>

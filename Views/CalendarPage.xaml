@@ -2,11 +2,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"               
-             xmlns:controls="clr-namespace:Ifpa.Views.Controls"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              x:Class="Ifpa.Views.CalendarPage"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"    
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"   
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              Title="Calendar">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -18,8 +19,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="{fluent:Icon Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
-        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="{mi:Fluent Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
+        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{mi:Fluent Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <!--<Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />-->
@@ -27,18 +28,18 @@
     <Grid >
         <Grid x:Name="MapLayout" RowDefinitions="*,*" >
 
-            <Map x:Name="calendarMap" MapType="Street" Grid.Row="0"
+            <maps:Map x:Name="calendarMap" MapType="Street" Grid.Row="0"
                      ItemsSource="{Binding Pins}" MinimumHeightRequest="300">
-                <Map.ItemTemplate>
+                <maps:Map.ItemTemplate>
                     <DataTemplate>
-                        <Pin MarkerClicked="Pin_MarkerClicked" InfoWindowClicked="Pin_InfoWindowClicked"
+                        <maps:Pin MarkerClicked="Pin_MarkerClicked" InfoWindowClicked="Pin_InfoWindowClicked"
                               MarkerId="{Binding MarkerId}"
                               Location="{Binding Location}"
                               Address="{Binding Address}"
                               Label="{Binding Label}" />
                     </DataTemplate>
-                </Map.ItemTemplate>
-            </Map>
+                </maps:Map.ItemTemplate>
+            </maps:Map>
 
             <CollectionView x:Name="TournamentListView" 
                                  Grid.Row="1"

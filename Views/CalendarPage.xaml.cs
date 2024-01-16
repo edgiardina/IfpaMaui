@@ -7,6 +7,7 @@ using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
 using Serilog.Core;
 using Serilog;
+using MauiIcons.Core;
 
 namespace Ifpa.Views
 {
@@ -120,7 +121,7 @@ namespace Ifpa.Views
         {
             var pin = (Pin)sender;
             var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
-            TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);            
+            TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);
         }
 
         private async void Pin_InfoWindowClicked(object sender, PinClickedEventArgs e)

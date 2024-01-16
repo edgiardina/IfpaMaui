@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Ifpa.Converters"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              Title="{Binding Initials, Mode=OneWay}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -19,10 +19,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{fluent:Icon Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{fluent:Icon Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{mi:Fluent Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{mi:Fluent Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{mi:Fluent Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />

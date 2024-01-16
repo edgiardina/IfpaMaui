@@ -1,6 +1,7 @@
 ﻿using Ifpa.ViewModels;
 using Ifpa.Models;
 using MauiIcons.Fluent;
+using MauiIcons.Core;
 
 namespace Ifpa.Views
 {
