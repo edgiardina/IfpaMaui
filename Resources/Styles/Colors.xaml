@@ -8,7 +8,7 @@
     <Color x:Key="DetailPageBackground">#F1F1F1</Color>
     <Color x:Key="WinningRecord">#04B45F</Color>
     <Color x:Key="LosingRecord">#FE2E2E</Color>
-    <Color x:Key="TieRecord">#333333</Color>
+    <Color x:Key="TieRecord">#999999</Color>
 
     <Color x:Key="BackgroundColor">#FFFFFF</Color>
     <Color x:Key="BarBackgroundColor">#f6f6f6</Color>
@@ -24,6 +24,8 @@
     <Color x:Key="LinkTextColor">#0000ff</Color>
     <Color x:Key="BannerTextColor">#072C53</Color>
     <Color x:Key="IconAccentColor">#4579FB</Color>
+
+    <Color x:Key="DeleteBackgroundColor">#FE2E2E</Color>
 
     <!-- Dark Colors -->
 

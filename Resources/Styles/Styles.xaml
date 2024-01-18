@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-    xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <Style TargetType="TabBar">
@@ -65,14 +64,6 @@
 
     <Style TargetType="tabView:SfTabItem" ApplyToDerivedTypes="True">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-    </Style>
-
-    <Style TargetType="chart:SfCartesianChart">
-        <!--
-        <Setter Property="TextColor"  Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-        <Setter Property="BorderColor" Value="Transparent" />
-        -->
-        <Setter Property="BackgroundColor" Value="Transparent" />
     </Style>
 
     <Style TargetType="StackLayout" Class="SettingsRow">

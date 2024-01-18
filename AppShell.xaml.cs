@@ -1,5 +1,6 @@
 ﻿using Ifpa.Views;
 using Ifpa.Models;
+using Serilog;
 
 namespace Ifpa;
 
@@ -58,7 +59,8 @@ public partial class AppShell : Shell
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            //TODO: dependency inject this?
+            Log.Logger.Error(ex, "Error checking if user has configured my stats");
         }
 
         token?.Complete();

@@ -3,6 +3,7 @@ using PinballApi.Models.WPPR.v2.Players;
 using PinballApi.Models.WPPR.v2;
 using Ifpa.Models;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -23,7 +24,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
 
-        public PlayerResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public PlayerResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerResultsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Results";
             State = ResultType.Active;
@@ -78,7 +79,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading player results id {0}", PlayerId);
             }
             finally
             {

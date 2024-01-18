@@ -2,11 +2,11 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.PlayerDetailPage"
-             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              xmlns:local="clr-namespace:Ifpa.Converters"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              Title="{Binding Initials, Mode=OneWay}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -19,10 +19,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{fluent:Icon Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{fluent:Icon Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{mi:Fluent Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{mi:Fluent Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{mi:Fluent Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
@@ -95,10 +95,9 @@
                                 <Setter Property="ColumnDefinitions" Value="*,*" />
                             </DataTrigger>
                         </Grid.Triggers>
-                        <!-- Maximum width hack here -->
-                        <Button MaximumWidthRequest="20" HeightRequest="50" Grid.Column="0" Text="Tournament Results" LineBreakMode="WordWrap" Clicked="TournamentResults_Button_Clicked" />
-                        <Button MaximumWidthRequest="20" HeightRequest="50" Grid.Column="1" Text="Player vs Player" LineBreakMode="WordWrap" Clicked="Pvp_Button_Clicked" />
-                        <Button MaximumWidthRequest="20" HeightRequest="50" Grid.Column="2" Text="Championship Series" LineBreakMode="WordWrap"  x:Name="ChampButton" Clicked="CS_Button_Clicked" 
+                        <Button HeightRequest="50" Grid.Column="0" Text="Tournament Results" LineBreakMode="WordWrap" Clicked="TournamentResults_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="1" Text="Player vs Player" LineBreakMode="WordWrap" Clicked="Pvp_Button_Clicked" />
+                        <Button HeightRequest="50" Grid.Column="2" Text="Championship Series" LineBreakMode="WordWrap"  x:Name="ChampButton" Clicked="CS_Button_Clicked" 
                             IsVisible="{Binding HasChampionshipSeriesData}" />
                     </Grid>
 
@@ -212,53 +211,22 @@
 
                     </Grid>
 
-                    <StackLayout x:Name="ChartLayout">
-                        <chart:SfCartesianChart  x:Name="RankProgressChart" HeightRequest="250" Margin="0,20">
-                            <chart:SfCartesianChart.Title>
-                                <Label Text="Rank Progress" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                            </chart:SfCartesianChart.Title>
-                            <chart:SfCartesianChart.XAxes>
-                                <chart:DateTimeAxis>
-                                    <chart:DateTimeAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:DateTimeAxis.LabelStyle>
-                                </chart:DateTimeAxis>
-                            </chart:SfCartesianChart.XAxes>
-                            <chart:SfCartesianChart.YAxes>
-                                <chart:LogarithmicAxis IsInversed="True">
-                                    <chart:LogarithmicAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:LogarithmicAxis.LabelStyle>
-                                </chart:LogarithmicAxis>
-                                <!--
-                            TODO: When Syncfusion supports Logarithmic charts, implement
-                            <chart:LogarithmicAxis IsInversed="True" />
-                            -->
-                            </chart:SfCartesianChart.YAxes>
-                            <chart:LineSeries ItemsSource="{Binding PlayerRankHistory}" XBindingPath="RankDate" YBindingPath="RankPosition" />
-                        </chart:SfCartesianChart>
-                        <chart:SfCartesianChart x:Name="RatingProgressChart"  HeightRequest="250">
-                            <chart:SfCartesianChart.Title>
-                                <Label Text="Rating Progress" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                            </chart:SfCartesianChart.Title>
-                            <chart:SfCartesianChart.XAxes>
-                                <chart:DateTimeAxis>
-                                    <chart:DateTimeAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:DateTimeAxis.LabelStyle>
-                                </chart:DateTimeAxis>
-                            </chart:SfCartesianChart.XAxes>
-                            <chart:SfCartesianChart.YAxes>
-                                <chart:NumericalAxis>
-                                    <chart:NumericalAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                    </chart:NumericalAxis.LabelStyle>
-                                </chart:NumericalAxis>
-                            </chart:SfCartesianChart.YAxes>
-                            <chart:LineSeries ItemsSource="{Binding PlayerRatingHistory}" XBindingPath="RatingDate" YBindingPath="Rating"/>
-                        </chart:SfCartesianChart>
+                    <StackLayout x:Name="ChartLayout" Margin="0,10,0,0">
+                        <Label Text="Rank History"
+                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+
+                        <lvc:CartesianChart HeightRequest="300" YAxes="{Binding RankAxis}" LegendPosition="Hidden" ZoomMode="None"
+                            Series="{Binding PlayerRankHistoryLineSeries}" XAxes="{Binding TimeAxis}">
+                        </lvc:CartesianChart>
+
+                        <Label Text="Rating Progress"
+                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+
+                        <lvc:CartesianChart HeightRequest="300" ZoomMode="None"
+                            Series="{Binding PlayerRatingHistoryLineSeries}" XAxes="{Binding TimeAxis}" YAxes="{Binding RatingAxis}">            
+                        </lvc:CartesianChart>
                     </StackLayout>
 
                 </StackLayout>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Rankings;
 
@@ -17,7 +18,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public CustomRankingsDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             ViewResults = new ObservableCollection<CustomRankingViewResult>();
             Tournaments = new ObservableCollection<Tournament>();
@@ -57,9 +58,12 @@ namespace Ifpa.ViewModels
                             ViewResults.Add(viewResult);
                         }
 
-                        foreach (var viewFilters in tempList.ViewFilters)
+                        foreach (var viewFilter in tempList.ViewFilters)
                         {
-                            ViewFilters.Add(viewFilters);
+                            //For some reason some of these have carriage return / line feed. so strip that out.
+                            viewFilter.Name = viewFilter.Name.Trim();
+
+                            ViewFilters.Add(viewFilter);
                         }
 
                         Title = tempList.Title;
@@ -68,7 +72,7 @@ namespace Ifpa.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex);
+                        logger.LogError(ex, "Error loading custom rankings detail for view {0}", ViewId);
                     }
                     finally
                     {

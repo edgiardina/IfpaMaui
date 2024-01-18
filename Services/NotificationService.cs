@@ -1,8 +1,9 @@
 ﻿using Ifpa.Models;
 using PinballApi;
 using PinballApi.Extensions;
-using Microsoft.Extensions.Configuration;
 using Shiny.Notifications;
+using PinballApi.Models.WPPR.v1.Calendar;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.Services
 {
@@ -11,13 +12,15 @@ namespace Ifpa.Services
         protected BlogPostService BlogPostService { get; set; }
 
         readonly INotificationManager notificationManager;
+        private readonly ILogger<NotificationService> logger;
 
-        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager)
+        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager, ILogger<NotificationService> logger)
         {
             PinballRankingApi = pinballRankingApi;
 
             BlogPostService = blogPostService;
             this.notificationManager = notificationManager;
+            this.logger = logger;
         }
         private PinballRankingApiV1 PinballRankingApi { get; set; }
 
@@ -29,6 +32,9 @@ namespace Ifpa.Services
 
         public static string NewBlogPostTitle = "New News Item";
         protected readonly string NewBlogPostDescription = @"News item ""{0}"" has been published";
+
+        public static string NewTournamentOnCalendarTitle = "New Tournament on Calendar";
+        protected readonly string NewTournamentOnCalendarDescription = @"Tournament ""{0}"" on {1} added to the IFPA calendar";
 
         public async Task NotifyIfUserHasNewlySubmittedTourneyResults()
         {
@@ -76,7 +82,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfUserHasNewlySubmittedTourneyResults");
                 }
             }
         }
@@ -116,7 +122,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfUsersRankChanged");
                 }
             }
         }
@@ -127,10 +133,9 @@ namespace Ifpa.Services
             {
                 try
                 {
-
                     var latestPosts = await BlogPostService.GetBlogPosts();
 
-                    var latestGuidInPosts = latestPosts.Max(n => BlogPostService.ParseGuidFromInternalId(n.Id));
+                    var latestGuidInPosts = latestPosts.Max(n => BlogPostService.ParseBlogPostIdFromInternalIdUrl(n.Id));
 
                     var latestPost = latestPosts.Single(n => n.Id.EndsWith(latestGuidInPosts.ToString()));
 
@@ -147,7 +152,39 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfNewBlogItemPosted");
+                }
+            }
+        }
+
+        public async Task NotifyIfNewCalendarEntry()
+        {
+            if (Settings.NotifyOnNewCalendarEntry)
+            {
+                try
+                {
+                    var items = await PinballRankingApi.GetCalendarSearch(Settings.LastCalendarLocation, Settings.LastCalendarDistance, DistanceUnit.Miles);
+
+                    var newestCalendarItemId = items.Calendar.Max(n => n.CalendarId);
+
+                    if(newestCalendarItemId > Settings.LastCalendarIdSeen)
+                    {
+                        foreach (var calendarItem in items.Calendar.Where(n => n.CalendarId > Settings.LastCalendarIdSeen))
+                        {
+                            await SendNotification(NewTournamentOnCalendarTitle, 
+                                                   string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.StartDate.ToShortDateString()), 
+                                                   $"///calendar/calendar-detail?calendarId={calendarItem.CalendarId}");
+                        }
+
+                        Settings.LastCalendarIdSeen = newestCalendarItemId;
+
+                        //TODO: Add badge to calendar tab item
+                        //await UpdateBadgeIfNeeded();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error in NotifyIfNewCalendarEntry");
                 }
             }
         }
@@ -175,7 +212,7 @@ namespace Ifpa.Services
             };
 
             var result = await notificationManager.RequestRequiredAccess(notification);
-            if (result == AccessState.Available)
+            if (result == Shiny.AccessState.Available)
             {
                 await notificationManager.Send(notification);
             }
