@@ -3,6 +3,7 @@ using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Players;
 using Ifpa.Models;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -19,7 +20,7 @@ namespace Ifpa.ViewModels
 
         public bool HasNoPvpData { get; set; }
 
-        public PlayerVersusPlayerViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public PlayerVersusPlayerViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "PVP";
             AllResults = new ObservableCollection<Grouping<char, PlayerVersusRecord>>();
@@ -64,7 +65,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading elite pvp data for player {0}", PlayerId);
             }
             finally
             {
@@ -108,7 +109,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading all pvp data for player {0}", PlayerId);
             }
             finally
             {

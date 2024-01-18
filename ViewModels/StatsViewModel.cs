@@ -3,16 +3,27 @@ using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Statistics;
 using Ifpa.Models;
 using PinballApi;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
 
     public class StatsViewModel : BaseViewModel
     {
-        public ObservableCollection<PlayersByCountryStat> PlayersByCountry { get; set; }
-        public ObservableCollection<EventsByYearStat> EventsByYear { get; set; }
 
-        public ObservableCollection<PlayersByYearStat> PlayersByYear { get; set; }
+        public List<ISeries> PlayersByCountrySeries { get; set; } = new List<ISeries>();
+
+        public List<ISeries> EventsByYearSeries { get; set; } = new List<ISeries>();
+
+        public List<Axis> EventsByYearAxis { get; set; } = new List<Axis>();
+
+        public List<ISeries> PlayersByYearSeries { get; set; } = new List<ISeries>();
+
+        public List<Axis> PlayersByYearAxis { get; set; } = new List<Axis>();
 
         public ObservableCollectionRange<PointsThisYearStat> MostPointsPlayers { get; set; }
 
@@ -20,22 +31,15 @@ namespace Ifpa.ViewModels
 
         public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
 
-        public Command LoadItemsCommand { get; set; }
-
-        public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Stats";
-            PlayersByCountry = new ObservableCollection<PlayersByCountryStat>();
-            EventsByYear = new ObservableCollection<EventsByYearStat>();
-            PlayersByYear = new ObservableCollection<PlayersByYearStat>();
             MostPointsPlayers = new ObservableCollectionRange<PointsThisYearStat>();
             MostEventsPlayers = new ObservableCollectionRange<MostEventsStat>();
             BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        public async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
                 return;
@@ -44,44 +48,87 @@ namespace Ifpa.ViewModels
 
             try
             {
-                PlayersByCountry.Clear();
-                EventsByYear.Clear();
-                PlayersByYear.Clear();
                 MostPointsPlayers.Clear();
                 MostEventsPlayers.Clear();
                 BiggestMovers.Clear();
 
-                var playersByCountry = await PinballRankingApi.GetPlayersByCountryStat();
-                foreach (var item in playersByCountry)
+                var playersByCountryTask = PinballRankingApi.GetPlayersByCountryStat();
+                var eventsByYearTask = PinballRankingApi.GetEventsPerYearStat();
+                var playersByYearTask = PinballRankingApi.GetPlayersPerYearStat();
+                var mostPointsPlayersTask = PinballRankingApi.GetPointsThisYearStats();
+                //var mostEventsPlayersTask = PinballRankingApi.GetMostEventsStats();
+                var biggestMoversTask = PinballRankingApi.GetBiggestMoversStat();
+
+                await Task.WhenAll(playersByCountryTask, 
+                                   eventsByYearTask,
+                                   playersByYearTask,
+                                   mostPointsPlayersTask,
+                                   //mostEventsPlayersTask,
+                                   biggestMoversTask);
+
+                var playersByCountry = await playersByCountryTask;
+                var eventsByYear = await eventsByYearTask;
+                var playersByYear = await playersByYearTask;
+                var mostPointsPlayers = await mostPointsPlayersTask;
+                //var mostEventsPlayers = await mostEventsPlayersTask;
+                var biggestMovers = await biggestMoversTask;
+
+                var groupedStats = playersByCountry.GroupBy(
+                    stat => stat.Count < 100 ? "Other" : stat.CountryName,
+                    (key, group) => new PlayersByCountryStat
+                    {
+                        Count = key == "Other" ? group.Sum(item => item.Count) : group.First().Count,
+                        CountryName = key
+                    });
+
+                foreach (var item in groupedStats)
                 {
-                    PlayersByCountry.Add(item);
+                    var series = new PieSeries<int>
+                    {
+                        Values = new List<int> { item.Count },
+                        Name = item.CountryName
+                    };
+
+                    PlayersByCountrySeries.Add(series);
                 }
 
-                var eventsByYear = await PinballRankingApi.GetEventsPerYearStat();
-                foreach (var item in eventsByYear)
+                EventsByYearSeries.Add(new ColumnSeries<int>
                 {
-                    EventsByYear.Add(item);
-                }
+                    Name = "Events",
+                    Values = eventsByYear.OrderBy(x => x.Year).Select(x => x.Count).ToArray()
+                });
 
-                var playersByYear = await PinballRankingApi.GetPlayersPerYearStat();
-                foreach (var item in playersByYear)
+                EventsByYearAxis.Add(new Axis
                 {
-                    PlayersByYear.Add(item);
-                }
+                    Labels = eventsByYear.OrderBy(x => x.Year).Select(x => x.Year.ToString()).ToList(),
+                    LabelsRotation = 0,
+                    SeparatorsAtCenter = false,
+                    TicksAtCenter = true
+                });
 
-                var mostPointsPlayers = await PinballRankingApi.GetPointsThisYearStats();
+                PlayersByYearAxis.Add(new Axis
+                {
+                    Labels = playersByYear.OrderBy(x => x.Year).Select(x => x.Year.ToString()).ToList(),
+                    LabelsRotation = 0,
+                    SeparatorsAtCenter = false,
+                    TicksAtCenter = true,
+                });
+
+                PlayersByYearSeries.Add(new ColumnSeries<int>
+                {
+                    Name = "Players",
+                    Values = playersByYear.OrderBy(x => x.Year).Select(x => x.Count).ToArray()
+                });
+
+                OnPropertyChanged();
+
                 MostPointsPlayers.AddRange(mostPointsPlayers);
-
-                var mostEventsPlayers = await PinballRankingApi.GetMostEventsStats();
-                MostEventsPlayers.AddRange(mostEventsPlayers);
-
-                var biggestMovers = await PinballRankingApi.GetBiggestMoversStat();
+                //MostEventsPlayers.AddRange(mostEventsPlayers);
                 BiggestMovers.AddRange(biggestMovers);
-
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading stats");
             }
             finally
             {

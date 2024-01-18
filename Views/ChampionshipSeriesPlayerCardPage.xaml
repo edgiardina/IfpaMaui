@@ -9,10 +9,12 @@
             SelectionChanged="MyListView_SelectionChanged">
         <CollectionView.ItemTemplate>
             <DataTemplate>
-                <StackLayout>
+                <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
+                                               https://github.com/dotnet/maui/issues/16877 -->
+                <StackLayout HeightRequest="56">
                     <Grid ColumnSpacing="10" ColumnDefinitions="*, 120">
                         <StackLayout Grid.Column="0" Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                            <Label FontSize="16" Text="{Binding TournamentName}" />
+                            <Label FontSize="16" Text="{Binding TournamentName}" LineBreakMode="TailTruncation" />
                             <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="10" Text="{Binding EventName}"  TextColor="{DynamicResource SecondaryTextColor}" />
                         </StackLayout>
 

@@ -20,6 +20,12 @@ public partial class App : Application
         InitializeComponent();
 
         MainPage = new AppShell();
+
+        //TODO: this conditional compilation should be removed when this bug is fixed
+        //https://github.com/dotnet/maui/issues/12295
+#if IOS
+        (Application.Current as IApplicationController)?.SetAppIndexingProvider(new Microsoft.Maui.Controls.Compatibility.Platform.iOS.IOSAppIndexingProvider());
+#endif
     }
 
     protected override async void OnStart()
@@ -60,7 +66,6 @@ public partial class App : Application
 
             if (!string.IsNullOrEmpty(id))
             {
-                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items[0];
                 await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}");
             }
         }
@@ -70,7 +75,6 @@ public partial class App : Application
             var id = HttpUtility.ParseQueryString(uri.Query)["t"];
             if (!string.IsNullOrEmpty(id))
             {
-                Shell.Current.CurrentItem = Shell.Current.CurrentItem.Items[0];
                 await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Ifpa.Interfaces;
+using Microsoft.Extensions.Logging;
 using PinballApi;
 
 namespace Ifpa.ViewModels
@@ -50,7 +51,8 @@ namespace Ifpa.ViewModels
 
         private readonly IReminderService ReminderService;
 
-        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+
+        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             ReminderService = reminderService;
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
@@ -88,10 +90,12 @@ namespace Ifpa.ViewModels
                 Longitude = GeocodedLocation.Longitude;
 
                 OnPropertyChanged(null);
+
+                logger.LogDebug("loaded calendar item {0}", CalendarId);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading Calendar Item {0}", CalendarId);
             }
             finally
             {

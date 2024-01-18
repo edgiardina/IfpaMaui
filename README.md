@@ -6,7 +6,9 @@
 
 [TiltForums Discussion Thread](http://tiltforums.com/t/ifpa-app-now-available-on-the-app-store)
 
-<a href="https://apps.apple.com/us/app/ifpa-companion/id1441736303?itsct=apps_box_badge&amp;itscg=30200" style="display:block;border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1541808000" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 118px;"></a><a href='https://play.google.com/store/apps/details?id=com.edgiardina.ifpa&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="300" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+
+[![appstore](https://github-production-user-asset-6210df.s3.amazonaws.com/3627193/262177214-a3733780-6e43-4f75-aa5f-dd48750fd375.svg)](https://apps.apple.com/us/app/ifpa-companion/id1441736303?itsct=apps_box_badge&amp;itscg=30200)
+[![playstore](https://github-production-user-asset-6210df.s3.amazonaws.com/3627193/262177840-a82e9032-48b6-46e6-9472-e4dad8461d1e.svg)](https://play.google.com/store/apps/details?id=com.edgiardina.ifpa&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
 
 ### Features
 - Overall Rankings, Championship Series Standings

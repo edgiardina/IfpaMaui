@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Players;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -17,7 +18,7 @@ namespace Ifpa.ViewModels
         public int PlayerOneId { get; set; }
         public int PlayerTwoId { get; set; }
 
-        public PlayerVersusPlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public PlayerVersusPlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             PlayerVersusPlayer = new ObservableCollection<PlayerVersusPlayerComparisonRecord>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
@@ -49,7 +50,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogDebug(ex, "Error loading player versus player for players {0} {1}", PlayerOneId, PlayerTwoId);
             }
             finally
             {

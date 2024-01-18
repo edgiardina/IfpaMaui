@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
-using Syncfusion.Maui.Scheduler;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
-using Microsoft.Maui.Controls;
+using Serilog.Core;
+using Serilog;
+using MauiIcons.Core;
 
 namespace Ifpa.Views
 {
@@ -55,24 +56,19 @@ namespace Ifpa.Views
         {
             try
             {
-                var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
-                var distance = Preferences.Get("LastCalendarDistance", 150);
-
-                Preferences.Set("LastCalendarLocation", location);
-                Preferences.Set("LastCalendarDistance", distance);
-
                 calendarMap.Pins.Clear();
 
-                var geoLocation = await Geocoding.GetLocationsAsync(location);
+                var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
                 calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Microsoft.Maui.Maps.Distance.FromMiles(distance)));
+                                                                        Microsoft.Maui.Maps.Distance.FromMiles(Settings.LastCalendarDistance)));
 
-                await ViewModel.ExecuteLoadItemsCommand(location, distance);
+                await ViewModel.ExecuteLoadItemsCommand(Settings.LastCalendarLocation, Settings.LastCalendarDistance);
             }
             catch (Exception e)
             {
                 //don't let the calendar crash our entire app
-                Debug.WriteLine(e.Message);
+                //TODO: dependency inject this?
+                Log.Logger.Error(e, "Error loading calendar data");
             }
         }
 
@@ -125,7 +121,7 @@ namespace Ifpa.Views
         {
             var pin = (Pin)sender;
             var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
-            TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);            
+            TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);
         }
 
         private async void Pin_InfoWindowClicked(object sender, PinClickedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using Ifpa.ViewModels;
+﻿using Ifpa.Models;
+using Ifpa.ViewModels;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
 
@@ -25,15 +26,9 @@ namespace Ifpa.Views
 
             try
             {
-                var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
-                var distance = Preferences.Get("LastCalendarDistance", 150);
-
-                Preferences.Set("LastCalendarLocation", location);
-                Preferences.Set("LastCalendarDistance", distance);
-
-                var geoLocation = await Geocoding.GetLocationsAsync(location);
+                var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
                 calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Microsoft.Maui.Maps.Distance.FromMiles(distance)));
+                                                                        Microsoft.Maui.Maps.Distance.FromMiles(Settings.LastCalendarDistance)));
 
                 ViewModel.CalendarId = CalendarId;
                 await ViewModel.ExecuteLoadItemsCommand();
