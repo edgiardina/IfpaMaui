@@ -22,7 +22,7 @@
         <controls:PlayerSearchHandler x:Name="searchHandler"
                                       SearchBoxVisibility="Collapsible"
                                       Placeholder="Type a player's name to search"
-                                      QueryIcon="{fluent:Icon Icon=Search48, IconColor={StaticResource IconAccentColor}}"
+                                      QueryIcon="{mi:Fluent Icon=Search48, IconColor={StaticResource IconAccentColor}}"
                                       ShowsResults="true"
                                       Keyboard="Plain">
             <controls:PlayerSearchHandler.ItemTemplate>
@@ -42,7 +42,7 @@
                                     </Label.FormattedText>
                                 </Label>
 
-                                <Label>
+                                <Label TextColor="{StaticResource SecondaryTextColor}" FontSize="12">
                                     <Label.Text>
                                         <MultiBinding Converter="{StaticResource AddressFormatConverter}">
                                             <Binding Path="City" />
