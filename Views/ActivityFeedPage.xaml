@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:Ifpa.Views.DataTemplates"
              x:Class="Ifpa.Views.ActivityFeedPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="Activity Feed">
+             xmlns:local="clr-namespace:Ifpa"
+             Title="{x:Static local:Strings.ActivityFeedPage_Title}">
     <ContentPage.Resources>
         <local:ActivityFeedRankChangeDataTemplate x:Key="rankChangeTemplate" />
         <local:ActivityFeedTournamentResultDataTemplate  x:Key="tournamentResultTemplate" />
@@ -14,7 +15,7 @@
         <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Mark All Seen" Clicked="ToolbarItem_Clicked" />
+        <ToolbarItem Text="{x:Static local:Strings.ActivityFeedPage_MarkAllSeen}" Clicked="ToolbarItem_Clicked" />
         <!--<ToolbarItem Text="+" Clicked="ToolbarItem_Clicked_1" />-->
     </ContentPage.ToolbarItems>
     <Grid>
