@@ -151,6 +151,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark All Seen.
+        /// </summary>
+        internal static string ActivityFeedPage_MarkAllSeen {
+            get {
+                return ResourceManager.GetString("ActivityFeedPage_MarkAllSeen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity Feed.
+        /// </summary>
+        internal static string ActivityFeedPage_Title {
+            get {
+                return ResourceManager.GetString("ActivityFeedPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IFPA.
         /// </summary>
         internal static string AppName {

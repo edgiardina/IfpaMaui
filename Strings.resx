@@ -147,6 +147,12 @@
   <data name="AboutPage_WrittenBy" xml:space="preserve">
     <value>This app was written by </value>
   </data>
+  <data name="ActivityFeedPage_MarkAllSeen" xml:space="preserve">
+    <value>Mark All Seen</value>
+  </data>
+  <data name="ActivityFeedPage_Title" xml:space="preserve">
+    <value>Activity Feed</value>
+  </data>
   <data name="AppName" xml:space="preserve">
     <value>IFPA</value>
   </data>
