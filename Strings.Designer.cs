@@ -221,5 +221,50 @@ namespace Ifpa {
                 return ResourceManager.GetString("CalendarDetail_Share", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance.
+        /// </summary>
+        internal static string CalendarFilter_Distance {
+            get {
+                return ResourceManager.GetString("CalendarFilter_Distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Events.
+        /// </summary>
+        internal static string CalendarFilter_FindEvents {
+            get {
+                return ResourceManager.GetString("CalendarFilter_FindEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        internal static string CalendarFilter_Location {
+            get {
+                return ResourceManager.GetString("CalendarFilter_Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mi.
+        /// </summary>
+        internal static string Units_MilesAbbreviation {
+            get {
+                return ResourceManager.GetString("Units_MilesAbbreviation", resourceCulture);
+            }
+        }
     }
 }
