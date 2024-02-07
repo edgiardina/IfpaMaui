@@ -171,4 +171,19 @@
   <data name="CalendarDetail_Share" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="CalendarFilter_Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="CalendarFilter_FindEvents" xml:space="preserve">
+    <value>Find Events</value>
+  </data>
+  <data name="CalendarFilter_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Units_MilesAbbreviation" xml:space="preserve">
+    <value>Mi</value>
+  </data>
 </root>
