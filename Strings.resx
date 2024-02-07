@@ -159,4 +159,16 @@
   <data name="AppName_Full" xml:space="preserve">
     <value>IFPA Companion</value>
   </data>
+  <data name="CalendarDetail_AddToCalendar" xml:space="preserve">
+    <value>Add To Calendar</value>
+  </data>
+  <data name="CalendarDetail_Date" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="CalendarDetail_Director" xml:space="preserve">
+    <value>Director:</value>
+  </data>
+  <data name="CalendarDetail_Share" xml:space="preserve">
+    <value>Share</value>
+  </data>
 </root>

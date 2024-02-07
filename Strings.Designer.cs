@@ -185,5 +185,41 @@ namespace Ifpa {
                 return ResourceManager.GetString("AppName_Full", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add To Calendar.
+        /// </summary>
+        internal static string CalendarDetail_AddToCalendar {
+            get {
+                return ResourceManager.GetString("CalendarDetail_AddToCalendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date:.
+        /// </summary>
+        internal static string CalendarDetail_Date {
+            get {
+                return ResourceManager.GetString("CalendarDetail_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Director:.
+        /// </summary>
+        internal static string CalendarDetail_Director {
+            get {
+                return ResourceManager.GetString("CalendarDetail_Director", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share.
+        /// </summary>
+        internal static string CalendarDetail_Share {
+            get {
+                return ResourceManager.GetString("CalendarDetail_Share", resourceCulture);
+            }
+        }
     }
 }
