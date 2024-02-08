@@ -11,7 +11,7 @@
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Ranking Profile" IsEnabled="{Binding ShowRankingTypeChoice}" x:Name="RankingProfileButton" Clicked="RankingProfileButton_Clicked" 
+        <ToolbarItem Text="Ranking Profile" x:Name="RankingProfileButton" Clicked="RankingProfileButton_Clicked" 
                      IconImageSource="{mi:Fluent Icon=People48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
