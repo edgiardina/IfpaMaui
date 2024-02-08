@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Views.DataTemplates"
+             xmlns:templates="clr-namespace:Ifpa.Views.DataTemplates"
              x:Class="Ifpa.Views.ActivityFeedPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
              Title="{x:Static local:Strings.ActivityFeedPage_Title}">
     <ContentPage.Resources>
-        <local:ActivityFeedRankChangeDataTemplate x:Key="rankChangeTemplate" />
-        <local:ActivityFeedTournamentResultDataTemplate  x:Key="tournamentResultTemplate" />
-        <local:ActivityFeedDataTemplateSelector x:Key="activityFeedDataTemplateSelector"
+        <templates:ActivityFeedRankChangeDataTemplate x:Key="rankChangeTemplate" />
+        <templates:ActivityFeedTournamentResultDataTemplate  x:Key="tournamentResultTemplate" />
+        <templates:ActivityFeedDataTemplateSelector x:Key="activityFeedDataTemplateSelector"
                 RankChangeTemplate="{StaticResource rankChangeTemplate}"
                 TournamentResultTemplate="{StaticResource tournamentResultTemplate}" />
         <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
