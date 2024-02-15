@@ -187,6 +187,33 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Location.
+        /// </summary>
+        internal static string Calendar_MyLocation {
+            get {
+                return ResourceManager.GetString("Calendar_MyLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calendar.
+        /// </summary>
+        internal static string Calendar_Title {
+            get {
+                return ResourceManager.GetString("Calendar_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle View.
+        /// </summary>
+        internal static string Calendar_ToggleView {
+            get {
+                return ResourceManager.GetString("Calendar_ToggleView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add To Calendar.
         /// </summary>
         internal static string CalendarDetail_AddToCalendar {
@@ -255,6 +282,69 @@ namespace Ifpa {
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Leader:.
+        /// </summary>
+        internal static string ChampionshipSeries_CurrentLeader {
+            get {
+                return ResourceManager.GetString("ChampionshipSeries_CurrentLeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string ChampionshipSeries_Filter {
+            get {
+                return ResourceManager.GetString("ChampionshipSeries_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prize Value:.
+        /// </summary>
+        internal static string ChampionshipSeries_PrizeValue {
+            get {
+                return ResourceManager.GetString("ChampionshipSeries_PrizeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unique Players:.
+        /// </summary>
+        internal static string ChampionshipSeries_UniquePlayers {
+            get {
+                return ResourceManager.GetString("ChampionshipSeries_UniquePlayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standings.
+        /// </summary>
+        internal static string ChampionshipSeriesDetail_Standings {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesDetail_Standings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournaments.
+        /// </summary>
+        internal static string ChampionshipSeriesDetail_Tournaments {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesDetail_Tournaments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Series.
+        /// </summary>
+        internal static string ChampionshipSeriesList_Title {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesList_Title", resourceCulture);
             }
         }
         

@@ -30,7 +30,7 @@ namespace Ifpa.ViewModels
 
         async Task ExecuteLoadItemsCommand()
         {
-            Title = $"{RegionCode} Championship Series";
+            Title = $"{RegionCode} {Strings.ChampionshipSeriesList_Title}";
 
             if (IsBusy)
                 return;

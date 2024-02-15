@@ -180,8 +180,38 @@
   <data name="CalendarFilter_Location" xml:space="preserve">
     <value>Location</value>
   </data>
+  <data name="Calendar_MyLocation" xml:space="preserve">
+    <value>My Location</value>
+  </data>
+  <data name="Calendar_Title" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="Calendar_ToggleView" xml:space="preserve">
+    <value>Toggle View</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="ChampionshipSeriesDetail_Standings" xml:space="preserve">
+    <value>Standings</value>
+  </data>
+  <data name="ChampionshipSeriesDetail_Tournaments" xml:space="preserve">
+    <value>Tournaments</value>
+  </data>
+  <data name="ChampionshipSeriesList_Title" xml:space="preserve">
+    <value>Championship Series</value>
+  </data>
+  <data name="ChampionshipSeries_CurrentLeader" xml:space="preserve">
+    <value>Current Leader:</value>
+  </data>
+  <data name="ChampionshipSeries_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="ChampionshipSeries_PrizeValue" xml:space="preserve">
+    <value>Prize Value:</value>
+  </data>
+  <data name="ChampionshipSeries_UniquePlayers" xml:space="preserve">
+    <value>Unique Players:</value>
   </data>
   <data name="Units_MilesAbbreviation" xml:space="preserve">
     <value>Mi</value>

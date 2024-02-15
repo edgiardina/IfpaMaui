@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
              x:Class="Ifpa.Views.ChampionshipSeriesDetailPage"             
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"     
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
+             xmlns:local="clr-namespace:Ifpa"
              Title="{Binding Title}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -19,7 +20,7 @@
         <tabView:SfTabView Style="{StaticResource TabView}"
                            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
             <tabView:SfTabView.Items>
-                <tabView:SfTabItem Header="Standings">
+                <tabView:SfTabItem Header="{x:Static local:Strings.ChampionshipSeriesDetail_Standings}">
                     <tabView:SfTabItem.Content>
 
                         <CollectionView
@@ -74,7 +75,7 @@
 
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>
-                <tabView:SfTabItem Header="Tournaments">
+                <tabView:SfTabItem Header="{x:Static local:Strings.ChampionshipSeriesDetail_Tournaments}">
                     <tabView:SfTabItem.Content>
                         <CollectionView
                             SelectionChanged="TournamentResultsCollectionView_SelectionChanged"

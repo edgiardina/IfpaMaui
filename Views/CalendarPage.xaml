@@ -8,7 +8,8 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
-             Title="Calendar">
+             xmlns:local="clr-namespace:Ifpa"
+             Title="{x:Static local:Strings.Calendar_Title}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="scheduler:SchedulerTextStyle" x:Key="CalendarHeaderStyle">
@@ -19,8 +20,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="{mi:Fluent Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
-        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{mi:Fluent Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.Calendar_MyLocation}" Clicked="MyLocation_Clicked" IconImageSource="{mi:Fluent Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
+        <ToolbarItem Text="{x:Static local:Strings.Calendar_ToggleView}" Clicked="ToggleView_Clicked" IconImageSource="{mi:Fluent Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <!--<Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />-->
@@ -42,10 +43,10 @@
             </maps:Map>
 
             <CollectionView x:Name="TournamentListView" 
-                                 Grid.Row="1"
-                    ItemsSource="{Binding CalendarDetails}"         
-                    SelectionMode="Single"
-                    SelectionChanged="TournamentListView_SelectionChanged">
+                            Grid.Row="1"
+                            ItemsSource="{Binding CalendarDetails}"         
+                            SelectionMode="Single"
+                            SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
