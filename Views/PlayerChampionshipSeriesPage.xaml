@@ -1,41 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Converters"
-             x:Class="Ifpa.Views.PlayerChampionshipSeriesPage"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             ios:Page.LargeTitleDisplay="Never"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="Championship Series">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        <CollectionView x:Name="MyListView"
-                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
-                        ItemsSource="{Binding ChampionshipSeries}"
-                        SelectionMode="Single"
-                        SelectionChanged="MyListView_SelectionChanged">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <VerticalStackLayout>
-                        <StackLayout Orientation="Horizontal" Margin="10">
-                            <StackLayout HorizontalOptions="Start">
-                                <Label Text="{Binding RegionCode}" FontSize="20"  />
-                                <Label Text="{Binding SeriesCode}" FontSize="12" TextColor="{StaticResource SecondaryTextColor}"  />
-                            </StackLayout>
-                            <StackLayout HorizontalOptions="EndAndExpand" MinimumWidthRequest="120" VerticalOptions="Center">
-                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
-                            </StackLayout>
-                        </StackLayout>
-                        <BoxView Style="{StaticResource BoxSeperator}"/>
-                    </VerticalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </Grid>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Ifpa.Converters" x:Class="Ifpa.Views.PlayerChampionshipSeriesPage" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" ios:Page.LargeTitleDisplay="Never" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" Title="{Binding local:Strings.PlayerChampionshipSeriesPage_ChampionshipSeries}">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+      <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <Grid>
+    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+    <CollectionView x:Name="MyListView" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" ItemsSource="{Binding ChampionshipSeries}" SelectionMode="Single" SelectionChanged="MyListView_SelectionChanged">
+      <CollectionView.ItemTemplate>
+        <DataTemplate>
+          <VerticalStackLayout>
+            <StackLayout Orientation="Horizontal" Margin="10">
+              <StackLayout HorizontalOptions="Start">
+                <Label Text="{Binding RegionCode}" FontSize="20" />
+                <Label Text="{Binding SeriesCode}" FontSize="12" TextColor="{StaticResource SecondaryTextColor}" />
+              </StackLayout>
+              <StackLayout HorizontalOptions="EndAndExpand" MinimumWidthRequest="120" VerticalOptions="Center">
+                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}" FontSize="24" />
+              </StackLayout>
+            </StackLayout>
+            <BoxView Style="{StaticResource BoxSeperator}" />
+          </VerticalStackLayout>
+        </DataTemplate>
+      </CollectionView.ItemTemplate>
+    </CollectionView>
+  </Grid>
 </ContentPage>

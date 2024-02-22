@@ -1,101 +1,67 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
-             x:Class="Ifpa.Views.StatsPage"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             ios:Page.LargeTitleDisplay="Never"
-             Title="Stats">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <ContentPage.Content>
-        <Grid>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-            <tabView:SfTabView Style="{StaticResource TabView}" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
-                <tabView:SfTabItem Header="Aggregates">
-                    <tabView:SfTabItem.Content>
-                        <ScrollView>
-                            <StackLayout Spacing="0" Margin="15, 30">
-                                <Label Text="Players By Country"
-                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                                <lvc:PieChart HeightRequest="300" 
-                                    Series="{Binding PlayersByCountrySeries}">
-                                </lvc:PieChart>
-
-                                <Label Text="Events By Year"
-                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                                <lvc:CartesianChart HeightRequest="300" ZoomMode="None"
-                                        Series="{Binding EventsByYearSeries}"
-                                        XAxes="{Binding EventsByYearAxis}"
-                                        LegendPosition="Hidden" />
-
-                                <Label Text="Players By Year"
-                                   HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-
-                                <lvc:CartesianChart HeightRequest="300" ZoomMode="None"
-                                        Series="{Binding PlayersByYearSeries}"
-                                        XAxes="{Binding PlayersByYearAxis}"
-                                        LegendPosition="Hidden" />
-                            </StackLayout>
-                        </ScrollView>
-                    </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>
-                <tabView:SfTabItem Header="Most Points">
-                    <tabView:SfTabItem.Content>
-                        <ListView x:Name="PlayersListView" 
-                        ItemsSource="{Binding MostPointsPlayers}"
-                        VerticalOptions="FillAndExpand"
-                         HasUnevenRows="true"
-                         RefreshCommand="{Binding LoadItemsCommand}"
-                         IsPullToRefreshEnabled="true"
-                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
-                         ItemSelected="PlayersListView_ItemSelected">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Padding="10" Orientation="Horizontal" >
-                                            <StackLayout Orientation="Vertical">
-                                                <Label LineBreakMode="NoWrap" FontSize="16">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="{Binding FirstName}" />
-                                                                <Span Text=" " />
-                                                                <Span Text="{Binding LastName}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                                <Label LineBreakMode="NoWrap" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="{Binding CountryName}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </StackLayout>
-                                            <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
-                                   LineBreakMode="NoWrap" 
-                                   FontSize="18" WidthRequest="80" />
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>
-                <!--<tabView:SfTabItem Header="Most Events">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView" xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui" x:Class="Ifpa.Views.StatsPage" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" ios:Page.LargeTitleDisplay="Never" Title="{Binding local:Strings.StatsPage_Stats}" xmlns:local="clr-namespace:Ifpa">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <ContentPage.Content>
+    <Grid>
+      <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+      <tabView:SfTabView Style="{StaticResource TabView}" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+        <tabView:SfTabItem Header="Aggregates">
+          <tabView:SfTabItem.Content>
+            <ScrollView>
+              <StackLayout Spacing="0" Margin="15, 30">
+                <Label Text="{Binding local:Strings.StatsPage_PlayersByCountry}" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <lvc:PieChart HeightRequest="300" Series="{Binding PlayersByCountrySeries}">
+                </lvc:PieChart>
+                <Label Text="{Binding local:Strings.StatsPage_EventsByYear}" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <lvc:CartesianChart HeightRequest="300" ZoomMode="None" Series="{Binding EventsByYearSeries}" XAxes="{Binding EventsByYearAxis}" LegendPosition="Hidden" />
+                <Label Text="{Binding local:Strings.StatsPage_PlayersByYear}" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <lvc:CartesianChart HeightRequest="300" ZoomMode="None" Series="{Binding PlayersByYearSeries}" XAxes="{Binding PlayersByYearAxis}" LegendPosition="Hidden" />
+              </StackLayout>
+            </ScrollView>
+          </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+        <tabView:SfTabItem Header="Most Points">
+          <tabView:SfTabItem.Content>
+            <ListView x:Name="PlayersListView" ItemsSource="{Binding MostPointsPlayers}" VerticalOptions="FillAndExpand" HasUnevenRows="true" RefreshCommand="{Binding LoadItemsCommand}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" CachingStrategy="RecycleElement" ItemSelected="PlayersListView_ItemSelected">
+              <ListView.ItemTemplate>
+                <DataTemplate>
+                  <ViewCell>
+                    <StackLayout Padding="10" Orientation="Horizontal">
+                      <StackLayout Orientation="Vertical">
+                        <Label LineBreakMode="NoWrap" FontSize="16">
+                          <Label.FormattedText>
+                            <FormattedString>
+                              <FormattedString.Spans>
+                                <Span Text="{Binding FirstName}" />
+                                <Span Text="{Binding local:Strings.StatsPage_}" />
+                                <Span Text="{Binding LastName}" />
+                              </FormattedString.Spans>
+                            </FormattedString>
+                          </Label.FormattedText>
+                        </Label>
+                        <Label LineBreakMode="NoWrap" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                          <Label.FormattedText>
+                            <FormattedString>
+                              <FormattedString.Spans>
+                                <Span Text="{Binding CountryName}" />
+                              </FormattedString.Spans>
+                            </FormattedString>
+                          </Label.FormattedText>
+                        </Label>
+                      </StackLayout>
+                      <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap" FontSize="18" WidthRequest="80" />
+                    </StackLayout>
+                  </ViewCell>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+            </ListView>
+          </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+        <!--<tabView:SfTabItem Header="Most Events">
                     <tabView:SfTabItem.Content>
                         <ListView x:Name="MostEventsListView" 
                         ItemsSource="{Binding MostEventsPlayers}"
@@ -142,53 +108,44 @@
                         </ListView>
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>-->
-                <tabView:SfTabItem Header="Biggest Movers">
-                    <tabView:SfTabItem.Content>
-                        <ListView x:Name="BiggestMoversListView" 
-                        ItemsSource="{Binding BiggestMovers}"
-                        VerticalOptions="FillAndExpand"
-                         HasUnevenRows="true"
-                         RefreshCommand="{Binding LoadItemsCommand}"
-                         IsPullToRefreshEnabled="true"
-                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
-                         ItemSelected="BiggestMoversListView_ItemSelected">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Padding="10" Orientation="Horizontal">
-                                            <StackLayout Orientation="Vertical">
-                                                <Label LineBreakMode="NoWrap" FontSize="16">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="{Binding FirstName}" />
-                                                                <Span Text=" " />
-                                                                <Span Text="{Binding LastName}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                                <Label LineBreakMode="NoWrap" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="{Binding CountryName}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </StackLayout>
-                                            <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding StatsRank}" 
-                                                   LineBreakMode="NoWrap" FontSize="18" />
-                                        </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>
-            </tabView:SfTabView>
-        </Grid>
-    </ContentPage.Content>
+        <tabView:SfTabItem Header="Biggest Movers">
+          <tabView:SfTabItem.Content>
+            <ListView x:Name="BiggestMoversListView" ItemsSource="{Binding BiggestMovers}" VerticalOptions="FillAndExpand" HasUnevenRows="true" RefreshCommand="{Binding LoadItemsCommand}" IsPullToRefreshEnabled="true" IsRefreshing="{Binding IsBusy, Mode=OneWay}" CachingStrategy="RecycleElement" ItemSelected="BiggestMoversListView_ItemSelected">
+              <ListView.ItemTemplate>
+                <DataTemplate>
+                  <ViewCell>
+                    <StackLayout Padding="10" Orientation="Horizontal">
+                      <StackLayout Orientation="Vertical">
+                        <Label LineBreakMode="NoWrap" FontSize="16">
+                          <Label.FormattedText>
+                            <FormattedString>
+                              <FormattedString.Spans>
+                                <Span Text="{Binding FirstName}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding LastName}" />
+                              </FormattedString.Spans>
+                            </FormattedString>
+                          </Label.FormattedText>
+                        </Label>
+                        <Label LineBreakMode="NoWrap" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                          <Label.FormattedText>
+                            <FormattedString>
+                              <FormattedString.Spans>
+                                <Span Text="{Binding CountryName}" />
+                              </FormattedString.Spans>
+                            </FormattedString>
+                          </Label.FormattedText>
+                        </Label>
+                      </StackLayout>
+                      <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding StatsRank}" LineBreakMode="NoWrap" FontSize="18" />
+                    </StackLayout>
+                  </ViewCell>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+            </ListView>
+          </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+      </tabView:SfTabView>
+    </Grid>
+  </ContentPage.Content>
 </ContentPage>

@@ -1,85 +1,59 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ifpa.Views.FavoritesPage"             
-             xmlns:local="clr-namespace:Ifpa.Converters"             
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"             
-             xmlns:controls="clr-namespace:Ifpa.Controls"                     
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
-             Title="{Binding Title}"
-             x:Name="SearchPlayersPage">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <local:AddressFormatConverter x:Key="AddressFormatConverter" />
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-            <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
-            <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
-                <toolkit:IsStringNullOrEmptyConverter />
-                <toolkit:InvertedBoolConverter />
-            </toolkit:MultiConverter>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        <CollectionView x:Name="PlayersListView" 
-                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
-                        ItemsSource="{Binding Players}"
-                        VerticalOptions="FillAndExpand"
-                        SelectionMode="Single" 
-                        EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites."
-                        SelectionChanged="PlayersListView_SelectionChanged">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <SwipeView ios:SwipeView.SwipeTransitionMode="Drag" android:SwipeView.SwipeTransitionMode="Drag">
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="Delete"                                           
-                                   IconImageSource="{mi:Fluent Icon=Delete24}"
-                                   BackgroundColor="{StaticResource DeleteBackgroundColor}"
-                                   Invoked="SwipeItem_Invoked"
-                                   CommandParameter="{Binding PlayerId}"/>
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <VerticalStackLayout>
-                            <StackLayout Padding="15,10" Orientation="Horizontal">
-                                <StackLayout Orientation="Vertical">
-                                    <Label LineBreakMode="NoWrap"  FontSize="16">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding FirstName}" />
-                                                    <Span Text=" " />
-                                                    <Span Text="{Binding LastName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-
-                                    <Label TextColor="{DynamicResource SecondaryTextColor}">
-                                        <Label.Text>
-                                            <MultiBinding Converter="{StaticResource AddressFormatConverter}">
-                                                <Binding Path="City" />
-                                                <Binding Path="StateProvince" />
-                                                <Binding Path="CountryName" />
-                                            </MultiBinding>
-                                        </Label.Text>
-                                    </Label>
-                                </StackLayout>
-                                <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" 
-                                   Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" 
-                                   LineBreakMode="NoWrap"                                     
-                                   FontSize="18" />
-                            </StackLayout>
-
-                            <BoxView Style="{StaticResource BoxSeperator}"/>
-                        </VerticalStackLayout>
-                    </SwipeView>
-
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </Grid>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Ifpa.Views.FavoritesPage" xmlns:local="clr-namespace:Ifpa.Converters" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" xmlns:controls="clr-namespace:Ifpa.Controls" xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls" Title="{Binding Title}" x:Name="SearchPlayersPage">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+      <local:AddressFormatConverter x:Key="AddressFormatConverter" />
+      <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+      <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
+      <toolkit:MultiConverter x:Key="invertedNullOrEmptyConverter">
+        <toolkit:IsStringNullOrEmptyConverter />
+        <toolkit:InvertedBoolConverter />
+      </toolkit:MultiConverter>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <Grid>
+    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+    <CollectionView x:Name="PlayersListView" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" ItemsSource="{Binding Players}" VerticalOptions="FillAndExpand" SelectionMode="Single" EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites." SelectionChanged="PlayersListView_SelectionChanged">
+      <CollectionView.ItemTemplate>
+        <DataTemplate>
+          <SwipeView ios:SwipeView.SwipeTransitionMode="Drag" android:SwipeView.SwipeTransitionMode="Drag">
+            <SwipeView.RightItems>
+              <SwipeItems>
+                <SwipeItem Text="{Binding local:Strings.FavoritesPage_Delete}" IconImageSource="{mi:Fluent Icon=Delete24}" BackgroundColor="{StaticResource DeleteBackgroundColor}" Invoked="SwipeItem_Invoked" CommandParameter="{Binding PlayerId}" />
+              </SwipeItems>
+            </SwipeView.RightItems>
+            <VerticalStackLayout>
+              <StackLayout Padding="15,10" Orientation="Horizontal">
+                <StackLayout Orientation="Vertical">
+                  <Label LineBreakMode="NoWrap" FontSize="16">
+                    <Label.FormattedText>
+                      <FormattedString>
+                        <FormattedString.Spans>
+                          <Span Text="{Binding FirstName}" />
+                          <Span Text="{Binding local:Strings.FavoritesPage_}" />
+                          <Span Text="{Binding LastName}" />
+                        </FormattedString.Spans>
+                      </FormattedString>
+                    </Label.FormattedText>
+                  </Label>
+                  <Label TextColor="{DynamicResource SecondaryTextColor}">
+                    <Label.Text>
+                      <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                        <Binding Path="City" />
+                        <Binding Path="StateProvince" />
+                        <Binding Path="CountryName" />
+                      </MultiBinding>
+                    </Label.Text>
+                  </Label>
+                </StackLayout>
+                <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}" LineBreakMode="NoWrap" FontSize="18" />
+              </StackLayout>
+              <BoxView Style="{StaticResource BoxSeperator}" />
+            </VerticalStackLayout>
+          </SwipeView>
+        </DataTemplate>
+      </CollectionView.ItemTemplate>
+    </CollectionView>
+  </Grid>
 </ContentPage>

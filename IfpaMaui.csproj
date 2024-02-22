@@ -143,6 +143,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Strings.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Views\DataTemplates\ActivityFeedRankChangeDataTemplate.xaml.cs">
 			<DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
 		</Compile>
@@ -152,6 +157,13 @@
 		<Compile Update="Views\DataTemplates\PlayerResultDataTemplate.xaml.cs">
 			<DependentUpon>PlayerResultDataTemplate.xaml</DependentUpon>
 		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Strings.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

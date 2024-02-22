@@ -1,122 +1,97 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Converters"
-             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
-             x:Class="Ifpa.Views.ChampionshipSeriesDetailPage"             
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"     
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             ios:Page.LargeTitleDisplay="Never"
-             Title="{Binding Title}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        <tabView:SfTabView Style="{StaticResource TabView}"
-                           IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
-            <tabView:SfTabView.Items>
-                <tabView:SfTabItem Header="Standings">
-                    <tabView:SfTabItem.Content>
-
-                        <CollectionView
-                        ItemsSource="{Binding RegionStandings.Standings}"                        
-                        SelectionMode="Single"
-                        SelectionChanged="StandingsCollectionView_SelectionChanged">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Ifpa.Converters" xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView" x:Class="Ifpa.Views.ChampionshipSeriesDetailPage" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" ios:Page.LargeTitleDisplay="Never" Title="{Binding Title}">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+      <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <Grid>
+    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+    <tabView:SfTabView Style="{StaticResource TabView}" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+      <tabView:SfTabView.Items>
+        <tabView:SfTabItem Header="Standings">
+          <tabView:SfTabItem.Content>
+            <CollectionView ItemsSource="{Binding RegionStandings.Standings}" SelectionMode="Single" SelectionChanged="StandingsCollectionView_SelectionChanged">
+              <CollectionView.ItemTemplate>
+                <DataTemplate>
+                  <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
                                                https://github.com/dotnet/maui/issues/16877 -->
-                                    <Grid RowDefinitions="Auto, 1">
-                                        <Grid ColumnDefinitions="Auto, 2*, *" Margin="10" Grid.Row="0"  HeightRequest="40">
-                                            <Label Grid.Column="0" VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" 
-                                                   LineBreakMode="NoWrap" FontSize="24" HorizontalOptions="Start" Margin="0,0,10,0" />
-                                            <Grid RowDefinitions="*,*" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                                                <Label Grid.Row="0" LineBreakMode="NoWrap"  FontSize="16" Text="{Binding PlayerName}" />
-
-                                                <Label Grid.Row="1" HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" 
-                                               LineBreakMode="NoWrap"  FontSize="10" TextColor="{StaticResource SecondaryTextColor}" />
-                                            </Grid>
-
-                                            <Grid HeightRequest="35" RowDefinitions="*,*" Grid.Column="2" HorizontalOptions="End">
-                                                <Label Grid.Row="0" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="Event Count:" TextColor="{StaticResource SecondaryTextColor}" />
-                                                                <Span Text=" " />
-                                                                <Span Text="{Binding EventCount}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                                <Label Grid.Row="1" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="Win Count:" TextColor="{StaticResource SecondaryTextColor}" />
-                                                                <Span Text=" " />
-                                                                <Span Text="{Binding WinCount}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </Grid>
-                                        </Grid>
-                                        <BoxView Style="{StaticResource BoxSeperator}"  Grid.Row="1" />
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-
-                    </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>
-                <tabView:SfTabItem Header="Tournaments">
-                    <tabView:SfTabItem.Content>
-                        <CollectionView
-                            SelectionChanged="TournamentResultsCollectionView_SelectionChanged"
-                            SelectionMode="Single"
-                            ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid RowDefinitions="Auto, 1">
-                                        <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
+                  <Grid RowDefinitions="Auto, 1">
+                    <Grid ColumnDefinitions="Auto, 2*, *" Margin="10" Grid.Row="0" HeightRequest="40">
+                      <Label Grid.Column="0" VerticalTextAlignment="Center" Text="{Binding SeriesRank, Converter={StaticResource intToOrdinalString}}" LineBreakMode="NoWrap" FontSize="24" HorizontalOptions="Start" Margin="0,0,10,0" />
+                      <Grid RowDefinitions="*,*" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                        <Label Grid.Row="0" LineBreakMode="NoWrap" FontSize="16" Text="{Binding PlayerName}" />
+                        <Label Grid.Row="1" HorizontalOptions="StartAndExpand" Text="{Binding WpprPoints, StringFormat='{0:N2}'}" LineBreakMode="NoWrap" FontSize="10" TextColor="{StaticResource SecondaryTextColor}" />
+                      </Grid>
+                      <Grid HeightRequest="35" RowDefinitions="*,*" Grid.Column="2" HorizontalOptions="End">
+                        <Label Grid.Row="0" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" FontSize="12" HorizontalTextAlignment="Start">
+                          <Label.FormattedText>
+                            <FormattedString>
+                              <FormattedString.Spans>
+                                <Span Text="{Binding local:Strings.ChampionshipSeriesDetailPage_EventCount}" TextColor="{StaticResource SecondaryTextColor}" />
+                                <Span Text="{Binding local:Strings.ChampionshipSeriesDetailPage_}" />
+                                <Span Text="{Binding EventCount}" />
+                              </FormattedString.Spans>
+                            </FormattedString>
+                          </Label.FormattedText>
+                        </Label>
+                        <Label Grid.Row="1" HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" FontSize="12" HorizontalTextAlignment="Start">
+                          <Label.FormattedText>
+                            <FormattedString>
+                              <FormattedString.Spans>
+                                <Span Text="{Binding local:Strings.ChampionshipSeriesDetailPage_WinCount}" TextColor="{StaticResource SecondaryTextColor}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding WinCount}" />
+                              </FormattedString.Spans>
+                            </FormattedString>
+                          </Label.FormattedText>
+                        </Label>
+                      </Grid>
+                    </Grid>
+                    <BoxView Style="{StaticResource BoxSeperator}" Grid.Row="1" />
+                  </Grid>
+                </DataTemplate>
+              </CollectionView.ItemTemplate>
+            </CollectionView>
+          </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+        <tabView:SfTabItem Header="Tournaments">
+          <tabView:SfTabItem.Content>
+            <CollectionView SelectionChanged="TournamentResultsCollectionView_SelectionChanged" SelectionMode="Single" ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
+              <CollectionView.ItemTemplate>
+                <DataTemplate>
+                  <Grid RowDefinitions="Auto, 1">
+                    <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
                                                https://github.com/dotnet/maui/issues/16877 -->
-                                        <Grid Margin="10" ColumnDefinitions="*, 100" Grid.Row="0" HeightRequest="45">
-                                            <Grid RowDefinitions="*,*" Grid.Column="0">
-                                                <Label Grid.Row="0" FontSize="Medium" Text="{Binding TournamentName}" LineBreakMode="TailTruncation" />
-                                                <Label Grid.Row="1" FontSize="Small" Text="{Binding EventName}"  TextColor="{StaticResource SecondaryTextColor}" />
-                                            </Grid>
-
-                                            <Grid RowDefinitions="*,*" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" MinimumWidthRequest="60" RowSpacing="5">
-                                                <Label Grid.Row="0" LineBreakMode="NoWrap" FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" 
-                                                       TextColor="{StaticResource SecondaryTextColor}"  />
-
-                                                <Label Grid.Row="1" LineBreakMode="NoWrap" FontSize="12" HorizontalTextAlignment="End">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="Players:" TextColor="{StaticResource SecondaryTextColor}" />
-                                                                <Span Text=" " />
-                                                                <Span Text="{Binding PlayerCount}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </Grid>
-                                        </Grid>
-                                        <BoxView Grid.Row="1" Style="{StaticResource BoxSeperator}"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-
-                    </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>
-            </tabView:SfTabView.Items>
-        </tabView:SfTabView>
-    </Grid>
+                    <Grid Margin="10" ColumnDefinitions="*, 100" Grid.Row="0" HeightRequest="45">
+                      <Grid RowDefinitions="*,*" Grid.Column="0">
+                        <Label Grid.Row="0" FontSize="Medium" Text="{Binding TournamentName}" LineBreakMode="TailTruncation" />
+                        <Label Grid.Row="1" FontSize="Small" Text="{Binding EventName}" TextColor="{StaticResource SecondaryTextColor}" />
+                      </Grid>
+                      <Grid RowDefinitions="*,*" Grid.Column="1" HorizontalOptions="End" VerticalOptions="Center" MinimumWidthRequest="60" RowSpacing="5">
+                        <Label Grid.Row="0" LineBreakMode="NoWrap" FontSize="12" Text="{Binding EventEndDate, StringFormat='{0:d}'}" HorizontalTextAlignment="End" TextColor="{StaticResource SecondaryTextColor}" />
+                        <Label Grid.Row="1" LineBreakMode="NoWrap" FontSize="12" HorizontalTextAlignment="End">
+                          <Label.FormattedText>
+                            <FormattedString>
+                              <FormattedString.Spans>
+                                <Span Text="{Binding local:Strings.ChampionshipSeriesDetailPage_Players}" TextColor="{StaticResource SecondaryTextColor}" />
+                                <Span Text=" " />
+                                <Span Text="{Binding PlayerCount}" />
+                              </FormattedString.Spans>
+                            </FormattedString>
+                          </Label.FormattedText>
+                        </Label>
+                      </Grid>
+                    </Grid>
+                    <BoxView Grid.Row="1" Style="{StaticResource BoxSeperator}" />
+                  </Grid>
+                </DataTemplate>
+              </CollectionView.ItemTemplate>
+            </CollectionView>
+          </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+      </tabView:SfTabView.Items>
+    </tabView:SfTabView>
+  </Grid>
 </ContentPage>

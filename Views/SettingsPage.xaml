@@ -1,66 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ifpa.Views.SettingsPage" 
-             xmlns:controls="clr-namespace:Ifpa.Controls"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"             
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:shimmer="clr-namespace:Syncfusion.Maui.Shimmer;assembly=Syncfusion.Maui.Core"
-             Title="Settings">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <toolkit:IsNotNullConverter x:Key="notNullConverter" />
-            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <ContentPage.Content>
-        <VerticalStackLayout>
-            <controls:InsetTableView Intent="Settings" HasUnevenRows="True">
-                <TableRoot>
-                    <TableSection Title="Notifications" TextColor="{StaticResource SecondaryTextColor}">
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="IFPA Rank Change" On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="Tournament Result Posted" On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="News Item Posted" On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="New Tournament on Calendar" On="{Binding NotifyOnNewCalendarEntry, Mode=TwoWay}" />
-                    </TableSection>
-                    <TableSection Title="My Stats" TextColor="{StaticResource SecondaryTextColor}">
-                        <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                            <shimmer:SfShimmer x:Name="Shimmer" VerticalOptions="Fill" IsVisible="{OnPlatform Android=false}" IsActive="{Binding IsBusy}"
-                                               WaveColor="{StaticResource IconAccentColor}" Fill="{StaticResource SecondaryTextColor}"
-                                               Type="CirclePersona">
-                                <StackLayout Orientation="Horizontal" Margin="10">
-                                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
-                                            Text="{Binding Initials, Mode=OneWay}" 
-                                            BackgroundColor="{StaticResource ButtonBackgroundColor}"
-                                            BorderWidth="0"
-                                            CornerRadius="8"
-                                            TextColor="{StaticResource ButtonTextColor}" />
-                                    <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-
-                                    <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
-                                </StackLayout>
-                            </shimmer:SfShimmer>
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </controls:InsetTableView>
-            <!-- TODO: there's a bug in Android where our custom viewcell won't display. so just render below -->
-            <shimmer:SfShimmer VerticalOptions="Fill" IsVisible="{OnPlatform false, Android=true}" IsActive="{Binding IsBusy}"
-                                    WaveColor="{StaticResource IconAccentColor}" Fill="{StaticResource SecondaryTextColor}"
-                                    Type="CirclePersona">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Ifpa.Views.SettingsPage" xmlns:controls="clr-namespace:Ifpa.Controls" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" xmlns:shimmer="clr-namespace:Syncfusion.Maui.Shimmer;assembly=Syncfusion.Maui.Core" Title="{Binding local:Strings.SettingsPage_Settings}" xmlns:local="clr-namespace:Ifpa">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <toolkit:IsNotNullConverter x:Key="notNullConverter" />
+      <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <ContentPage.Content>
+    <VerticalStackLayout>
+      <controls:InsetTableView Intent="Settings" HasUnevenRows="True">
+        <TableRoot>
+          <TableSection Title="{Binding local:Strings.SettingsPage_Notifications}" TextColor="{StaticResource SecondaryTextColor}">
+            <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="{Binding local:Strings.SettingsPage_IFPARankChange}" On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
+            <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="{Binding local:Strings.SettingsPage_TournamentResultPosted}" On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
+            <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="{Binding local:Strings.SettingsPage_NewsItemPosted}" On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />
+            <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" Text="{Binding local:Strings.SettingsPage_NewTournamentOnCalendar}" On="{Binding NotifyOnNewCalendarEntry, Mode=TwoWay}" />
+          </TableSection>
+          <TableSection Title="{Binding local:Strings.SettingsPage_MyStats}" TextColor="{StaticResource SecondaryTextColor}">
+            <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+              <shimmer:SfShimmer x:Name="Shimmer" VerticalOptions="Fill" IsVisible="{OnPlatform Android=false}" IsActive="{Binding IsBusy}" WaveColor="{StaticResource IconAccentColor}" Fill="{StaticResource SecondaryTextColor}" Type="CirclePersona">
                 <StackLayout Orientation="Horizontal" Margin="10">
-                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" 
-                                        Text="{Binding Initials, Mode=OneWay}" 
-                                        BackgroundColor="{StaticResource ButtonBackgroundColor}"
-                                        BorderWidth="0"
-                                        CornerRadius="8"
-                                        TextColor="{StaticResource ButtonTextColor}" />
-                    <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-
-                    <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0"  HorizontalOptions="End" Clicked="Button_Clicked" />
+                  <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" Text="{Binding Initials, Mode=OneWay}" BackgroundColor="{StaticResource ButtonBackgroundColor}" BorderWidth="0" CornerRadius="8" TextColor="{StaticResource ButtonTextColor}" />
+                  <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                  <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0" HorizontalOptions="End" Clicked="Button_Clicked" />
                 </StackLayout>
-            </shimmer:SfShimmer>
-        </VerticalStackLayout>
-    </ContentPage.Content>
+              </shimmer:SfShimmer>
+            </ViewCell>
+          </TableSection>
+        </TableRoot>
+      </controls:InsetTableView>
+      <!-- TODO: there's a bug in Android where our custom viewcell won't display. so just render below -->
+      <shimmer:SfShimmer VerticalOptions="Fill" IsVisible="{OnPlatform false, Android=true}" IsActive="{Binding IsBusy}" WaveColor="{StaticResource IconAccentColor}" Fill="{StaticResource SecondaryTextColor}" Type="CirclePersona">
+        <StackLayout Orientation="Horizontal" Margin="10">
+          <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" Text="{Binding Initials, Mode=OneWay}" BackgroundColor="{StaticResource ButtonBackgroundColor}" BorderWidth="0" CornerRadius="8" TextColor="{StaticResource ButtonTextColor}" />
+          <Label Margin="15" FontSize="18" Text="{Binding Name, TargetNullValue='No player selected'}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+          <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}" Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}" Margin="0,0,10,0" HorizontalOptions="End" Clicked="Button_Clicked" />
+        </StackLayout>
+      </shimmer:SfShimmer>
+    </VerticalStackLayout>
+  </ContentPage.Content>
 </ContentPage>

@@ -1,11 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ifpa.Views.RulesPage"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             ios:Page.LargeTitleDisplay="Never"
-             Title="Rules">
-    <Grid>
-        <WebView x:Name="RulesWebView" />
-    </Grid>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Ifpa.Views.RulesPage" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" ios:Page.LargeTitleDisplay="Never" Title="{Binding local:Strings.RulesPage_Rules}" xmlns:local="clr-namespace:Ifpa">
+  <Grid>
+    <WebView x:Name="RulesWebView" />
+  </Grid>
 </ContentPage>

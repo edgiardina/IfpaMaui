@@ -1,73 +1,61 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ifpa.Views.ChampionshipSeriesPage"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"             
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"  
-             Title="{Binding Title}">
-    <ContentPage.Resources>
-        <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-    </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filter" Clicked="ToolbarItem_Clicked" IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
-    </ContentPage.ToolbarItems>
-    <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        <CollectionView x:Name="MyListView"
-                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
-                        ItemsSource="{Binding SeriesOverallResults}"
-                        SelectionChanged="MyListView_SelectionChanged"
-                        SelectionMode="Single">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <StackLayout>
-                    <StackLayout Padding="5,0,5,0" Orientation="Horizontal">
-                        <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                            <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding RegionName}" />
-
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" >
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Current Leader:" TextColor="{DynamicResource SecondaryTextColor}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding CurrentLeader.PlayerName}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
-
-                        <StackLayout Orientation="Vertical" Padding="10">
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Unique Players:" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding UniquePlayerCount}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="Start">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="Prize Value:" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding PrizeFund, StringFormat='{0:C}'}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </StackLayout>
-                    </StackLayout>
-
-                    <BoxView Style="{StaticResource BoxSeperator}"/>
-                </StackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Ifpa.Views.ChampionshipSeriesPage" xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" Title="{Binding Title}" xmlns:local="clr-namespace:Ifpa">
+  <ContentPage.Resources>
+    <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+  </ContentPage.Resources>
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="{Binding local:Strings.ChampionshipSeriesPage_Filter}" Clicked="ToolbarItem_Clicked" IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
+  </ContentPage.ToolbarItems>
+  <Grid>
+    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+    <CollectionView x:Name="MyListView" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" ItemsSource="{Binding SeriesOverallResults}" SelectionChanged="MyListView_SelectionChanged" SelectionMode="Single">
+      <CollectionView.ItemTemplate>
+        <DataTemplate>
+          <StackLayout>
+            <StackLayout Padding="5,0,5,0" Orientation="Horizontal">
+              <StackLayout Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
+                <Label LineBreakMode="NoWrap" FontSize="16" Text="{Binding RegionName}" />
+                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" FontSize="12">
+                  <Label.FormattedText>
+                    <FormattedString>
+                      <FormattedString.Spans>
+                        <Span Text="{Binding local:Strings.ChampionshipSeriesPage_CurrentLeader}" TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Span Text="{Binding local:Strings.ChampionshipSeriesPage_}" />
+                        <Span Text="{Binding CurrentLeader.PlayerName}" />
+                      </FormattedString.Spans>
+                    </FormattedString>
+                  </Label.FormattedText>
+                </Label>
+              </StackLayout>
+              <StackLayout Orientation="Vertical" Padding="10">
+                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" FontSize="12" HorizontalTextAlignment="Start">
+                  <Label.FormattedText>
+                    <FormattedString>
+                      <FormattedString.Spans>
+                        <Span Text="{Binding local:Strings.ChampionshipSeriesPage_UniquePlayers}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding UniquePlayerCount}" />
+                      </FormattedString.Spans>
+                    </FormattedString>
+                  </Label.FormattedText>
+                </Label>
+                <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap" FontSize="12" HorizontalTextAlignment="Start">
+                  <Label.FormattedText>
+                    <FormattedString>
+                      <FormattedString.Spans>
+                        <Span Text="{Binding local:Strings.ChampionshipSeriesPage_PrizeValue}" />
+                        <Span Text=" " />
+                        <Span Text="{Binding PrizeFund, StringFormat='{0:C}'}" />
+                      </FormattedString.Spans>
+                    </FormattedString>
+                  </Label.FormattedText>
+                </Label>
+              </StackLayout>
+            </StackLayout>
+            <BoxView Style="{StaticResource BoxSeperator}" />
+          </StackLayout>
+        </DataTemplate>
+      </CollectionView.ItemTemplate>
     </CollectionView>
-    </Grid>
+  </Grid>
 </ContentPage>
