@@ -31,7 +31,7 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Release'">
 		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
-		<CodesignKey>iPhone Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
+		<CodesignKey>Apple Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
 		<CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
 		<ArchiveOnBuild>true</ArchiveOnBuild>
 		<MtouchLink>None</MtouchLink>
