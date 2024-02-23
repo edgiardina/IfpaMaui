@@ -339,9 +339,6 @@
   <data name="PlayerSearchPage_NoPlayersFound" xml:space="preserve">
     <value>No players found</value>
   </data>
-  <data name="TournamentInfoPage_" xml:space="preserve">
-    <value>%</value>
-  </data>
   <data name="SettingsPage_IFPARankChange" xml:space="preserve">
     <value>IFPA Rank Change</value>
   </data>

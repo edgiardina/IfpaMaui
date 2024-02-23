@@ -1114,15 +1114,6 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to %.
-        /// </summary>
-        internal static string TournamentInfoPage_ {
-            get {
-                return ResourceManager.GetString("TournamentInfoPage_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Base Value: .
         /// </summary>
         internal static string TournamentInfoPage_BaseValue {

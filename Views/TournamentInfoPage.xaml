@@ -136,7 +136,7 @@
                     <FormattedString>
                         <FormattedString.Spans>
                             <Span Text="{Binding TournamentDetails.TournamentPercentageGrade, Mode=OneWay}" />
-                            <Span Text="{x:Static local:Strings.TournamentInfoPage_}" />
+                            <Span Text="{x:Static local:Strings.PercentSign}" />
                         </FormattedString.Spans>
                     </FormattedString>
                 </Label.FormattedText>
