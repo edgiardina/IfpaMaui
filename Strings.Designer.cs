@@ -59,5 +59,1319 @@ namespace Ifpa {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string AboutPage_About {
+            get {
+                return ResourceManager.GetString("AboutPage_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ed Giardina.
+        /// </summary>
+        internal static string AboutPage_EdGiardina {
+            get {
+                return ResourceManager.GetString("AboutPage_EdGiardina", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Flagpedia.
+        /// </summary>
+        internal static string AboutPage_Flagpedia {
+            get {
+                return ResourceManager.GetString("AboutPage_Flagpedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  for the country flag icons used in the app.
+        /// </summary>
+        internal static string AboutPage_ForTheCountryFlagIconsUsedInTheApp {
+            get {
+                return ResourceManager.GetString("AboutPage_ForTheCountryFlagIconsUsedInTheApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IFPA Companion.
+        /// </summary>
+        internal static string AboutPage_IFPACompanion {
+            get {
+                return ResourceManager.GetString("AboutPage_IFPACompanion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Learn More.
+        /// </summary>
+        internal static string AboutPage_LearnMore {
+            get {
+                return ResourceManager.GetString("AboutPage_LearnMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave a Review.
+        /// </summary>
+        internal static string AboutPage_LeaveAReview {
+            get {
+                return ResourceManager.GetString("AboutPage_LeaveAReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .NET MAUI.
+        /// </summary>
+        internal static string AboutPage_NETMAUI {
+            get {
+                return ResourceManager.GetString("AboutPage_NETMAUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thanks to .
+        /// </summary>
+        internal static string AboutPage_ThanksTo {
+            get {
+                return ResourceManager.GetString("AboutPage_ThanksTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thank you to the Github Sponsors!.
+        /// </summary>
+        internal static string AboutPage_ThankYouToTheGithubSponsors {
+            get {
+                return ResourceManager.GetString("AboutPage_ThankYouToTheGithubSponsors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This app is written in C# and native APIs using.
+        /// </summary>
+        internal static string AboutPage_ThisAppIsWrittenInCAndNativeApisUsing {
+            get {
+                return ResourceManager.GetString("AboutPage_ThisAppIsWrittenInCAndNativeApisUsing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This app was written by .
+        /// </summary>
+        internal static string AboutPage_ThisAppWasWrittenBy {
+            get {
+                return ResourceManager.GetString("AboutPage_ThisAppWasWrittenBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity Feed.
+        /// </summary>
+        internal static string ActivityFeedPage_ActivityFeed {
+            get {
+                return ResourceManager.GetString("ActivityFeedPage_ActivityFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mark All Seen.
+        /// </summary>
+        internal static string ActivityFeedPage_MarkAllSeen {
+            get {
+                return ResourceManager.GetString("ActivityFeedPage_MarkAllSeen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rank Changed.
+        /// </summary>
+        internal static string ActivityFeedRankChangeDataTemplate_RankChanged {
+            get {
+                return ResourceManager.GetString("ActivityFeedRankChangeDataTemplate_RankChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  to .
+        /// </summary>
+        internal static string ActivityFeedRankChangeDataTemplate_To {
+            get {
+                return ResourceManager.GetString("ActivityFeedRankChangeDataTemplate_To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your rank changed from .
+        /// </summary>
+        internal static string ActivityFeedRankChangeDataTemplate_YourRankChangedFrom {
+            get {
+                return ResourceManager.GetString("ActivityFeedRankChangeDataTemplate_YourRankChangedFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Result Posted.
+        /// </summary>
+        internal static string ActivityFeedTournamentResultDataTemplate_TournamentResultPosted {
+            get {
+                return ResourceManager.GetString("ActivityFeedTournamentResultDataTemplate_TournamentResultPosted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament results for .
+        /// </summary>
+        internal static string ActivityFeedTournamentResultDataTemplate_TournamentResultsFor {
+            get {
+                return ResourceManager.GetString("ActivityFeedTournamentResultDataTemplate_TournamentResultsFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  were posted to your profile.
+        /// </summary>
+        internal static string ActivityFeedTournamentResultDataTemplate_WerePostedToYourProfile {
+            get {
+                return ResourceManager.GetString("ActivityFeedTournamentResultDataTemplate_WerePostedToYourProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calendar.
+        /// </summary>
+        internal static string AppShell_Calendar {
+            get {
+                return ResourceManager.GetString("AppShell_Calendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Champ. Series.
+        /// </summary>
+        internal static string AppShell_ChampSeries {
+            get {
+                return ResourceManager.GetString("AppShell_ChampSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More.
+        /// </summary>
+        internal static string AppShell_More {
+            get {
+                return ResourceManager.GetString("AppShell_More", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Stats.
+        /// </summary>
+        internal static string AppShell_MyStats {
+            get {
+                return ResourceManager.GetString("AppShell_MyStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rankings.
+        /// </summary>
+        internal static string AppShell_Rankings {
+            get {
+                return ResourceManager.GetString("AppShell_Rankings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add To Calendar.
+        /// </summary>
+        internal static string CalendarDetailPage_AddToCalendar {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_AddToCalendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date: .
+        /// </summary>
+        internal static string CalendarDetailPage_Date {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Director: .
+        /// </summary>
+        internal static string CalendarDetailPage_Director {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Director", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share.
+        /// </summary>
+        internal static string CalendarDetailPage_Share {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0.
+        /// </summary>
+        internal static string CalendarFilterModalPage_0 {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string CalendarFilterModalPage_Cancel {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance.
+        /// </summary>
+        internal static string CalendarFilterModalPage_Distance {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_Distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Events.
+        /// </summary>
+        internal static string CalendarFilterModalPage_FindEvents {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_FindEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        internal static string CalendarFilterModalPage_Location {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mi.
+        /// </summary>
+        internal static string CalendarFilterModalPage_Mi {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_Mi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Calendar Location.
+        /// </summary>
+        internal static string CalendarFilterModalPage_SetCalendarLocation {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_SetCalendarLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calendar.
+        /// </summary>
+        internal static string CalendarPage_Calendar {
+            get {
+                return ResourceManager.GetString("CalendarPage_Calendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Location.
+        /// </summary>
+        internal static string CalendarPage_MyLocation {
+            get {
+                return ResourceManager.GetString("CalendarPage_MyLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toggle View.
+        /// </summary>
+        internal static string CalendarPage_ToggleView {
+            get {
+                return ResourceManager.GetString("CalendarPage_ToggleView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Count:.
+        /// </summary>
+        internal static string ChampionshipSeriesDetailPage_EventCount {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesDetailPage_EventCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players:.
+        /// </summary>
+        internal static string ChampionshipSeriesDetailPage_Players {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesDetailPage_Players", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Win Count:.
+        /// </summary>
+        internal static string ChampionshipSeriesDetailPage_WinCount {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesDetailPage_WinCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Leader:.
+        /// </summary>
+        internal static string ChampionshipSeriesPage_CurrentLeader {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesPage_CurrentLeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string ChampionshipSeriesPage_Filter {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesPage_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prize Value:.
+        /// </summary>
+        internal static string ChampionshipSeriesPage_PrizeValue {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesPage_PrizeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unique Players:.
+        /// </summary>
+        internal static string ChampionshipSeriesPage_UniquePlayers {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesPage_UniquePlayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Events: .
+        /// </summary>
+        internal static string CustomRankingsDetailPage_Events {
+            get {
+                return ResourceManager.GetString("CustomRankingsDetailPage_Events", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rank: .
+        /// </summary>
+        internal static string CustomRankingsDetailPage_Rank {
+            get {
+                return ResourceManager.GetString("CustomRankingsDetailPage_Rank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string FavoritesPage_Delete {
+            get {
+                return ResourceManager.GetString("FavoritesPage_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string MoreItemsPage_About {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Rankings.
+        /// </summary>
+        internal static string MoreItemsPage_CustomRankings {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_CustomRankings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directors.
+        /// </summary>
+        internal static string MoreItemsPage_Directors {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_Directors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favorites.
+        /// </summary>
+        internal static string MoreItemsPage_Favorites {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_Favorites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More.
+        /// </summary>
+        internal static string MoreItemsPage_More {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_More", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to News.
+        /// </summary>
+        internal static string MoreItemsPage_News {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_News", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rules.
+        /// </summary>
+        internal static string MoreItemsPage_Rules {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_Rules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string MoreItemsPage_Settings {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stats.
+        /// </summary>
+        internal static string MoreItemsPage_Stats {
+            get {
+                return ResourceManager.GetString("MoreItemsPage_Stats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Comments.
+        /// </summary>
+        internal static string NewsDetailPage_Comments {
+            get {
+                return ResourceManager.GetString("NewsDetailPage_Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        internal static string PercentSign {
+            get {
+                return ResourceManager.GetString("PercentSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Series.
+        /// </summary>
+        internal static string PlayerChampionshipSeriesPage_ChampionshipSeries {
+            get {
+                return ResourceManager.GetString("PlayerChampionshipSeriesPage_ChampionshipSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  (.
+        /// </summary>
+        internal static string PlayerDetailPage_ {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity Feed.
+        /// </summary>
+        internal static string PlayerDetailPage_ActivityFeed {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_ActivityFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg Finish.
+        /// </summary>
+        internal static string PlayerDetailPage_AvgFinish {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_AvgFinish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg Finish Last Year.
+        /// </summary>
+        internal static string PlayerDetailPage_AvgFinishLastYear {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_AvgFinishLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Best Finish.
+        /// </summary>
+        internal static string PlayerDetailPage_BestFinish {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_BestFinish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Series.
+        /// </summary>
+        internal static string PlayerDetailPage_ChampionshipSeries {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_ChampionshipSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eff percent.
+        /// </summary>
+        internal static string PlayerDetailPage_EffPercent {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_EffPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Events Outside Country.
+        /// </summary>
+        internal static string PlayerDetailPage_EventsOutsideCountry {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_EventsOutsideCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favorite.
+        /// </summary>
+        internal static string PlayerDetailPage_Favorite {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Favorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highest Rank.
+        /// </summary>
+        internal static string PlayerDetailPage_HighestRank {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_HighestRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Month&apos;s Rank.
+        /// </summary>
+        internal static string PlayerDetailPage_LastMonthSRank {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_LastMonthSRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Year&apos;s Rank.
+        /// </summary>
+        internal static string PlayerDetailPage_LastYearSRank {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_LastYearSRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player #: .
+        /// </summary>
+        internal static string PlayerDetailPage_Player {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Overview.
+        /// </summary>
+        internal static string PlayerDetailPage_PlayerOverview {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_PlayerOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player vs Player.
+        /// </summary>
+        internal static string PlayerDetailPage_PlayerVsPlayer {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_PlayerVsPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rank.
+        /// </summary>
+        internal static string PlayerDetailPage_Rank {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Rank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rank History.
+        /// </summary>
+        internal static string PlayerDetailPage_RankHistory {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_RankHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking Statistics.
+        /// </summary>
+        internal static string PlayerDetailPage_RankingStatistics {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_RankingStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating.
+        /// </summary>
+        internal static string PlayerDetailPage_Rating {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating Progress.
+        /// </summary>
+        internal static string PlayerDetailPage_RatingProgress {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_RatingProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set to My Stats.
+        /// </summary>
+        internal static string PlayerDetailPage_SetToMyStats {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_SetToMyStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share.
+        /// </summary>
+        internal static string PlayerDetailPage_Share {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  times).
+        /// </summary>
+        internal static string PlayerDetailPage_Times {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Times", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Active Events.
+        /// </summary>
+        internal static string PlayerDetailPage_TotalActiveEvents {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_TotalActiveEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Events.
+        /// </summary>
+        internal static string PlayerDetailPage_TotalEvents {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_TotalEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total WPPRs.
+        /// </summary>
+        internal static string PlayerDetailPage_TotalWpprs {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_TotalWpprs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Results.
+        /// </summary>
+        internal static string PlayerDetailPage_TournamentResults {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_TournamentResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Statistics.
+        /// </summary>
+        internal static string PlayerDetailPage_TournamentStatistics {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_TournamentStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking Profile.
+        /// </summary>
+        internal static string PlayerResultsPage_RankingProfile {
+            get {
+                return ResourceManager.GetString("PlayerResultsPage_RankingProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No players found.
+        /// </summary>
+        internal static string PlayerSearchPage_NoPlayersFound {
+            get {
+                return ResourceManager.GetString("PlayerSearchPage_NoPlayersFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to : .
+        /// </summary>
+        internal static string PlayerVersusPlayerDetailPage_ {
+            get {
+                return ResourceManager.GetString("PlayerVersusPlayerDetailPage_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string PlayerVersusPlayerPage_Filter {
+            get {
+                return ResourceManager.GetString("PlayerVersusPlayerPage_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player has not played against competitors yet..
+        /// </summary>
+        internal static string PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet {
+            get {
+                return ResourceManager.GetString("PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string RankingsFilterModalPage_Cancel {
+            get {
+                return ResourceManager.GetString("RankingsFilterModalPage_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country.
+        /// </summary>
+        internal static string RankingsFilterModalPage_Country {
+            get {
+                return ResourceManager.GetString("RankingsFilterModalPage_Country", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter Rankings.
+        /// </summary>
+        internal static string RankingsFilterModalPage_FilterRankings {
+            get {
+                return ResourceManager.GetString("RankingsFilterModalPage_FilterRankings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players.
+        /// </summary>
+        internal static string RankingsFilterModalPage_Players {
+            get {
+                return ResourceManager.GetString("RankingsFilterModalPage_Players", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking Type.
+        /// </summary>
+        internal static string RankingsFilterModalPage_RankingType {
+            get {
+                return ResourceManager.GetString("RankingsFilterModalPage_RankingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting Rank.
+        /// </summary>
+        internal static string RankingsFilterModalPage_StartingRank {
+            get {
+                return ResourceManager.GetString("RankingsFilterModalPage_StartingRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Type.
+        /// </summary>
+        internal static string RankingsFilterModalPage_TournamentType {
+            get {
+                return ResourceManager.GetString("RankingsFilterModalPage_TournamentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        internal static string RankingsPage_Filter {
+            get {
+                return ResourceManager.GetString("RankingsPage_Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overall Rank:.
+        /// </summary>
+        internal static string RankingsPage_OverallRank {
+            get {
+                return ResourceManager.GetString("RankingsPage_OverallRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ).
+        /// </summary>
+        internal static string RightParens {
+            get {
+                return ResourceManager.GetString("RightParens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rules.
+        /// </summary>
+        internal static string RulesPage_Rules {
+            get {
+                return ResourceManager.GetString("RulesPage_Rules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IFPA Rank Change.
+        /// </summary>
+        internal static string SettingsPage_IFPARankChange {
+            get {
+                return ResourceManager.GetString("SettingsPage_IFPARankChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Stats.
+        /// </summary>
+        internal static string SettingsPage_MyStats {
+            get {
+                return ResourceManager.GetString("SettingsPage_MyStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to News Item Posted.
+        /// </summary>
+        internal static string SettingsPage_NewsItemPosted {
+            get {
+                return ResourceManager.GetString("SettingsPage_NewsItemPosted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Tournament on Calendar.
+        /// </summary>
+        internal static string SettingsPage_NewTournamentOnCalendar {
+            get {
+                return ResourceManager.GetString("SettingsPage_NewTournamentOnCalendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        internal static string SettingsPage_Notifications {
+            get {
+                return ResourceManager.GetString("SettingsPage_Notifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string SettingsPage_Settings {
+            get {
+                return ResourceManager.GetString("SettingsPage_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Result Posted.
+        /// </summary>
+        internal static string SettingsPage_TournamentResultPosted {
+            get {
+                return ResourceManager.GetString("SettingsPage_TournamentResultPosted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  .
+        /// </summary>
+        internal static string SingleSpace {
+            get {
+                return ResourceManager.GetString("SingleSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Events By Year.
+        /// </summary>
+        internal static string StatsPage_EventsByYear {
+            get {
+                return ResourceManager.GetString("StatsPage_EventsByYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players By Country.
+        /// </summary>
+        internal static string StatsPage_PlayersByCountry {
+            get {
+                return ResourceManager.GetString("StatsPage_PlayersByCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Players By Year.
+        /// </summary>
+        internal static string StatsPage_PlayersByYear {
+            get {
+                return ResourceManager.GetString("StatsPage_PlayersByYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stats.
+        /// </summary>
+        internal static string StatsPage_Stats {
+            get {
+                return ResourceManager.GetString("StatsPage_Stats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        internal static string TournamentInfoPage_ {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base Value: .
+        /// </summary>
+        internal static string TournamentInfoPage_BaseValue {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_BaseValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        internal static string TournamentInfoPage_Close {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date: .
+        /// </summary>
+        internal static string TournamentInfoPage_Date {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Booster: .
+        /// </summary>
+        internal static string TournamentInfoPage_EventBooster {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_EventBooster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Name: .
+        /// </summary>
+        internal static string TournamentInfoPage_EventName {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_EventName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Type: .
+        /// </summary>
+        internal static string TournamentInfoPage_EventType {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_EventType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Count: .
+        /// </summary>
+        internal static string TournamentInfoPage_PlayerCount {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_PlayerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking Strength: .
+        /// </summary>
+        internal static string TournamentInfoPage_RankingStrength {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_RankingStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking System: .
+        /// </summary>
+        internal static string TournamentInfoPage_RankingSystem {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_RankingSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rated Player Count: .
+        /// </summary>
+        internal static string TournamentInfoPage_RatedPlayerCount {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_RatedPlayerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating Strength: .
+        /// </summary>
+        internal static string TournamentInfoPage_RatingStrength {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_RatingStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TGP: .
+        /// </summary>
+        internal static string TournamentInfoPage_TGP {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_TGP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Info.
+        /// </summary>
+        internal static string TournamentInfoPage_TournamentInfo {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_TournamentInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Value: .
+        /// </summary>
+        internal static string TournamentInfoPage_TournamentValue {
+            get {
+                return ResourceManager.GetString("TournamentInfoPage_TournamentValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base Value: .
+        /// </summary>
+        internal static string TournamentResultsPage_BaseValue {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_BaseValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date: .
+        /// </summary>
+        internal static string TournamentResultsPage_Date {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Booster: .
+        /// </summary>
+        internal static string TournamentResultsPage_EventBooster {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_EventBooster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Name: .
+        /// </summary>
+        internal static string TournamentResultsPage_EventName {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_EventName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event Type: .
+        /// </summary>
+        internal static string TournamentResultsPage_EventType {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_EventType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        internal static string TournamentResultsPage_Info {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Count: .
+        /// </summary>
+        internal static string TournamentResultsPage_PlayerCount {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_PlayerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking Strength: .
+        /// </summary>
+        internal static string TournamentResultsPage_RankingStrength {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_RankingStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking System: .
+        /// </summary>
+        internal static string TournamentResultsPage_RankingSystem {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_RankingSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rated Player Count: .
+        /// </summary>
+        internal static string TournamentResultsPage_RatedPlayerCount {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_RatedPlayerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating Strength: .
+        /// </summary>
+        internal static string TournamentResultsPage_RatingStrength {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_RatingStrength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share.
+        /// </summary>
+        internal static string TournamentResultsPage_Share {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TGP: .
+        /// </summary>
+        internal static string TournamentResultsPage_TGP {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_TGP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Value: .
+        /// </summary>
+        internal static string TournamentResultsPage_TournamentValue {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_TournamentValue", resourceCulture);
+            }
+        }
     }
 }

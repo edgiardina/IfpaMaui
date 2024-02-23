@@ -1,43 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Ifpa.Views.NewsDetailPage" xmlns:vm="clr-namespace:Ifpa.ViewModels" xmlns:local="clr-namespace:Ifpa.Converters" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" ios:Page.LargeTitleDisplay="Never" Title="{Binding Title}">
-  <ContentPage.Resources>
-    <ResourceDictionary>
-      <local:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
-    </ResourceDictionary>
-  </ContentPage.Resources>
-  <Grid RowDefinitions="50,*,25, Auto">
-    <Label Grid.Row="0" FontAttributes="Bold" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="Default" Text="{Binding NewsItem.Title.Text}" Margin="5" />
-    <WebView Grid.Row="1" Source="{Binding NewsItemContent}" VerticalOptions="Fill" Navigating="WebView_Navigating" />
-    <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="5">
-      <Label HorizontalTextAlignment="Start" FontSize="Small" Margin="0">
-        <Label.GestureRecognizers>
-          <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-        </Label.GestureRecognizers>
-        <Label.FormattedText>
-          <FormattedString>
-            <FormattedString.Spans>
-              <Span Text="{Binding CommentCounts, Mode=OneWay}" />
-              <Span Text="{Binding local:Strings.NewsDetailPage_Comments}" />
-            </FormattedString.Spans>
-          </FormattedString>
-        </Label.FormattedText>
-      </Label>
-      <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="-5" Padding="5">
-        <Label HorizontalTextAlignment="Start" FontSize="Small" Text="{Binding NewsItem.Author}" Margin="0" />
-        <Label HorizontalTextAlignment="End" FontSize="Small" Text="{Binding NewsItem.PublishDate, StringFormat='{0:d}'}" />
-      </StackLayout>
-    </StackLayout>
-    <ListView IsVisible="False" Grid.Row="3" Margin="15" HeightRequest="150" x:Name="ItemsListView" ItemsSource="{Binding Comments}" HasUnevenRows="true" RefreshCommand="{Binding LoadItemsCommand}" IsPullToRefreshEnabled="false" SelectionMode="None" IsRefreshing="{Binding IsBusy, Mode=OneWay}" CachingStrategy="RecycleElement">
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <ViewCell>
-            <StackLayout Padding="5">
-              <Label HorizontalTextAlignment="Start" FontSize="Small" Text="{Binding Summary.Text, Converter={StaticResource HtmlDecodeConverter}}" Margin="0" />
-              <Label HorizontalTextAlignment="Start" FontSize="Small" Text="{Binding Title.Text}" Margin="0" />
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.NewsDetailPage"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.LargeTitleDisplay="Never"
+             xmlns:local="clr-namespace:Ifpa"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="50,*,25, Auto">
+        <Label Grid.Row="0"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Start"
+               VerticalTextAlignment="Center"
+               FontSize="Default"
+               Text="{Binding NewsItem.Title.Text}"
+               Margin="5" />
+        <WebView Grid.Row="1"
+                 Source="{Binding NewsItemContent}"
+                 VerticalOptions="Fill"
+                 Navigating="WebView_Navigating" />
+        <StackLayout Grid.Row="2"
+                     Orientation="Horizontal"
+                     HorizontalOptions="FillAndExpand"
+                     Padding="5">
+            <Label HorizontalTextAlignment="Start"
+                   FontSize="Small"
+                   Margin="0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                </Label.GestureRecognizers>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="{Binding CommentCounts, Mode=OneWay}" />
+                            <Span Text="{x:Static local:Strings.NewsDetailPage_Comments}" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="EndAndExpand"
+                         Margin="-5"
+                         Padding="5">
+                <Label HorizontalTextAlignment="Start"
+                       FontSize="Small"
+                       Text="{Binding NewsItem.Author}"
+                       Margin="0" />
+                <Label HorizontalTextAlignment="End"
+                       FontSize="Small"
+                       Text="{Binding NewsItem.PublishDate, StringFormat='{0:d}'}" />
             </StackLayout>
-          </ViewCell>
-        </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>
-  </Grid>
+        </StackLayout>
+        <ListView IsVisible="False"
+                  Grid.Row="3"
+                  Margin="15"
+                  HeightRequest="150"
+                  x:Name="ItemsListView"
+                  ItemsSource="{Binding Comments}"
+                  HasUnevenRows="true"
+                  RefreshCommand="{Binding LoadItemsCommand}"
+                  IsPullToRefreshEnabled="false"
+                  SelectionMode="None"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  CachingStrategy="RecycleElement">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="5">
+                            <Label HorizontalTextAlignment="Start"
+                                   FontSize="Small"
+                                   Text="{Binding Summary.Text, Converter={StaticResource HtmlDecodeConverter}}"
+                                   Margin="0" />
+                            <Label HorizontalTextAlignment="Start"
+                                   FontSize="Small"
+                                   Text="{Binding Title.Text}"
+                                   Margin="0" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ContentPage>

@@ -1,13 +1,33 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Shell x:Class="Ifpa.AppShell" xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Ifpa" xmlns:views="clr-namespace:Ifpa.Views" Shell.FlyoutBehavior="Disabled">
-  <TabBar>
-    <ShellContent Title="{Binding local:Strings.AppShell_Rankings}" ContentTemplate="{DataTemplate views:RankingsPage}" Icon="numbered_list.png" Route="rankings" />
-    <ShellContent Title="{Binding local:Strings.AppShell_ChampSeries}" ContentTemplate="{DataTemplate views:ChampionshipSeriesListPage}" Icon="trophy.png" Route="champ-series-list" />
-    <ShellContent Title="{Binding local:Strings.AppShell_MyStats}" ContentTemplate="{DataTemplate views:PlayerDetailPage}" Icon="mystats.png" Route="my-stats" />
-    <ShellContent Title="{Binding local:Strings.AppShell_Calendar}" ContentTemplate="{DataTemplate views:CalendarPage}" Icon="calendar.png" Route="calendar" />
-    <!-- More Menu Items-->
-    <ShellContent Title="{Binding local:Strings.AppShell_More}" ContentTemplate="{DataTemplate views:MoreItemsPage}" Icon="more.png" Route="more" />
-    <!--<ShellContent Title="Favorites" ContentTemplate="{DataTemplate views:FavoritesPage}" Icon="favorite.png" Route="favorites" />
+<Shell x:Class="Ifpa.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Ifpa"
+       xmlns:views="clr-namespace:Ifpa.Views"
+       Shell.FlyoutBehavior="Disabled">
+    <TabBar>
+        <ShellContent Title="{x:Static local:Strings.AppShell_Rankings}"
+                      ContentTemplate="{DataTemplate views:RankingsPage}"
+                      Icon="numbered_list.png"
+                      Route="rankings" />
+        <ShellContent Title="{x:Static local:Strings.AppShell_ChampSeries}"
+                      ContentTemplate="{DataTemplate views:ChampionshipSeriesListPage}"
+                      Icon="trophy.png"
+                      Route="champ-series-list" />
+        <ShellContent Title="{x:Static local:Strings.AppShell_MyStats}"
+                      ContentTemplate="{DataTemplate views:PlayerDetailPage}"
+                      Icon="mystats.png"
+                      Route="my-stats" />
+        <ShellContent Title="{x:Static local:Strings.AppShell_Calendar}"
+                      ContentTemplate="{DataTemplate views:CalendarPage}"
+                      Icon="calendar.png"
+                      Route="calendar" />
+        <!-- More Menu Items-->
+        <ShellContent Title="{x:Static local:Strings.AppShell_More}"
+                      ContentTemplate="{DataTemplate views:MoreItemsPage}"
+                      Icon="more.png"
+                      Route="more" />
+        <!--<ShellContent Title="Favorites" ContentTemplate="{DataTemplate views:FavoritesPage}" Icon="favorite.png" Route="favorites" />
         <ShellContent Title="Custom Rankings" ContentTemplate="{DataTemplate views:CustomRankingsPage}" Icon="numbered_list.png" Route="custom-rankings" />
         <ShellContent Title="News" ContentTemplate="{DataTemplate views:NewsPage}" Icon="news.png" Route="news" />
         <ShellContent Title="Rules" ContentTemplate="{DataTemplate views:RulesPage}" Icon="rules.png" Route="rules" />
@@ -15,5 +35,5 @@
         <ShellContent Title="Directors" ContentTemplate="{DataTemplate views:DirectorsPage}" Icon="directors.png" Route="directors" />
         <ShellContent Title="Settings" ContentTemplate="{DataTemplate views:SettingsPage}" Icon="settings.png" Route="settings" />
         <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" Icon="about.png" Route="about" />-->
-  </TabBar>
+    </TabBar>
 </Shell>

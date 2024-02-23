@@ -1,36 +1,61 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Ifpa.Converters" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" x:Class="Ifpa.Views.DataTemplates.ActivityFeedRankChangeDataTemplate">
-  <StackLayout>
-    <Grid Padding="10" ColumnDefinitions="35, *">
-      <Grid.Resources>
-        <ResourceDictionary>
-          <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-          <toolkit:InvertedBoolConverter x:Key="inverter" />
-        </ResourceDictionary>
-      </Grid.Resources>
-      <Image Grid.Column="0" Source="rankchange.png" HeightRequest="25" WidthRequest="25">
-        <Image.Behaviors>
-          <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
-        </Image.Behaviors>
-      </Image>
-      <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
-        <Label Text="{Binding local:Strings.ActivityFeedRankChangeDataTemplate_RankChanged}" FontAttributes="Bold" />
-        <Label FontSize="Small">
-          <Label.FormattedText>
-            <FormattedString>
-              <FormattedString.Spans>
-                <Span Text="{Binding local:Strings.ActivityFeedRankChangeDataTemplate_YourRankChangedFrom}" TextColor="{DynamicResource SecondaryTextColor}" />
-                <Span Text="{Binding IntTwo, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
-                <Span Text="{Binding local:Strings.ActivityFeedRankChangeDataTemplate_To}" TextColor="{DynamicResource SecondaryTextColor}" />
-                <Span Text="{Binding IntOne, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
-              </FormattedString.Spans>
-            </FormattedString>
-          </Label.FormattedText>
-        </Label>
-        <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
-      </StackLayout>
-      <BoxView Color="{StaticResource IconAccentColor}" Grid.ColumnSpan="2" Margin="10,0,0,0" IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}" CornerRadius="6" WidthRequest="12" HeightRequest="12" VerticalOptions="Center" HorizontalOptions="End" />
-    </Grid>
-    <BoxView Style="{StaticResource BoxSeperator}" />
-  </StackLayout>
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:converters="clr-namespace:Ifpa.Converters"
+              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+              x:Class="Ifpa.Views.DataTemplates.ActivityFeedRankChangeDataTemplate"
+              xmlns:local="clr-namespace:Ifpa">
+    <StackLayout>
+        <Grid Padding="10"
+              ColumnDefinitions="35, *">
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+                    <toolkit:InvertedBoolConverter x:Key="inverter" />
+                </ResourceDictionary>
+            </Grid.Resources>
+            <Image Grid.Column="0"
+                   Source="rankchange.png"
+                   HeightRequest="25"
+                   WidthRequest="25">
+                <Image.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
+                </Image.Behaviors>
+            </Image>
+            <StackLayout Grid.Column="1"
+                         HorizontalOptions="FillAndExpand"
+                         Padding="10,0,0,0">
+                <Label Text="{x:Static local:Strings.ActivityFeedRankChangeDataTemplate_RankChanged}"
+                       FontAttributes="Bold" />
+                <Label FontSize="Small">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="{x:Static local:Strings.ActivityFeedRankChangeDataTemplate_YourRankChangedFrom}"
+                                      TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{Binding IntTwo, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                                <Span Text="{x:Static local:Strings.ActivityFeedRankChangeDataTemplate_To}"
+                                      TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{Binding IntOne, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label LineBreakMode="NoWrap"
+                       FontSize="Micro"
+                       Text="{Binding CreatedDateTime, StringFormat='{0:d}'}"
+                       TextColor="{DynamicResource SecondaryTextColor}" />
+            </StackLayout>
+            <BoxView Color="{StaticResource IconAccentColor}"
+                     Grid.ColumnSpan="2"
+                     Margin="10,0,0,0"
+                     IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
+                     CornerRadius="6"
+                     WidthRequest="12"
+                     HeightRequest="12"
+                     VerticalOptions="Center"
+                     HorizontalOptions="End" />
+        </Grid>
+        <BoxView Style="{StaticResource BoxSeperator}" />
+    </StackLayout>
 </DataTemplate>

@@ -13,14 +13,14 @@
         </Image.Behaviors>
       </Image>
       <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
-        <Label Text="{Binding local:Strings.ActivityFeedTournamentResultDataTemplate_TournamentResultPosted}" FontAttributes="Bold" />
+        <Label Text="{x:Static local:Strings.ActivityFeedTournamentResultDataTemplate_TournamentResultPosted}" FontAttributes="Bold" />
         <Label FontSize="Small">
           <Label.FormattedText>
             <FormattedString>
               <FormattedString.Spans>
-                <Span Text="{Binding local:Strings.ActivityFeedTournamentResultDataTemplate_TournamentResultsFor}" TextColor="{DynamicResource SecondaryTextColor}" />
+                <Span Text="{x:Static local:Strings.ActivityFeedTournamentResultDataTemplate_TournamentResultsFor}" TextColor="{DynamicResource SecondaryTextColor}" />
                 <Span Text="{Binding Description, Mode=OneWay}" />
-                <Span Text="{Binding local:Strings.ActivityFeedTournamentResultDataTemplate_WerePostedToYourProfile}" TextColor="{DynamicResource SecondaryTextColor}" />
+                <Span Text="{x:Static local:Strings.ActivityFeedTournamentResultDataTemplate_WerePostedToYourProfile}" TextColor="{DynamicResource SecondaryTextColor}" />
               </FormattedString.Spans>
             </FormattedString>
           </Label.FormattedText>

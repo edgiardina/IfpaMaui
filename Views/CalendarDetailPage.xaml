@@ -1,55 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Ifpa.Converters" x:Class="Ifpa.Views.CalendarDetailPage" xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls" xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons" xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps" ios:Page.LargeTitleDisplay="Never">
-  <ContentPage.Resources>
-    <ResourceDictionary>
-      <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-      <Style x:Key="calendarHeader" TargetType="Label">
-        <Setter Property="TextColor" Value="White" />
-        <Setter Property="FontAttributes" Value="Bold" />
-      </Style>
-    </ResourceDictionary>
-  </ContentPage.Resources>
-  <ContentPage.ToolbarItems>
-    <ToolbarItem Text="{Binding local:Strings.CalendarDetailPage_Share}" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
-    <ToolbarItem Text="{Binding local:Strings.CalendarDetailPage_AddToCalendar}" x:Name="AddToCalendarButton" Clicked="AddToCalendarButton_Clicked" IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
-  </ContentPage.ToolbarItems>
-  <Grid>
-    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-    <StackLayout HorizontalOptions="FillAndExpand" Spacing="0" IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
-      <StackLayout Orientation="Vertical" BackgroundColor="{StaticResource SecondaryBanner}" Spacing="10" Padding="12,10">
-        <Label Text="{Binding Title, Mode=OneWay}" FontSize="24" Style="{StaticResource calendarHeader}" />
-        <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
-          <Label.FormattedText>
-            <FormattedString>
-              <FormattedString.Spans>
-                <Span Text="{Binding local:Strings.CalendarDetailPage_Date}" />
-                <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
-              </FormattedString.Spans>
-            </FormattedString>
-          </Label.FormattedText>
-        </Label>
-        <Label LineBreakMode="NoWrap" FontSize="16" Style="{StaticResource calendarHeader}">
-          <Label.FormattedText>
-            <FormattedString>
-              <FormattedString.Spans>
-                <Span Text="{Binding local:Strings.CalendarDetailPage_Director}" />
-                <Span Text="{Binding DirectorName, Mode=OneWay}" />
-              </FormattedString.Spans>
-            </FormattedString>
-          </Label.FormattedText>
-        </Label>
-      </StackLayout>
-      <maps:Map x:Name="calendarMap" MapType="Street" IsZoomEnabled="False" IsScrollEnabled="False" />
-      <ScrollView VerticalOptions="FillAndExpand" IsClippedToBounds="True" Padding="12,10">
-        <StackLayout>
-          <Label Text="{Binding Website, Mode=OneWay}" TextColor="Blue" Margin="0,0,0,10">
-            <Label.GestureRecognizers>
-              <TapGestureRecognizer Tapped="WebsiteLabel_Tapped" />
-            </Label.GestureRecognizers>
-          </Label>
-          <Label Text="{Binding Details, Mode=OneWay}" />
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
+             x:Class="Ifpa.Views.CalendarDetailPage"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             xmlns:local="clr-namespace:Ifpa"
+             ios:Page.LargeTitleDisplay="Never">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <Style x:Key="calendarHeader"
+                   TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="White" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
+                     x:Name="ShareButton"
+                     Clicked="ShareButton_Clicked"
+                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_AddToCalendar}"
+                     x:Name="AddToCalendarButton"
+                     Clicked="AddToCalendarButton_Clicked"
+                     IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     Spacing="0"
+                     IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+            <StackLayout Orientation="Vertical"
+                         BackgroundColor="{StaticResource SecondaryBanner}"
+                         Spacing="10"
+                         Padding="12,10">
+                <Label Text="{Binding Title, Mode=OneWay}"
+                       FontSize="24"
+                       Style="{StaticResource calendarHeader}" />
+                <Label LineBreakMode="NoWrap"
+                       FontSize="16"
+                       Style="{StaticResource calendarHeader}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="{x:Static local:Strings.CalendarDetailPage_Date}" />
+                                <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label LineBreakMode="NoWrap"
+                       FontSize="16"
+                       Style="{StaticResource calendarHeader}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="{x:Static local:Strings.CalendarDetailPage_Director}" />
+                                <Span Text="{Binding DirectorName, Mode=OneWay}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+            <maps:Map x:Name="calendarMap"
+                      MapType="Street"
+                      IsZoomEnabled="False"
+                      IsScrollEnabled="False" />
+            <ScrollView VerticalOptions="FillAndExpand"
+                        IsClippedToBounds="True"
+                        Padding="12,10">
+                <StackLayout>
+                    <Label Text="{Binding Website, Mode=OneWay}"
+                           TextColor="Blue"
+                           Margin="0,0,0,10">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="WebsiteLabel_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="{Binding Details, Mode=OneWay}" />
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
-      </ScrollView>
-    </StackLayout>
-  </Grid>
+    </Grid>
 </ContentPage>

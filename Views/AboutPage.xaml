@@ -4,7 +4,7 @@
              x:Class="Ifpa.Views.AboutPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="{Binding local:Strings.AboutPage_About}"
+             Title="{x:Static local:Strings.AboutPage_About}"
              xmlns:local="clr-namespace:Ifpa">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -32,9 +32,9 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="{Binding local:Strings.AboutPage_IFPACompanion}"
+                                    <Span Text="{x:Static local:Strings.AboutPage_IFPACompanion}"
                                           FontAttributes="Bold" />
-                                    <Span Text="{Binding local:Strings.AboutPage_}" />
+                                    <Span Text="{x:Static local:Strings.SingleSpace}" />
                                     <Span Text="{Binding CurrentVersion}"
                                           TextColor="{StaticResource SecondaryTextColor}" />
                                     <Span Text="   ("
@@ -43,7 +43,7 @@
                                     <Span Text="{Binding MinorVersion}"
                                           FontSize="12"
                                           TextColor="{StaticResource SecondaryTextColor}" />
-                                    <Span Text="{Binding local:Strings.AboutPage_Rightparens}"
+                                    <Span Text="{x:Static local:Strings.RightParens}"
                                           FontSize="12"
                                           TextColor="{StaticResource SecondaryTextColor}" />
                                 </FormattedString.Spans>
@@ -54,9 +54,9 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="{Binding local:Strings.AboutPage_ThisAppIsWrittenInCAndNativeApisUsing}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_ThisAppIsWrittenInCAndNativeApisUsing}" />
                                     <Span Text=" " />
-                                    <Span Text="{Binding local:Strings.AboutPage_NETMAUI}"
+                                    <Span Text="{x:Static local:Strings.AboutPage_NETMAUI}"
                                           FontAttributes="Bold" />
                                     <Span Text="." />
                                 </FormattedString.Spans>
@@ -71,8 +71,8 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="{Binding local:Strings.AboutPage_ThisAppWasWrittenBy}" />
-                                    <Span Text="{Binding local:Strings.AboutPage_EdGiardina}"
+                                    <Span Text="{x:Static local:Strings.AboutPage_ThisAppWasWrittenBy}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_EdGiardina}"
                                           TextColor="{StaticResource LinkTextColor}" />
                                 </FormattedString.Spans>
                             </FormattedString>
@@ -86,10 +86,10 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="{Binding local:Strings.AboutPage_ThanksTo}" />
-                                    <Span Text="{Binding local:Strings.AboutPage_Flagpedia}"
+                                    <Span Text="{x:Static local:Strings.AboutPage_ThanksTo}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_Flagpedia}"
                                           TextColor="{StaticResource LinkTextColor}" />
-                                    <Span Text="{Binding local:Strings.AboutPage_ForTheCountryFlagIconsUsedInTheApp}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_ForTheCountryFlagIconsUsedInTheApp}" />
                                 </FormattedString.Spans>
                             </FormattedString>
                         </Label.FormattedText>
@@ -107,19 +107,19 @@
                                 WidthRequest="160"
                                 Padding="10,0,10,0"
                                 HorizontalOptions="CenterAndExpand"
-                                Text="{Binding local:Strings.AboutPage_LearnMore}"
+                                Text="{x:Static local:Strings.AboutPage_LearnMore}"
                                 Clicked="LearnMore_Clicked" />
                         <Button Grid.Column="1"
                                 WidthRequest="160"
                                 Padding="10,0,10,0"
                                 HorizontalOptions="CenterAndExpand"
-                                Text="{Binding local:Strings.AboutPage_LeaveAReview}"
+                                Text="{x:Static local:Strings.AboutPage_LeaveAReview}"
                                 Clicked="ReviewButton_Clicked" />
                     </Grid>
                     <!-- TODO:  IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}" 
                                 hide the stacklayout if we have no sponsors. This crashes in iOS -->
                     <StackLayout>
-                        <Label Text="{Binding local:Strings.AboutPage_ThankYouToTheGithubSponsors}"
+                        <Label Text="{x:Static local:Strings.AboutPage_ThankYouToTheGithubSponsors}"
                                Margin="0,0,0,10" />
                         <CollectionView ItemsSource="{Binding Sponsors}">
                             <CollectionView.ItemTemplate>

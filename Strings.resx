@@ -201,9 +201,6 @@
   <data name="CalendarFilterModalPage_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="DirectorsPage_" xml:space="preserve">
-    <value> </value>
-  </data>
   <data name="PlayerVersusPlayerPage_Filter" xml:space="preserve">
     <value>Filter</value>
   </data>
@@ -228,12 +225,6 @@
   <data name="TournamentInfoPage_EventType" xml:space="preserve">
     <value>Event Type: </value>
   </data>
-  <data name="CustomRankingsDetailPage_" xml:space="preserve">
-    <value> </value>
-  </data>
-  <data name="FavoritesPage_" xml:space="preserve">
-    <value> </value>
-  </data>
   <data name="ActivityFeedTournamentResultDataTemplate_TournamentResultPosted" xml:space="preserve">
     <value>Tournament Result Posted</value>
   </data>
@@ -245,9 +236,6 @@
   </data>
   <data name="CalendarFilterModalPage_Mi" xml:space="preserve">
     <value>Mi</value>
-  </data>
-  <data name="PlayerDetailPage_Rightparens" xml:space="preserve">
-    <value>)</value>
   </data>
   <data name="CalendarDetailPage_AddToCalendar" xml:space="preserve">
     <value>Add To Calendar</value>
@@ -348,9 +336,6 @@
   <data name="ChampionshipSeriesDetailPage_Players" xml:space="preserve">
     <value>Players:</value>
   </data>
-  <data name="ChampionshipSeriesDetailPage_" xml:space="preserve">
-    <value> </value>
-  </data>
   <data name="PlayerSearchPage_NoPlayersFound" xml:space="preserve">
     <value>No players found</value>
   </data>
@@ -378,7 +363,7 @@
   <data name="NewsDetailPage_Comments" xml:space="preserve">
     <value> Comments</value>
   </data>
-  <data name="AboutPage_" xml:space="preserve">
+  <data name="SingleSpace" xml:space="preserve">
     <value> </value>
   </data>
   <data name="AboutPage_ForTheCountryFlagIconsUsedInTheApp" xml:space="preserve">
@@ -444,9 +429,6 @@
   <data name="StatsPage_EventsByYear" xml:space="preserve">
     <value>Events By Year</value>
   </data>
-  <data name="ChampionshipSeriesPage_" xml:space="preserve">
-    <value> </value>
-  </data>
   <data name="TournamentResultsPage_RankingSystem" xml:space="preserve">
     <value>Ranking System: </value>
   </data>
@@ -462,7 +444,7 @@
   <data name="ChampionshipSeriesDetailPage_WinCount" xml:space="preserve">
     <value>Win Count:</value>
   </data>
-  <data name="AboutPage_Rightparens" xml:space="preserve">
+  <data name="RightParens" xml:space="preserve">
     <value>)</value>
   </data>
   <data name="RankingsFilterModalPage_RankingType" xml:space="preserve">
@@ -474,9 +456,6 @@
   <data name="PlayerDetailPage_ChampionshipSeries" xml:space="preserve">
     <value>Championship Series</value>
   </data>
-  <data name="RankingsPage_" xml:space="preserve">
-    <value> </value>
-  </data>
   <data name="SettingsPage_NewTournamentOnCalendar" xml:space="preserve">
     <value>New Tournament on Calendar</value>
   </data>
@@ -485,9 +464,6 @@
   </data>
   <data name="PlayerChampionshipSeriesPage_ChampionshipSeries" xml:space="preserve">
     <value>Championship Series</value>
-  </data>
-  <data name="PlayerVersusPlayerPage_" xml:space="preserve">
-    <value> </value>
   </data>
   <data name="FavoritesPage_Delete" xml:space="preserve">
     <value>Delete</value>
@@ -528,9 +504,6 @@
   <data name="StatsPage_PlayersByCountry" xml:space="preserve">
     <value>Players By Country</value>
   </data>
-  <data name="PlayerSearchPage_" xml:space="preserve">
-    <value> </value>
-  </data>
   <data name="AboutPage_ThankYouToTheGithubSponsors" xml:space="preserve">
     <value>Thank you to the Github Sponsors!</value>
   </data>
@@ -555,9 +528,6 @@
   <data name="PlayerDetailPage_EffPercent" xml:space="preserve">
     <value>Eff percent</value>
   </data>
-  <data name="StatsPage_" xml:space="preserve">
-    <value> </value>
-  </data>
   <data name="AboutPage_LeaveAReview" xml:space="preserve">
     <value>Leave a Review</value>
   </data>
@@ -576,7 +546,7 @@
   <data name="PlayerDetailPage_TotalActiveEvents" xml:space="preserve">
     <value>Total Active Events</value>
   </data>
-  <data name="TournamentResultsPage_" xml:space="preserve">
+  <data name="PercentSign" xml:space="preserve">
     <value>%</value>
   </data>
   <data name="AboutPage_ThisAppWasWrittenBy" xml:space="preserve">
