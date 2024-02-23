@@ -1,20 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.ChampionshipSeriesListPage"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:Ifpa">
     <!-- RefreshView doesn't size correctly in iOS so it's been removed for now
          https://github.com/dotnet/maui/issues/7315 -->
-    <CollectionView x:Name="ChampionshipSeriesCollectionView"            
-            ItemsSource="{Binding ChampionshipSeries}" 
-            SelectionMode="Single"                        
-            SelectionChanged="ChampionshipSeriesCollectionView_SelectionChanged">
+    <CollectionView x:Name="ChampionshipSeriesCollectionView"
+                    ItemsSource="{Binding ChampionshipSeries}"
+                    SelectionMode="Single"
+                    SelectionChanged="ChampionshipSeriesCollectionView_SelectionChanged">
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <StackLayout Orientation="Vertical">
-                    <Label FontSize="Medium" Text="{Binding Title}" Margin="10,10" />
-
-                    <BoxView Style="{StaticResource BoxSeperator}"/>
+                    <Label FontSize="Medium"
+                           Text="{Binding Title}"
+                           Margin="10,10" />
+                    <BoxView Style="{StaticResource BoxSeperator}" />
                 </StackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>

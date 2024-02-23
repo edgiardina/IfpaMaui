@@ -1,55 +1,72 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.PlayerVersusPlayerDetailPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
+             xmlns:local="clr-namespace:Ifpa"
              Title="{Binding Title}"
              x:Name="PVPDetailPage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
         <ListView x:Name="MyListView"
-            ItemsSource="{Binding PlayerVersusPlayer}"
-            RefreshCommand="{Binding LoadItemsCommand}"
-            IsPullToRefreshEnabled="true"
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement"
-            HasUnevenRows="true">
+                  ItemsSource="{Binding PlayerVersusPlayer}"
+                  RefreshCommand="{Binding LoadItemsCommand}"
+                  IsPullToRefreshEnabled="true"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  ItemTapped="Handle_ItemTapped"
+                  CachingStrategy="RecycleElement"
+                  HasUnevenRows="true">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid Margin="10" ColumnDefinitions="*, 80" ColumnSpacing="10">
+                        <Grid Margin="10"
+                              ColumnDefinitions="*, 80"
+                              ColumnSpacing="10">
                             <StackLayout Grid.Column="0">
-                                <Label Text="{Binding TournamentName}"  FontSize="16"  />
+                                <Label Text="{Binding TournamentName}"
+                                       FontSize="16" />
                                 <StackLayout Orientation="Horizontal">
-                                    <Label LineBreakMode="NoWrap"  FontSize="12" Text="{Binding EventName}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                    <Label Text="{Binding EventDate, StringFormat='{0:d}'}" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" />
+                                    <Label LineBreakMode="NoWrap"
+                                           FontSize="12"
+                                           Text="{Binding EventName}"
+                                           TextColor="{DynamicResource SecondaryTextColor}" />
+                                    <Label Text="{Binding EventDate, StringFormat='{0:d}'}"
+                                           FontSize="12"
+                                           TextColor="{DynamicResource SecondaryTextColor}" />
                                 </StackLayout>
                             </StackLayout>
-                            <StackLayout Grid.Column="1" >
-                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16">
+                            <StackLayout Grid.Column="1">
+                                <Label LineBreakMode="NoWrap"
+                                       HorizontalTextAlignment="Start"
+                                       FontSize="16">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
-                                                <Span Text="{Binding Source={x:Reference PVPDetailPage}, Path=BindingContext.PlayerOneInitials}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                                <Span Text=": " TextColor="{DynamicResource SecondaryTextColor}" />
+                                                <Span Text="{Binding Source={x:Reference PVPDetailPage}, Path=BindingContext.PlayerOneInitials}"
+                                                      TextColor="{DynamicResource SecondaryTextColor}" />
+                                                <Span Text="{x:Static local:Strings.SingleSpace}"
+                                                      TextColor="{DynamicResource SecondaryTextColor}" />
                                                 <Span Text="{Binding FinishPosition.PlayerOne, Converter={StaticResource intToOrdinalString}}" />
                                             </FormattedString.Spans>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="Start" FontSize="16">
+                                <Label LineBreakMode="NoWrap"
+                                       HorizontalTextAlignment="Start"
+                                       FontSize="16">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
-                                                <Span Text="{Binding Source={x:Reference PVPDetailPage}, Path=BindingContext.PlayerTwoInitials}" TextColor="{DynamicResource SecondaryTextColor}" />
-                                                <Span Text=": " TextColor="{DynamicResource SecondaryTextColor}" />
+                                                <Span Text="{Binding Source={x:Reference PVPDetailPage}, Path=BindingContext.PlayerTwoInitials}"
+                                                      TextColor="{DynamicResource SecondaryTextColor}" />
+                                                <Span Text=": "
+                                                      TextColor="{DynamicResource SecondaryTextColor}" />
                                                 <Span Text="{Binding FinishPosition.PlayerTwo, Converter={StaticResource intToOrdinalString}}" />
                                             </FormattedString.Spans>
                                         </FormattedString>
