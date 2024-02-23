@@ -592,6 +592,78 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to News item &quot;{0}&quot; has been published.
+        /// </summary>
+        internal static string NotificationService_NewBlogPostDescription {
+            get {
+                return ResourceManager.GetString("NotificationService_NewBlogPostDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New News Item.
+        /// </summary>
+        internal static string NotificationService_NewBlogPostTitle {
+            get {
+                return ResourceManager.GetString("NotificationService_NewBlogPostTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your IFPA rank has changed from {0} to {1}.
+        /// </summary>
+        internal static string NotificationService_NewRankNotificationDescription {
+            get {
+                return ResourceManager.GetString("NotificationService_NewRankNotificationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IFPA Rank Change.
+        /// </summary>
+        internal static string NotificationService_NewRankNotificationTitle {
+            get {
+                return ResourceManager.GetString("NotificationService_NewRankNotificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament results for &quot;{0}&quot; have been posted to your IFPA profile.
+        /// </summary>
+        internal static string NotificationService_NewTournamentNotificationDescription {
+            get {
+                return ResourceManager.GetString("NotificationService_NewTournamentNotificationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Tournament Result.
+        /// </summary>
+        internal static string NotificationService_NewTournamentNotificationTitle {
+            get {
+                return ResourceManager.GetString("NotificationService_NewTournamentNotificationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament &quot;{0}&quot; on {1} added to the IFPA calendar.
+        /// </summary>
+        internal static string NotificationService_NewTournamentOnCalendarDescription {
+            get {
+                return ResourceManager.GetString("NotificationService_NewTournamentOnCalendarDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Tournament on Calendar.
+        /// </summary>
+        internal static string NotificationService_NewTournamentOnCalendarTitle {
+            get {
+                return ResourceManager.GetString("NotificationService_NewTournamentOnCalendarTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         internal static string PercentSign {
@@ -1110,6 +1182,15 @@ namespace Ifpa {
         internal static string StatsPage_Stats {
             get {
                 return ResourceManager.GetString("StatsPage_Stats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

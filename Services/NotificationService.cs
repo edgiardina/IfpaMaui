@@ -24,17 +24,17 @@ namespace Ifpa.Services
         }
         private PinballRankingApiV1 PinballRankingApi { get; set; }
 
-        public static string NewTournamentNotificationTitle = "New Tournament Result";
-        protected readonly string NewTournamentNotificationDescription = @"Tournament results for ""{0}"" have been posted to your IFPA profile";
+        public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
+        protected readonly string NewTournamentNotificationDescription = Strings.NotificationService_NewTournamentNotificationDescription;
 
-        public static string NewRankNotificationTitle = "IFPA Rank Change";
-        protected readonly string NewRankNotificationDescription = "Your IFPA rank has changed from {0} to {1}";
+        public static string NewRankNotificationTitle = Strings.NotificationService_NewRankNotificationTitle;
+        protected readonly string NewRankNotificationDescription = Strings.NotificationService_NewRankNotificationDescription;
 
-        public static string NewBlogPostTitle = "New News Item";
-        protected readonly string NewBlogPostDescription = @"News item ""{0}"" has been published";
+        public static string NewBlogPostTitle = Strings.NotificationService_NewBlogPostTitle;
+        protected readonly string NewBlogPostDescription = Strings.NotificationService_NewBlogPostDescription;
 
-        public static string NewTournamentOnCalendarTitle = "New Tournament on Calendar";
-        protected readonly string NewTournamentOnCalendarDescription = @"Tournament ""{0}"" on {1} added to the IFPA calendar";
+        public static string NewTournamentOnCalendarTitle = Strings.NotificationService_NewTournamentOnCalendarTitle;
+        protected readonly string NewTournamentOnCalendarDescription = Strings.NotificationService_NewTournamentOnCalendarDescription;
 
         public async Task NotifyIfUserHasNewlySubmittedTourneyResults()
         {
