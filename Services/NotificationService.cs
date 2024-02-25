@@ -4,6 +4,7 @@ using PinballApi.Extensions;
 using Shiny.Notifications;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui.ApplicationModel;
 
 namespace Ifpa.Services
 {
@@ -13,14 +14,16 @@ namespace Ifpa.Services
 
         readonly INotificationManager notificationManager;
         private readonly ILogger<NotificationService> logger;
+        private readonly IBadge badge;
 
-        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager, ILogger<NotificationService> logger)
+        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
             PinballRankingApi = pinballRankingApi;
 
             BlogPostService = blogPostService;
             this.notificationManager = notificationManager;
             this.logger = logger;
+            this.badge = badge;
         }
         private PinballRankingApiV1 PinballRankingApi { get; set; }
 
@@ -194,8 +197,8 @@ namespace Ifpa.Services
             if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
             {
                 var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
-                //TODO: restore badge
-                //CrossBadge.Current.SetBadge(unreads);
+           
+                badge.SetCount((uint)unreads);
             }
         }
 
