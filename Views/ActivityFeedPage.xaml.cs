@@ -1,4 +1,5 @@
-﻿using Ifpa.Models;
+﻿using CommunityToolkit.Maui.ApplicationModel;
+using Ifpa.Models;
 using Ifpa.ViewModels;
 //using Plugin.Badge;
 
@@ -9,12 +10,14 @@ namespace Ifpa.Views
     public partial class ActivityFeedPage : ContentPage
     {
         private ActivityFeedViewModel activityFeedViewModel;
+        private readonly IBadge Badge;
 
-        public ActivityFeedPage(ActivityFeedViewModel viewModel)
+        public ActivityFeedPage(ActivityFeedViewModel viewModel, IBadge badge)
         {
             InitializeComponent();
 
             BindingContext = activityFeedViewModel = viewModel;
+            this.Badge = badge;
         }
 
         protected override void OnAppearing()
@@ -31,13 +34,9 @@ namespace Ifpa.Views
             {
                 i.HasBeenSeen = true;
                 await Settings.LocalDatabase.UpdateActivityFeedRecord(i);
-            }           
-            
-            if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
-            {
-                //TODO: update badge
-                //CrossBadge.Current.ClearBadge();
             }
+
+            Badge.SetCount(0);
 
             activityFeedViewModel.LoadItemsCommand.Execute(null);
         }
@@ -53,8 +52,8 @@ namespace Ifpa.Views
                 HasBeenSeen = false
             };
             await Settings.LocalDatabase.CreateActivityFeedRecord(newItem);
-            //TODO: update badge
-            //CrossBadge.Current.SetBadge(1);
+
+            Badge.SetCount(1);
             activityFeedViewModel.LoadItemsCommand.Execute(null);
         }
 
@@ -71,13 +70,9 @@ namespace Ifpa.Views
                     await Shell.Current.GoToAsync($"tournament-results?tournamentId={item.RecordID.Value}");
                 }
 
-                if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
-                {
-                    var remainingUnreads = await Settings.LocalDatabase.GetUnreadActivityCount();
+                var remainingUnreads = await Settings.LocalDatabase.GetUnreadActivityCount();
 
-                    //TODO: update badge
-                    //CrossBadge.Current.SetBadge(remainingUnreads);
-                }
+                Badge.SetCount((uint)remainingUnreads);
 
                 ActivityFeedListView.SelectedItem = null;
                 activityFeedViewModel.LoadItemsCommand.Execute(null);
