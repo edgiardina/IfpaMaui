@@ -11,7 +11,7 @@ namespace Ifpa.Services
 
         public async Task<bool> CreateReminder(CalendarDetailViewModel calendarDetail, string calendarIdentifier)
         {
-            var granted = await eventStore.RequestAccessAsync(EKEntityType.Event);//, (bool granted, NSError e) =>
+            var granted = await eventStore.RequestWriteOnlyAccessToEventsAsync();
             if (granted.Item1)
             {
                 var calendars = eventStore.GetCalendars(EKEntityType.Event);
@@ -38,7 +38,7 @@ namespace Ifpa.Services
 
         public async Task<IEnumerable<string>> GetCalendarList()
         {
-            var granted = await eventStore.RequestAccessAsync(EKEntityType.Event);
+            var granted = await eventStore.RequestFullAccessToEventsAsync();
             if (granted.Item1)
             {
                 var calendars = eventStore.GetCalendars(EKEntityType.Event)
