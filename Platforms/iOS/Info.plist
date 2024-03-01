@@ -32,6 +32,8 @@
 	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
 	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
     <array>
         <string>com.shiny.job</string>

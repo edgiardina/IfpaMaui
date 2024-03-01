@@ -2,6 +2,7 @@
 using Foundation;
 using Ifpa.Interfaces;
 using Ifpa.ViewModels;
+using UIKit;
 
 namespace Ifpa.Services
 {
@@ -11,7 +12,18 @@ namespace Ifpa.Services
 
         public async Task<bool> CreateReminder(CalendarDetailViewModel calendarDetail, string calendarIdentifier)
         {
-            var granted = await eventStore.RequestWriteOnlyAccessToEventsAsync();
+            Tuple<bool, NSError> granted;
+
+            // if ios 17, use RequestWriteOnlyAccessToEventsAsync, otherwise use RequestAccessAsync
+            if (UIDevice.CurrentDevice.CheckSystemVersion(17, 0))
+            {                             
+                granted = await eventStore.RequestWriteOnlyAccessToEventsAsync();
+            }
+            else
+            {
+                granted = await eventStore.RequestAccessAsync(EKEntityType.Event);
+            }
+
             if (granted.Item1)
             {
                 var calendars = eventStore.GetCalendars(EKEntityType.Event);
@@ -38,7 +50,17 @@ namespace Ifpa.Services
 
         public async Task<IEnumerable<string>> GetCalendarList()
         {
-            var granted = await eventStore.RequestFullAccessToEventsAsync();
+            Tuple<bool, NSError> granted;
+
+            if (UIDevice.CurrentDevice.CheckSystemVersion(17, 0))
+            {
+                granted = await eventStore.RequestFullAccessToEventsAsync();
+            }
+            else
+            {
+                granted = await eventStore.RequestAccessAsync(EKEntityType.Event);
+            }
+
             if (granted.Item1)
             {
                 var calendars = eventStore.GetCalendars(EKEntityType.Event)
