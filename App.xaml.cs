@@ -65,7 +65,10 @@ public partial class App : Application
 
             if (!string.IsNullOrEmpty(id))
             {
-                await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}");
+                Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
+                {
+                    await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}");
+                });
             }
         }
         //tournaments/view.php?t=46773
@@ -74,7 +77,10 @@ public partial class App : Application
             var id = HttpUtility.ParseQueryString(uri.Query)["t"];
             if (!string.IsNullOrEmpty(id))
             {
-                await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
+                Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
+                {
+                    await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
+                });
             }
         }
     }
