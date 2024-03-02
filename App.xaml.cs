@@ -38,7 +38,7 @@ public partial class App : Application
     {
         Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
         {
-            await Shell.Current.GoToAsync($"//{appAction.Id}");
+            await Shell.Current.GoToAsync($"//{appAction.Id}", false);
         });
     }
 
@@ -67,7 +67,7 @@ public partial class App : Application
             {
                 Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
                 {
-                    await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}");
+                    await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}", false);
                 });
             }
         }
@@ -79,7 +79,7 @@ public partial class App : Application
             {
                 Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
                 {
-                    await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
+                    await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}", false);
                 });
             }
         }
