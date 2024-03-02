@@ -97,6 +97,7 @@ public static class MauiProgram
         //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
         //and RankingsFilterPage
         s.AddSingleton<RankingsViewModel>();
+        s.AddSingleton<AppShell>();
 
         s.AddSingleton(appSettings);
 

@@ -10,7 +10,7 @@ public partial class App : Application
 {
     protected INotificationManager NotificationManager { get; set; }
 
-    public App(AppSettings appSettings, INotificationManager notificationManager)
+    public App(AppShell shell, AppSettings appSettings, INotificationManager notificationManager)
     {
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
 
@@ -18,7 +18,7 @@ public partial class App : Application
 
         InitializeComponent();
 
-        MainPage = new AppShell();
+        MainPage = shell;
 
         //TODO: this conditional compilation should be removed when this bug is fixed
         //https://github.com/dotnet/maui/issues/12295

@@ -1,12 +1,14 @@
 ﻿using Ifpa.Views;
 using Ifpa.Models;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa;
 
 public partial class AppShell : Shell
 {
-	public AppShell()
+    private readonly ILogger<AppShell> _logger;
+
+	public AppShell(ILogger<AppShell> logger)
 	{
 		InitializeComponent();
 
@@ -37,6 +39,8 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("directors", typeof(DirectorsPage));
         Routing.RegisterRoute("settings", typeof(SettingsPage));
         Routing.RegisterRoute("about", typeof(AboutPage));
+
+        _logger = logger;
     }
 
     protected override async void OnNavigating(ShellNavigatingEventArgs args)
@@ -60,8 +64,7 @@ public partial class AppShell : Shell
         }
         catch (Exception ex)
         {
-            //TODO: dependency inject this?
-            Log.Logger.Error(ex, "Error checking if user has configured my stats");
+            _logger.LogError(ex, "Error checking if user has configured my stats");
         }
 
         token?.Complete();
