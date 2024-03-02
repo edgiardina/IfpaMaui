@@ -34,15 +34,16 @@ public partial class App : Application
         await NotificationManager.RequestAccess();
     }
 
-    public static void HandleAppActions(AppAction appAction)
+    public static async void HandleAppActions(AppAction appAction)
     {
         var route = $"//{appAction.Id}";
 
         Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
         {
             await Shell.Current.GoToAsync(route);
-            ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
         });
+        await Task.Delay(500);
+        ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
     }
 
     //Some places we can't Dependency Inject so we add this static helper
@@ -72,9 +73,10 @@ public partial class App : Application
 
                 Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
                 {
-                    await Shell.Current.GoToAsync(route);
-                    ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
+                    await Shell.Current.GoToAsync(route);                    
                 });
+                await Task.Delay(500);
+                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
             }
         }
         //tournaments/view.php?t=46773
@@ -88,8 +90,9 @@ public partial class App : Application
                 Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
                 {
                     await Shell.Current.GoToAsync(route);
-                    ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
                 });
+                await Task.Delay(500);
+                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
             }
         }
     }
