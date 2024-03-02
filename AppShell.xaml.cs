@@ -6,9 +6,9 @@ namespace Ifpa;
 
 public partial class AppShell : Shell
 {
-	public AppShell()
-	{
-		InitializeComponent();
+    public AppShell()
+    {
+        InitializeComponent();
 
         Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
         Routing.RegisterRoute("player-search", typeof(PlayerSearchPage));
@@ -16,7 +16,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("player-results", typeof(PlayerResultsPage));
         Routing.RegisterRoute("activity-feed", typeof(ActivityFeedPage));
         Routing.RegisterRoute("pvp", typeof(PlayerVersusPlayerPage));
-        Routing.RegisterRoute("pvp-detail", typeof(PlayerVersusPlayerDetailPage));        
+        Routing.RegisterRoute("pvp-detail", typeof(PlayerVersusPlayerDetailPage));
         Routing.RegisterRoute("tournament-results", typeof(TournamentResultsPage));
         Routing.RegisterRoute("player-champ-series", typeof(PlayerChampionshipSeriesPage));
 
@@ -65,5 +65,30 @@ public partial class AppShell : Shell
         }
 
         token?.Complete();
+    }
+    // TODO: this is a hack to get the correct tab to show when navigating to a page
+    // https://github.com/dotnet/maui/issues/16568
+    public void ConfirmSelectedTabIsCorrect(string route)
+    {
+        if (route.Contains("rankings"))
+        {
+            MainTabBar.CurrentItem = RankingsTab;
+        }
+        else if (route.Contains("champ-series-list"))
+        {
+            MainTabBar.CurrentItem = ChampionshipSeriesTab;
+        }
+        else if (route.Contains("calendar"))
+        {
+            MainTabBar.CurrentItem = CalendarTab;
+        }
+        else if (route.Contains("my-stats"))
+        {
+            MainTabBar.CurrentItem = MyStatsTab;
+        }
+        else if (route.Contains("more"))
+        {
+            MainTabBar.CurrentItem = MoreTab;
+        }
     }
 }

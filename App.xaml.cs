@@ -36,9 +36,12 @@ public partial class App : Application
 
     public static void HandleAppActions(AppAction appAction)
     {
+        var route = $"//{appAction.Id}";
+
         Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
         {
-            await Shell.Current.GoToAsync($"//{appAction.Id}", false);
+            await Shell.Current.GoToAsync(route);
+            ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
         });
     }
 
@@ -65,9 +68,12 @@ public partial class App : Application
 
             if (!string.IsNullOrEmpty(id))
             {
+                var route = $"//rankings/player-details?playerId={id}";
+
                 Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
                 {
-                    await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}", false);
+                    await Shell.Current.GoToAsync(route);
+                    ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
                 });
             }
         }
@@ -77,9 +83,12 @@ public partial class App : Application
             var id = HttpUtility.ParseQueryString(uri.Query)["t"];
             if (!string.IsNullOrEmpty(id))
             {
+                var route = $"//rankings/tournament-results?tournamentId={id}";
+
                 Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
                 {
-                    await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}", false);
+                    await Shell.Current.GoToAsync(route);
+                    ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
                 });
             }
         }
