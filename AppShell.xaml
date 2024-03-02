@@ -5,25 +5,30 @@
        xmlns:local="clr-namespace:Ifpa"
        xmlns:views="clr-namespace:Ifpa.Views"
        Shell.FlyoutBehavior="Disabled">
-    <TabBar>
+    <TabBar x:Name="MainTabBar">
         <ShellContent Title="{x:Static local:Strings.AppShell_Rankings}"
+                      x:Name="RankingsTab"
                       ContentTemplate="{DataTemplate views:RankingsPage}"
                       Icon="numbered_list.png"
                       Route="rankings" />
         <ShellContent Title="{x:Static local:Strings.AppShell_ChampSeries}"
+                      x:Name="ChampionshipSeriesTab"
                       ContentTemplate="{DataTemplate views:ChampionshipSeriesListPage}"
                       Icon="trophy.png"
                       Route="champ-series-list" />
         <ShellContent Title="{x:Static local:Strings.AppShell_MyStats}"
+                      x:Name="MyStatsTab"
                       ContentTemplate="{DataTemplate views:PlayerDetailPage}"
                       Icon="mystats.png"
                       Route="my-stats" />
         <ShellContent Title="{x:Static local:Strings.AppShell_Calendar}"
+                      x:Name="CalendarTab"
                       ContentTemplate="{DataTemplate views:CalendarPage}"
                       Icon="calendar.png"
                       Route="calendar" />
         <!-- More Menu Items-->
         <ShellContent Title="{x:Static local:Strings.AppShell_More}"
+                      x:Name="MoreTab"
                       ContentTemplate="{DataTemplate views:MoreItemsPage}"
                       Icon="more.png"
                       Route="more" />

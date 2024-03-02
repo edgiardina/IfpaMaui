@@ -34,12 +34,16 @@ public partial class App : Application
         await NotificationManager.RequestAccess();
     }
 
-    public static void HandleAppActions(AppAction appAction)
+    public static async void HandleAppActions(AppAction appAction)
     {
-        App.Current.Dispatcher.Dispatch(async () =>
+        var route = $"//{appAction.Id}";
+
+        Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
         {
-            await Shell.Current.GoToAsync($"//{appAction.Id}");
+            await Shell.Current.GoToAsync(route);
         });
+        await Task.Delay(500);
+        ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
     }
 
     //Some places we can't Dependency Inject so we add this static helper
@@ -65,7 +69,14 @@ public partial class App : Application
 
             if (!string.IsNullOrEmpty(id))
             {
-                await Shell.Current.GoToAsync($"//rankings/player-details?playerId={id}");
+                var route = $"//rankings/player-details?playerId={id}";
+
+                Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
+                {
+                    await Shell.Current.GoToAsync(route);                    
+                });
+                await Task.Delay(500);
+                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
             }
         }
         //tournaments/view.php?t=46773
@@ -74,7 +85,14 @@ public partial class App : Application
             var id = HttpUtility.ParseQueryString(uri.Query)["t"];
             if (!string.IsNullOrEmpty(id))
             {
-                await Shell.Current.GoToAsync($"//rankings/tournament-results?tournamentId={id}");
+                var route = $"//rankings/tournament-results?tournamentId={id}";
+
+                Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
+                {
+                    await Shell.Current.GoToAsync(route);
+                });
+                await Task.Delay(500);
+                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
             }
         }
     }
