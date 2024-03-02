@@ -36,7 +36,7 @@ public partial class App : Application
 
     public static void HandleAppActions(AppAction appAction)
     {
-        App.Current.Dispatcher.Dispatch(async () =>
+        Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
         {
             await Shell.Current.GoToAsync($"//{appAction.Id}");
         });
