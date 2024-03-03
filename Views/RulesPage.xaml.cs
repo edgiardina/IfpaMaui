@@ -9,7 +9,7 @@ namespace Ifpa.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RulesPage : ContentPage
     {
-        private const string rulesPdfPath = "https://www.ifpapinball.com/wp/wp-content/uploads/2023/09/PAPA_IFPA-Complete-Competition-Rules-2023.09.pdf";
+        private const string rulesPdfPath = "https://www.ifpapinball.com/wp/wp-content/uploads/2024/02/PAPA_IFPA-Complete-Competition-Rules-2024.02.pdf";
 
         public RulesPage()
         {
