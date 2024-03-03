@@ -23,18 +23,19 @@ namespace Ifpa.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
             try
             {
-                var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
-                calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Microsoft.Maui.Maps.Distance.FromMiles(Settings.LastCalendarDistance)));
-
                 ViewModel.CalendarId = CalendarId;
                 await ViewModel.ExecuteLoadItemsCommand();
 
                 MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
-                calendarMap.MoveToRegion(mapSpan);
+                var calendarMap = new Microsoft.Maui.Controls.Maps.Map(mapSpan)
+                {
+                    HeightRequest = 200,
+                    IsZoomEnabled = false,
+                    IsScrollEnabled = false,
+                    MapType = MapType.Street
+                };
                 var pin = new Pin
                 {
                     Label = ViewModel.TournamentName,
@@ -47,17 +48,13 @@ namespace Ifpa.Views
                 pin.MarkerClicked += Pin_Clicked;
 
                 calendarMap.Pins.Add(pin);
+
+                mapShim.Children.Add(calendarMap);
             }
             //unable to geocode position on the map, ignore. 
             catch (Exception)
             {
             }
-        }
-
-
-        protected override void OnNavigatedTo(NavigatedToEventArgs args)
-        {
-            base.OnNavigatedTo(args);
         }
 
         private void Pin_Clicked(object sender, PinClickedEventArgs e)

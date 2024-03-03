@@ -69,10 +69,13 @@
                     </Label.FormattedText>
                 </Label>
             </StackLayout>
-            <maps:Map x:Name="calendarMap"
-                      MapType="Street"
+            <Grid x:Name="mapShim">
+                
+            </Grid>
+            <!--<maps:Map x:Name="calendarMap"
+                      MapType="Street"                      
                       IsZoomEnabled="False"
-                      IsScrollEnabled="False" />
+                      IsScrollEnabled="False" />-->
             <ScrollView VerticalOptions="FillAndExpand"
                         IsClippedToBounds="True"
                         Padding="12,10">
