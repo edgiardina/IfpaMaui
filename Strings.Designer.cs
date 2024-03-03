@@ -412,6 +412,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Event Count:.
         /// </summary>
         internal static string ChampionshipSeriesDetailPage_EventCount {
@@ -489,6 +498,15 @@ namespace Ifpa {
         internal static string CustomRankingsDetailPage_Rank {
             get {
                 return ResourceManager.GetString("CustomRankingsDetailPage_Rank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -664,6 +682,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        internal static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
         internal static string PercentSign {
@@ -700,6 +727,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This player has been added to your favorites.
+        /// </summary>
+        internal static string PlayerDetailPage_AddFavorite {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_AddFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have already configured your Stats page, do you wish to change your Stats to this player?.
+        /// </summary>
+        internal static string PlayerDetailPage_AlreadyConfigured {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_AlreadyConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Avg Finish.
         /// </summary>
         internal static string PlayerDetailPage_AvgFinish {
@@ -727,6 +772,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caution.
+        /// </summary>
+        internal static string PlayerDetailPage_Caution {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Caution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Championship Series.
         /// </summary>
         internal static string PlayerDetailPage_ChampionshipSeries {
@@ -736,11 +790,47 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have now configured your Stats page!.
+        /// </summary>
+        internal static string PlayerDetailPage_ConfiguredStats {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_ConfiguredStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configure your Stats.
+        /// </summary>
+        internal static string PlayerDetailPage_ConfigureYourStats {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_ConfigureYourStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Congratulations.
+        /// </summary>
+        internal static string PlayerDetailPage_Congratulations {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_Congratulations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eff percent.
         /// </summary>
         internal static string PlayerDetailPage_EffPercent {
             get {
                 return ResourceManager.GetString("PlayerDetailPage_EffPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error trying to select this player as your &apos;My Stats&apos; player..
+        /// </summary>
+        internal static string PlayerDetailPage_ErrorMyStats {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_ErrorMyStats", resourceCulture);
             }
         }
         
@@ -759,6 +849,15 @@ namespace Ifpa {
         internal static string PlayerDetailPage_Favorite {
             get {
                 return ResourceManager.GetString("PlayerDetailPage_Favorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Looks like you haven&apos;t configured your &apos;My Stats&apos; page. Use the Player Search to find your Player, and press the Star to configure your Stats.
+        /// </summary>
+        internal static string PlayerDetailPage_HaventConfiguredMyStats {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_HaventConfiguredMyStats", resourceCulture);
             }
         }
         
@@ -862,6 +961,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This player has been removed from your favorites.
+        /// </summary>
+        internal static string PlayerDetailPage_RemoveFavorite {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_RemoveFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set to My Stats.
         /// </summary>
         internal static string PlayerDetailPage_SetToMyStats {
@@ -876,6 +984,15 @@ namespace Ifpa {
         internal static string PlayerDetailPage_Share {
             get {
                 return ResourceManager.GetString("PlayerDetailPage_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Player.
+        /// </summary>
+        internal static string PlayerDetailPage_SharePlayer {
+            get {
+                return ResourceManager.GetString("PlayerDetailPage_SharePlayer", resourceCulture);
             }
         }
         

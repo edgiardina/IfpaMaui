@@ -2,6 +2,9 @@
 using Ifpa.Models;
 using MauiIcons.Fluent;
 using MauiIcons.Core;
+using CommunityToolkit.Maui.Alerts;
+using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
 
 namespace Ifpa.Views
 {
@@ -33,8 +36,8 @@ namespace Ifpa.Views
 
             if (LoadMyStats)
             {
-                ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == "Set to My Stats"));
-                ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == "Favorite"));
+                ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_SetToMyStats));
+                ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_Favorite));
 
                 if (Settings.HasConfiguredMyStats)
                 {
@@ -58,7 +61,7 @@ namespace Ifpa.Views
             {
                 if (Settings.HasConfiguredMyStats)
                 {
-                    ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == "Set to My Stats"));
+                    ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_SetToMyStats));
 
                     //if player is in the existing favorites list, fill the heart icon.
                     if (await Settings.LocalDatabase.HasFavorite(ViewModel.PlayerId))
@@ -68,9 +71,9 @@ namespace Ifpa.Views
                 }
                 else
                 {
-                    ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == "Favorite"));
+                    ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_Favorite));
                 }
-                ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == "Activity Feed"));
+                ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_ActivityFeed));
             }
 
             await ViewModel.ExecuteLoadItemsCommand();
@@ -108,7 +111,7 @@ namespace Ifpa.Views
                 }
                 else
                 {
-                    var result = await DisplayAlert("Caution", "You have already configured your Stats page, do you wish to change your Stats to this player?", "OK", "Cancel");
+                    var result = await DisplayAlert(Strings.PlayerDetailPage_Caution, Strings.PlayerDetailPage_AlreadyConfigured, Strings.OK, Strings.Cancel);
                     if (result)
                     {
                         await ChangePlayerAndRedirect();
@@ -117,7 +120,7 @@ namespace Ifpa.Views
             }
             catch
             {
-                await DisplayAlert("Error", "There was an error trying to select this player as your 'My Stats' player.", "OK");
+                await DisplayAlert(Strings.Error, Strings.PlayerDetailPage_ErrorMyStats, Strings.OK);
             }
         }
 
@@ -126,14 +129,14 @@ namespace Ifpa.Views
             await Settings.SetMyStatsPlayer(ViewModel.PlayerId, ViewModel.PlayerRecord.PlayerStats.CurrentWpprRank);
             await ViewModel.PrepopulateTourneyResults(ViewModel.PlayerId);
 
-            await DisplayAlert("Congratulations", "You have now configured your Stats page!", "OK");
+            await DisplayAlert(Strings.PlayerDetailPage_Congratulations, Strings.PlayerDetailPage_ConfiguredStats, Strings.OK);
 
             await Shell.Current.GoToAsync("///my-stats");
         }
 
         private async Task RedirectUserToPlayerSearch()
         {
-            await DisplayAlert("Configure your Stats", "Looks like you haven't configured your 'My Stats' page. Use the Player Search to find your Player, and press the Star to configure your Stats", "OK");
+            await DisplayAlert(Strings.PlayerDetailPage_ConfigureYourStats, Strings.PlayerDetailPage_HaventConfiguredMyStats, Strings.OK);
             await Shell.Current.GoToAsync("///rankings/player-search");
         }
 
@@ -147,7 +150,7 @@ namespace Ifpa.Views
             await Share.RequestAsync(new ShareTextRequest
             {
                 Uri = $"https://www.ifpapinball.com/player.php?p={ViewModel.PlayerId}",
-                Title = "Share Player"
+                Title = Strings.PlayerDetailPage_SharePlayer
             });
         }
 
@@ -158,19 +161,20 @@ namespace Ifpa.Views
             {
                 await Settings.LocalDatabase.RemoveFavorite(ViewModel.PlayerId);
                 SetCorrectFavoriteIcon(false);
-                await DisplayAlert("Favorite Removed", "This player has been removed from your favorites!", "OK");
+
+                await Toast.Make(Strings.PlayerDetailPage_RemoveFavorite).Show();
             }
             else
             {
                 await Settings.LocalDatabase.AddFavorite(ViewModel.PlayerId);
                 SetCorrectFavoriteIcon(true);
-                await DisplayAlert("Favorite Added", "This player has been added to your favorites!", "OK");
+                await Toast.Make(Strings.PlayerDetailPage_AddFavorite).Show();
             }
         }
 
         private void SetCorrectFavoriteIcon(bool isFavorite = true)
         {
-            var colorDictionary = Application.Current.Resources.MergedDictionaries.First();
+            var colorDictionary = Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries.First();
             var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
             var filledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Heart48, IconColor = toolbarIconColor };
             var unfilledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.HeartBroken24, IconColor = toolbarIconColor };
@@ -178,11 +182,11 @@ namespace Ifpa.Views
             if (isFavorite)
             {
                 //if player is in the existing favorites list, fill the heart icon.
-                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = unfilledHeartIcon;
+                ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_Favorite).IconImageSource = unfilledHeartIcon;
             }
             else
             {
-                ToolbarItems.SingleOrDefault(n => n.Text == "Favorite").IconImageSource = filledHeartIcon;
+                ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_Favorite).IconImageSource = filledHeartIcon;
             }
         }
 

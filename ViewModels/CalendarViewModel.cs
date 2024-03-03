@@ -32,7 +32,7 @@ namespace Ifpa.ViewModels
             {
                 var sw = Stopwatch.StartNew();
                 CalendarDetails.Clear();
-                //InlineCalendarItems.Clear();
+                Pins.Clear();
 
                 logger.LogDebug("Cleared collections in {0}", sw.ElapsedMilliseconds);
 
