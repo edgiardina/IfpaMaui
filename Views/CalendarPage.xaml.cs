@@ -8,6 +8,7 @@ using MauiIcons.Fluent;
 using Serilog.Core;
 using Serilog;
 using MauiIcons.Core;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.Views
 {
@@ -25,9 +26,13 @@ namespace Ifpa.Views
 
         public CalendarPageView View { get; set; }
 
-        public CalendarPage(CalendarViewModel viewModel)
+        private readonly ILogger<CalendarPage> logger;
+
+        public CalendarPage(CalendarViewModel viewModel, ILogger<CalendarPage> logger)
         {
             InitializeComponent();
+
+            this.logger = logger;
 
             BindingContext = ViewModel = viewModel;
             viewModel.IsBusy = true;
@@ -70,8 +75,7 @@ namespace Ifpa.Views
             catch (Exception e)
             {
                 //don't let the calendar crash our entire app
-                //TODO: dependency inject this?
-                Log.Logger.Error(e, "Error loading calendar data");
+                logger.LogError(e, "Error loading calendar data");
             }
         }
 
@@ -85,14 +89,14 @@ namespace Ifpa.Views
                 MapLayout.IsVisible = true;
                 calendar.IsVisible = false;
                 View = CalendarPageView.MapAndList;
-                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.CalendarLtr28, IconColor = toolbarIconColor };
+                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.CalendarLtr28, IconColor = toolbarIconColor };
             }
             else
             {
                 MapLayout.IsVisible = false;
                 calendar.IsVisible = true;
                 View = CalendarPageView.Calendar;
-                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Map24, IconColor = toolbarIconColor };
+                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Map24, IconColor = toolbarIconColor };
             }
         }
 
