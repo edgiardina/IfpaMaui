@@ -33,9 +33,9 @@ namespace Ifpa.Views
             viewModel.IsBusy = true;
         }
 
-        protected async override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             if (ViewModel.CalendarDetails.Count == 0)
             {
@@ -56,11 +56,14 @@ namespace Ifpa.Views
         {
             try
             {
-                calendarMap.Pins.Clear();
-
+                mapShim.Children.Clear();
                 var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
-                calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                var map = new Microsoft.Maui.Controls.Maps.Map(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
                                                                         Microsoft.Maui.Maps.Distance.FromMiles(Settings.LastCalendarDistance)));
+                map.ItemTemplate = PinDataTemplate;
+                map.ItemsSource = ViewModel.Pins;
+
+                mapShim.Children.Add(map);
 
                 await ViewModel.ExecuteLoadItemsCommand(Settings.LastCalendarLocation, Settings.LastCalendarDistance);
             }
