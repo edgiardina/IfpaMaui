@@ -367,15 +367,6 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mi.
-        /// </summary>
-        internal static string CalendarFilterModalPage_Mi {
-            get {
-                return ResourceManager.GetString("CalendarFilterModalPage_Mi", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Set Calendar Location.
         /// </summary>
         internal static string CalendarFilterModalPage_SetCalendarLocation {
@@ -390,6 +381,15 @@ namespace Ifpa {
         internal static string CalendarPage_Calendar {
             get {
                 return ResourceManager.GetString("CalendarPage_Calendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No IFPA Tournaments for the selected day.
+        /// </summary>
+        internal static string CalendarPage_CalendarEmptyText {
+            get {
+                return ResourceManager.GetString("CalendarPage_CalendarEmptyText", resourceCulture);
             }
         }
         
@@ -516,6 +516,15 @@ namespace Ifpa {
         internal static string FavoritesPage_Delete {
             get {
                 return ResourceManager.GetString("FavoritesPage_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mi.
+        /// </summary>
+        internal static string Miles_Abbreviation {
+            get {
+                return ResourceManager.GetString("Miles_Abbreviation", resourceCulture);
             }
         }
         

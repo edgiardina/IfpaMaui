@@ -68,7 +68,7 @@
                    VerticalTextAlignment="Center" />
             <Label Grid.Row="1"
                    Grid.Column="3"
-                   Text="{x:Static local:Strings.CalendarFilterModalPage_Mi}"
+                   Text="{x:Static local:Strings.Miles_Abbreviation}"
                    VerticalTextAlignment="Center" />
             <StackLayout Orientation="Horizontal"
                          Grid.Row="2"

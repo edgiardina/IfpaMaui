@@ -107,6 +107,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.7" />
 		<PackageReference Include="PinballApi" Version="2.3.0" />
+		<PackageReference Include="Plugin.Maui.Calendar" Version="1.1.4" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
 		<PackageReference Include="Shiny.Core" Version="3.2.2" />
@@ -120,7 +121,6 @@
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
 		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.8" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
-		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="24.1.45" />
 		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
