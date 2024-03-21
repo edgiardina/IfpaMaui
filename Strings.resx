@@ -234,7 +234,7 @@
   <data name="MoreItemsPage_CustomRankings" xml:space="preserve">
     <value>Custom Rankings</value>
   </data>
-  <data name="CalendarFilterModalPage_Mi" xml:space="preserve">
+  <data name="Miles_Abbreviation" xml:space="preserve">
     <value>Mi</value>
   </data>
   <data name="CalendarDetailPage_AddToCalendar" xml:space="preserve">
@@ -617,5 +617,8 @@
   </data>
   <data name="PlayerDetailPage_SharePlayer" xml:space="preserve">
     <value>Share Player</value>
+  </data>
+  <data name="CalendarPage_CalendarEmptyText" xml:space="preserve">
+    <value>No IFPA Tournaments for the selected day</value>
   </data>
 </root>

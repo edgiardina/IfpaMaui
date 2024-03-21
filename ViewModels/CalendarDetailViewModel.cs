@@ -5,6 +5,7 @@ using PinballApi;
 
 namespace Ifpa.ViewModels
 {
+    [QueryProperty("CalendarId", "calendarId")]
     public class CalendarDetailViewModel : BaseViewModel
     {
         public string PrivateFlag { get; set; }
