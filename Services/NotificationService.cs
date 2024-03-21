@@ -204,8 +204,10 @@ namespace Ifpa.Services
 
         public async Task SendNotification(string title, string description, string url)
         {
-            var payload = new Dictionary<string, string>();
-            payload.Add("url", url);
+            var payload = new Dictionary<string, string>
+            {
+                { "url", url }
+            };
 
             var notification = new Notification
             {
@@ -213,6 +215,7 @@ namespace Ifpa.Services
                 Message = description,
                 Payload = payload
             };
+
 
             var result = await notificationManager.RequestRequiredAccess(notification);
             if (result == Shiny.AccessState.Available)
