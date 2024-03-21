@@ -6,12 +6,9 @@ using Microsoft.Maui.Maps;
 namespace Ifpa.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    [QueryProperty("CalendarId", "calendarId")]
     public partial class CalendarDetailPage : ContentPage
     {
         CalendarDetailViewModel ViewModel;
-
-        public int CalendarId { get; set; }
 
         public CalendarDetailPage(CalendarDetailViewModel viewModel)
         {
@@ -25,7 +22,6 @@ namespace Ifpa.Views
             base.OnAppearing();
             try
             {
-                ViewModel.CalendarId = CalendarId;
                 await ViewModel.ExecuteLoadItemsCommand();
 
                 MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
