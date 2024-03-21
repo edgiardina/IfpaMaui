@@ -84,46 +84,46 @@
             </CollectionView>
         </Grid>
         <calendar:Calendar x:Name="myCal"
+                           ArrowsSymbolNext="&gt;"
+                           ArrowsSymbolPrev="&lt;"
+                           ArrowsFontSize="20"
+                           ArrowsFontAttribute="Bold"
+                           ArrowsBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
+                           ArrowsBorderColor="Transparent"
+                           ArrowsColor="{StaticResource IconAccentColor}"
                            Events="{Binding TournamentCalenderItems}"
                            IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
                            MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
                            ShownDate="{Binding Source={x:Static sys:DateTime.Now}}"
                            ShowYearPicker="False"
+                           TodayOutlineColor="{StaticResource IconAccentColor}"
                            EventIndicatorColor="{StaticResource IconAccentColor}"
                            SelectedDayBackgroundColor="{StaticResource IconAccentColor}"
                            EventIndicatorSelectedColor="{StaticResource IconAccentColor}"
-                           ArrowsColor="{StaticResource IconAccentColor}"
                            MonthLabelColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                            SelectedDateColor="White"
                            DisabledDayColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                            DeselectedDayTextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                            DaysTitleWeekendColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                            DaysTitleColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
-                           EventIndicatorSelectedTextColor="White"                           
+                           EventIndicatorSelectedTextColor="White"
                            OtherMonthDayColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                            EventsScrollViewVisible="True"
+                           FooterSectionVisible="False"
                            EventIndicatorTextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                            SelectedDayTextColor="White">
-            <calendar:Calendar.FooterSectionTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10,5,10,5">
-                        <Label Text="{Binding Source={x:Reference myCal}, Path=SelectedDate, StringFormat='{0:MMMM dd, yyyy}'}"
-                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                    </StackLayout>
-                </DataTemplate>
-            </calendar:Calendar.FooterSectionTemplate>
             <calendar:Calendar.EventTemplate>
                 <DataTemplate x:DataType="ifpacalendar:CalendarDetails">
                     <StackLayout Padding="10,0"
-                                 Margin="0,0,0,10"
-                                 Spacing="10">
+                                 Margin="0,0,0,8">
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
                                                   CommandParameter="{Binding CalendarId}" />
                         </StackLayout.GestureRecognizers>
                         <Label Text="{Binding TournamentName}"
                                FontAttributes="Bold" />
-                        <Grid ColumnDefinitions="*,*">
+                        <Grid ColumnDefinitions="*,*"
+                              Margin="0,0,0,10">
                             <Label FontSize="Small"
                                    TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                                    LineBreakMode="WordWrap">

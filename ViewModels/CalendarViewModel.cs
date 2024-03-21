@@ -72,7 +72,7 @@ namespace Ifpa.ViewModels
                     TournamentCalenderItems = new EventCollection();
 
                     items.Calendar.Where(item => item.EndDate - item.StartDate <= 5.Days())                                  
-                                  .GroupBy(item =>  item.StartDate.Date)
+                                  .GroupBy(item => item.StartDate.Date)
                                   .ToList()
                                   .ForEach(date => TournamentCalenderItems.Add(date.Key, date.ToList()));
 
