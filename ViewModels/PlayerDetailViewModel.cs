@@ -24,7 +24,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
         public int LastTournamentCount { get; set; }
-        private Player playerRecord = new Player { PlayerStats = new PinballApi.Models.WPPR.v1.Players.PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
+        private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
         private static readonly int s_logBase = 10;
 

@@ -11,7 +11,7 @@ namespace Ifpa.ViewModels
     {
         AppSettings AppSettings;
         
-        private Player playerRecord = new Player { PlayerStats = new PinballApi.Models.WPPR.v1.Players.PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
+        private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
         public string PlayerAvatar
         {
@@ -42,7 +42,7 @@ namespace Ifpa.ViewModels
                 }
                 else
                 {
-                    playerRecord = new Player { PlayerStats = new PinballApi.Models.WPPR.v1.Players.PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
+                    playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
                     OnPropertyChanged(null);
                 }
             }

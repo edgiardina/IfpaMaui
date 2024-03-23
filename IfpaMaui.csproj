@@ -100,13 +100,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
-		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.7" />
-		<PackageReference Include="PinballApi" Version="2.3.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.14" />
+		<PackageReference Include="PinballApi" Version="2.4.1" />
 		<PackageReference Include="Plugin.Maui.Calendar" Version="1.1.4" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
@@ -248,6 +248,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.7" />
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
 	</ItemGroup>
 </Project>

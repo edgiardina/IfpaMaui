@@ -93,7 +93,6 @@
                            ArrowsColor="{StaticResource IconAccentColor}"
                            Events="{Binding TournamentCalenderItems}"
                            IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
-                           MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
                            ShownDate="{Binding Source={x:Static sys:DateTime.Now}}"
                            ShowYearPicker="False"
                            TodayOutlineColor="{StaticResource IconAccentColor}"

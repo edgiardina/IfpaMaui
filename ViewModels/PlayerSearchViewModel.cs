@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Text.Json;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using PinballApi;
 
 namespace Ifpa.ViewModels
@@ -40,8 +39,8 @@ namespace Ifpa.ViewModels
                             var items = await PinballRankingApi.SearchForPlayerByName(text.Trim());
                             foreach (var item in items.Search)
                             {
-                                var serializedParent = JsonConvert.SerializeObject(item);
-                                var c = JsonConvert.DeserializeObject<PlayerSearchResult>(serializedParent);
+                                var serializedParent = JsonSerializer.Serialize(item);
+                                var c = JsonSerializer.Deserialize<PlayerSearchResult>(serializedParent);
 
                                 Players.Add(c);
                             }
