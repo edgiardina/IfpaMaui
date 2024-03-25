@@ -38,14 +38,6 @@ namespace Ifpa.Views
             });
         }
 
-        private async void InfoButton_Clicked(object sender, EventArgs e)
-        {
-            //TODO: convert to shell route
-            var infoPage = new TournamentInfoPage(ViewModel);
-
-            await Navigation.PushModalAsync(infoPage);
-        }
-
         private async void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var tournament = e.CurrentSelection.FirstOrDefault() as TournamentResult;

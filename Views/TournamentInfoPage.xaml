@@ -157,16 +157,6 @@
                    Grid.Row="11"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.TournamentValue, Mode=OneWay}" />
-            <StackLayout Orientation="Horizontal"
-                         Grid.Row="12"
-                         Grid.ColumnSpan="2"
-                         Margin="10">
-                <Button WidthRequest="160"
-                        Padding="10,0,10,0"
-                        HorizontalOptions="CenterAndExpand"
-                        Text="{x:Static local:Strings.TournamentInfoPage_Close}"
-                        Clicked="CloseButton_Clicked" />
-            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

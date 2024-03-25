@@ -3,6 +3,11 @@ using PinballApi.Models.WPPR.v2.Tournaments;
 using Ifpa.Models;
 using PinballApi;
 using Microsoft.Extensions.Logging;
+using Maui.BottomSheet.SheetBuilder;
+using Polly;
+using Ifpa.Views;
+using Maui.BottomSheet;
+using Maui.BottomSheet.Navigation;
 
 namespace Ifpa.ViewModels
 {
@@ -13,13 +18,32 @@ namespace Ifpa.ViewModels
         public Tournament TournamentDetails { get; set; }
         public Command LoadItemsCommand { get; set; }
 
+        public Command ShowTournamentInfoCommand { get; set; }
+
         public int TournamentId { get; set; }
 
-        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        protected readonly IBottomSheetBuilder bottomSheetBuilder;
+
+        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, IBottomSheetBuilder bottomSheetBuilder, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             Title = "Tournament Results";
             Results = new ObservableCollectionRange<TournamentResult>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            ShowTournamentInfoCommand = new Command(ExecuteShowTournamentInfoCommand);
+            this.bottomSheetBuilder = bottomSheetBuilder;
+        }
+
+        private void ExecuteShowTournamentInfoCommand()
+        {
+            bottomSheetBuilder
+                .FromContentPage<TournamentInfoPage>()
+                .WithParameters(new BottomSheetNavigationParameters { { "tournamentId", TournamentId } })
+                .ConfigureBottomSheet((sheet) =>
+                {
+                    sheet.SheetStates = BottomSheetState.Peek;                    
+                })
+                .WireTo<TournamentInfoViewModel>()
+                .Open();
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -35,7 +59,7 @@ namespace Ifpa.ViewModels
                 var tournamentResults = await PinballRankingApiV2.GetTournamentResults(TournamentId);
                 TournamentDetails = await PinballRankingApiV2.GetTournament(TournamentId);
 
-                Results.AddRange(tournamentResults.Results);           
+                Results.AddRange(tournamentResults.Results);
 
                 Title = TournamentDetails.TournamentName;
                 OnPropertyChanged(nameof(TournamentDetails));
@@ -71,7 +95,7 @@ namespace Ifpa.ViewModels
             {
                 Application.Current.AppLinks.RegisterLink(entry);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex, "Error registering app link {0}", entry);
             }

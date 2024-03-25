@@ -16,6 +16,7 @@ using SkiaSharp.Views.Maui.Controls.Hosting;
 using Serilog;
 using Shiny;
 using CommunityToolkit.Maui.ApplicationModel;
+using Maui.BottomSheet;
 
 namespace Ifpa;
 
@@ -35,6 +36,7 @@ public static class MauiProgram
             .UseMauiCompatibility()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
+            .UseMauiBottomSheet()
             .UseFluentMauiIcons()
             .UseShiny()
             .UseSkiaSharp(true)
