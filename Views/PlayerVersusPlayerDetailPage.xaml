@@ -7,7 +7,10 @@
              ios:Page.LargeTitleDisplay="Never"
              xmlns:local="clr-namespace:Ifpa"
              Title="{Binding Title}"
-             x:Name="PVPDetailPage">
+             x:Name="PVPDetailPage"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:PlayerVersusPlayerDetailViewModel"
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -23,7 +26,7 @@
                   CachingStrategy="RecycleElement"
                   HasUnevenRows="true">
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifpaplayer:PlayerVersusPlayerComparisonRecord">
                     <ViewCell>
                         <Grid Margin="10"
                               ColumnDefinitions="*, 80"

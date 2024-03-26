@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.ChampionshipSeriesListPage"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:Ifpa">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:ChampionshipSeriesListViewModel">
     <!-- RefreshView doesn't size correctly in iOS so it's been removed for now
          https://github.com/dotnet/maui/issues/7315 -->
     <CollectionView x:Name="ChampionshipSeriesCollectionView"
