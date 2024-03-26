@@ -8,7 +8,9 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:shimmer="clr-namespace:Syncfusion.Maui.Shimmer;assembly=Syncfusion.Maui.Core"
              Title="{x:Static local:Strings.SettingsPage_Settings}"
-             xmlns:local="clr-namespace:Ifpa">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:SettingsViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsNotNullConverter x:Key="notNullConverter" />
@@ -49,7 +51,6 @@
                                              Margin="10">
                                     <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
                                                         HorizontalOptions="Center"
-                                                        Text="{Binding Initials, Mode=OneWay}"
                                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                                         BorderWidth="0"
                                                         CornerRadius="8"
@@ -81,7 +82,6 @@
                              Margin="10">
                     <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
                                         HorizontalOptions="Center"
-                                        Text="{Binding Initials, Mode=OneWay}"
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
                                         CornerRadius="8"

@@ -10,7 +10,10 @@
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:Ifpa"
-             x:Name="SearchPlayersPage">
+             x:Name="SearchPlayersPage"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:FavoritesViewModel"
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -34,7 +37,7 @@
                         EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites."
                         SelectionChanged="PlayersListView_SelectionChanged">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifpaplayer:Player">
                     <SwipeView ios:SwipeView.SwipeTransitionMode="Drag"
                                android:SwipeView.SwipeTransitionMode="Drag">
                         <SwipeView.RightItems>

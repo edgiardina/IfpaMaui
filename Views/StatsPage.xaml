@@ -8,7 +8,10 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              Title="{x:Static local:Strings.StatsPage_Stats}"
-             xmlns:local="clr-namespace:Ifpa">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:StatsViewModel"
+             xmlns:ifpastats="clr-namespace:PinballApi.Models.WPPR.v1.Statistics;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
@@ -69,7 +72,7 @@
                                   CachingStrategy="RecycleElement"
                                   ItemSelected="PlayersListView_ItemSelected">
                             <ListView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="ifpastats:PointsThisYearStat">
                                     <ViewCell>
                                         <StackLayout Padding="10"
                                                      Orientation="Horizontal">
@@ -170,7 +173,7 @@
                                   CachingStrategy="RecycleElement"
                                   ItemSelected="BiggestMoversListView_ItemSelected">
                             <ListView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="ifpastats:BiggestMoversStat">
                                     <ViewCell>
                                         <StackLayout Padding="10"
                                                      Orientation="Horizontal">

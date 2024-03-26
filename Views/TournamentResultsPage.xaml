@@ -6,7 +6,10 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:TournamentResultsViewModel"
+             xmlns:ifpatournaments="clr-namespace:PinballApi.Models.WPPR.v2.Tournaments;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -185,7 +188,7 @@
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         SelectionMode="Single">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifpatournaments:TournamentResult">
                     <VerticalStackLayout Spacing="0">
                         <Grid ColumnDefinitions="*, 80"
                               Margin="10,5">

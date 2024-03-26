@@ -10,7 +10,10 @@
              xmlns:controls="clr-namespace:Ifpa.Controls"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:Ifpa"
-             x:Name="SearchPlayersPage">
+             x:Name="SearchPlayersPage"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:CustomRankingsDetailViewModel"
+             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -32,7 +35,7 @@
                                         SelectionMode="Single"
                                         SelectionChanged="RankingsListView_SelectionChanged">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="ifparankings:CustomRankingViewResult">
                                     <VerticalStackLayout>
                                         <StackLayout Margin="15,10"
                                                      Orientation="Horizontal">
@@ -120,7 +123,7 @@
                                         ItemsSource="{Binding ViewFilters}"
                                         SelectionMode="None">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="ifparankings:CustomRankingViewFilter">
                                     <VerticalStackLayout>
                                         <StackLayout Margin="15"
                                                      Orientation="Horizontal">
@@ -146,7 +149,7 @@
                                         SelectionMode="Single"
                                         SelectionChanged="TournamentListView_SelectionChanged">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="ifparankings:Tournament">
                                     <VerticalStackLayout>
                                         <VerticalStackLayout Spacing="10"
                                                              Padding="10">

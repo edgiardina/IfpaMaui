@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.NewsPage"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:Ifpa">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:NewsViewModel"
+             xmlns:synd="clr-namespace:System.ServiceModel.Syndication;assembly=System.ServiceModel.Syndication">
     <Grid>
         <ListView x:Name="ItemsListView"
                   ItemsSource="{Binding NewsItems}"
@@ -16,7 +19,7 @@
                   CachingStrategy="RecycleElement"
                   ItemSelected="ItemsListView_ItemSelected">
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="synd:SyndicationItem">
                     <ViewCell>
                         <Grid VerticalOptions="FillAndExpand"
                               Padding="10"
@@ -41,7 +44,7 @@
                                        HorizontalTextAlignment="Start"
                                        VerticalTextAlignment="Center"
                                        FontSize="Default"
-                                       Text="{Binding Title.Text}"
+                                       Text="{Binding Title}"
                                        Margin="0" />
                                 <Label Grid.Row="1"
                                        VerticalTextAlignment="Start"
@@ -56,7 +59,7 @@
                                          BackgroundColor="{AppThemeBinding Light={DynamicResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
                                 <Label HorizontalTextAlignment="Start"
                                        FontSize="Small"
-                                       Text="{Binding Author}"
+                                       Text="{Binding Authors}"
                                        Margin="0" />
                                 <Label HorizontalTextAlignment="End"
                                        FontSize="Small"
