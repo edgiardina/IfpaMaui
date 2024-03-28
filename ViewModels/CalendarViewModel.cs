@@ -5,23 +5,42 @@ using Ifpa.Models;
 using PinballApi;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Extensions.Logging;
+using Plugin.Maui.Calendar.Models;
 
 namespace Ifpa.ViewModels
 {
+    public enum CalendarType
+    {
+        MapAndList,
+        Calendar
+    }
+
     public class CalendarViewModel : BaseViewModel
     {
-        public ObservableCollection<InlineCalendarItem> TournamentCalenderItems { get; set; }
+        public EventCollection TournamentCalenderItems { get; set; } = new EventCollection();
         public ObservableCollectionRange<CalendarDetails> CalendarDetails { get; set; }
+
+        public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
 
         public ObservableCollection<Pin> Pins { get; set; }
 
         public Command LoadItemsCommand { get; set; }
 
+        public Command ChangeCalendarDisplayCommand { get; set; }
+
+        public Command ViewCalendarDetailsCommand { get; set; }
+
         public CalendarViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CalendarViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
-            Title = "Calendar";
             CalendarDetails = new ObservableCollectionRange<CalendarDetails>();
             Pins = new ObservableCollection<Pin>();
+            ChangeCalendarDisplayCommand = new Command(() => { CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList; OnPropertyChanged("CurrentType"); });
+            ViewCalendarDetailsCommand = new Command<int>(async (calendarId) => await ViewCalendarDetails(calendarId));
+        }
+
+        private async Task ViewCalendarDetails(int calendarId)
+        {
+            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarId}");            
         }
 
         public async Task ExecuteLoadItemsCommand(string address, int distance)
@@ -32,7 +51,7 @@ namespace Ifpa.ViewModels
             {
                 var sw = Stopwatch.StartNew();
                 CalendarDetails.Clear();
-                //InlineCalendarItems.Clear();
+                Pins.Clear();
 
                 logger.LogDebug("Cleared collections in {0}", sw.ElapsedMilliseconds);
 
@@ -50,20 +69,12 @@ namespace Ifpa.ViewModels
                         LoadEventOntoCalendar(detail);
                     }
 
-                    TournamentCalenderItems = new ObservableCollection<InlineCalendarItem>();
+                    TournamentCalenderItems = new EventCollection();
 
-                    foreach (var item in items.Calendar.Where(item => item.EndDate - item.StartDate <= 5.Days()))
-                    {
-                        TournamentCalenderItems.Add(new InlineCalendarItem()
-                        {
-                            CalendarId = item.CalendarId,
-                            StartTime = item.StartDate,
-                            EndTime = item.EndDate,
-                            Subject = item.TournamentName,
-                            Location = item.City,
-                            IsAllDay = true
-                        });
-                    }
+                    items.Calendar.Where(item => item.EndDate - item.StartDate <= 5.Days())                                  
+                                  .GroupBy(item => item.StartDate.Date)
+                                  .ToList()
+                                  .ForEach(date => TournamentCalenderItems.Add(date.Key, date.ToList()));
 
                     OnPropertyChanged("TournamentCalenderItems");
                     OnPropertyChanged("CalendarDetails");

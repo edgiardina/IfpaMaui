@@ -1,30 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.ChampionshipSeriesPlayerCardPage"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:ChampionshipSeriesPlayerCardViewModel"
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.v2.Series;assembly=PinballApi">
     <CollectionView x:Name="MyListView"
-            ItemsSource="{Binding TournamentCardRecords}"
-            SelectionMode="Single"
-            SelectionChanged="MyListView_SelectionChanged">
+                    ItemsSource="{Binding TournamentCardRecords}"
+                    SelectionMode="Single"
+                    SelectionChanged="MyListView_SelectionChanged">
         <CollectionView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="ifpawppr:PlayerCard">
                 <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
                                                https://github.com/dotnet/maui/issues/16877 -->
                 <StackLayout HeightRequest="56">
-                    <Grid ColumnSpacing="10" ColumnDefinitions="*, 120">
-                        <StackLayout Grid.Column="0" Padding="10" Orientation="Vertical" HorizontalOptions="FillAndExpand">
-                            <Label FontSize="16" Text="{Binding TournamentName}" LineBreakMode="TailTruncation" />
-                            <Label HorizontalOptions="StartAndExpand" LineBreakMode="NoWrap"  FontSize="10" Text="{Binding EventName}"  TextColor="{DynamicResource SecondaryTextColor}" />
+                    <Grid ColumnSpacing="10"
+                          ColumnDefinitions="*, 120">
+                        <StackLayout Grid.Column="0"
+                                     Padding="10"
+                                     Orientation="Vertical"
+                                     HorizontalOptions="FillAndExpand">
+                            <Label FontSize="16"
+                                   Text="{Binding TournamentName}"
+                                   LineBreakMode="TailTruncation" />
+                            <Label HorizontalOptions="StartAndExpand"
+                                   LineBreakMode="NoWrap"
+                                   FontSize="10"
+                                   Text="{Binding EventName}"
+                                   TextColor="{DynamicResource SecondaryTextColor}" />
                         </StackLayout>
-
-                        <StackLayout Grid.Column="1" Orientation="Vertical" Padding="10" MinimumWidthRequest="100" HorizontalOptions="End" VerticalOptions="Center">
-                            <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding EventEndDate, StringFormat='{0:d}'}" />
-                            <Label HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap"  FontSize="12" HorizontalTextAlignment="End" Text="{Binding WpprPoints, StringFormat='{0:0.00}'}"  TextColor="{DynamicResource SecondaryTextColor}" />
+                        <StackLayout Grid.Column="1"
+                                     Orientation="Vertical"
+                                     Padding="10"
+                                     MinimumWidthRequest="100"
+                                     HorizontalOptions="End"
+                                     VerticalOptions="Center">
+                            <Label HorizontalOptions="EndAndExpand"
+                                   LineBreakMode="NoWrap"
+                                   FontSize="12"
+                                   HorizontalTextAlignment="End"
+                                   Text="{Binding EventEndDate, StringFormat='{0:d}'}" />
+                            <Label HorizontalOptions="EndAndExpand"
+                                   LineBreakMode="NoWrap"
+                                   FontSize="12"
+                                   HorizontalTextAlignment="End"
+                                   Text="{Binding WpprPoints, StringFormat='{0:0.00}'}"
+                                   TextColor="{DynamicResource SecondaryTextColor}" />
                         </StackLayout>
                     </Grid>
-
-                    <BoxView Style="{StaticResource BoxSeperator}"/>
+                    <BoxView Style="{StaticResource BoxSeperator}" />
                 </StackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>

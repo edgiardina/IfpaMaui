@@ -4,6 +4,7 @@ using PinballApi.Extensions;
 using Shiny.Notifications;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui.ApplicationModel;
 
 namespace Ifpa.Services
 {
@@ -13,28 +14,30 @@ namespace Ifpa.Services
 
         readonly INotificationManager notificationManager;
         private readonly ILogger<NotificationService> logger;
+        private readonly IBadge badge;
 
-        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager, ILogger<NotificationService> logger)
+        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
             PinballRankingApi = pinballRankingApi;
 
             BlogPostService = blogPostService;
             this.notificationManager = notificationManager;
             this.logger = logger;
+            this.badge = badge;
         }
         private PinballRankingApiV1 PinballRankingApi { get; set; }
 
-        public static string NewTournamentNotificationTitle = "New Tournament Result";
-        protected readonly string NewTournamentNotificationDescription = @"Tournament results for ""{0}"" have been posted to your IFPA profile";
+        public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
+        protected readonly string NewTournamentNotificationDescription = Strings.NotificationService_NewTournamentNotificationDescription;
 
-        public static string NewRankNotificationTitle = "IFPA Rank Change";
-        protected readonly string NewRankNotificationDescription = "Your IFPA rank has changed from {0} to {1}";
+        public static string NewRankNotificationTitle = Strings.NotificationService_NewRankNotificationTitle;
+        protected readonly string NewRankNotificationDescription = Strings.NotificationService_NewRankNotificationDescription;
 
-        public static string NewBlogPostTitle = "New News Item";
-        protected readonly string NewBlogPostDescription = @"News item ""{0}"" has been published";
+        public static string NewBlogPostTitle = Strings.NotificationService_NewBlogPostTitle;
+        protected readonly string NewBlogPostDescription = Strings.NotificationService_NewBlogPostDescription;
 
-        public static string NewTournamentOnCalendarTitle = "New Tournament on Calendar";
-        protected readonly string NewTournamentOnCalendarDescription = @"Tournament ""{0}"" on {1} added to the IFPA calendar";
+        public static string NewTournamentOnCalendarTitle = Strings.NotificationService_NewTournamentOnCalendarTitle;
+        protected readonly string NewTournamentOnCalendarDescription = Strings.NotificationService_NewTournamentOnCalendarDescription;
 
         public async Task NotifyIfUserHasNewlySubmittedTourneyResults()
         {
@@ -194,15 +197,17 @@ namespace Ifpa.Services
             if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
             {
                 var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
-                //TODO: restore badge
-                //CrossBadge.Current.SetBadge(unreads);
+           
+                badge.SetCount((uint)unreads);
             }
         }
 
         public async Task SendNotification(string title, string description, string url)
         {
-            var payload = new Dictionary<string, string>();
-            payload.Add("url", url);
+            var payload = new Dictionary<string, string>
+            {
+                { "url", url }
+            };
 
             var notification = new Notification
             {
@@ -210,6 +215,7 @@ namespace Ifpa.Services
                 Message = description,
                 Payload = payload
             };
+
 
             var result = await notificationManager.RequestRequiredAccess(notification);
             if (result == Shiny.AccessState.Available)

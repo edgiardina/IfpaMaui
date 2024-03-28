@@ -20,7 +20,6 @@ namespace Ifpa.ViewModels
 
         public RankingType[] RankingTypeOptions => new[] { RankingType.Main, RankingType.Women, RankingType.Youth };
      
-        public bool ShowRankingTypeChoice { get; set; }
 
         public int PlayerId { get; set; }
 
@@ -29,7 +28,6 @@ namespace Ifpa.ViewModels
             Title = "Results";
             State = ResultType.Active;
             RankingType = RankingType.Main;
-            ShowRankingTypeChoice = false;
             ActiveResults = new ObservableCollectionRange<PlayerResult>();
             UnusedResults = new ObservableCollectionRange<PlayerResult>();
             PastResults = new ObservableCollectionRange<PlayerResult>();
@@ -47,13 +45,6 @@ namespace Ifpa.ViewModels
             try
             {
                 var player = await PinballRankingApiV2.GetPlayer(PlayerId);
-
-                //TODO: it would be better to get a list of all categories a player is eligible for
-                if (player.Gender == Gender.Female || (player.Age.HasValue && player.Age.Value < 18))
-                {
-                    ShowRankingTypeChoice = true;
-                    OnPropertyChanged(nameof(ShowRankingTypeChoice));
-                }
 
                 ActiveResults.Clear();
                 UnusedResults.Clear();

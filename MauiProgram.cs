@@ -15,6 +15,7 @@ using Microsoft.Maui.Controls.Compatibility.Hosting;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Serilog;
 using Shiny;
+using CommunityToolkit.Maui.ApplicationModel;
 
 namespace Ifpa;
 
@@ -114,6 +115,7 @@ public static class MauiProgram
 
         s.AddSingleton(x => new PinballRankingApiV1(appSettings.IfpaApiKey));
         s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
+        s.AddSingleton<IBadge>(Badge.Default);
 
         return builder;
     }
@@ -125,7 +127,7 @@ public static class MauiProgram
         s.AddJobs();
         s.AddShinyCoreServices();
 
-        s.AddJob(typeof(NotificationJob), requiredNetwork: Shiny.Jobs.InternetAccess.Any, runInForeground: true);
+        s.AddJob(typeof(NotificationJob), requiredNetwork: Shiny.Jobs.InternetAccess.Any);
 
         // shiny.notifications
         s.AddNotifications(typeof(NotificationDelegate));

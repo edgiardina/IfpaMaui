@@ -1,45 +1,60 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
-          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-          x:Class="Ifpa.Views.DataTemplates.ActivityFeedTournamentResultDataTemplate">
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+              x:Class="Ifpa.Views.DataTemplates.ActivityFeedTournamentResultDataTemplate"
+              xmlns:local="clr-namespace:Ifpa"
+              xmlns:models="clr-namespace:Ifpa.Models"
+              x:DataType="models:ActivityFeedItem">
     <StackLayout>
-        <Grid Padding="10" ColumnDefinitions="35, *" >
+        <Grid Padding="10"
+              ColumnDefinitions="35, *">
             <Grid.Resources>
                 <ResourceDictionary>
-                    <toolkit:InvertedBoolConverter x:Key="inverter"/>
+                    <toolkit:InvertedBoolConverter x:Key="inverter" />
                 </ResourceDictionary>
             </Grid.Resources>
-            <Image Grid.Column="0" Source="ribbon.png" HeightRequest="25" WidthRequest="25" >
+            <Image Grid.Column="0"
+                   Source="ribbon.png"
+                   HeightRequest="25"
+                   WidthRequest="25">
                 <Image.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                 </Image.Behaviors>
             </Image>
-            <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" Padding="10,0,0,0">
-                <Label Text="Tournament Result Posted" FontAttributes="Bold" />
-                <Label  FontSize="Small">
+            <StackLayout Grid.Column="1"
+                         HorizontalOptions="FillAndExpand"
+                         Padding="10,0,0,0">
+                <Label Text="{x:Static local:Strings.ActivityFeedTournamentResultDataTemplate_TournamentResultPosted}"
+                       FontAttributes="Bold" />
+                <Label FontSize="Small">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
-                                <Span Text="Tournament results for " TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{x:Static local:Strings.ActivityFeedTournamentResultDataTemplate_TournamentResultsFor}"
+                                      TextColor="{DynamicResource SecondaryTextColor}" />
                                 <Span Text="{Binding Description, Mode=OneWay}" />
-                                <Span Text=" were posted to your profile" TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Span Text="{x:Static local:Strings.ActivityFeedTournamentResultDataTemplate_WerePostedToYourProfile}"
+                                      TextColor="{DynamicResource SecondaryTextColor}" />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Label LineBreakMode="NoWrap" FontSize="Micro" Text="{Binding CreatedDateTime, StringFormat='{0:d}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+                <Label LineBreakMode="NoWrap"
+                       FontSize="Micro"
+                       Text="{Binding CreatedDateTime, StringFormat='{0:d}'}"
+                       TextColor="{DynamicResource SecondaryTextColor}" />
             </StackLayout>
-
-            <BoxView Color="{StaticResource IconAccentColor}" Grid.ColumnSpan="2"
-                 Margin="10,0,0,0"
-                 IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
-                 CornerRadius="6"                       
-                 WidthRequest="12"
-                 HeightRequest="12"
-                 VerticalOptions="Center"
-                 HorizontalOptions="End" />
+            <BoxView Color="{StaticResource IconAccentColor}"
+                     Grid.ColumnSpan="2"
+                     Margin="10,0,0,0"
+                     IsVisible="{Binding HasBeenSeen, Mode=OneWay, Converter={StaticResource inverter}}"
+                     CornerRadius="6"
+                     WidthRequest="12"
+                     HeightRequest="12"
+                     VerticalOptions="Center"
+                     HorizontalOptions="End" />
         </Grid>
-        <BoxView Style="{StaticResource BoxSeperator}"/>
+        <BoxView Style="{StaticResource BoxSeperator}" />
     </StackLayout>
 </DataTemplate>

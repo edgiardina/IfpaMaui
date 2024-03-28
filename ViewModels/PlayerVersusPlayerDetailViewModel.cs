@@ -17,7 +17,6 @@ namespace Ifpa.ViewModels
 
         public int PlayerOneId { get; set; }
         public int PlayerTwoId { get; set; }
-
         public PlayerVersusPlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
             PlayerVersusPlayer = new ObservableCollection<PlayerVersusPlayerComparisonRecord>();
@@ -37,7 +36,7 @@ namespace Ifpa.ViewModels
                 var pvpResults = await PinballRankingApiV2.GetPlayerVersusPlayerComparison(PlayerOneId, PlayerTwoId);
 
                 foreach (var item in pvpResults.ComparisonRecords.OrderByDescending(n => n.EventDate))
-                {                 
+                {
                     PlayerVersusPlayer.Add(item);
                 }
 

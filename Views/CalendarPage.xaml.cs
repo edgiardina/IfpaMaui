@@ -1,41 +1,36 @@
 ﻿using Ifpa.ViewModels;
-using System.Diagnostics;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
-using Serilog.Core;
-using Serilog;
 using MauiIcons.Core;
+using Microsoft.Extensions.Logging;
+using Syncfusion.Maui.Core.Carousel;
 
 namespace Ifpa.Views
 {
-    public enum CalendarPageView
-    {
-        MapAndList,
-        Calendar
-    }
-
-
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CalendarPage : ContentPage
     {
         public CalendarViewModel ViewModel { get; set; }
 
-        public CalendarPageView View { get; set; }
 
-        public CalendarPage(CalendarViewModel viewModel)
+        private readonly ILogger<CalendarPage> logger;
+
+        public CalendarPage(CalendarViewModel viewModel, ILogger<CalendarPage> logger)
         {
             InitializeComponent();
+
+            this.logger = logger;
 
             BindingContext = ViewModel = viewModel;
             viewModel.IsBusy = true;
         }
 
-        protected async override void OnAppearing()
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             if (ViewModel.CalendarDetails.Count == 0)
             {
@@ -56,56 +51,42 @@ namespace Ifpa.Views
         {
             try
             {
-                calendarMap.Pins.Clear();
-
+                mapShim.Children.Clear();
                 var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
-                calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Microsoft.Maui.Maps.Distance.FromMiles(Settings.LastCalendarDistance)));
+                var map = new Microsoft.Maui.Controls.Maps.Map(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                                                                        Distance.FromMiles(Settings.LastCalendarDistance)));
+                map.ItemTemplate = PinDataTemplate;
+                map.ItemsSource = ViewModel.Pins;
+
+                mapShim.Children.Add(map);
 
                 await ViewModel.ExecuteLoadItemsCommand(Settings.LastCalendarLocation, Settings.LastCalendarDistance);
             }
             catch (Exception e)
             {
                 //don't let the calendar crash our entire app
-                //TODO: dependency inject this?
-                Log.Logger.Error(e, "Error loading calendar data");
+                logger.LogError(e, "Error loading calendar data");
             }
         }
 
+        // TODO: This should be in a trigger in the XAML but toolbaritems don't support triggers yet
         private void ToggleView_Clicked(object sender, EventArgs e)
         {
             var colorDictionary = Application.Current.Resources.MergedDictionaries.First();
             var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
+            var vm = (CalendarViewModel) BindingContext;
 
-            if (View == CalendarPageView.Calendar)
+            if (vm.CurrentType == CalendarType.MapAndList)
             {
-                MapLayout.IsVisible = true;
-                calendar.IsVisible = false;
-                View = CalendarPageView.MapAndList;
-                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.CalendarLtr28, IconColor = toolbarIconColor };
+                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.CalendarLtr28, IconColor = toolbarIconColor };
             }
             else
             {
-                MapLayout.IsVisible = false;
-                calendar.IsVisible = true;
-                View = CalendarPageView.Calendar;
-                ToolbarItems.SingleOrDefault(n => n.Text == "Toggle View").IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Map24, IconColor = toolbarIconColor };
+                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Map24, IconColor = toolbarIconColor };
             }
         }
 
-        private async void calendar_Tapped(object sender, Syncfusion.Maui.Scheduler.SchedulerTappedEventArgs e)
-        {
-            if (e.Appointments != null && e.Appointments.Any())
-            {
-                var calendar = e.Appointments.First() as InlineCalendarItem;
-                if (calendar == null)
-                    return;
-
-                await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendar.CalendarId}");
-            }
-        }
-
-        private async void TournamentListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void TournamentListView_SelectionChanged(object sender, Microsoft.Maui.Controls.SelectionChangedEventArgs e)
         {
             var calendar = e.CurrentSelection.FirstOrDefault() as CalendarDetails;
             if (calendar == null)

@@ -1,17 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ifpa.Views.DirectorsPage"             
-             xmlns:local="clr-namespace:Ifpa.Converters"
+             x:Class="Ifpa.Views.DirectorsPage"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
              Title="{Binding Title}"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
-             x:Name="SearchPlayersPage">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:DirectorsViewModel"
+             x:Name="SearchPlayersPage"
+             xmlns:ifpadirectors="clr-namespace:PinballApi.Models.WPPR.v2.Directors;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="BoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -19,33 +23,37 @@
         <tabView:SfTabView Style="{StaticResource TabView}">
             <tabView:SfTabItem Header="NACS Directors">
                 <tabView:SfTabItem.Content>
-                    <ListView x:Name="NacsDirectorsListView" 
-                      IsVisible="{Binding IsPopulated}"
-                        ItemsSource="{Binding NacsDirectors}"
-                        VerticalOptions="FillAndExpand"
-                         HasUnevenRows="true"
-                         RefreshCommand="{Binding LoadItemsCommand}"
-                         IsPullToRefreshEnabled="true"
-                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
-                         ItemSelected="OnItemSelected">
+                    <ListView x:Name="NacsDirectorsListView"
+                              ItemsSource="{Binding NacsDirectors}"
+                              VerticalOptions="FillAndExpand"
+                              HasUnevenRows="true"
+                              RefreshCommand="{Binding LoadItemsCommand}"
+                              IsPullToRefreshEnabled="true"
+                              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                              CachingStrategy="RecycleElement"
+                              ItemSelected="OnItemSelected">
                         <ListView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="ifpadirectors:Director">
                                 <ViewCell>
-                                    <StackLayout Padding="10" Orientation="Horizontal" >
-                                        <StackLayout Padding="10" Orientation="Vertical">
-                                            <Label LineBreakMode="NoWrap"  FontSize="16">
+                                    <StackLayout Padding="10"
+                                                 Orientation="Horizontal">
+                                        <StackLayout Padding="10"
+                                                     Orientation="Vertical">
+                                            <Label LineBreakMode="NoWrap"
+                                                   FontSize="16">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
                                                             <Span Text="{Binding FirstName}" />
-                                                            <Span Text=" " />
+                                                            <Span Text="{x:Static local:Strings.SingleSpace}" />
                                                             <Span Text="{Binding LastName}" />
                                                         </FormattedString.Spans>
                                                     </FormattedString>
                                                 </Label.FormattedText>
                                             </Label>
-                                            <Label LineBreakMode="NoWrap"  FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                                            <Label LineBreakMode="NoWrap"
+                                                   FontSize="12"
+                                                   TextColor="{DynamicResource SecondaryTextColor}">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
@@ -57,10 +65,12 @@
                                                 </Label.FormattedText>
                                             </Label>
                                         </StackLayout>
-                                        <Label HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}" 
-                                   LineBreakMode="NoWrap" 
-                                    
-                                   FontSize="18" WidthRequest="80" />
+                                        
+                                        <!--<Label HorizontalOptions="EndAndExpand"
+                                               Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"
+                                               LineBreakMode="NoWrap"
+                                               FontSize="18"
+                                               WidthRequest="80" />-->
                                     </StackLayout>
                                 </ViewCell>
                             </DataTemplate>
@@ -70,22 +80,24 @@
             </tabView:SfTabItem>
             <tabView:SfTabItem Header="Country Directors">
                 <tabView:SfTabItem.Content>
-                    <ListView x:Name="CountryDirectorsListView" 
-                      IsVisible="{Binding IsPopulated}"
-                        ItemsSource="{Binding CountryDirectors}"
-                        VerticalOptions="FillAndExpand"
-                         HasUnevenRows="true"
-                         RefreshCommand="{Binding LoadItemsCommand}"
-                         IsPullToRefreshEnabled="true"
-                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
-                         ItemSelected="OnItemSelected">
+                    <ListView x:Name="CountryDirectorsListView"
+                              ItemsSource="{Binding CountryDirectors}"
+                              VerticalOptions="FillAndExpand"
+                              HasUnevenRows="true"
+                              RefreshCommand="{Binding LoadItemsCommand}"
+                              IsPullToRefreshEnabled="true"
+                              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                              CachingStrategy="RecycleElement"
+                              ItemSelected="OnItemSelected">
                         <ListView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="ifpadirectors:Director">
                                 <ViewCell>
-                                    <StackLayout Padding="10" Orientation="Horizontal" >
-                                        <StackLayout Padding="10" Orientation="Vertical">
-                                            <Label LineBreakMode="NoWrap"  FontSize="16">
+                                    <StackLayout Padding="10"
+                                                 Orientation="Horizontal">
+                                        <StackLayout Padding="10"
+                                                     Orientation="Vertical">
+                                            <Label LineBreakMode="NoWrap"
+                                                   FontSize="16">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
@@ -96,11 +108,13 @@
                                                     </FormattedString>
                                                 </Label.FormattedText>
                                             </Label>
-                                            <Label LineBreakMode="NoWrap"  FontSize="12">
+                                            <Label LineBreakMode="NoWrap"
+                                                   FontSize="12">
                                                 <Label.FormattedText>
                                                     <FormattedString>
                                                         <FormattedString.Spans>
-                                                            <Span Text="{Binding CountryName}" TextColor="{DynamicResource SecondaryTextColor}" />
+                                                            <Span Text="{Binding CountryName}"
+                                                                  TextColor="{DynamicResource SecondaryTextColor}" />
                                                         </FormattedString.Spans>
                                                     </FormattedString>
                                                 </Label.FormattedText>

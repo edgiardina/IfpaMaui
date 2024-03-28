@@ -1,13 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.AboutPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="About">
+             Title="{x:Static local:Strings.AboutPage_About}"
+             x:DataType="vm:AboutViewModel"
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <toolkit:IsListNotNullOrEmptyConverter x:Key="isListNotNullOrEmptyConverter" />            
+            <toolkit:IsListNotNullOrEmptyConverter x:Key="isListNotNullOrEmptyConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -16,21 +19,35 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackLayout Padding="0,5" HorizontalOptions="Fill" BackgroundColor="{StaticResource BannerTextColor}">
-                <Image Source="https://www.ifpapinball.com/images/ifpa_logo.jpg" VerticalOptions="Center" HeightRequest="100" />
+            <StackLayout Padding="0,5"
+                         HorizontalOptions="Fill"
+                         BackgroundColor="{StaticResource BannerTextColor}">
+                <Image Source="https://www.ifpapinball.com/images/ifpa_logo.jpg"
+                       VerticalOptions="Center"
+                       HeightRequest="100" />
             </StackLayout>
             <ScrollView Grid.Row="1">
-                <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
+                <StackLayout Orientation="Vertical"
+                             Padding="16,40,16,40"
+                             Spacing="10">
                     <Label FontSize="22">
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="IFPA Companion" FontAttributes="Bold" />
-                                    <Span Text=" " />
-                                    <Span Text="{Binding CurrentVersion}" TextColor="{StaticResource SecondaryTextColor}" />
-                                    <Span Text="   (" FontSize="12" TextColor="{StaticResource SecondaryTextColor}" />
-                                    <Span Text="{Binding MinorVersion}" FontSize="12" TextColor="{StaticResource SecondaryTextColor}" />
-                                    <Span Text=")" FontSize="12" TextColor="{StaticResource SecondaryTextColor}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_IFPACompanion}"
+                                          FontAttributes="Bold" />
+                                    <Span Text="{x:Static local:Strings.SingleSpace}" />
+                                    <Span Text="{Binding CurrentVersion}"
+                                          TextColor="{StaticResource SecondaryTextColor}" />
+                                    <Span Text="   ("
+                                          FontSize="12"
+                                          TextColor="{StaticResource SecondaryTextColor}" />
+                                    <Span Text="{Binding MinorVersion}"
+                                          FontSize="12"
+                                          TextColor="{StaticResource SecondaryTextColor}" />
+                                    <Span Text="{x:Static local:Strings.RightParens}"
+                                          FontSize="12"
+                                          TextColor="{StaticResource SecondaryTextColor}" />
                                 </FormattedString.Spans>
                             </FormattedString>
                         </Label.FormattedText>
@@ -39,9 +56,10 @@
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="This app is written in C# and native APIs using" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_ThisAppIsWrittenInCAndNativeApisUsing}" />
                                     <Span Text=" " />
-                                    <Span Text=".NET MAUI" FontAttributes="Bold" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_NETMAUI}"
+                                          FontAttributes="Bold" />
                                     <Span Text="." />
                                 </FormattedString.Spans>
                             </FormattedString>
@@ -49,13 +67,15 @@
                     </Label>
                     <Label>
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped" CommandParameter="{Binding CreatorIfpaNumber}"/>
+                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped"
+                                                  CommandParameter="{Binding CreatorIfpaNumber}" />
                         </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="This app was written by " />
-                                    <Span Text="Ed Giardina" TextColor="{StaticResource LinkTextColor}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_ThisAppWasWrittenBy}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_EdGiardina}"
+                                          TextColor="{StaticResource LinkTextColor}" />
                                 </FormattedString.Spans>
                             </FormattedString>
                         </Label.FormattedText>
@@ -63,19 +83,21 @@
                     <!-- https://flagpedia.net -->
                     <Label>
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Flagpedia_Tapped"/>
+                            <TapGestureRecognizer Tapped="Flagpedia_Tapped" />
                         </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
-                                    <Span Text="Thanks to " />
-                                    <Span Text="Flagpedia" TextColor="{StaticResource LinkTextColor}" />
-                                    <Span Text=" for the country flag icons used in the app" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_ThanksTo}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_Flagpedia}"
+                                          TextColor="{StaticResource LinkTextColor}" />
+                                    <Span Text="{x:Static local:Strings.AboutPage_ForTheCountryFlagIconsUsedInTheApp}" />
                                 </FormattedString.Spans>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Grid HorizontalOptions="FillAndExpand" Margin="0, 20">
+                    <Grid HorizontalOptions="FillAndExpand"
+                          Margin="0, 20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -83,19 +105,31 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Learn More" Clicked="LearnMore_Clicked" />
-                        <Button Grid.Column="1" WidthRequest="160" Padding="10,0,10,0" HorizontalOptions="CenterAndExpand"  Text="Leave a Review" Clicked="ReviewButton_Clicked" />
+                        <Button Grid.Column="0"
+                                WidthRequest="160"
+                                Padding="10,0,10,0"
+                                HorizontalOptions="CenterAndExpand"
+                                Text="{x:Static local:Strings.AboutPage_LearnMore}"
+                                Clicked="LearnMore_Clicked" />
+                        <Button Grid.Column="1"
+                                WidthRequest="160"
+                                Padding="10,0,10,0"
+                                HorizontalOptions="CenterAndExpand"
+                                Text="{x:Static local:Strings.AboutPage_LeaveAReview}"
+                                Clicked="ReviewButton_Clicked" />
                     </Grid>
                     <!-- TODO:  IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}" 
                                 hide the stacklayout if we have no sponsors. This crashes in iOS -->
                     <StackLayout>
-                        <Label Text="Thank you to the Github Sponsors!" Margin="0,0,0,10" />
+                        <Label Text="{x:Static local:Strings.AboutPage_ThankYouToTheGithubSponsors}"
+                               Margin="0,0,0,10" />
                         <CollectionView ItemsSource="{Binding Sponsors}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="ifpaplayer:Player">
                                     <Label TextColor="{StaticResource LinkTextColor}">
                                         <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped" CommandParameter="{Binding PlayerId}"/>
+                                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped"
+                                                                  CommandParameter="{Binding PlayerId}" />
                                         </Label.GestureRecognizers>
                                         <Label.FormattedText>
                                             <FormattedString>

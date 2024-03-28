@@ -28,8 +28,14 @@
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app will use your location to show nearby tournaments</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
+	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Bluetooth is not used in this app, although this app does include references to libraries which have bluetooth SDKs</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
     <array>
         <string>com.shiny.job</string>
