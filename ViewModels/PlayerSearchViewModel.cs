@@ -36,7 +36,7 @@ namespace Ifpa.ViewModels
                     {
                         Players.Clear();
 
-                        if (text.Trim().Length > 0)
+                        if (text.Trim().Length > 2)
                         {
                             var items = await PinballRankingApi.SearchForPlayerByName(text.Trim());
                             foreach (var item in items.Search)
@@ -52,7 +52,7 @@ namespace Ifpa.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError(ex, "Error searching for player", text);
+                        logger.LogError(ex, "Error searching for player {player}", text);
                     }
                     finally
                     {
@@ -70,7 +70,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error searching for player {player}", name);
                 return new PlayerSearch(); 
             }
         }

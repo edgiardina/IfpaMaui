@@ -5,6 +5,7 @@ using PinballApi.Models.WPPR.v2;
 using System.Windows.Input;
 using PinballApi;
 using Microsoft.Extensions.Logging;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {

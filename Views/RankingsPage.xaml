@@ -10,16 +10,13 @@
              xmlns:local="clr-namespace:Ifpa"
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:models="clr-namespace:Ifpa.Models"
              x:DataType="vm:RankingsViewModel"
              xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
-                     x:Name="SearchButton"
-                     Clicked="SearchButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Search48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="Filter"
-                     x:Name="InfoButton"
-                     Clicked="InfoButton_Clicked"
+                     x:Name="FilterButton"
+                     Clicked="FilterButton_Clicked"
                      IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
@@ -31,13 +28,13 @@
     </ContentPage.Resources>
     <Shell.SearchHandler>
         <controls:PlayerSearchHandler x:Name="searchHandler"
-                                      SearchBoxVisibility="Collapsible"
+                                      SearchBoxVisibility="Collapsible"                                      
                                       Placeholder="Type a player's name to search"
-                                      QueryIcon="{mi:Fluent Icon=Search48, IconColor={StaticResource IconAccentColor}}"
+                                      QueryIcon="{mi:Fluent Icon=Search48, IconColor={StaticResource IconAccentColor}}"                           
                                       ShowsResults="true"
                                       Keyboard="Plain">
             <controls:PlayerSearchHandler.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:PlayerSearchResult">
                     <StackLayout Padding="10,0">
                         <StackLayout Orientation="Horizontal">
                             <StackLayout Padding="10" Orientation="Vertical">

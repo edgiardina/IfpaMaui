@@ -33,7 +33,7 @@ namespace Ifpa.Views
             base.OnAppearing();
         }
 
-        private async void InfoButton_Clicked(object sender, EventArgs e)
+        private async void FilterButton_Clicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("rankings-filter");
         }
