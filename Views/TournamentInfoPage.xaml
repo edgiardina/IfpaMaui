@@ -32,14 +32,12 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid Padding="10,10,10,10"
-              VerticalOptions="Center">
+        <Grid Padding="10,10,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -60,77 +58,69 @@
             <Label Grid.Column="1"
                    Grid.Row="0"
                    Style="{DynamicResource valueStyle}"
-                   Text="{Binding TournamentDetails.EventEndDate, Mode=OneWay, StringFormat='{0:d}'}" />
+                   Text="{Binding TournamentDetails.EventEndDate, Mode=OneWay, StringFormat='{0:d}'}" />           
             <Label Grid.Column="0"
                    Grid.Row="1"
-                   Style="{DynamicResource labelStyle}"
-                   Text="{x:Static local:Strings.TournamentInfoPage_EventName}" />
-            <Label Grid.Column="1"
-                   Grid.Row="1"
-                   Style="{DynamicResource valueStyle}"
-                   Text="{Binding TournamentDetails.TournamentName, Mode=OneWay}" />
-            <Label Grid.Column="0"
-                   Grid.Row="2"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_EventType}" />
             <Label Grid.Column="1"
-                   Grid.Row="2"
+                   Grid.Row="1"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.EventName, Mode=OneWay}" />
             <Label Grid.Column="0"
-                   Grid.Row="3"
+                   Grid.Row="2"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_PlayerCount}" />
             <Label Grid.Column="1"
-                   Grid.Row="3"
+                   Grid.Row="2"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.PlayerCount, Mode=OneWay}" />
             <Label Grid.Column="0"
-                   Grid.Row="4"
+                   Grid.Row="3"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_RatedPlayerCount}" />
             <Label Grid.Column="1"
-                   Grid.Row="4"
+                   Grid.Row="3"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.EligiblePlayerCount, Mode=OneWay}" />
             <Label Grid.Column="0"
-                   Grid.Row="5"
+                   Grid.Row="4"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_RankingSystem}" />
             <Label Grid.Column="1"
-                   Grid.Row="5"
+                   Grid.Row="4"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.RankingType, Mode=OneWay}" />
             <Label Grid.Column="0"
-                   Grid.Row="6"
+                   Grid.Row="5"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_RankingStrength}" />
             <Label Grid.Column="1"
-                   Grid.Row="6"
+                   Grid.Row="5"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.RankingsStrength, Mode=OneWay, StringFormat='{0:0.00}'}" />
             <Label Grid.Column="0"
-                   Grid.Row="7"
+                   Grid.Row="6"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_RatingStrength}" />
             <Label Grid.Column="1"
-                   Grid.Row="7"
+                   Grid.Row="6"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.RatingsStrength, Mode=OneWay, StringFormat='{0:0.00}'}" />
             <Label Grid.Column="0"
-                   Grid.Row="8"
+                   Grid.Row="7"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_BaseValue}" />
             <Label Grid.Column="1"
-                   Grid.Row="8"
+                   Grid.Row="7"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.BaseValue, Mode=OneWay}" />
             <Label Grid.Column="0"
-                   Grid.Row="9"
+                   Grid.Row="8"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_TGP}" />
             <Label Grid.Column="1"
-                   Grid.Row="9"
+                   Grid.Row="8"
                    Style="{DynamicResource valueStyle}">
                 <Label.FormattedText>
                     <FormattedString>
@@ -142,19 +132,19 @@
                 </Label.FormattedText>
             </Label>
             <Label Grid.Column="0"
-                   Grid.Row="10"
+                   Grid.Row="9"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_EventBooster}" />
             <Label Grid.Column="1"
-                   Grid.Row="10"
+                   Grid.Row="9"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.EventWeight, Mode=OneWay, StringFormat='{0:P0}'}" />
             <Label Grid.Column="0"
-                   Grid.Row="11"
+                   Grid.Row="10"
                    Style="{DynamicResource labelStyle}"
                    Text="{x:Static local:Strings.TournamentInfoPage_TournamentValue}" />
             <Label Grid.Column="1"
-                   Grid.Row="11"
+                   Grid.Row="10"
                    Style="{DynamicResource valueStyle}"
                    Text="{Binding TournamentDetails.TournamentValue, Mode=OneWay}" />
         </Grid>

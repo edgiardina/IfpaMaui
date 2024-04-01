@@ -1,10 +1,8 @@
-﻿using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Tournaments;
+﻿using PinballApi.Models.WPPR.v2.Tournaments;
 using Ifpa.Models;
 using PinballApi;
 using Microsoft.Extensions.Logging;
 using Maui.BottomSheet.SheetBuilder;
-using Polly;
 using Ifpa.Views;
 using Maui.BottomSheet;
 using Maui.BottomSheet.Navigation;
@@ -40,7 +38,12 @@ namespace Ifpa.ViewModels
                 .WithParameters(new BottomSheetNavigationParameters { { "tournamentId", TournamentId } })
                 .ConfigureBottomSheet((sheet) =>
                 {
-                    sheet.SheetStates = BottomSheetState.Peek;                    
+                    sheet.SheetStates = BottomSheetState.Medium;
+                    sheet.TitleText = TournamentDetails.TournamentName;
+                    sheet.ShowHeader = true;
+#if IOS
+                    sheet.HasHandle = true;
+#endif
                 })
                 .WireTo<TournamentInfoViewModel>()
                 .Open();
