@@ -45,7 +45,41 @@
 	<PropertyGroup>
 		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
 	</PropertyGroup>
+	
+	<!-- Package References -->
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.14" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="PinballApi" Version="2.4.1" />
+		<PackageReference Include="Plugin.Maui.Calendar" Version="1.1.4" />
+		<PackageReference Include="Scrutor" Version="4.2.2" />
+		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
+		<PackageReference Include="Shiny.Core" Version="3.2.2" />
+		<PackageReference Include="Shiny.Hosting.Maui" Version="3.2.2" />
+		<PackageReference Include="Shiny.Extensions.Configuration" Version="3.2.2" />
+		<PackageReference Include="Shiny.Jobs" Version="3.2.2" />
+		<PackageReference Include="Shiny.Notifications" Version="3.2.2" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.8" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
+		<PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
+		<PackageReference Include="Serilog" Version="3.1.1" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+	</ItemGroup>
 
+	<!-- Maui Specifics -->
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#062C53" />
@@ -62,6 +96,7 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<!-- Compile Directives / File Compile Types -->
 	<ItemGroup>
 		<None Remove="appsettings.json" />
 		<None Remove="Platforms\Android\Resources\drawable\rounded_edge.xml" />
@@ -99,36 +134,8 @@
 		<MauiAsset Include="appsettings.json" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.14" />
-		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
-		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="PinballApi" Version="2.4.1" />
-		<PackageReference Include="Plugin.Maui.Calendar" Version="1.1.4" />
-		<PackageReference Include="Scrutor" Version="4.2.2" />
-		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
-		<PackageReference Include="Shiny.Core" Version="3.2.2" />
-		<PackageReference Include="Shiny.Hosting.Maui" Version="3.2.2" />
-		<PackageReference Include="Shiny.Extensions.Configuration" Version="3.2.2" />
-		<PackageReference Include="Shiny.Jobs" Version="3.2.2" />
-		<PackageReference Include="Shiny.Notifications" Version="3.2.2" />
-		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.8" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
-		<PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />		
-		<PackageReference Include="Serilog" Version="3.1.1" />
-		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<BundleResource Include="Platforms\iOS\PrivacyInfo.xcprivacy" LogicalName="PrivacyInfo.xcprivacy" />
 	</ItemGroup>
 
 	<ItemGroup>
