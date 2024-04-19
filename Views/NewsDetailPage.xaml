@@ -7,7 +7,9 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              xmlns:local="clr-namespace:Ifpa"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             x:DataType="vm:NewsDetailViewModel"
+             xmlns:synd="clr-namespace:System.ServiceModel.Syndication;assembly=System.ServiceModel.Syndication">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
@@ -50,7 +52,7 @@
                          Padding="5">
                 <Label HorizontalTextAlignment="Start"
                        FontSize="Small"
-                       Text="{Binding NewsItem.Author}"
+                       Text="{Binding NewsItem.Authors}"
                        Margin="0" />
                 <Label HorizontalTextAlignment="End"
                        FontSize="Small"
@@ -70,7 +72,7 @@
                   IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                   CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="synd:SyndicationItem">
                     <ViewCell>
                         <StackLayout Padding="5">
                             <Label HorizontalTextAlignment="Start"
@@ -79,7 +81,7 @@
                                    Margin="0" />
                             <Label HorizontalTextAlignment="Start"
                                    FontSize="Small"
-                                   Text="{Binding Title.Text}"
+                                   Text="{Binding Title}"
                                    Margin="0" />
                         </StackLayout>
                     </ViewCell>

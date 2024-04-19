@@ -5,6 +5,8 @@
              x:Class="Ifpa.Views.ActivityFeedPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{x:Static local:Strings.ActivityFeedPage_ActivityFeed}"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:ActivityFeedViewModel"
              xmlns:local="clr-namespace:Ifpa">
     <ContentPage.Resources>
         <datatemplates:ActivityFeedRankChangeDataTemplate x:Key="rankChangeTemplate" />

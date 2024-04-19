@@ -5,7 +5,9 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              Shell.PresentationMode="ModalAnimated"
              ios:Page.ModalPresentationStyle="PageSheet"
-             xmlns:local="clr-namespace:Ifpa">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:RankingsViewModel">
     <ContentPage.Content>
         <Grid Padding="10,10,10,10"
               VerticalOptions="CenterAndExpand"

@@ -3,13 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.ChampionshipSeriesPlayerCardPage"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:Ifpa">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:ChampionshipSeriesPlayerCardViewModel"
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.v2.Series;assembly=PinballApi">
     <CollectionView x:Name="MyListView"
                     ItemsSource="{Binding TournamentCardRecords}"
                     SelectionMode="Single"
                     SelectionChanged="MyListView_SelectionChanged">
         <CollectionView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="ifpawppr:PlayerCard">
                 <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
                                                https://github.com/dotnet/maui/issues/16877 -->
                 <StackLayout HeightRequest="56">

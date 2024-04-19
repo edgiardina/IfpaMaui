@@ -5,7 +5,10 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:Ifpa">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:ChampionshipSeriesViewModel"
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.v2.Series;assembly=PinballApi">
     <ContentPage.Resources>
         <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
     </ContentPage.Resources>
@@ -23,7 +26,7 @@
                         SelectionChanged="MyListView_SelectionChanged"
                         SelectionMode="Single">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifpawppr:SeriesOverallResult">
                     <StackLayout>
                         <StackLayout Padding="5,0,5,0"
                                      Orientation="Horizontal">

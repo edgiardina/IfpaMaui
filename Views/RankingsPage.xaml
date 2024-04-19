@@ -8,7 +8,10 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
-             x:Name="BrowseItemsPage">
+             x:Name="BrowseItemsPage"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:RankingsViewModel"
+             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
                      x:Name="SearchButton"
@@ -36,7 +39,7 @@
                         EmptyView="No players returned for the selected filter criteria"
                         SelectionChanged="PlayersListView_SelectionChanged">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifparankings:CountryRankingResult">
                     <StackLayout>
                         <Grid ColumnDefinitions="Auto,*,60"
                               RowDefinitions="*,*"
