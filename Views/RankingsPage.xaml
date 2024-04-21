@@ -10,7 +10,6 @@
              xmlns:local="clr-namespace:Ifpa"
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
-             x:DataType="vm:RankingsViewModel"
              xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
@@ -39,7 +38,7 @@
                         EmptyView="No players returned for the selected filter criteria"
                         SelectionChanged="PlayersListView_SelectionChanged">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="ifparankings:CountryRankingResult">
+                <DataTemplate>
                     <StackLayout>
                         <Grid ColumnDefinitions="Auto,*,60"
                               RowDefinitions="*,*"
