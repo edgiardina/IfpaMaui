@@ -34,8 +34,7 @@
 		<CodesignKey>Apple Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
 		<CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
 		<ArchiveOnBuild>true</ArchiveOnBuild>
-		<MtouchLink>None</MtouchLink>
-		<UseInterpreter>true</UseInterpreter>
+		<MtouchLink>SdkOnly</MtouchLink>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Debug'">
 		<CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
