@@ -144,6 +144,18 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Strings.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml.cs">
+		  <DependentUpon>YouthRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml.cs">
+		  <DependentUpon>WomensRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml.cs">
+		  <DependentUpon>CountryRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml.cs">
+		  <DependentUpon>RankingDataTemplate.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Views\DataTemplates\ActivityFeedRankChangeDataTemplate.xaml.cs">
 			<DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
 		</Compile>
@@ -195,6 +207,18 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\CustomRankingsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\DataTemplates\PlayerResultDataTemplate.xaml">
 			<Generator>MSBuild:Compile</Generator>

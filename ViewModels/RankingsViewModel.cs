@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using PinballApi.Models.WPPR.v2.Rankings;
 using PinballApi.Models.WPPR.v2;
 using System.Windows.Input;
@@ -31,14 +30,6 @@ namespace Ifpa.ViewModels
             set { SetProperty(ref countOfItemsToFetch, value); }
         }
 
-        private bool showOverallRank;
-
-        public bool ShowOverallRank
-        {
-            get { return showOverallRank; }
-            set { SetProperty(ref showOverallRank, value); }
-        }
-
         public RankingType CurrentRankingType { get; set; }
         public List<string> RankingTypes
         {
@@ -59,7 +50,6 @@ namespace Ifpa.ViewModels
 
         public RankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<RankingsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
         {
-            Title = "Rankings";
             CountOfItemsToFetch = 100;
             StartingPosition = 1;
             Players = new ObservableCollection<RankingResult>();
@@ -102,8 +92,6 @@ namespace Ifpa.ViewModels
 
                 if (CurrentRankingType == RankingType.Main)
                 {
-                    ShowOverallRank = false;
-
                     var items = await PinballRankingApiV2.GetWpprRanking(StartingPosition, CountOfItemsToFetch);
                     if (items.Rankings != null)
                     {
@@ -116,7 +104,7 @@ namespace Ifpa.ViewModels
                 else if(CurrentRankingType == RankingType.Women)
                 {
                     //TODO: wish the api returned relative rank for the women's ranking
-                    ShowOverallRank = CurrentTournamentType == TournamentType.Open;
+                    //ShowOverallRank = CurrentTournamentType == TournamentType.Open;
 
                     var items = await PinballRankingApiV2.GetRankingForWomen(CurrentTournamentType, StartingPosition, CountOfItemsToFetch);
                     if (items.Rankings != null)
@@ -129,8 +117,6 @@ namespace Ifpa.ViewModels
                 }
                 else if (CurrentRankingType == RankingType.Youth)
                 {
-                    ShowOverallRank = true;
-
                     var items = await PinballRankingApiV2.GetRankingForYouth(StartingPosition, CountOfItemsToFetch);
                     if (items.Rankings != null)
                     {
@@ -142,15 +128,11 @@ namespace Ifpa.ViewModels
                 }
                 else if (CurrentRankingType == RankingType.Country)
                 {
-                    ShowOverallRank = true;
-
                     var items = await PinballRankingApiV2.GetRankingForCountry(CountryToShow.CountryName, StartingPosition, CountOfItemsToFetch);
                     if (items.Rankings != null)
                     {
                         foreach (var item in items.Rankings)
                         {
-                            //TODO: this is a hack because we can't seem to get DataTriggers to work right for enum value(s) of CurrentRankingType
-                            item.CurrentRank = item.CountryRank;
                             Players.Add(item);
                         }
                     }

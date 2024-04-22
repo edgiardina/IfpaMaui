@@ -621,4 +621,13 @@
   <data name="CalendarPage_CalendarEmptyText" xml:space="preserve">
     <value>No IFPA Tournaments for the selected day</value>
   </data>
+  <data name="ChampionshipSeriesList_Title" xml:space="preserve">
+    <value>Championship Series</value>
+  </data>
+  <data name="RankingsPage_Title" xml:space="preserve">
+    <value>Rankings</value>
+  </data>
+  <data name="RankingsPage_EmptyView" xml:space="preserve">
+    <value>No players returned for the selected filter criteria</value>
+  </data>
 </root>

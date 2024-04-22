@@ -21,8 +21,6 @@ namespace Ifpa.ViewModels
 
             ChampionshipSeries = new ObservableCollection<Series>();
 
-            Title = "Championship Series";
-
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
