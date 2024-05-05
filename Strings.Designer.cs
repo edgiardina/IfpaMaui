@@ -448,6 +448,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Championship Series.
+        /// </summary>
+        internal static string ChampionshipSeriesList_Title {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesList_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current Leader:.
         /// </summary>
         internal static string ChampionshipSeriesPage_CurrentLeader {
@@ -1168,6 +1177,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No players returned for the selected filter criteria.
+        /// </summary>
+        internal static string RankingsPage_EmptyView {
+            get {
+                return ResourceManager.GetString("RankingsPage_EmptyView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>
         internal static string RankingsPage_Filter {
@@ -1182,6 +1200,15 @@ namespace Ifpa {
         internal static string RankingsPage_OverallRank {
             get {
                 return ResourceManager.GetString("RankingsPage_OverallRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rankings.
+        /// </summary>
+        internal static string RankingsPage_Title {
+            get {
+                return ResourceManager.GetString("RankingsPage_Title", resourceCulture);
             }
         }
         
