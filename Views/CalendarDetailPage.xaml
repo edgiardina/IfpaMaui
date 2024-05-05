@@ -7,6 +7,7 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             xmlns:bottomsheet="clr-namespace:Maui.BottomSheet;assembly=Maui.BottomSheet"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:CalendarDetailViewModel"
@@ -39,59 +40,73 @@
         <StackLayout HorizontalOptions="FillAndExpand"
                      Spacing="0"
                      IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
-            <StackLayout Orientation="Vertical"
-                         BackgroundColor="{StaticResource SecondaryBanner}"
-                         Spacing="10"
-                         Padding="12,10">
-                <Label Text="{Binding Title, Mode=OneWay}"
-                       FontSize="24"
-                       Style="{StaticResource calendarHeader}" />
-                <Label LineBreakMode="NoWrap"
-                       FontSize="16"
-                       Style="{StaticResource calendarHeader}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="{x:Static local:Strings.CalendarDetailPage_Date}" />
-                                <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label LineBreakMode="NoWrap"
-                       FontSize="16"
-                       Style="{StaticResource calendarHeader}">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="{x:Static local:Strings.CalendarDetailPage_Director}" />
-                                <Span Text="{Binding DirectorName, Mode=OneWay}" />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </StackLayout>
-            <Grid x:Name="mapShim">
-                
-            </Grid>
-            <!--<maps:Map x:Name="calendarMap"
-                      MapType="Street"                      
-                      IsZoomEnabled="False"
-                      IsScrollEnabled="False" />-->
-            <ScrollView VerticalOptions="FillAndExpand"
-                        IsClippedToBounds="True"
-                        Padding="12,10">
-                <StackLayout>
-                    <Label Text="{Binding Website, Mode=OneWay}"
-                           TextColor="Blue"
-                           Margin="0,0,0,10">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="WebsiteLabel_Tapped" />
-                        </Label.GestureRecognizers>
-                    </Label>
-                    <Label Text="{Binding Details, Mode=OneWay}" />
-                </StackLayout>
-            </ScrollView>
+
+            <!-- Map -->
+            <Grid x:Name="mapShim"
+                  VerticalOptions="StartAndExpand" />
+
+            <!-- Bottom Sheet -->
+            <bottomsheet:BottomSheet IsOpen="True"
+                                     TitleText="{Binding Title}"
+                                     IsCancelable="False"
+                                     HasHandle="True"
+                                     ShowHeader="True"
+                                     SheetStates="All"
+                                     IsDraggable="True"                                    
+                                     HeaderAppearance="None"                                    
+                                     TopLeftButtonText="Back"                                     
+                                     TopRightButtonText="Share">
+                <bottomsheet:BottomSheet.Peek>
+                    <bottomsheet:BottomSheetPeek PeekHeight="200" IgnoreSafeArea="False">
+                        <bottomsheet:BottomSheetPeek.PeekViewDataTemplate>
+                            <DataTemplate>
+                                <VerticalStackLayout Padding="10">
+                                    <Label LineBreakMode="NoWrap"
+                                           FontSize="16"
+                                           Style="{StaticResource calendarHeader}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{x:Static local:Strings.CalendarDetailPage_Date}" />
+                                                    <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label LineBreakMode="NoWrap"
+                                           FontSize="16"
+                                           Style="{StaticResource calendarHeader}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{x:Static local:Strings.CalendarDetailPage_Director}" />
+                                                    <Span Text="{Binding DirectorName, Mode=OneWay}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label Text="{Binding Website, Mode=OneWay}"
+                                           TextColor="Blue"
+                                           Margin="0,0,0,10">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="WebsiteLabel_Tapped" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </bottomsheet:BottomSheetPeek.PeekViewDataTemplate>
+                    </bottomsheet:BottomSheetPeek>
+                </bottomsheet:BottomSheet.Peek>
+                <bottomsheet:BottomSheet.ContentTemplate>
+                    <DataTemplate>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Details, Mode=OneWay}" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </bottomsheet:BottomSheet.ContentTemplate>
+            </bottomsheet:BottomSheet>
         </StackLayout>
     </Grid>
 </ContentPage>

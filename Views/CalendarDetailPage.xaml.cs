@@ -27,10 +27,9 @@ namespace Ifpa.Views
                 MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
                 var calendarMap = new Microsoft.Maui.Controls.Maps.Map(mapSpan)
                 {
-                    HeightRequest = 200,
                     IsZoomEnabled = false,
                     IsScrollEnabled = false,
-                    MapType = MapType.Street
+                    MapType = MapType.Street                   
                 };
                 var pin = new Pin
                 {
