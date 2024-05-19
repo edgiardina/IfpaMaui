@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CommunityToolkit.Maui.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Rankings;
@@ -47,11 +48,9 @@ namespace Ifpa.ViewModels
                         ViewFilters.Clear();
 
                         var tempList = await PinballRankingApiV2.GetRankingCustomView(ViewId);
-                   
-                        foreach (var tournament in tempList.Tournaments)
-                        {
-                            Tournaments.Add(tournament);
-                        }
+
+                        Tournaments = tempList.Tournaments.ToObservableCollection();
+                        OnPropertyChanged(nameof(Tournaments));
 
                         foreach (var viewResult in tempList.ViewResults)
                         {
