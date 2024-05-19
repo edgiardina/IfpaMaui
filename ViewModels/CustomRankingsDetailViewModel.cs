@@ -55,7 +55,6 @@ namespace Ifpa.ViewModels
                         ViewResults = tempList.ViewResults.ToObservableCollection();
                         OnPropertyChanged(nameof(ViewResults));
 
-
                         foreach (var viewFilter in tempList.ViewFilters)
                         {
                             //For some reason some of these have carriage return / line feed. so strip that out.
