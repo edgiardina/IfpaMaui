@@ -630,4 +630,10 @@
   <data name="RankingsPage_EmptyView" xml:space="preserve">
     <value>No players returned for the selected filter criteria</value>
   </data>
+  <data name="TournamentResultsPage_NoResultsDescription" xml:space="preserve">
+    <value>This tournament does not appear to have results submitted. Do you want to view the tournaments details on the Calendar?</value>
+  </data>
+  <data name="TournamentResultsPage_NoResultsTitle" xml:space="preserve">
+    <value>Results not yet submitted</value>
+  </data>
 </root>

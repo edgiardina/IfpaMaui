@@ -1528,6 +1528,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This tournament does not appear to have results submitted. Do you want to view the tournaments details on the Calendar?.
+        /// </summary>
+        internal static string TournamentResultsPage_NoResultsDescription {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_NoResultsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Results not yet submitted.
+        /// </summary>
+        internal static string TournamentResultsPage_NoResultsTitle {
+            get {
+                return ResourceManager.GetString("TournamentResultsPage_NoResultsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Player Count: .
         /// </summary>
         internal static string TournamentResultsPage_PlayerCount {

@@ -35,6 +35,24 @@ namespace Ifpa.ViewModels
                 var tournamentResults = await PinballRankingApiV2.GetTournamentResults(TournamentId);
                 TournamentDetails = await PinballRankingApiV2.GetTournament(TournamentId);
 
+                if(tournamentResults.Results == null)
+                {
+                    var redirect = await Shell.Current.DisplayAlert(Strings.TournamentResultsPage_NoResultsTitle,
+                                                                    Strings.TournamentResultsPage_NoResultsDescription,
+                                                                    Strings.OK,
+                                                                    Strings.Cancel);
+
+                    if (redirect)
+                    {
+                        await Shell.Current.GoToAsync($"//calendar/calendar-detail?calendarId={TournamentId}");
+                    }
+                    else
+                    {
+                        await Shell.Current.GoToAsync($"..");
+                    }
+                    return;
+                }
+
                 Results.AddRange(tournamentResults.Results);           
 
                 Title = TournamentDetails.TournamentName;
