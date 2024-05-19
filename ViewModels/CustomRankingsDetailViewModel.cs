@@ -52,10 +52,9 @@ namespace Ifpa.ViewModels
                         Tournaments = tempList.Tournaments.ToObservableCollection();
                         OnPropertyChanged(nameof(Tournaments));
 
-                        foreach (var viewResult in tempList.ViewResults)
-                        {
-                            ViewResults.Add(viewResult);
-                        }
+                        ViewResults = tempList.ViewResults.ToObservableCollection();
+                        OnPropertyChanged(nameof(ViewResults));
+
 
                         foreach (var viewFilter in tempList.ViewFilters)
                         {
