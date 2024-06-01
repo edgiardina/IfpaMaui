@@ -115,6 +115,8 @@ public static class MauiProgram
 
         s.AddSingleton(x => new PinballRankingApiV1(appSettings.IfpaApiKey));
         s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
+        s.AddSingleton(x => new PinballRankingApi(appSettings.IfpaApiKey));
+        s.AddSingleton<IGeocoding>(Geocoding.Default);
         s.AddSingleton<IBadge>(Badge.Default);
 
         return builder;

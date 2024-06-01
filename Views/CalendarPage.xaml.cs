@@ -32,7 +32,7 @@ namespace Ifpa.Views
         {
             base.OnNavigatedTo(args);
 
-            if (ViewModel.CalendarDetails.Count == 0)
+            if (ViewModel.Tournaments.Count == 0)
             {
                 await UpdateCalendarData();
             }
@@ -101,16 +101,16 @@ namespace Ifpa.Views
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
         {
             var pin = (Pin)sender;
-            var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
+            var calendarItem = ViewModel.Tournaments.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
             TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);
         }
 
         private async void Pin_InfoWindowClicked(object sender, PinClickedEventArgs e)
         {
             var pin = (Pin)sender;
-            var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
+            var calendarItem = ViewModel.Tournaments.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
 
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarItem.CalendarId}");
+            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarItem.TournamentId}");
         }
     }
 }

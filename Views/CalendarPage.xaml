@@ -11,7 +11,9 @@
              xmlns:views="clr-namespace:Ifpa.Views"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:models="clr-namespace:Ifpa.Models"
              xmlns:ifpacalendar="clr-namespace:PinballApi.Models.WPPR.v1.Calendar;assembly=PinballApi"
+             xmlns:ifpatournament="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments;assembly=PinballApi"
              x:DataType="vm:CalendarViewModel"
              Title="{x:Static local:Strings.CalendarPage_Calendar}">
     <ContentPage.Resources>
@@ -54,11 +56,11 @@
             </Grid>
             <CollectionView x:Name="TournamentListView"
                             Grid.Row="1"
-                            ItemsSource="{Binding CalendarDetails}"
+                            ItemsSource="{Binding Tournaments}"
                             SelectionMode="Single"
                             SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="ifpacalendar:CalendarDetails">
+                    <DataTemplate x:DataType="ifpatournament:Tournament">
                         <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
                              https://github.com/dotnet/maui/issues/16877 -->
                         <VerticalStackLayout HeightRequest="{OnPlatform iOS=40}">
@@ -74,7 +76,7 @@
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="End"
                                        TextColor="{DynamicResource SecondaryTextColor}"
-                                       Text="{Binding EndDate, StringFormat='{0:d}'}"
+                                       Text="{Binding EventStartDate, StringFormat='{0:d}'}"
                                        LineBreakMode="NoWrap" />
                             </Grid>
                             <BoxView Style="{StaticResource BoxSeperator}" />
@@ -112,12 +114,12 @@
                            EventIndicatorTextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                            SelectedDayTextColor="White">
             <calendar:Calendar.EventTemplate>
-                <DataTemplate x:DataType="ifpacalendar:CalendarDetails">
+                <DataTemplate x:DataType="models:TournamentWithDistance">
                     <StackLayout Padding="10,0"
                                  Margin="0,0,0,8">
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
-                                                  CommandParameter="{Binding CalendarId}" />
+                                                  CommandParameter="{Binding TournamentId}" />
                         </StackLayout.GestureRecognizers>
                         <Label Text="{Binding TournamentName}"
                                FontAttributes="Bold" />
@@ -130,7 +132,7 @@
                                     <FormattedString>
                                         <Span Text="{Binding City}" />
                                         <Span Text=", " />
-                                        <Span Text="{Binding State}" />
+                                        <Span Text="{Binding Stateprov}" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
