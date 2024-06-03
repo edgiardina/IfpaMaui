@@ -47,7 +47,7 @@ namespace Ifpa.ViewModels
 
         private async Task ViewCalendarDetails(long calendarId)
         {
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarId}");            
+            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarId}");
         }
 
         public async Task ExecuteLoadItemsCommand(string address, int distance)
@@ -67,7 +67,7 @@ namespace Ifpa.ViewModels
                 var longitude = geoLocation.FirstOrDefault()?.Longitude;
                 var latitude = geoLocation.FirstOrDefault()?.Latitude;
 
-                if(longitude == null || latitude == null)
+                if (longitude == null || latitude == null)
                 {
                     logger.LogWarning("Unable to geocode address {0}", address);
                     return;
@@ -90,7 +90,7 @@ namespace Ifpa.ViewModels
                     TournamentCalenderItems = new EventCollection();
 
                     items.Tournaments
-                                  .Where(item => item.EventEndDate - item.EventStartDate <= 5.Days())                                  
+                                  .Where(item => item.EventEndDate - item.EventStartDate <= 5.Days())
                                   .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
                                   .GroupBy(item => item.EventStartDate.Date)
                                   .ToList()

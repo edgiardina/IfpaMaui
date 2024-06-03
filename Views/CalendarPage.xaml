@@ -63,14 +63,32 @@
                     <DataTemplate x:DataType="ifpatournament:Tournament">
                         <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
                              https://github.com/dotnet/maui/issues/16877 -->
-                        <VerticalStackLayout HeightRequest="{OnPlatform iOS=40}">
-                            <Grid Margin="10"
-                                  ColumnSpacing="10"
-                                  ColumnDefinitions="*,90">
-                                <Label Grid.Column="0"
-                                       Text="{Binding TournamentName}"
-                                       LineBreakMode="{OnPlatform iOS=TailTruncation}" />
-                                <Label Grid.Column="1"
+                        <VerticalStackLayout HeightRequest="{OnPlatform iOS=40}"
+                                             Padding="10,0"
+                                             Spacing="3"
+                                             Margin="0,8,0,0">
+                            <Label Text="{Binding TournamentName}"
+                                   FontAttributes="Bold" />
+                            <Grid ColumnDefinitions="*,*,*"
+                                  Margin="0,0,0,10">
+                                <Label FontSize="Small"
+                                       TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding City}" />
+                                            <Span Text=", " />
+                                            <Span Text="{Binding Stateprov}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <controls:Chip Text="{Binding RankingSystem}"
+                                               Grid.Column="1"
+                                               FontSize="10"
+                                               WidthRequest="60" />
+
+                                <Label Grid.Column="2"
                                        MinimumWidthRequest="90"
                                        FontSize="Small"
                                        VerticalTextAlignment="Center"
@@ -115,12 +133,12 @@
                            SelectedDayTextColor="White">
             <calendar:Calendar.EventTemplate>
                 <DataTemplate x:DataType="models:TournamentWithDistance">
-                    <StackLayout Padding="10,0"
-                                 Margin="0,0,0,8">
-                        <StackLayout.GestureRecognizers>
+                    <VerticalStackLayout Padding="10,0"
+                                         Margin="0,8,0,0">
+                        <VerticalStackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
                                                   CommandParameter="{Binding TournamentId}" />
-                        </StackLayout.GestureRecognizers>
+                        </VerticalStackLayout.GestureRecognizers>
                         <Label Text="{Binding TournamentName}"
                                FontAttributes="Bold" />
                         <Grid ColumnDefinitions="*,*"
@@ -151,7 +169,7 @@
                             </Label>
                         </Grid>
                         <BoxView Style="{StaticResource BoxSeperator}" />
-                    </StackLayout>
+                    </VerticalStackLayout>
                 </DataTemplate>
             </calendar:Calendar.EventTemplate>
             <calendar:Calendar.EmptyTemplate>
