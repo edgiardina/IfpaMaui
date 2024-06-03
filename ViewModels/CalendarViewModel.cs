@@ -42,10 +42,10 @@ namespace Ifpa.ViewModels
             Tournaments = new ObservableCollectionRange<Tournament>();
             Pins = new ObservableCollection<Pin>();
             ChangeCalendarDisplayCommand = new Command(() => { CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList; OnPropertyChanged("CurrentType"); });
-            ViewCalendarDetailsCommand = new Command<int>(async (calendarId) => await ViewCalendarDetails(calendarId));
+            ViewCalendarDetailsCommand = new Command<long>(async (calendarId) => await ViewCalendarDetails(calendarId));
         }
 
-        private async Task ViewCalendarDetails(int calendarId)
+        private async Task ViewCalendarDetails(long calendarId)
         {
             await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarId}");            
         }
@@ -62,11 +62,16 @@ namespace Ifpa.ViewModels
 
                 logger.LogDebug("Cleared collections in {0}", sw.ElapsedMilliseconds);
 
-                //var items = await PinballRankingApi.GetCalendarSearch(address, distance, DistanceUnit.Miles);
                 var geoLocation = await geocoding.GetLocationsAsync(address);
 
-                var longitude = geoLocation.First().Longitude;
-                var latitude = geoLocation.First().Latitude;
+                var longitude = geoLocation.FirstOrDefault()?.Longitude;
+                var latitude = geoLocation.FirstOrDefault()?.Latitude;
+
+                if(longitude == null || latitude == null)
+                {
+                    logger.LogWarning("Unable to geocode address {0}", address);
+                    return;
+                }
 
                 var items = await pinballRankingApi.TournamentSearch(latitude, longitude, distance, DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1));
 
@@ -74,7 +79,7 @@ namespace Ifpa.ViewModels
 
                 if (items.Tournaments.Any())
                 {
-                    Tournaments.AddRange(items.Tournaments.OrderBy(n => n.EventEndDate));
+                    Tournaments.AddRange(items.Tournaments.OrderBy(n => n.EventStartDate));
 
                     //Limit calendar to 100 future items. otherwise this page chugs
                     foreach (var detail in Tournaments)
@@ -86,7 +91,7 @@ namespace Ifpa.ViewModels
 
                     items.Tournaments
                                   .Where(item => item.EventEndDate - item.EventStartDate <= 5.Days())                                  
-                                  .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude, longitude, n.Latitude, n.Longitude, DistanceUnits.Miles)))
+                                  .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
                                   .GroupBy(item => item.EventStartDate.Date)
                                   .ToList()
                                   .ForEach(date => TournamentCalenderItems.Add(date.Key, date.ToList()));

@@ -7,6 +7,7 @@ using MauiIcons.Fluent;
 using MauiIcons.Core;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Carousel;
+using PinballApi.Models.WPPR.Universal.Tournaments;
 
 namespace Ifpa.Views
 {
@@ -88,11 +89,11 @@ namespace Ifpa.Views
 
         private async void TournamentListView_SelectionChanged(object sender, Microsoft.Maui.Controls.SelectionChangedEventArgs e)
         {
-            var calendar = e.CurrentSelection.FirstOrDefault() as CalendarDetails;
-            if (calendar == null)
+            var tournament = e.CurrentSelection.FirstOrDefault() as Tournament;
+            if (tournament == null)
                 return;
 
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendar.CalendarId}");
+            await Shell.Current.GoToAsync($"calendar-detail?calendarId={tournament.TournamentId}");
 
             // Manually deselect item.
             TournamentListView.SelectedItem = null;
