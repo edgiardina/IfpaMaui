@@ -83,19 +83,20 @@
                                     </Label.FormattedText>
                                 </Label>
 
-                                <controls:Chip Text="{Binding RankingSystem}"
-                                               Grid.Column="1"
-                                               FontSize="10"
-                                               WidthRequest="60" />
-
-                                <Label Grid.Column="2"
+                                <Label Grid.Column="1"
                                        MinimumWidthRequest="90"
                                        FontSize="Small"
                                        VerticalTextAlignment="Center"
-                                       HorizontalTextAlignment="End"
+                                       HorizontalTextAlignment="Center"
                                        TextColor="{DynamicResource SecondaryTextColor}"
                                        Text="{Binding EventStartDate, StringFormat='{0:d}'}"
                                        LineBreakMode="NoWrap" />
+
+                                <controls:Chip Text="{Binding RankingSystem}"
+                                               Grid.Column="2"
+                                               FontSize="10"
+                                               HorizontalOptions="End"
+                                               WidthRequest="60" />
                             </Grid>
                             <BoxView Style="{StaticResource BoxSeperator}" />
                         </VerticalStackLayout>
@@ -104,6 +105,7 @@
             </CollectionView>
         </Grid>
         <calendar:Calendar x:Name="myCal"
+                           SelectedDate="{Binding Source={x:Static sys:DateTime.Now}}"
                            ArrowsSymbolNext="&gt;"
                            ArrowsSymbolPrev="&lt;"
                            ArrowsFontSize="20"
@@ -134,6 +136,7 @@
             <calendar:Calendar.EventTemplate>
                 <DataTemplate x:DataType="models:TournamentWithDistance">
                     <VerticalStackLayout Padding="10,0"
+                                         Spacing="3"
                                          Margin="0,8,0,0">
                         <VerticalStackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
@@ -141,7 +144,7 @@
                         </VerticalStackLayout.GestureRecognizers>
                         <Label Text="{Binding TournamentName}"
                                FontAttributes="Bold" />
-                        <Grid ColumnDefinitions="*,*"
+                        <Grid ColumnDefinitions="*,*,*"                             
                               Margin="0,0,0,10">
                             <Label FontSize="Small"
                                    TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
@@ -154,9 +157,10 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
+
                             <Label FontSize="Small"
                                    Grid.Column="1"
-                                   HorizontalTextAlignment="End"
+                                   HorizontalTextAlignment="Center"
                                    TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                                    LineBreakMode="WordWrap">
                                 <Label.FormattedText>
@@ -167,6 +171,13 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
+
+                            <controls:Chip Text="{Binding RankingSystem}"
+                                           Grid.Column="2"
+                                           HorizontalOptions="End"
+                                           FontSize="10"
+                                           WidthRequest="60" />                            
+  
                         </Grid>
                         <BoxView Style="{StaticResource BoxSeperator}" />
                     </VerticalStackLayout>
