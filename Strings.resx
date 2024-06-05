@@ -630,4 +630,7 @@
   <data name="RankingsPage_EmptyView" xml:space="preserve">
     <value>No players returned for the selected filter criteria</value>
   </data>
+  <data name="CalendarDetailPage_SharePrompt" xml:space="preserve">
+    <value>Share Upcoming Tournament</value>
+  </data>
 </root>

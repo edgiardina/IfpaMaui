@@ -6,7 +6,7 @@ using Microsoft.Maui.Controls.Maps;
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.Calendar.Models;
 using PinballApi.Models.WPPR.v2.Calendar;
-using PinballApi.Models.WPPR.Universal.Tournaments;
+using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 
 namespace Ifpa.ViewModels
 {
@@ -19,7 +19,7 @@ namespace Ifpa.ViewModels
     public class CalendarViewModel : BaseViewModel
     {
         public EventCollection TournamentCalenderItems { get; set; } = new EventCollection();
-        public ObservableCollectionRange<Tournament> Tournaments { get; set; }
+        public ObservableCollectionRange<TournamentSearch> Tournaments { get; set; }
 
         public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
 
@@ -39,15 +39,15 @@ namespace Ifpa.ViewModels
             this.pinballRankingApi = pinballRankingApi;
             this.geocoding = geocoding;
 
-            Tournaments = new ObservableCollectionRange<Tournament>();
+            Tournaments = new ObservableCollectionRange<TournamentSearch>();
             Pins = new ObservableCollection<Pin>();
             ChangeCalendarDisplayCommand = new Command(() => { CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList; OnPropertyChanged("CurrentType"); });
-            ViewCalendarDetailsCommand = new Command<long>(async (calendarId) => await ViewCalendarDetails(calendarId));
+            ViewCalendarDetailsCommand = new Command<long>(async (tournamentId) => await ViewCalendarDetails(tournamentId));
         }
 
-        private async Task ViewCalendarDetails(long calendarId)
+        private async Task ViewCalendarDetails(long tournamentId)
         {
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarId}");
+            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={tournamentId}");
         }
 
         public async Task ExecuteLoadItemsCommand(string address, int distance)
@@ -113,7 +113,7 @@ namespace Ifpa.ViewModels
             }
         }
 
-        private void LoadEventOntoCalendar(Tournament detail)
+        private void LoadEventOntoCalendar(TournamentSearch detail)
         {
             var location = new Location(detail.Latitude, detail.Longitude);
 

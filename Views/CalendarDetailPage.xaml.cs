@@ -1,7 +1,7 @@
-﻿using Ifpa.Models;
-using Ifpa.ViewModels;
+﻿using Ifpa.ViewModels;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
+
 
 namespace Ifpa.Views
 {
@@ -23,8 +23,9 @@ namespace Ifpa.Views
             try
             {
                 await ViewModel.ExecuteLoadItemsCommand();
+                var mapLocation = new Location(ViewModel.Tournament.Latitude, ViewModel.Tournament.Longitude);
 
-                MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
+                MapSpan mapSpan = MapSpan.FromCenterAndRadius(mapLocation, Distance.FromKilometers(1));
                 var calendarMap = new Microsoft.Maui.Controls.Maps.Map(mapSpan)
                 {
                     HeightRequest = 200,
@@ -34,9 +35,9 @@ namespace Ifpa.Views
                 };
                 var pin = new Pin
                 {
-                    Label = ViewModel.TournamentName,
-                    Location = ViewModel.GeocodedLocation,
-                    Address = ViewModel.Location,
+                    Label = ViewModel.Tournament.TournamentName,
+                    Location = new Location(ViewModel.Tournament.Latitude, ViewModel.Tournament.Longitude),
+                    Address = ViewModel.Tournament.RawAddress,
                     Type = PinType.Generic
                 };
 
@@ -60,19 +61,19 @@ namespace Ifpa.Views
 
         private async void WebsiteLabel_Tapped(object sender, EventArgs e)
         {
-            await Browser.OpenAsync(ViewModel.Website, BrowserLaunchMode.SystemPreferred);
+            await Browser.OpenAsync(ViewModel.Tournament.Website, BrowserLaunchMode.SystemPreferred);
         }
 
         private async void Address_Tapped(object sender, EventArgs e)
         {
             var placemark = new Placemark
             {
-                CountryName = ViewModel.CountryName,
-                AdminArea = ViewModel.State,
-                Thoroughfare = ViewModel.Address1,
-                Locality = ViewModel.City
+                CountryName = ViewModel.Tournament.CountryName,
+                AdminArea = ViewModel.Tournament.Stateprov,
+                Thoroughfare = ViewModel.Tournament.Address1,
+                Locality = ViewModel.Tournament.City
             };
-            var options = new MapLaunchOptions { Name = ViewModel.TournamentName };
+            var options = new MapLaunchOptions { Name = ViewModel.Tournament.TournamentName };
 
             await Microsoft.Maui.ApplicationModel.Map.OpenAsync(placemark, options);
         }
@@ -87,7 +88,7 @@ namespace Ifpa.Views
             await Share.RequestAsync(new ShareTextRequest
             {
                 Uri = $"https://www.ifpapinball.com/tournaments/view.php?t={ViewModel.TournamentId}",
-                Title = "Share Upcoming Tournament"
+                Title = Strings.CalendarDetailPage_SharePrompt
             });
         }
     }

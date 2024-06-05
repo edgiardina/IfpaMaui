@@ -56,8 +56,8 @@
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="PinballApi" Version="3.0.0" />
-		<PackageReference Include="Plugin.Maui.Calendar" Version="1.1.6" />
+		<PackageReference Include="PinballApi" Version="3.0.1" />
+		<PackageReference Include="Plugin.Maui.Calendar" Version="1.1.8" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
 		<PackageReference Include="Shiny.Core" Version="3.2.2" />
@@ -175,6 +175,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Controls\Chip.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\AboutPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>

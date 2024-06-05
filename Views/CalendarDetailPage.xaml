@@ -9,7 +9,7 @@
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
-             x:DataType="vm:CalendarDetailViewModel"
+             x:DataType="vm:CalendarDetailViewModel"             
              ios:Page.LargeTitleDisplay="Never">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -43,7 +43,7 @@
                          BackgroundColor="{StaticResource SecondaryBanner}"
                          Spacing="10"
                          Padding="12,10">
-                <Label Text="{Binding Title, Mode=OneWay}"
+                <Label Text="{Binding Tournament.TournamentName, Mode=OneWay}"
                        FontSize="24"
                        Style="{StaticResource calendarHeader}" />
                 <Label LineBreakMode="NoWrap"
@@ -53,7 +53,7 @@
                         <FormattedString>
                             <FormattedString.Spans>
                                 <Span Text="{x:Static local:Strings.CalendarDetailPage_Date}" />
-                                <Span Text="{Binding TournamentDuration, Mode=OneWay}" />
+                                <Span Text="{Binding Tournament.EventStartDate, Mode=OneWay}" />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
@@ -65,31 +65,28 @@
                         <FormattedString>
                             <FormattedString.Spans>
                                 <Span Text="{x:Static local:Strings.CalendarDetailPage_Director}" />
-                                <Span Text="{Binding DirectorName, Mode=OneWay}" />
+                                <Span Text="{Binding Tournament.DirectorName, Mode=OneWay}" />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
             </StackLayout>
-            <Grid x:Name="mapShim">
-                
-            </Grid>
-            <!--<maps:Map x:Name="calendarMap"
-                      MapType="Street"                      
-                      IsZoomEnabled="False"
-                      IsScrollEnabled="False" />-->
+            
+            <!-- Map Shim; map is loaded in Codebehind -->
+            <Grid x:Name="mapShim" />
+
             <ScrollView VerticalOptions="FillAndExpand"
                         IsClippedToBounds="True"
                         Padding="12,10">
                 <StackLayout>
-                    <Label Text="{Binding Website, Mode=OneWay}"
+                    <Label Text="{Binding Tournament.Website, Mode=OneWay}"
                            TextColor="Blue"
                            Margin="0,0,0,10">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="WebsiteLabel_Tapped" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <Label Text="{Binding Details, Mode=OneWay}" />
+                    <Label Text="{Binding Tournament.Details, Mode=OneWay}" />
                 </StackLayout>
             </ScrollView>
         </StackLayout>

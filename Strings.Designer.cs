@@ -322,6 +322,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Share Upcoming Tournament.
+        /// </summary>
+        internal static string CalendarDetailPage_SharePrompt {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_SharePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0.
         /// </summary>
         internal static string CalendarFilterModalPage_0 {

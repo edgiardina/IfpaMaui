@@ -1,13 +1,11 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
 using MauiIcons.Core;
 using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Core.Carousel;
-using PinballApi.Models.WPPR.Universal.Tournaments;
+using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 
 namespace Ifpa.Views
 {
@@ -89,11 +87,11 @@ namespace Ifpa.Views
 
         private async void TournamentListView_SelectionChanged(object sender, Microsoft.Maui.Controls.SelectionChangedEventArgs e)
         {
-            var tournament = e.CurrentSelection.FirstOrDefault() as Tournament;
+            var tournament = e.CurrentSelection.FirstOrDefault() as TournamentSearch;
             if (tournament == null)
                 return;
 
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={tournament.TournamentId}");
+            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={tournament.TournamentId}");
 
             // Manually deselect item.
             TournamentListView.SelectedItem = null;
@@ -111,7 +109,7 @@ namespace Ifpa.Views
             var pin = (Pin)sender;
             var calendarItem = ViewModel.Tournaments.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
 
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarItem.TournamentId}");
+            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={calendarItem.TournamentId}");
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using PinballApi.Models.WPPR.Universal.Tournaments;
+﻿using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 
 namespace Ifpa.Models
 {
-    internal class TournamentWithDistance : Tournament
+    internal class TournamentWithDistance : TournamentSearch
     {
-        public TournamentWithDistance(Tournament tournament, long distance)
+        public TournamentWithDistance(TournamentSearch tournament, long distance)
         {
             this.TournamentId = tournament.TournamentId;
             this.TournamentName = tournament.TournamentName;
