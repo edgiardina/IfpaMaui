@@ -150,26 +150,26 @@
                                Style="{DynamicResource valueStyle}"
                                Grid.Column="1" />
 
+                        <Label Text="{x:Static local:Strings.CalendarDetailPage_FinalsFormat}"
+                               Style="{DynamicResource labelStyle}"
+                               Grid.Column="0"
+                               Grid.Row="1" />
+
+                        <Label Text="{Binding Tournament.FinalsFormat}"
+                               Style="{DynamicResource valueStyle}"
+                               Grid.Column="1"
+                               Grid.Row="1" />
+
                         <Label Text="{x:Static local:Strings.CalendarDetailPage_PlayerLimit}"
                                Style="{DynamicResource labelStyle}"
                                Grid.Column="0"
-                               Grid.Row="1"
+                               Grid.Row="2"
                                IsVisible="{Binding Tournament.PlayerLimit, Converter={StaticResource IsNotEqualConverter}, ConverterParameter={StaticResource Zero}}" />
 
                         <Label Text="{Binding Tournament.PlayerLimit}"
                                Style="{DynamicResource valueStyle}"
                                Grid.Column="1"
                                IsVisible="{Binding Tournament.PlayerLimit, Converter={StaticResource IsNotEqualConverter}, ConverterParameter={StaticResource Zero}}"
-                               Grid.Row="1" />
-
-                        <Label Text="{x:Static local:Strings.CalendarDetailPage_FinalsFormat}"
-                               Style="{DynamicResource labelStyle}"
-                               Grid.Column="0"
-                               Grid.Row="2" />
-
-                        <Label Text="{Binding Tournament.FinalsFormat}"
-                               Style="{DynamicResource valueStyle}"
-                               Grid.Column="1"
                                Grid.Row="2" />
 
                         <Label Text="{x:Static local:Strings.CalendarDetailPage_RegistrationDate}"

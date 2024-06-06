@@ -14,6 +14,7 @@
                TextColor="{StaticResource ButtonTextColor}"
                VerticalOptions="CenterAndExpand"
                HorizontalOptions="CenterAndExpand"
+               Padding="10,0"
                BindingContext="{x:Reference this}" />
     </Frame>
 </ContentView>
