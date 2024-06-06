@@ -30,14 +30,14 @@ namespace Ifpa.Services
                 var selectedCalendar = calendars.Single(n => n.Title == calendarIdentifier);
 
                 EKEvent newEvent = EKEvent.FromStore(eventStore);
-                newEvent.StartDate = DateTimeToNSDate(calendarDetail.StartDate);
-                newEvent.EndDate = DateTimeToNSDate(calendarDetail.EndDate);
-                newEvent.Title = calendarDetail.TournamentName;
-                newEvent.Notes = calendarDetail.Details;
+                newEvent.StartDate = DateTimeToNSDate(calendarDetail.Tournament.EventStartDate.DateTime);
+                newEvent.EndDate = DateTimeToNSDate(calendarDetail.Tournament.EventEndDate.DateTime);
+                newEvent.Title = calendarDetail.Tournament.TournamentName;
+                newEvent.Notes = calendarDetail.Tournament.Details;
                 newEvent.Calendar = selectedCalendar;
                 //TODO: we don't get start/end time for these so fix so its not all day
                 newEvent.AllDay = true;
-                newEvent.Location = $"{calendarDetail.Address1} {calendarDetail.City} {calendarDetail.State}";
+                newEvent.Location = $"{calendarDetail.Tournament.Address1} {calendarDetail.Tournament.City} {calendarDetail.Tournament.Stateprov}";
                 NSError e;
                 eventStore.SaveEvent(newEvent, EKSpan.ThisEvent, out e);
                 return true;
