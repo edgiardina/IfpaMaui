@@ -633,4 +633,10 @@
   <data name="CalendarDetailPage_SharePrompt" xml:space="preserve">
     <value>Share Upcoming Tournament</value>
   </data>
+  <data name="CalendarDetailPage_Matchplay" xml:space="preserve">
+    <value>Matchplay Link</value>
+  </data>
+  <data name="CalendarDetailPage_Private" xml:space="preserve">
+    <value>Private</value>
+  </data>
 </root>

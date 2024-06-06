@@ -313,6 +313,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Matchplay Link.
+        /// </summary>
+        internal static string CalendarDetailPage_Matchplay {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Matchplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private.
+        /// </summary>
+        internal static string CalendarDetailPage_Private {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Private", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Share.
         /// </summary>
         internal static string CalendarDetailPage_Share {

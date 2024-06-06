@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.Universal.Tournaments;
+using Syncfusion.Maui.Core.Carousel;
+using System.Windows.Input;
+using static System.Net.WebRequestMethods;
 
 
 namespace Ifpa.ViewModels
@@ -9,9 +12,13 @@ namespace Ifpa.ViewModels
     [QueryProperty("TournamentId", "tournamentId")]
     public class CalendarDetailViewModel : BaseViewModel
     {
+        private const string MATCHPLAY_TOURNAMENT_URL = "https://app.matchplay.events/tournaments/{0}";
+
         public Tournament Tournament { get; set; }
 
         public Command LoadItemsCommand { get; set; }
+        public ICommand LoadMatchPlayCommand { get; set; }
+        public ICommand LoadWebsiteCommand { get; set; }
 
         public int TournamentId { get; set; }
 
@@ -26,6 +33,18 @@ namespace Ifpa.ViewModels
 
             ReminderService = reminderService;
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            LoadMatchPlayCommand = new Command(async () => await LoadMatchPlay());
+            LoadWebsiteCommand = new Command(async () => await LoadWebsite());
+        }
+
+        private async Task LoadWebsite()
+        {
+            await Browser.OpenAsync(Tournament.Website, BrowserLaunchMode.SystemPreferred);
+        }
+
+        private async Task LoadMatchPlay()
+        {
+            await Browser.OpenAsync(string.Format(MATCHPLAY_TOURNAMENT_URL, Tournament.MatchplayId), BrowserLaunchMode.SystemPreferred);
         }
 
         public async Task ExecuteLoadItemsCommand()

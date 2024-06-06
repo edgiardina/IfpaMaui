@@ -59,11 +59,6 @@ namespace Ifpa.Views
             Address_Tapped(sender, e);
         }
 
-        private async void WebsiteLabel_Tapped(object sender, EventArgs e)
-        {
-            await Browser.OpenAsync(ViewModel.Tournament.Website, BrowserLaunchMode.SystemPreferred);
-        }
-
         private async void Address_Tapped(object sender, EventArgs e)
         {
             var placemark = new Placemark

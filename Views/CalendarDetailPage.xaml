@@ -8,12 +8,16 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:CalendarDetailViewModel"             
              ios:Page.LargeTitleDisplay="Never">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <x:Int64 x:Key="Zero">0</x:Int64>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <toolkit:IsNotNullConverter x:Key="isNotNullConverter" />
+            <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter" />
             <Style x:Key="calendarHeader"
                    TargetType="Label">
                 <Setter Property="TextColor"
@@ -79,11 +83,57 @@
                         IsClippedToBounds="True"
                         Padding="12,10">
                 <StackLayout>
+                    <FlexLayout Direction="Row"
+                                AlignItems="Start"
+                                Wrap="Wrap"
+                                JustifyContent="Start">
+                        <controls:Chip Text="{Binding Tournament.QualifyingFormat}"                                       
+                                       Grid.Column="2"
+                                       FontSize="10"
+                                       HeightRequest="20" />
+
+                        <controls:Chip Text="{Binding Tournament.PlayerLimit}"
+                                       Grid.Column="2"
+                                       FontSize="10"
+                                       HeightRequest="20" />
+
+                        <controls:Chip Text="{x:Static local:Strings.CalendarDetailPage_Private}"
+                                       IsVisible="{Binding Tournament.PrivateFlag}"
+                                       Grid.Column="2"
+                                       FontSize="10"
+                                       HeightRequest="20" />
+
+                        <controls:Chip Text="{Binding Tournament.RankingSystem}"
+                                       Grid.Column="2"
+                                       FontSize="10"
+                                       HeightRequest="20" />
+
+                        <controls:Chip Text="{Binding Tournament.FinalsFormat}"
+                                       Grid.Column="2"
+                                       FontSize="10"
+                                       HeightRequest="20" />
+
+                        <controls:Chip Text="{Binding Tournament.RegistrationDate, StringFormat='{0:d}'}"
+                                       IsVisible="{Binding Tournament.RegistrationDate, Converter={StaticResource isNotNullConverter}}"
+                                       Grid.Column="2"
+                                       FontSize="10"
+                                       HeightRequest="20" />
+                    </FlexLayout>
+
                     <Label Text="{Binding Tournament.Website, Mode=OneWay}"
                            TextColor="Blue"
                            Margin="0,0,0,10">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="WebsiteLabel_Tapped" />
+                            <TapGestureRecognizer Command="{Binding LoadWebsiteCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Text="{x:Static local:Strings.CalendarDetailPage_Matchplay}"
+                           IsVisible="{Binding Tournament.MatchplayId, Converter={StaticResource IsNotEqualConverter}, ConverterParameter={StaticResource Zero}}"
+                           TextColor="Blue"
+                           Margin="0,0,0,10">                        
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LoadMatchPlayCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
                     <Label Text="{Binding Tournament.Details, Mode=OneWay}" />
