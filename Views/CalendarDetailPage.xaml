@@ -10,7 +10,7 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
-             x:DataType="vm:CalendarDetailViewModel"             
+             x:DataType="vm:CalendarDetailViewModel"
              ios:Page.LargeTitleDisplay="Never">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -57,7 +57,7 @@
                         <FormattedString>
                             <FormattedString.Spans>
                                 <Span Text="{x:Static local:Strings.CalendarDetailPage_Date}" />
-                                <Span Text="{Binding Tournament.EventStartDate, Mode=OneWay}" />
+                                <Span Text="{Binding Tournament.EventStartDate, StringFormat='{0:d}', Mode=OneWay}" />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
@@ -75,7 +75,7 @@
                     </Label.FormattedText>
                 </Label>
             </StackLayout>
-            
+
             <!-- Map Shim; map is loaded in Codebehind -->
             <Grid x:Name="mapShim" />
 
@@ -83,43 +83,110 @@
                         IsClippedToBounds="True"
                         Padding="12,10">
                 <StackLayout>
+                    <!-- Tournament Details Chips -->
                     <FlexLayout Direction="Row"
                                 AlignItems="Start"
                                 Wrap="Wrap"
                                 JustifyContent="Start">
-                        <controls:Chip Text="{Binding Tournament.QualifyingFormat}"                                       
-                                       Grid.Column="2"
-                                       FontSize="10"
-                                       HeightRequest="20" />
-
-                        <controls:Chip Text="{Binding Tournament.PlayerLimit}"
-                                       Grid.Column="2"
-                                       FontSize="10"
-                                       HeightRequest="20" />
-
                         <controls:Chip Text="{x:Static local:Strings.CalendarDetailPage_Private}"
                                        IsVisible="{Binding Tournament.PrivateFlag}"
-                                       Grid.Column="2"
                                        FontSize="10"
                                        HeightRequest="20" />
 
                         <controls:Chip Text="{Binding Tournament.RankingSystem}"
-                                       Grid.Column="2"
                                        FontSize="10"
                                        HeightRequest="20" />
 
-                        <controls:Chip Text="{Binding Tournament.FinalsFormat}"
-                                       Grid.Column="2"
-                                       FontSize="10"
-                                       HeightRequest="20" />
-
-                        <controls:Chip Text="{Binding Tournament.RegistrationDate, StringFormat='{0:d}'}"
-                                       IsVisible="{Binding Tournament.RegistrationDate, Converter={StaticResource isNotNullConverter}}"
-                                       Grid.Column="2"
-                                       FontSize="10"
-                                       HeightRequest="20" />
                     </FlexLayout>
 
+                    <!-- Tournament Details -->
+                    <Grid Padding="0,10"
+                          ColumnSpacing="10"
+                          VerticalOptions="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <ResourceDictionary>
+                                <Style x:Key="labelStyle"
+                                       TargetType="Label">
+                                    <Setter Property="LineBreakMode"
+                                            Value="NoWrap" />
+                                    <Setter Property="FontSize"
+                                            Value="14" />
+                                    <Setter Property="TextColor"
+                                            Value="{StaticResource SecondaryTextColor}" />
+                                    <Setter Property="HorizontalTextAlignment"
+                                            Value="End" />
+                                </Style>
+                                <Style x:Key="valueStyle"
+                                       TargetType="Label">
+                                    <Setter Property="LineBreakMode"
+                                            Value="WordWrap" />
+                                    <Setter Property="FontSize"
+                                            Value="14" />
+                                    <Setter Property="HorizontalTextAlignment"
+                                            Value="Start" />
+                                    <Setter Property="Margin"
+                                            Value="10,0,0,0" />
+                                </Style>
+                            </ResourceDictionary>
+                        </Grid.Resources>
+
+
+                        <Label Text="{x:Static local:Strings.CalendarDetailPage_QualifyingFormat}"
+                               Style="{DynamicResource labelStyle}"
+                               Grid.Column="0" />
+
+                        <Label Text="{Binding Tournament.QualifyingFormat}"
+                               Style="{DynamicResource valueStyle}"
+                               Grid.Column="1" />
+
+                        <Label Text="{x:Static local:Strings.CalendarDetailPage_PlayerLimit}"
+                               Style="{DynamicResource labelStyle}"
+                               Grid.Column="0"
+                               Grid.Row="1"
+                               IsVisible="{Binding Tournament.PlayerLimit, Converter={StaticResource IsNotEqualConverter}, ConverterParameter={StaticResource Zero}}" />
+
+                        <Label Text="{Binding Tournament.PlayerLimit}"
+                               Style="{DynamicResource valueStyle}"
+                               Grid.Column="1"
+                               IsVisible="{Binding Tournament.PlayerLimit, Converter={StaticResource IsNotEqualConverter}, ConverterParameter={StaticResource Zero}}"
+                               Grid.Row="1" />
+
+                        <Label Text="{x:Static local:Strings.CalendarDetailPage_FinalsFormat}"
+                               Style="{DynamicResource labelStyle}"
+                               Grid.Column="0"
+                               Grid.Row="2" />
+
+                        <Label Text="{Binding Tournament.FinalsFormat}"
+                               Style="{DynamicResource valueStyle}"
+                               Grid.Column="1"
+                               Grid.Row="2" />
+
+                        <Label Text="{x:Static local:Strings.CalendarDetailPage_RegistrationDate}"
+                               Style="{DynamicResource labelStyle}"
+                               Grid.Column="0"
+                               Grid.Row="3"
+                               IsVisible="{Binding Tournament.RegistrationDate, Converter={StaticResource isNotNullConverter}}" />
+
+                        <Label Text="{Binding Tournament.RegistrationDate, StringFormat='{0:d}'}"
+                               IsVisible="{Binding Tournament.RegistrationDate, Converter={StaticResource isNotNullConverter}}"
+                               Grid.Column="1"
+                               Grid.Row="3"
+                               FontSize="10" />
+
+                    </Grid>
+
+                    <!-- Tournament Links -->
                     <Label Text="{Binding Tournament.Website, Mode=OneWay}"
                            TextColor="Blue"
                            Margin="0,0,0,10">
@@ -131,11 +198,13 @@
                     <Label Text="{x:Static local:Strings.CalendarDetailPage_Matchplay}"
                            IsVisible="{Binding Tournament.MatchplayId, Converter={StaticResource IsNotEqualConverter}, ConverterParameter={StaticResource Zero}}"
                            TextColor="Blue"
-                           Margin="0,0,0,10">                        
+                           Margin="0,0,0,10">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding LoadMatchPlayCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
+                    
+                    <!-- Details -->
                     <Label Text="{Binding Tournament.Details, Mode=OneWay}" />
                 </StackLayout>
             </ScrollView>

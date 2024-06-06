@@ -313,6 +313,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finals Format.
+        /// </summary>
+        internal static string CalendarDetailPage_FinalsFormat {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_FinalsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Matchplay Link.
         /// </summary>
         internal static string CalendarDetailPage_Matchplay {
@@ -322,11 +331,38 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player Limit.
+        /// </summary>
+        internal static string CalendarDetailPage_PlayerLimit {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_PlayerLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Private.
         /// </summary>
         internal static string CalendarDetailPage_Private {
             get {
                 return ResourceManager.GetString("CalendarDetailPage_Private", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qualifying Format.
+        /// </summary>
+        internal static string CalendarDetailPage_QualifyingFormat {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_QualifyingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Date.
+        /// </summary>
+        internal static string CalendarDetailPage_RegistrationDate {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_RegistrationDate", resourceCulture);
             }
         }
         
