@@ -13,7 +13,7 @@
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:models="clr-namespace:Ifpa.Models"
              xmlns:ifpacalendar="clr-namespace:PinballApi.Models.WPPR.v1.Calendar;assembly=PinballApi"
-             xmlns:ifpatournament="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments;assembly=PinballApi"
+             xmlns:ifpatournamentsearch="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi"
              x:DataType="vm:CalendarViewModel"
              Title="{x:Static local:Strings.CalendarPage_Calendar}">
     <ContentPage.Resources>
@@ -61,7 +61,7 @@
                             SelectionMode="Single"
                             SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:TournamentWithDistance">
+                    <DataTemplate x:DataType="ifpatournamentsearch:Tournament">
                         <VerticalStackLayout Padding="10,0"
                                              Spacing="3"
                                              Margin="0,5,0,0">
