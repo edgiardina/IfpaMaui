@@ -46,6 +46,7 @@
     <Grid>
         <Grid x:Name="MapLayout"
               IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.MapAndList}}"
+              RowSpacing="10"
               RowDefinitions="*,*">
             <Grid Grid.Row="0"
                   x:Name="mapShim">
@@ -61,17 +62,15 @@
                             SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="ifpatournament:Tournament">
-                        <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
-                             https://github.com/dotnet/maui/issues/16877 -->
-                        <VerticalStackLayout HeightRequest="{OnPlatform iOS=40}"
-                                             Padding="10,0"
+                        <VerticalStackLayout Padding="10,0"
                                              Spacing="3"
-                                             Margin="0,8,0,0">
+                                             Margin="0,5,0,0">
                             <Label Text="{Binding TournamentName}"
                                    FontAttributes="Bold" />
-                            <Grid ColumnDefinitions="*,*,*"
-                                  Margin="0,0,0,10">
+                            <Grid ColumnDefinitions="2*,*,*"
+                                  Margin="0,0,0,5">
                                 <Label FontSize="Small"
+                                       VerticalTextAlignment="Center"
                                        TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                                        LineBreakMode="WordWrap">
                                     <Label.FormattedText>
@@ -95,8 +94,7 @@
                                 <controls:Chip Text="{Binding RankingSystem}"
                                                Grid.Column="2"
                                                FontSize="10"
-                                               HorizontalOptions="End"
-                                               WidthRequest="60" />
+                                               HorizontalOptions="End" />
                             </Grid>
                             <BoxView Style="{StaticResource BoxSeperator}" />
                         </VerticalStackLayout>
@@ -144,8 +142,8 @@
                         </VerticalStackLayout.GestureRecognizers>
                         <Label Text="{Binding TournamentName}"
                                FontAttributes="Bold" />
-                        <Grid ColumnDefinitions="*,*,*"                             
-                              Margin="0,0,0,10">
+                        <Grid ColumnDefinitions="2*,*,*"
+                              Margin="0,0,0,5">
                             <Label FontSize="Small"
                                    TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                                    LineBreakMode="WordWrap">
@@ -175,9 +173,8 @@
                             <controls:Chip Text="{Binding RankingSystem}"
                                            Grid.Column="2"
                                            HorizontalOptions="End"
-                                           FontSize="10"
-                                           WidthRequest="60" />                            
-  
+                                           FontSize="10" />
+
                         </Grid>
                         <BoxView Style="{StaticResource BoxSeperator}" />
                     </VerticalStackLayout>

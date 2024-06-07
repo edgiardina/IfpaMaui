@@ -6,15 +6,15 @@
     <!-- TODO: Make a selectable chip control: https://medium.com/@KonstantinosK/create-a-custom-chip-control-on-net-maui-77544b55a6d6 -->
     <Frame x:Name="MainLayout"
            CornerRadius="6.5"
-           BackgroundColor="{StaticResource IconAccentColor}"
-           Padding="{OnPlatform Android=1}">
+           HasShadow="False"
+           Padding="8,5"
+           BackgroundColor="{StaticResource IconAccentColor}">
         <Label x:Name="Label"
                Text="{Binding Text}"
                FontSize="{Binding FontSize}"
                TextColor="{StaticResource ButtonTextColor}"
-               VerticalOptions="CenterAndExpand"
-               HorizontalOptions="CenterAndExpand"
-               Padding="10,0"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"       
                BindingContext="{x:Reference this}" />
     </Frame>
 </ContentView>

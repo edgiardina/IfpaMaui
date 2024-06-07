@@ -45,7 +45,7 @@
                      IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
             <StackLayout Orientation="Vertical"
                          BackgroundColor="{StaticResource SecondaryBanner}"
-                         Spacing="10"
+                         Spacing="5"
                          Padding="12,10">
                 <Label Text="{Binding Tournament.TournamentName, Mode=OneWay}"
                        FontSize="24"
@@ -90,12 +90,10 @@
                                 JustifyContent="Start">
                         <controls:Chip Text="{x:Static local:Strings.CalendarDetailPage_Private}"
                                        IsVisible="{Binding Tournament.PrivateFlag}"
-                                       FontSize="10"
-                                       HeightRequest="20" />
+                                       FontSize="10" />
 
                         <controls:Chip Text="{Binding Tournament.RankingSystem}"
-                                       FontSize="10"
-                                       HeightRequest="20" />
+                                       FontSize="10" />
 
                     </FlexLayout>
 
@@ -179,10 +177,10 @@
                                IsVisible="{Binding Tournament.RegistrationDate, Converter={StaticResource isNotNullConverter}}" />
 
                         <Label Text="{Binding Tournament.RegistrationDate, StringFormat='{0:d}'}"
+                               Style="{DynamicResource valueStyle}"
                                IsVisible="{Binding Tournament.RegistrationDate, Converter={StaticResource isNotNullConverter}}"
                                Grid.Column="1"
-                               Grid.Row="3"
-                               FontSize="10" />
+                               Grid.Row="3" />
 
                     </Grid>
 
