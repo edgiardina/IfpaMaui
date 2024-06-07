@@ -87,10 +87,11 @@
                     <FlexLayout Direction="Row"
                                 AlignItems="Start"
                                 Wrap="Wrap"
-                                JustifyContent="Start">
+                                AlignContent="Start">
                         <controls:Chip Text="{x:Static local:Strings.CalendarDetailPage_Private}"
                                        IsVisible="{Binding Tournament.PrivateFlag}"
-                                       FontSize="10" />
+                                       FontSize="10"
+                                       Margin="0,0,3,0"/>
 
                         <controls:Chip Text="{Binding Tournament.RankingSystem}"
                                        FontSize="10" />
