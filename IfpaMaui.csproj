@@ -45,12 +45,12 @@
 	<PropertyGroup>
 		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
 	</PropertyGroup>
-	
+
 	<!-- Package References -->
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.20" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.20" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.40" />
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
