@@ -61,7 +61,7 @@
                             SelectionMode="Single"
                             SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="ifpatournament:Tournament">
+                    <DataTemplate x:DataType="models:TournamentWithDistance">
                         <VerticalStackLayout Padding="10,0"
                                              Spacing="3"
                                              Margin="0,5,0,0">

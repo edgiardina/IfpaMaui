@@ -73,7 +73,7 @@ namespace Ifpa.ViewModels
                     return;
                 }
 
-                var items = await pinballRankingApi.TournamentSearch(latitude, longitude, distance, DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1));
+                var items = await pinballRankingApi.TournamentSearch(latitude, longitude, distance, DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1), totalReturn: 500);
 
                 logger.LogDebug("Api call completed at {0}", sw.ElapsedMilliseconds);
 
