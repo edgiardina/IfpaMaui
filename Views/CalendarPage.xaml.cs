@@ -52,14 +52,21 @@ namespace Ifpa.Views
             {
                 mapShim.Children.Clear();
                 var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
-                var map = new Microsoft.Maui.Controls.Maps.Map(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Distance.FromMiles(Settings.LastCalendarDistance)));
+
+                var mapSpan = MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                                                                        Distance.FromMiles(Settings.LastCalendarDistance));
+
+                var map = new Microsoft.Maui.Controls.Maps.Map(mapSpan);
+
                 map.ItemTemplate = PinDataTemplate;
                 map.ItemsSource = ViewModel.Pins;
 
                 mapShim.Children.Add(map);
 
                 await ViewModel.ExecuteLoadItemsCommand(Settings.LastCalendarLocation, Settings.LastCalendarDistance);
+
+                // For whatever reason Android on re-load via modal doesn't re-center the map.
+                map.MoveToRegion(mapSpan);
             }
             catch (Exception e)
             {
