@@ -8,6 +8,7 @@
            CornerRadius="6.5"
            HasShadow="False"
            Padding="8,5"
+           Margin="{OnPlatform Android=1}"
            BackgroundColor="{StaticResource IconAccentColor}">
         <Label x:Name="Label"
                Text="{Binding Text}"

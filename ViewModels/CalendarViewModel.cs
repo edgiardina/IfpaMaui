@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Plugin.Maui.Calendar.Models;
 using PinballApi.Models.WPPR.v2.Calendar;
 using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
+using System.Windows.Input;
+using PinballApi.Models.WPPR.Universal;
 
 namespace Ifpa.ViewModels
 {
@@ -25,11 +27,14 @@ namespace Ifpa.ViewModels
 
         public ObservableCollection<Pin> Pins { get; set; }
 
+        public string SelectedRankingSystem => Settings.CalendarRankingSystem;
+
         public Command LoadItemsCommand { get; set; }
 
         public Command ChangeCalendarDisplayCommand { get; set; }
 
         public Command ViewCalendarDetailsCommand { get; set; }
+
 
         private readonly PinballRankingApi pinballRankingApi;
         private readonly IGeocoding geocoding;
@@ -73,7 +78,15 @@ namespace Ifpa.ViewModels
                     return;
                 }
 
-                var items = await pinballRankingApi.TournamentSearch(latitude, longitude, distance, DistanceType.Miles, startDate: DateTime.Now, endDate: DateTime.Now.AddYears(1), totalReturn: 500);
+                var rankingSystem = (RankingSystem?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(RankingSystem), Settings.CalendarRankingSystem));
+
+                var items = await pinballRankingApi.TournamentSearch(latitude, 
+                                                                     longitude, 
+                                                                     distance, DistanceType.Miles, 
+                                                                     startDate: DateTime.Now, 
+                                                                     endDate: DateTime.Now.AddYears(1), 
+                                                                     rankingSystem: rankingSystem, 
+                                                                     totalReturn: 500);
 
                 logger.LogDebug("Api call completed at {0}", sw.ElapsedMilliseconds);
 
@@ -96,9 +109,9 @@ namespace Ifpa.ViewModels
                                   .ToList()
                                   .ForEach(date => TournamentCalenderItems.Add(date.Key, date.ToList()));
 
-                    OnPropertyChanged("TournamentCalenderItems");
-                    OnPropertyChanged("CalendarDetails");
-                    OnPropertyChanged("Pins");
+                    OnPropertyChanged(nameof(TournamentCalenderItems));
+                    OnPropertyChanged(nameof(Pins));
+                    OnPropertyChanged(nameof(SelectedRankingSystem));
                 }
 
                 logger.LogDebug("Collections loaded at {0}", sw.ElapsedMilliseconds);

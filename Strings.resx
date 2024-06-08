@@ -651,4 +651,7 @@
   <data name="CalendarDetailPage_RegistrationDate" xml:space="preserve">
     <value>Registration Date</value>
   </data>
+  <data name="CalendarFilterModalPage_RankingType" xml:space="preserve">
+    <value>Ranking Type</value>
+  </data>
 </root>

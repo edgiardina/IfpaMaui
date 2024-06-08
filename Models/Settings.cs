@@ -1,4 +1,5 @@
 ﻿using Ifpa.Services;
+using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.v1.Players;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,12 @@ namespace Ifpa.Models
         {
             get => Preferences.Get("LastCalendarDistance", 150);
             set => Preferences.Set("LastCalendarDistance", value);
+        }
+
+        public static string CalendarRankingSystem
+        {
+            get => Preferences.Get("CalendarRankingSystem", "All");
+            set => Preferences.Set("CalendarRankingSystem", value);
         }
 
         public static int LastCalendarIdSeen

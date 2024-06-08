@@ -430,6 +430,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ranking Type.
+        /// </summary>
+        internal static string CalendarFilterModalPage_RankingType {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_RankingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set Calendar Location.
         /// </summary>
         internal static string CalendarFilterModalPage_SetCalendarLocation {
