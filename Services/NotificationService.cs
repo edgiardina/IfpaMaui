@@ -5,6 +5,11 @@ using Shiny.Notifications;
 using PinballApi.Models.WPPR.v1.Calendar;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui.ApplicationModel;
+using Microsoft.Maui.Devices.Sensors;
+using System.Net;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.v2.Calendar;
 
 namespace Ifpa.Services
 {
@@ -16,9 +21,13 @@ namespace Ifpa.Services
         private readonly ILogger<NotificationService> logger;
         private readonly IBadge badge;
 
-        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
+        private readonly IGeocoding Geocoding;
+
+        public NotificationService(PinballRankingApiV1 pinballRankingApi, PinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
             PinballRankingApi = pinballRankingApi;
+            UniversalPinballRankingApi = universalPinballRankingApi;
+            Geocoding = geocoding;
 
             BlogPostService = blogPostService;
             this.notificationManager = notificationManager;
@@ -26,6 +35,7 @@ namespace Ifpa.Services
             this.badge = badge;
         }
         private PinballRankingApiV1 PinballRankingApi { get; set; }
+        private PinballRankingApi UniversalPinballRankingApi { get; set; }
 
         public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
         protected readonly string NewTournamentNotificationDescription = Strings.NotificationService_NewTournamentNotificationDescription;
@@ -166,17 +176,30 @@ namespace Ifpa.Services
             {
                 try
                 {
-                    var items = await PinballRankingApi.GetCalendarSearch(Settings.LastCalendarLocation, Settings.LastCalendarDistance, DistanceUnit.Miles);
+                    var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
 
-                    var newestCalendarItemId = items.Calendar.Max(n => n.CalendarId);
+                    var longitude = geoLocation.FirstOrDefault()?.Longitude;
+                    var latitude = geoLocation.FirstOrDefault()?.Latitude;
+                    var rankingSystem = (RankingSystem?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(RankingSystem), Settings.CalendarRankingSystem));
+
+                    var items = await UniversalPinballRankingApi.TournamentSearch(latitude,
+                                                                 longitude,
+                                                                 Settings.LastCalendarDistance,
+                                                                 DistanceType.Miles,
+                                                                 startDate: DateTime.Now,
+                                                                 endDate: DateTime.Now.AddYears(1),
+                                                                 rankingSystem: rankingSystem,
+                                                                 totalReturn: 500);
+
+                    var newestCalendarItemId = items.Tournaments.Max(n => n.TournamentId);
 
                     if(newestCalendarItemId > Settings.LastCalendarIdSeen)
                     {
-                        foreach (var calendarItem in items.Calendar.Where(n => n.CalendarId > Settings.LastCalendarIdSeen))
+                        foreach (var calendarItem in items.Tournaments.Where(n => n.TournamentId > Settings.LastCalendarIdSeen))
                         {
                             await SendNotification(NewTournamentOnCalendarTitle, 
-                                                   string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.StartDate.ToShortDateString()), 
-                                                   $"///calendar/calendar-detail?calendarId={calendarItem.CalendarId}");
+                                                   string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.EventStartDate.DateTime.ToShortDateString()), 
+                                                   $"///calendar/calendar-detail?tournamentId={calendarItem.TournamentId}");
                         }
 
                         Settings.LastCalendarIdSeen = newestCalendarItemId;

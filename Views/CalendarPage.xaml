@@ -57,6 +57,7 @@
             </Grid>
             <CollectionView x:Name="TournamentListView"
                             Grid.Row="1"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                             ItemsSource="{Binding Tournaments}"
                             SelectionMode="Single"
                             SelectionChanged="TournamentListView_SelectionChanged">
@@ -105,6 +106,9 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <ActivityIndicator Grid.Row="2"
+                               IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}" />
         </Grid>
         <calendar:Calendar x:Name="myCal"
                            SelectedDate="{Binding Source={x:Static sys:DateTime.Now}}"

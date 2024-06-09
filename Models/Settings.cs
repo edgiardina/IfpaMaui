@@ -81,7 +81,7 @@ namespace Ifpa.Models
             set => Preferences.Set("CalendarRankingSystem", value);
         }
 
-        public static int LastCalendarIdSeen
+        public static long LastCalendarIdSeen
         {
             get => Preferences.Get("LastCalendarIdSeen", 0);
             set => Preferences.Set("LastCalendarIdSeen", value);
