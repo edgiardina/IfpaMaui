@@ -630,4 +630,28 @@
   <data name="RankingsPage_EmptyView" xml:space="preserve">
     <value>No players returned for the selected filter criteria</value>
   </data>
+  <data name="CalendarDetailPage_SharePrompt" xml:space="preserve">
+    <value>Share Upcoming Tournament</value>
+  </data>
+  <data name="CalendarDetailPage_FinalsFormat" xml:space="preserve">
+    <value>Finals Format</value>
+  </data>
+  <data name="CalendarDetailPage_Matchplay" xml:space="preserve">
+    <value>Matchplay Link</value>
+  </data>
+  <data name="CalendarDetailPage_PlayerLimit" xml:space="preserve">
+    <value>Player Limit</value>
+  </data>
+  <data name="CalendarDetailPage_Private" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="CalendarDetailPage_QualifyingFormat" xml:space="preserve">
+    <value>Qualifying Format</value>
+  </data>
+  <data name="CalendarDetailPage_RegistrationDate" xml:space="preserve">
+    <value>Registration Date</value>
+  </data>
+  <data name="CalendarFilterModalPage_RankingType" xml:space="preserve">
+    <value>Ranking Type</value>
+  </data>
 </root>

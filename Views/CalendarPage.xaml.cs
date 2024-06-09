@@ -1,12 +1,11 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
 using MauiIcons.Core;
 using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Core.Carousel;
+using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 
 namespace Ifpa.Views
 {
@@ -32,7 +31,7 @@ namespace Ifpa.Views
         {
             base.OnNavigatedTo(args);
 
-            if (ViewModel.CalendarDetails.Count == 0)
+            if (ViewModel.Tournaments.Count == 0)
             {
                 await UpdateCalendarData();
             }
@@ -53,14 +52,21 @@ namespace Ifpa.Views
             {
                 mapShim.Children.Clear();
                 var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
-                var map = new Microsoft.Maui.Controls.Maps.Map(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Distance.FromMiles(Settings.LastCalendarDistance)));
+
+                var mapSpan = MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                                                                        Distance.FromMiles(Settings.LastCalendarDistance));
+
+                var map = new Microsoft.Maui.Controls.Maps.Map(mapSpan);
+
                 map.ItemTemplate = PinDataTemplate;
                 map.ItemsSource = ViewModel.Pins;
 
                 mapShim.Children.Add(map);
 
                 await ViewModel.ExecuteLoadItemsCommand(Settings.LastCalendarLocation, Settings.LastCalendarDistance);
+
+                // For whatever reason Android on re-load via modal doesn't re-center the map.
+                map.MoveToRegion(mapSpan);
             }
             catch (Exception e)
             {
@@ -88,11 +94,11 @@ namespace Ifpa.Views
 
         private async void TournamentListView_SelectionChanged(object sender, Microsoft.Maui.Controls.SelectionChangedEventArgs e)
         {
-            var calendar = e.CurrentSelection.FirstOrDefault() as CalendarDetails;
-            if (calendar == null)
+            var tournament = e.CurrentSelection.FirstOrDefault() as TournamentSearch;
+            if (tournament == null)
                 return;
 
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendar.CalendarId}");
+            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={tournament.TournamentId}");
 
             // Manually deselect item.
             TournamentListView.SelectedItem = null;
@@ -101,16 +107,16 @@ namespace Ifpa.Views
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
         {
             var pin = (Pin)sender;
-            var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
+            var calendarItem = ViewModel.Tournaments.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
             TournamentListView.ScrollTo(calendarItem, position: ScrollToPosition.Start, animate: true);
         }
 
         private async void Pin_InfoWindowClicked(object sender, PinClickedEventArgs e)
         {
             var pin = (Pin)sender;
-            var calendarItem = ViewModel.CalendarDetails.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
+            var calendarItem = ViewModel.Tournaments.FirstOrDefault(n => n.TournamentName == pin.Label && n.Latitude == pin.Location.Latitude && n.Longitude == pin.Location.Longitude);
 
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarItem.CalendarId}");
+            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={calendarItem.TournamentId}");
         }
     }
 }

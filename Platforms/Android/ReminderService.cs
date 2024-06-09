@@ -10,12 +10,12 @@ namespace Ifpa.Services
         public async Task<bool> CreateReminder(CalendarDetailViewModel calendarDetail, string calendarIdentifier)
         {
             Intent intent = new Intent(Intent.ActionInsert);
-            intent.PutExtra(CalendarContract.Events.InterfaceConsts.Title, calendarDetail.TournamentName);
-            intent.PutExtra(CalendarContract.Events.InterfaceConsts.Description, calendarDetail.Details);            
-            intent.PutExtra(CalendarContract.ExtraEventBeginTime, new DateTimeOffset(calendarDetail.StartDate).ToUnixTimeMilliseconds());
-            intent.PutExtra(CalendarContract.ExtraEventEndTime, new DateTimeOffset(calendarDetail.EndDate).ToUnixTimeMilliseconds());
+            intent.PutExtra(CalendarContract.Events.InterfaceConsts.Title, calendarDetail.Tournament.TournamentName);
+            intent.PutExtra(CalendarContract.Events.InterfaceConsts.Description, calendarDetail.Tournament.Details);            
+            intent.PutExtra(CalendarContract.ExtraEventBeginTime, calendarDetail.Tournament.EventStartDate.ToUnixTimeMilliseconds());
+            intent.PutExtra(CalendarContract.ExtraEventEndTime, calendarDetail.Tournament.EventEndDate.ToUnixTimeMilliseconds());
 
-            intent.PutExtra(CalendarContract.EventsColumns.EventLocation, $"{calendarDetail.Address1} {calendarDetail.City} {calendarDetail.State}");
+            intent.PutExtra(CalendarContract.EventsColumns.EventLocation, $"{calendarDetail.Tournament.Address1} {calendarDetail.Tournament.City} {calendarDetail.Tournament.Stateprov}");
             intent.PutExtra(CalendarContract.Events.InterfaceConsts.EventTimezone, "UTC");
             intent.PutExtra(CalendarContract.Events.InterfaceConsts.EventEndTimezone, "UTC");
             intent.SetData(CalendarContract.Events.ContentUri);

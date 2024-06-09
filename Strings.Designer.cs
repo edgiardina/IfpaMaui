@@ -313,11 +313,74 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finals Format.
+        /// </summary>
+        internal static string CalendarDetailPage_FinalsFormat {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_FinalsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matchplay Link.
+        /// </summary>
+        internal static string CalendarDetailPage_Matchplay {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Matchplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Limit.
+        /// </summary>
+        internal static string CalendarDetailPage_PlayerLimit {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_PlayerLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private.
+        /// </summary>
+        internal static string CalendarDetailPage_Private {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Private", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qualifying Format.
+        /// </summary>
+        internal static string CalendarDetailPage_QualifyingFormat {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_QualifyingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Date.
+        /// </summary>
+        internal static string CalendarDetailPage_RegistrationDate {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_RegistrationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Share.
         /// </summary>
         internal static string CalendarDetailPage_Share {
             get {
                 return ResourceManager.GetString("CalendarDetailPage_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Upcoming Tournament.
+        /// </summary>
+        internal static string CalendarDetailPage_SharePrompt {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_SharePrompt", resourceCulture);
             }
         }
         
@@ -363,6 +426,15 @@ namespace Ifpa {
         internal static string CalendarFilterModalPage_Location {
             get {
                 return ResourceManager.GetString("CalendarFilterModalPage_Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ranking Type.
+        /// </summary>
+        internal static string CalendarFilterModalPage_RankingType {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_RankingType", resourceCulture);
             }
         }
         

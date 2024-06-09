@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Ifpa.Models;
+using PinballApi.Models.WPPR.Universal;
 using Serilog;
 
 namespace Ifpa.Views
@@ -15,12 +16,15 @@ namespace Ifpa.Views
         {
             InitializeComponent();
 
+            // TODO: bindings instead of explicit assignment
             var lastCalendarLocation = Settings.LastCalendarLocation;
             var lastCalendarDistance = Settings.LastCalendarDistance;
+            var lastCalendarRankingSystem = Settings.CalendarRankingSystem;
 
             DistanceSlider.Value = lastCalendarDistance;
             LocationEntry.Text = lastCalendarLocation;
             DistanceText.Text = ((int)DistanceSlider.Value).ToString();
+            RankingTypePicker.SelectedItem = lastCalendarRankingSystem;
         }
 
         private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -79,9 +83,11 @@ namespace Ifpa.Views
         {
             Settings.LastCalendarLocation = LocationEntry.Text;
             Settings.LastCalendarDistance = (int)DistanceSlider.Value;
+            Settings.CalendarRankingSystem = (string)RankingTypePicker.SelectedItem;
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
         }
+
     }
 }

@@ -11,7 +11,9 @@
              xmlns:views="clr-namespace:Ifpa.Views"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:models="clr-namespace:Ifpa.Models"
              xmlns:ifpacalendar="clr-namespace:PinballApi.Models.WPPR.v1.Calendar;assembly=PinballApi"
+             xmlns:ifpatournamentsearch="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi"
              x:DataType="vm:CalendarViewModel"
              Title="{x:Static local:Strings.CalendarPage_Calendar}">
     <ContentPage.Resources>
@@ -44,7 +46,8 @@
     <Grid>
         <Grid x:Name="MapLayout"
               IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.MapAndList}}"
-              RowDefinitions="*,*">
+              RowDefinitions="*,*"
+              RowSpacing="5">
             <Grid Grid.Row="0"
                   x:Name="mapShim">
                 <!--
@@ -54,36 +57,61 @@
             </Grid>
             <CollectionView x:Name="TournamentListView"
                             Grid.Row="1"
-                            ItemsSource="{Binding CalendarDetails}"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                            ItemsSource="{Binding Tournaments}"
                             SelectionMode="Single"
                             SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="ifpacalendar:CalendarDetails">
-                        <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
-                             https://github.com/dotnet/maui/issues/16877 -->
-                        <VerticalStackLayout HeightRequest="{OnPlatform iOS=40}">
-                            <Grid Margin="10"
-                                  ColumnSpacing="10"
-                                  ColumnDefinitions="*,90">
-                                <Label Grid.Column="0"
-                                       Text="{Binding TournamentName}"
-                                       LineBreakMode="{OnPlatform iOS=TailTruncation}" />
+                    <DataTemplate x:DataType="ifpatournamentsearch:Tournament">
+                        <VerticalStackLayout>
+                            <Grid ColumnDefinitions="2*,*,*"
+                                  RowDefinitions="*,*"
+                                  Margin="10,5">
+                                <Label Text="{Binding TournamentName}"
+                                       Grid.ColumnSpan="3"
+                                       FontAttributes="Bold" />
+
+                                <Label FontSize="Small"
+                                       Grid.Row="1"
+                                       VerticalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding City}" />
+                                            <Span Text=", " />
+                                            <Span Text="{Binding Stateprov}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
                                 <Label Grid.Column="1"
+                                       Grid.Row="1"
                                        MinimumWidthRequest="90"
                                        FontSize="Small"
                                        VerticalTextAlignment="Center"
-                                       HorizontalTextAlignment="End"
+                                       HorizontalTextAlignment="Center"
                                        TextColor="{DynamicResource SecondaryTextColor}"
-                                       Text="{Binding EndDate, StringFormat='{0:d}'}"
+                                       Text="{Binding EventStartDate, StringFormat='{0:d}'}"
                                        LineBreakMode="NoWrap" />
+
+                                <controls:Chip Text="{Binding RankingSystem}"
+                                               Grid.Column="2"
+                                               Grid.Row="1"
+                                               FontSize="10"
+                                               HorizontalOptions="End" />
                             </Grid>
                             <BoxView Style="{StaticResource BoxSeperator}" />
                         </VerticalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <ActivityIndicator Grid.Row="2"
+                               IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}" />
         </Grid>
         <calendar:Calendar x:Name="myCal"
+                           SelectedDate="{Binding Source={x:Static sys:DateTime.Now}}"
                            ArrowsSymbolNext="&gt;"
                            ArrowsSymbolPrev="&lt;"
                            ArrowsFontSize="20"
@@ -112,31 +140,37 @@
                            EventIndicatorTextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                            SelectedDayTextColor="White">
             <calendar:Calendar.EventTemplate>
-                <DataTemplate x:DataType="ifpacalendar:CalendarDetails">
-                    <StackLayout Padding="10,0"
-                                 Margin="0,0,0,8">
-                        <StackLayout.GestureRecognizers>
+                <DataTemplate x:DataType="models:TournamentWithDistance">
+                    <VerticalStackLayout>
+                        <VerticalStackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
-                                                  CommandParameter="{Binding CalendarId}" />
-                        </StackLayout.GestureRecognizers>
-                        <Label Text="{Binding TournamentName}"
-                               FontAttributes="Bold" />
-                        <Grid ColumnDefinitions="*,*"
-                              Margin="0,0,0,10">
+                                                  CommandParameter="{Binding TournamentId}" />
+                        </VerticalStackLayout.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="2*,*,*"
+                              RowDefinitions="*,*"
+                              Margin="10,5">
+                            <Label Text="{Binding TournamentName}"
+                                   Grid.ColumnSpan="3"
+                                   FontAttributes="Bold" />
+
                             <Label FontSize="Small"
+                                   Grid.Row="1"
                                    TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                                    LineBreakMode="WordWrap">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding City}" />
                                         <Span Text=", " />
-                                        <Span Text="{Binding State}" />
+                                        <Span Text="{Binding Stateprov}" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
+
                             <Label FontSize="Small"
                                    Grid.Column="1"
-                                   HorizontalTextAlignment="End"
+                                   Grid.Row="1"
+                                   HorizontalTextAlignment="Center"
                                    TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
                                    LineBreakMode="WordWrap">
                                 <Label.FormattedText>
@@ -147,9 +181,16 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
+
+                            <controls:Chip Grid.Row="1"
+                                           Text="{Binding RankingSystem}"
+                                           Grid.Column="2"
+                                           HorizontalOptions="End"
+                                           FontSize="10" />
+
                         </Grid>
                         <BoxView Style="{StaticResource BoxSeperator}" />
-                    </StackLayout>
+                    </VerticalStackLayout>
                 </DataTemplate>
             </calendar:Calendar.EventTemplate>
             <calendar:Calendar.EmptyTemplate>
