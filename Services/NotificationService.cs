@@ -193,20 +193,20 @@ namespace Ifpa.Services
 
                     var newestCalendarItemId = items.Tournaments.Max(n => n.TournamentId);
 
-                    if(newestCalendarItemId > Settings.LastCalendarIdSeen)
+                    if(newestCalendarItemId > Settings.LastCalendarIdSeen && Settings.LastCalendarIdSeen > 0)
                     {
                         foreach (var calendarItem in items.Tournaments.Where(n => n.TournamentId > Settings.LastCalendarIdSeen))
                         {
                             await SendNotification(NewTournamentOnCalendarTitle, 
                                                    string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.EventStartDate.DateTime.ToShortDateString()), 
                                                    $"///calendar/calendar-detail?tournamentId={calendarItem.TournamentId}");
-                        }
-
-                        Settings.LastCalendarIdSeen = newestCalendarItemId;
+                        }                        
 
                         //TODO: Add badge to calendar tab item
                         //await UpdateBadgeIfNeeded();
                     }
+
+                    Settings.LastCalendarIdSeen = newestCalendarItemId;
                 }
                 catch (Exception ex)
                 {
