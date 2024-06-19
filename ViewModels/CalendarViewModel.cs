@@ -55,7 +55,7 @@ namespace Ifpa.ViewModels
             await Shell.Current.GoToAsync($"calendar-detail?tournamentId={tournamentId}");
         }
 
-        public async Task ExecuteLoadItemsCommand(string address, int distance)
+        public async Task ExecuteLoadItemsCommand(Location geoLocation, int distance)
         {
             IsBusy = true;
 
@@ -67,14 +67,13 @@ namespace Ifpa.ViewModels
 
                 logger.LogDebug("Cleared collections in {0}", sw.ElapsedMilliseconds);
 
-                var geoLocation = await geocoding.GetLocationsAsync(address);
 
-                var longitude = geoLocation.FirstOrDefault()?.Longitude;
-                var latitude = geoLocation.FirstOrDefault()?.Latitude;
+                var longitude = geoLocation?.Longitude;
+                var latitude = geoLocation?.Latitude;
 
                 if (longitude == null || latitude == null)
                 {
-                    logger.LogWarning("Unable to geocode address {0}", address);
+                    logger.LogWarning("Unable to geocode address {0}", geoLocation);
                     return;
                 }
 
