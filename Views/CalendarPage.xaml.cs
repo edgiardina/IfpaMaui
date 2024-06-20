@@ -51,9 +51,21 @@ namespace Ifpa.Views
             try
             {
                 mapShim.Children.Clear();
-                var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
 
-                var mapSpan = MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
+                Location geoLocation;
+
+                try
+                {
+                    geoLocation = (await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation)).First();
+                }
+                catch (Exception e)
+                {
+                    logger.LogWarning(e, "Error geolocating");
+
+                    geoLocation = await Geolocation.GetLastKnownLocationAsync();
+                }
+
+                var mapSpan = MapSpan.FromCenterAndRadius(new Location(geoLocation.Latitude, geoLocation.Longitude),
                                                                         Distance.FromMiles(Settings.LastCalendarDistance));
 
                 var map = new Microsoft.Maui.Controls.Maps.Map(mapSpan);
@@ -63,7 +75,7 @@ namespace Ifpa.Views
 
                 mapShim.Children.Add(map);
 
-                await ViewModel.ExecuteLoadItemsCommand(Settings.LastCalendarLocation, Settings.LastCalendarDistance);
+                await ViewModel.ExecuteLoadItemsCommand(geoLocation, Settings.LastCalendarDistance);
 
                 // For whatever reason Android on re-load via modal doesn't re-center the map.
                 map.MoveToRegion(mapSpan);
