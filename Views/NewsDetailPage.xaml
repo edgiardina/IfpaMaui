@@ -50,10 +50,16 @@
                          HorizontalOptions="EndAndExpand"
                          Margin="-5"
                          Padding="5">
-                <Label HorizontalTextAlignment="Start"
-                       FontSize="Small"
-                       Text="{Binding NewsItem.Authors}"
-                       Margin="0" />
+                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Authors}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="synd:SyndicationPerson">
+                            <Label HorizontalTextAlignment="Start"
+                                   FontSize="Small"
+                                   Text="{Binding Name}"
+                                   Margin="0" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
                 <Label HorizontalTextAlignment="End"
                        FontSize="Small"
                        Text="{Binding NewsItem.PublishDate, StringFormat='{0:d}'}" />
@@ -81,7 +87,7 @@
                                    Margin="0" />
                             <Label HorizontalTextAlignment="Start"
                                    FontSize="Small"
-                                   Text="{Binding Title}"
+                                   Text="{Binding Title.Text}"
                                    Margin="0" />
                         </StackLayout>
                     </ViewCell>
