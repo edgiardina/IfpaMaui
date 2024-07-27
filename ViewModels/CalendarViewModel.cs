@@ -20,7 +20,7 @@ namespace Ifpa.ViewModels
 
     public class CalendarViewModel : BaseViewModel
     {
-        public EventCollection TournamentCalenderItems { get; set; } = new EventCollection();
+        public EventCollection TournamentCalendarItems { get; set; } = new EventCollection();
         public ObservableCollectionRange<TournamentSearch> Tournaments { get; set; }
 
         public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
@@ -99,16 +99,16 @@ namespace Ifpa.ViewModels
                         LoadEventOntoCalendar(detail);
                     }
 
-                    TournamentCalenderItems = new EventCollection();
+                    TournamentCalendarItems = new EventCollection();
 
                     items.Tournaments
                                   .Where(item => item.EventEndDate - item.EventStartDate <= 5.Days())
                                   .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
                                   .GroupBy(item => item.EventStartDate.Date)
                                   .ToList()
-                                  .ForEach(date => TournamentCalenderItems.Add(date.Key, date.ToList()));
+                                  .ForEach(date => TournamentCalendarItems.Add(date.Key, date.ToList()));
 
-                    OnPropertyChanged(nameof(TournamentCalenderItems));
+                    OnPropertyChanged(nameof(TournamentCalendarItems));
                     OnPropertyChanged(nameof(Pins));
                     OnPropertyChanged(nameof(SelectedRankingSystem));
                 }

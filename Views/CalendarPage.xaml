@@ -119,7 +119,7 @@
                            ArrowsBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
                            ArrowsBorderColor="Transparent"
                            ArrowsColor="{StaticResource IconAccentColor}"
-                           Events="{Binding TournamentCalenderItems}"
+                           Events="{Binding TournamentCalendarItems}"
                            IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
                            ShownDate="{Binding Source={x:Static sys:DateTime.Now}}"
                            ShowYearPicker="False"
