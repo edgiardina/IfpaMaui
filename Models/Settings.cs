@@ -83,7 +83,7 @@ namespace Ifpa.Models
 
         public static long LastCalendarIdSeen
         {
-            get => Preferences.Get("LastCalendarIdSeen", 0);
+            get => Preferences.Get("LastCalendarIdSeen", 0L);
             set => Preferences.Set("LastCalendarIdSeen", value);
         }
 

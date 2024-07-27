@@ -53,6 +53,8 @@ namespace Ifpa.Services
         {
             if (Settings.HasConfiguredMyStats)
             {
+                logger.LogInformation("Checking for user's new tournament results");
+
                 try
                 {
                     var results = await PinballRankingApi.GetPlayerResults(Settings.MyStatsPlayerId);
@@ -104,6 +106,8 @@ namespace Ifpa.Services
         {
             if (Settings.HasConfiguredMyStats)
             {
+                logger.LogInformation("Checking for user's rank change");
+
                 try
                 {
                     var results = await PinballRankingApi.GetPlayerRecord(Settings.MyStatsPlayerId);
@@ -144,6 +148,8 @@ namespace Ifpa.Services
         {
             if(Settings.NotifyOnNewBlogPost)
             {
+                logger.LogInformation("Checking for new blog posts");
+
                 try
                 {
                     var latestPosts = await BlogPostService.GetBlogPosts();
@@ -174,6 +180,8 @@ namespace Ifpa.Services
         {
             if (Settings.NotifyOnNewCalendarEntry)
             {
+                logger.LogInformation("Checking for new calendar entries");
+
                 try
                 {
                     var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
@@ -227,6 +235,8 @@ namespace Ifpa.Services
 
         public async Task SendNotification(string title, string description, string url)
         {
+            logger.LogInformation("Sending notification: {0} - {1}", title, description);
+
             var payload = new Dictionary<string, string>
             {
                 { "url", url }
