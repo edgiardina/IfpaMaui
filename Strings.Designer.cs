@@ -295,7 +295,7 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date: .
+        ///   Looks up a localized string similar to Date.
         /// </summary>
         internal static string CalendarDetailPage_Date {
             get {
@@ -304,7 +304,7 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Director: .
+        ///   Looks up a localized string similar to Director.
         /// </summary>
         internal static string CalendarDetailPage_Director {
             get {

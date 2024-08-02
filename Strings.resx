@@ -139,7 +139,7 @@
     <value>Events Outside Country</value>
   </data>
   <data name="CalendarDetailPage_Date" xml:space="preserve">
-    <value>Date: </value>
+    <value>Date</value>
   </data>
   <data name="PlayerDetailPage_RankingStatistics" xml:space="preserve">
     <value>Ranking Statistics</value>
@@ -265,7 +265,7 @@
     <value>Tournament Result Posted</value>
   </data>
   <data name="CalendarDetailPage_Director" xml:space="preserve">
-    <value>Director: </value>
+    <value>Director</value>
   </data>
   <data name="CalendarPage_MyLocation" xml:space="preserve">
     <value>My Location</value>
