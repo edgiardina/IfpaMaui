@@ -16,6 +16,7 @@ using SkiaSharp.Views.Maui.Controls.Hosting;
 using Serilog;
 using Shiny;
 using CommunityToolkit.Maui.ApplicationModel;
+using The49.Maui.BottomSheet;
 
 namespace Ifpa;
 
@@ -38,6 +39,7 @@ public static class MauiProgram
             .UseFluentMauiIcons()
             .UseShiny()
             .UseSkiaSharp(true)
+            .UseBottomSheet()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
