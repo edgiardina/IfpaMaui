@@ -30,12 +30,14 @@
             <the49:BottomSheet x:Key="sheet"
                                x:Name="sheet"
                                HasHandle="True"
-                               HandleColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
+                               HandleColor="{StaticResource SecondaryTextColor}"
                                IsCancelable="False"
                                IsVisible="True"
                                HasBackdrop="False"
                                Padding="10"
                                BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}">
+     
+
                 <the49:BottomSheet.Detents>
                     <the49:FullscreenDetent />
                     <the49:MediumDetent />
@@ -43,6 +45,7 @@
                 <ScrollView>
                     <StackLayout HorizontalOptions="FillAndExpand"
                                  Spacing="10"
+                                 Margin="0,10"
                                  IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
                         <Label Text="{Binding Tournament.TournamentName, Mode=OneWay}"
                                HorizontalTextAlignment="Center"
