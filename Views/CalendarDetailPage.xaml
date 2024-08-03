@@ -35,9 +35,9 @@
                                IsVisible="True"
                                HasBackdrop="False"
                                Padding="10"
-                               BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}">
-     
-
+                               BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
+                               CornerRadius="10"
+                               BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">     
                 <the49:BottomSheet.Detents>
                     <the49:FullscreenDetent />
                     <the49:MediumDetent />
