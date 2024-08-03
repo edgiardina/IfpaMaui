@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <application android:allowBackup="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true" android:enableOnBackInvokedCallback="true">
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCrcEI1rj5-z9SjpyJqHde-PAtS2dnaAjM" />
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="" />
   </application>
-  <uses-sdk android:minSdkVersion="22" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.INTERNET" />
   <!-- Google Maps for Android v2 requires OpenGL ES v2 -->
