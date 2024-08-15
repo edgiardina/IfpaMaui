@@ -138,6 +138,7 @@
                            EventsScrollViewVisible="True"
                            FooterSectionVisible="False"
                            EventIndicatorTextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
+                           DisableSwipeDetection="True"
                            SelectedDayTextColor="White">
             <calendar:Calendar.EventTemplate>
                 <DataTemplate x:DataType="models:TournamentWithDistance">
