@@ -51,6 +51,7 @@ namespace Ifpa.Views
                 calendarMap.Pins.Add(pin);
 
                 mapShim.Children.Add(calendarMap);
+                calendarMap.HeightRequest = DeviceDisplay.MainDisplayInfo.Height;
             }
             //unable to geocode position on the map, ignore. 
             catch (Exception)
