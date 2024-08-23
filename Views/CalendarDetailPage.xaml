@@ -212,13 +212,13 @@
                      Clicked="AddToCalendarButton_Clicked"
                      IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
-    <Grid RowDefinitions="2*,*">
-        <ActivityIndicator Grid.RowSpan="2"
-                           IsVisible="{Binding IsBusy}"
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
 
         <!-- Map Shim; map is loaded in Codebehind -->
         <Grid x:Name="mapShim"
+              HeightRequest="400"
               VerticalOptions="Start" />
     </Grid>
 </ContentPage>
