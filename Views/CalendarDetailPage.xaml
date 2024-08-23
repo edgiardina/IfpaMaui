@@ -37,7 +37,7 @@
                                Padding="10"
                                BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
                                CornerRadius="10"
-                               BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">     
+                               BackgroundColor="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}">
                 <the49:BottomSheet.Detents>
                     <the49:FullscreenDetent />
                     <the49:MediumDetent />
@@ -51,7 +51,7 @@
                                HorizontalTextAlignment="Center"
                                TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                                FontSize="18"
-                               FontAttributes="Bold"/>
+                               FontAttributes="Bold" />
                         <StackLayout>
                             <!-- Tournament Details Chips -->
                             <FlexLayout Direction="Row"
@@ -128,17 +128,17 @@
                                 <Label Text="{Binding Tournament.DirectorName, Mode=OneWay}"
                                        Style="{DynamicResource valueStyle}"
                                        Grid.Column="1"
-                                       Grid.Row="1"/>
+                                       Grid.Row="1" />
 
                                 <Label Text="{x:Static local:Strings.CalendarDetailPage_QualifyingFormat}"
                                        Style="{DynamicResource labelStyle}"
                                        Grid.Column="0"
-                                       Grid.Row="2"/>
+                                       Grid.Row="2" />
 
                                 <Label Text="{Binding Tournament.QualifyingFormat}"
                                        Style="{DynamicResource valueStyle}"
                                        Grid.Column="1"
-                                       Grid.Row="2"/>
+                                       Grid.Row="2" />
 
                                 <Label Text="{x:Static local:Strings.CalendarDetailPage_FinalsFormat}"
                                        Style="{DynamicResource labelStyle}"
@@ -212,13 +212,13 @@
                      Clicked="AddToCalendarButton_Clicked"
                      IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
-    <Grid RowDefinitions="Auto">
-        <ActivityIndicator IsVisible="{Binding IsBusy}"
+    <Grid RowDefinitions="2*,*">
+        <ActivityIndicator Grid.RowSpan="2"
+                           IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
 
         <!-- Map Shim; map is loaded in Codebehind -->
         <Grid x:Name="mapShim"
-              HeightRequest="400"
               VerticalOptions="Start" />
     </Grid>
 </ContentPage>
