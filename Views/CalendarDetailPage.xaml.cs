@@ -1,7 +1,6 @@
 ﻿using Ifpa.ViewModels;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
-using The49.Maui.BottomSheet;
 
 
 namespace Ifpa.Views
@@ -22,9 +21,13 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
             try
-            {
+            {               
                 await ViewModel.ExecuteLoadItemsCommand();
-                var mapLocation = new Location(ViewModel.Tournament.Latitude, ViewModel.Tournament.Longitude);
+
+                double latitudeOffset = .007;
+
+                var mapLocation = new Location(ViewModel.Tournament.Latitude - latitudeOffset, ViewModel.Tournament.Longitude);
+
 
                 MapSpan mapSpan = MapSpan.FromCenterAndRadius(mapLocation, Distance.FromKilometers(1));
                 var calendarMap = new Microsoft.Maui.Controls.Maps.Map(mapSpan)
@@ -48,6 +51,7 @@ namespace Ifpa.Views
                 calendarMap.Pins.Add(pin);
 
                 mapShim.Children.Add(calendarMap);
+                calendarMap.HeightRequest = DeviceDisplay.MainDisplayInfo.Height;
             }
             //unable to geocode position on the map, ignore. 
             catch (Exception)
