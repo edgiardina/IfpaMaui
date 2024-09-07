@@ -32,6 +32,8 @@ namespace Ifpa.ViewModels
 
         public RankingType CurrentRankingType { get; set; }
         public RankingSystem CurrentRankingSystem { get; set; }
+
+        public TournamentType CurrentTournamentType { get; set; } = TournamentType.Open;
         public List<string> RankingTypes => Enum.GetNames(typeof(RankingType)).ToList();
 
         public List<string> RankingSystems => Enum.GetNames(typeof(RankingSystem)).ToList();
@@ -86,7 +88,7 @@ namespace Ifpa.ViewModels
 
                 if (CurrentRankingType == RankingType.Pro)
                 {
-                    var proItems = await PinballRankingApi.ProRankingSearch(CurrentRankingSystem);
+                    var proItems = await PinballRankingApi.ProRankingSearch(CurrentTournamentType);
                     if (proItems.Rankings != null)
                     {
                         foreach (var item in proItems.Rankings)
@@ -97,7 +99,7 @@ namespace Ifpa.ViewModels
                 }
                 else
                 {
-                    var items = await PinballRankingApi.RankingSearch(CurrentRankingType, CurrentRankingSystem);
+                    var items = await PinballRankingApi.RankingSearch(CurrentRankingType, CurrentRankingSystem, CountOfItemsToFetch, StartingPosition, countryCode: CountryToShow.CountryCode);
                     if (items.Rankings != null)
                     {
                         foreach (var item in items.Rankings)

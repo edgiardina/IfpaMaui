@@ -77,14 +77,14 @@ namespace Ifpa.ViewModels
                     return;
                 }
 
-                var rankingSystem = (RankingSystem?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(RankingSystem), Settings.CalendarRankingSystem));
+                var tournamentType = (TournamentType?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(TournamentType), Settings.CalendarRankingSystem));
 
                 var items = await pinballRankingApi.TournamentSearch(latitude, 
                                                                      longitude, 
                                                                      distance, DistanceType.Miles, 
                                                                      startDate: DateTime.Now, 
                                                                      endDate: DateTime.Now.AddYears(1), 
-                                                                     rankingSystem: rankingSystem, 
+                                                                     tournamentType: tournamentType, 
                                                                      totalReturn: 500);
 
                 logger.LogDebug("Api call completed at {0}", sw.ElapsedMilliseconds);

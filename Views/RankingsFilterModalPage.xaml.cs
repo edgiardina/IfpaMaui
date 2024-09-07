@@ -66,28 +66,28 @@ namespace Ifpa.Views
                 (RankingType)Enum.Parse(typeof(RankingType), ((Picker)sender).SelectedItem as string) :
                 (RankingType)((Picker)sender).SelectedItem;
 
-            //if (selectedType == RankingType.Country)
-            //{
-            //    CountryPicker.IsVisible = true;
-            //    CountryLabel.IsVisible = true;
-            //    TypeLabel.IsVisible = false;
-            //    TypePicker.IsVisible = false;
-            //}
-            //else if (selectedType == RankingType.Women)
-            //{
-            //    CountryPicker.IsVisible = false;
-            //    CountryLabel.IsVisible = false;
-            //    TypeLabel.IsVisible = true;
-            //    TypePicker.IsVisible = true;
-            //}
-            //else
-            //{
-            //    CountryPicker.IsVisible = false;
-            //    CountryLabel.IsVisible = false;
-            //    TypeLabel.IsVisible = false;
-            //    TypePicker.IsVisible = false;
-            //    viewModel.CountryToShow = viewModel.DefaultCountry;
-            //}
+            if (selectedType == RankingType.Country)
+            {
+                CountryPicker.IsVisible = true;
+                CountryLabel.IsVisible = true;
+                TypeLabel.IsVisible = false;
+                TypePicker.IsVisible = false;
+            }
+            else if (selectedType == RankingType.Women)
+            {
+                CountryPicker.IsVisible = false;
+                CountryLabel.IsVisible = false;
+                TypeLabel.IsVisible = true;
+                TypePicker.IsVisible = true;
+            }
+            else
+            {
+                CountryPicker.IsVisible = false;
+                CountryLabel.IsVisible = false;
+                TypeLabel.IsVisible = false;
+                TypePicker.IsVisible = false;
+                viewModel.CountryToShow = viewModel.DefaultCountry;
+            }
 
             viewModel.CurrentRankingType = selectedType;
 
