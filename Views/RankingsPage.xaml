@@ -11,8 +11,7 @@
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:RankingsViewModel"
-             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking"
-             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
+             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
                      x:Name="SearchButton"
@@ -26,14 +25,10 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-            <datatemplates:CountryRankingDataTemplate x:Key="CountryRankingDataTemplate" />
-            <datatemplates:WomensRankingDataTemplate x:Key="WomensRankingDataTemplate" />
-            <datatemplates:YouthRankingDataTemplate x:Key="YouthRankingDataTemplate" />
+            <datatemplates:ProRankingDataTemplate x:Key="ProRankingDataTemplate" />
             <datatemplates:RankingDataTemplate x:Key="RankingDataTemplate" />
-            <datatemplates:RankingResultDataTemplateSelector x:Key="RankingResultDataTemplateSelector"
-                                                             YouthRankingTemplate="{StaticResource YouthRankingDataTemplate}"
-                                                             WomensRankingTemplate="{StaticResource WomensRankingDataTemplate}"
-                                                             CountryRankingTemplate="{StaticResource CountryRankingDataTemplate}"
+            <datatemplates:RankingResultDataTemplateSelector x:Key="RankingResultDataTemplateSelector"                                                             
+                                                             ProRankingTemplate="{StaticResource ProRankingDataTemplate}"
                                                              RankingResultTemplate="{StaticResource RankingDataTemplate}" />
         </ResourceDictionary>
     </ContentPage.Resources>

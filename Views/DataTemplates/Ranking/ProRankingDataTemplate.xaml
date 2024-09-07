@@ -3,10 +3,10 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:converters="clr-namespace:Ifpa.Converters"
               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-              x:Class="Ifpa.Views.DataTemplates.Ranking.RankingDataTemplate"
+              x:Class="Ifpa.Views.DataTemplates.Ranking.ProRankingDataTemplate"
               xmlns:local="clr-namespace:Ifpa"
               xmlns:models="clr-namespace:Ifpa.Models"
-              x:DataType="ifparankings:Ranking"
+              x:DataType="ifparankings:ProRanking"
               xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings;assembly=PinballApi">
     <StackLayout>
         <StackLayout.Resources>
@@ -46,7 +46,7 @@
                    TextColor="{DynamicResource SecondaryTextColor}"
                    Margin="10,0"
                    HorizontalTextAlignment="End"
-                   Text="{Binding WpprPoints, StringFormat='{0:N2}'}"
+                   Text="{Binding OriginalWpprPoints, StringFormat='{0:N2}'}"
                    LineBreakMode="NoWrap"
                    VerticalTextAlignment="Center"
                    FontSize="10" />

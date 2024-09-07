@@ -62,8 +62,8 @@
                     Grid.Column="1"
                     Grid.Row="1"
                     HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding TournamentTypes, Mode=OneWay}"
-                    SelectedItem="{Binding CurrentTournamentType, Mode=TwoWay}"
+                    ItemsSource="{Binding RankingSystems, Mode=OneWay}"
+                    SelectedItem="{Binding CurrentRankingSystem, Mode=TwoWay}"
                     x:Name="TypePicker"
                     SelectedIndexChanged="TypePicker_SelectedIndexChanged" />
             <Label Grid.Column="0"
