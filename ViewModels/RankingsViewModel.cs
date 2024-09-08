@@ -38,7 +38,7 @@ namespace Ifpa.ViewModels
 
         public List<string> RankingSystems => Enum.GetNames(typeof(RankingSystem)).ToList();
 
-        public readonly Country DefaultCountry = new Country { CountryName = "United States" };
+        public readonly Country DefaultCountry = new Country { CountryName = "United States", CountryCode = "US" };
 
         private readonly PinballRankingApi PinballRankingApi;
 
@@ -67,22 +67,23 @@ namespace Ifpa.ViewModels
 
             try
             {
+                var countries = await PinballRankingApi.GetRankingCountries();
+
                 if (Countries.Count == 0)
                 {
-                    var countries = await PinballRankingApi.GetRankingCountries();
                     foreach (var stat in countries.Country.OrderBy(n => n.CountryName))
                     {
                         Countries.Add(stat);
                     }
-
-                    if (CountryToShow == null)
-                    {
-                        CountryToShow = DefaultCountry;
-                    }
-
-                    CountryToShow = Countries.Single(n => n.CountryName == CountryToShow.CountryName);
-                    OnPropertyChanged(nameof(CountryToShow));
                 }
+
+                if (CountryToShow == null)
+                {
+                    CountryToShow = DefaultCountry;
+                }
+
+                CountryToShow = Countries.Single(n => n.CountryName == CountryToShow.CountryName);
+                OnPropertyChanged(nameof(CountryToShow));
 
                 Players.Clear();
 
