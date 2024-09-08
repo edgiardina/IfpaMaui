@@ -1,6 +1,7 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2;
-using PinballApi.Models.WPPR.v2.Rankings;
+using PinballApi.Models.WPPR;
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Rankings;
 
 namespace Ifpa.Views
 {
@@ -28,11 +29,11 @@ namespace Ifpa.Views
             viewModel.CountOfItemsToFetch = Preferences.Get("PlayerCount", viewModel.CountOfItemsToFetch);
             viewModel.StartingPosition = Preferences.Get("StartingRank", viewModel.StartingPosition);
             viewModel.CurrentRankingType = (RankingType)Enum.Parse(typeof(RankingType), Preferences.Get("RankingType", viewModel.CurrentRankingType.ToString()));
-            viewModel.CurrentTournamentType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("TournamentType", viewModel.CurrentTournamentType.ToString()));
+            viewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), Preferences.Get("RankingSystem", viewModel.CurrentRankingSystem.ToString()));
 
          
             RankingTypePicker.SelectedItem = viewModel.CurrentRankingType.ToString();
-            TypePicker.SelectedItem = viewModel.CurrentTournamentType.ToString();
+            TypePicker.SelectedItem = viewModel.CurrentRankingSystem.ToString();
         }
 
         private async void CancelButton_Clicked(object sender, EventArgs e)
@@ -95,9 +96,9 @@ namespace Ifpa.Views
 
         private void TypePicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            viewModel.CurrentTournamentType = (TournamentType)Enum.Parse(typeof(TournamentType), ((Picker)sender).SelectedItem as string);
+            viewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), ((Picker)sender).SelectedItem.ToString());
 
-            Preferences.Set("TournamentType", viewModel.CurrentTournamentType.ToString());
+            Preferences.Set("RankingSystem", viewModel.CurrentRankingSystem.ToString());
         }
 
         private async void Button_Clicked(object sender, EventArgs e)

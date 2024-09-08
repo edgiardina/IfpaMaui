@@ -48,16 +48,16 @@
 
 	<!-- Package References -->
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.70" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.70" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.70" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.82" />
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="PinballApi" Version="3.0.1" />
-		<PackageReference Include="Plugin.Maui.Calendar" Version="1.2.0" />
+		<PackageReference Include="PinballApi" Version="3.0.8" />
+		<PackageReference Include="Plugin.Maui.Calendar" Version="1.2.2" />
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
 		<PackageReference Include="Shiny.Core" Version="3.3.3" />
@@ -66,10 +66,10 @@
 		<PackageReference Include="Shiny.Jobs" Version="3.3.3" />
 		<PackageReference Include="Shiny.Notifications" Version="3.3.3" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.8" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.9" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.9" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.9" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.9" />
 		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
 		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
@@ -145,6 +145,9 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Strings.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml.cs">
+		  <DependentUpon>ProRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml.cs">
 		  <DependentUpon>YouthRankingDataTemplate.xaml</DependentUpon>
 		</Compile>
@@ -211,6 +214,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\CustomRankingsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml">
 		  <Generator>MSBuild:Compile</Generator>

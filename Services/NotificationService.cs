@@ -188,7 +188,7 @@ namespace Ifpa.Services
 
                     var longitude = geoLocation.FirstOrDefault()?.Longitude;
                     var latitude = geoLocation.FirstOrDefault()?.Latitude;
-                    var rankingSystem = (RankingSystem?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(RankingSystem), Settings.CalendarRankingSystem));
+                    var tournamentType = (TournamentType?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(TournamentType), Settings.CalendarRankingSystem));
 
                     var items = await UniversalPinballRankingApi.TournamentSearch(latitude,
                                                                  longitude,
@@ -196,7 +196,7 @@ namespace Ifpa.Services
                                                                  DistanceType.Miles,
                                                                  startDate: DateTime.Now,
                                                                  endDate: DateTime.Now.AddYears(1),
-                                                                 rankingSystem: rankingSystem,
+                                                                 tournamentType: tournamentType,
                                                                  totalReturn: 500);
 
                     var newestCalendarItemId = items.Tournaments.Max(n => n.TournamentId);
