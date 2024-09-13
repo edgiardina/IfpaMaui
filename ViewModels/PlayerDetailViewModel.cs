@@ -207,7 +207,7 @@ namespace Ifpa.ViewModels
 
         public async Task PrepopulateTourneyResults(int playerId)
         {
-            var results = await PinballRankingApi.GetPlayerResults(playerId);
+            var results = await PinballRankingApiV2.GetPlayerResults(playerId);
 
             foreach (var result in results.Results)
             {

@@ -1,6 +1,5 @@
-﻿using Microsoft.Maui;
-using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v1.Players;
+﻿using Ifpa.ViewModels;
+using PinballApi.Models.WPPR.v2.Players;
 
 namespace Ifpa.Views
 {
@@ -25,7 +24,7 @@ namespace Ifpa.Views
         {
             if (e.CurrentSelection.FirstOrDefault() != null)
             {
-                var player = e.CurrentSelection.FirstOrDefault() as Search;
+                var player = e.CurrentSelection.FirstOrDefault() as Player;
                 if (player == null)
                     return;
 

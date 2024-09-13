@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerSearchViewModel"
-             xmlns:models="clr-namespace:Ifpa.Models">
+             xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -40,7 +40,7 @@
                             Grid.Row="1"
                             SelectionMode="Single">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:PlayerSearchResult">
+                    <DataTemplate x:DataType="ifpaplayers:Player">
                         <StackLayout Padding="10,0">
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Padding="10"
@@ -69,7 +69,7 @@
                                 </StackLayout>
                                 <Label VerticalTextAlignment="Center"
                                        HorizontalOptions="EndAndExpand"
-                                       Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}"
                                        LineBreakMode="NoWrap"
                                        FontSize="18" />
                             </StackLayout>
