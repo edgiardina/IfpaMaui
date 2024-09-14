@@ -23,7 +23,7 @@ namespace Ifpa.ViewModels
         private BlogPostService BlogPostService { get; set; }
 
         //TODO: convert IConfiguration to IOptions?
-        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<NewsDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<NewsDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "News";
             BlogPostService = blogPostService;

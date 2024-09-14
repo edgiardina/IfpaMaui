@@ -19,7 +19,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public CustomRankingsDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             ViewResults = new ObservableCollection<CustomRankingViewResult>();
             Tournaments = new ObservableCollection<Tournament>();

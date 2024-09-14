@@ -11,7 +11,7 @@ namespace Ifpa.ViewModels
         public ObservableCollection<ActivityFeedItem> ActivityFeedItems { get; set; }
         public Command LoadItemsCommand { get; set; }
                 
-        public ActivityFeedViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ActivityFeedViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public ActivityFeedViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ActivityFeedViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Activity Feed";
             ActivityFeedItems = new ObservableCollection<ActivityFeedItem>();

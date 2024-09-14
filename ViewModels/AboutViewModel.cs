@@ -15,7 +15,7 @@ namespace Ifpa.ViewModels
 
         public int CreatorIfpaNumber => 16927;
 
-        public AboutViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public AboutViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             AppSettings = appSettings;
             Sponsors = new ObservableCollection<Player>();

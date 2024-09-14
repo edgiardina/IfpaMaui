@@ -20,7 +20,7 @@ namespace Ifpa.ViewModels
         public string RegionCode { get; set; }
         public string SeriesCode { get; set; }
 
-        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             TournamentCardRecords = new ObservableCollection<PlayerCard>();
 

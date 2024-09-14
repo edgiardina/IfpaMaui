@@ -1,13 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using PinballApi.Models.WPPR.v1.Statistics;
-using Ifpa.Models;
+﻿using Ifpa.Models;
 using PinballApi;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView.Painting;
-using SkiaSharp;
 using Microsoft.Extensions.Logging;
+using PinballApi.Models.WPPR.v2.Stats;
 
 namespace Ifpa.ViewModels
 {
@@ -25,20 +21,20 @@ namespace Ifpa.ViewModels
 
         public List<Axis> PlayersByYearAxis { get; set; } = new List<Axis>();
 
-        public ObservableCollectionRange<PointsThisYearStat> MostPointsPlayers { get; set; }
+        public ObservableCollectionRange<PlayersPointsByGivenPeriodStatistics> MostPointsPlayers { get; set; }
 
-        public ObservableCollectionRange<MostEventsStat> MostEventsPlayers { get; set; }
+        public ObservableCollectionRange<PlayersEventsAttendedByGivenPeriodStatistics> MostEventsPlayers { get; set; }
 
-        public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
+        //public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
 
         public Command LoadItemsCommand { get; set; }
 
-        public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public StatsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Stats";
-            MostPointsPlayers = new ObservableCollectionRange<PointsThisYearStat>();
-            MostEventsPlayers = new ObservableCollectionRange<MostEventsStat>();
-            BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
+            MostPointsPlayers = new ObservableCollectionRange<PlayersPointsByGivenPeriodStatistics>();
+            MostEventsPlayers = new ObservableCollectionRange<PlayersEventsAttendedByGivenPeriodStatistics>();
+            //BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
@@ -53,32 +49,36 @@ namespace Ifpa.ViewModels
             {
                 MostPointsPlayers.Clear();
                 MostEventsPlayers.Clear();
-                BiggestMovers.Clear();
+                //BiggestMovers.Clear();
 
-                var playersByCountryTask = PinballRankingApi.GetPlayersByCountryStat();
-                var eventsByYearTask = PinballRankingApi.GetEventsPerYearStat();
-                var playersByYearTask = PinballRankingApi.GetPlayersPerYearStat();
-                var mostPointsPlayersTask = PinballRankingApi.GetPointsThisYearStats();
-                //var mostEventsPlayersTask = PinballRankingApi.GetMostEventsStats();
-                var biggestMoversTask = PinballRankingApi.GetBiggestMoversStat();
+                DateTime firstDay = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
+                DateTime lastDay = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999);
+
+                var playersByCountryTask = PinballRankingApiV2.GetPlayersByCountryStatistics();
+                var eventsByYearTask = PinballRankingApiV2.GetEventsByYearStatistics();
+                var playersByYearTask = PinballRankingApiV2.GetPlayersByYearStatistics();
+                var mostPointsPlayersTask = PinballRankingApiV2.GetPlayersPointsByGivenPeriod(firstDay, lastDay);
+                var mostEventsPlayersTask = PinballRankingApiV2.GetPlayersEventsAttendedByGivenPeriod(firstDay, lastDay);
+                //var biggestMoversTask = PinballRankingApiV2..GetBiggestMoversStat();
 
                 await Task.WhenAll(playersByCountryTask, 
                                    eventsByYearTask,
                                    playersByYearTask,
                                    mostPointsPlayersTask,
-                                   //mostEventsPlayersTask,
-                                   biggestMoversTask);
+                                   mostEventsPlayersTask
+                                   //biggestMoversTask
+                                   );
 
                 var playersByCountry = await playersByCountryTask;
                 var eventsByYear = await eventsByYearTask;
                 var playersByYear = await playersByYearTask;
                 var mostPointsPlayers = await mostPointsPlayersTask;
-                //var mostEventsPlayers = await mostEventsPlayersTask;
-                var biggestMovers = await biggestMoversTask;
+                var mostEventsPlayers = await mostEventsPlayersTask;
+                //var biggestMovers = await biggestMoversTask;
 
                 var groupedStats = playersByCountry.GroupBy(
                     stat => stat.Count < 100 ? "Other" : stat.CountryName,
-                    (key, group) => new PlayersByCountryStat
+                    (key, group) => new PlayersByCountryStatistics
                     {
                         Count = key == "Other" ? group.Sum(item => item.Count) : group.First().Count,
                         CountryName = key
@@ -126,8 +126,8 @@ namespace Ifpa.ViewModels
                 OnPropertyChanged();
 
                 MostPointsPlayers.AddRange(mostPointsPlayers);
-                //MostEventsPlayers.AddRange(mostEventsPlayers);
-                BiggestMovers.AddRange(biggestMovers);
+                MostEventsPlayers.AddRange(mostEventsPlayers);
+                //BiggestMovers.AddRange(biggestMovers);
             }
             catch (Exception ex)
             {

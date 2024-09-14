@@ -11,7 +11,7 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:StatsViewModel"
-             xmlns:ifpastats="clr-namespace:PinballApi.Models.WPPR.v1.Statistics;assembly=PinballApi">
+             xmlns:ifpastats="clr-namespace:PinballApi.Models.WPPR.v2.Stats;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
@@ -72,7 +72,7 @@
                                   CachingStrategy="RecycleElement"
                                   ItemSelected="PlayersListView_ItemSelected">
                             <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="ifpastats:PointsThisYearStat">
+                                <DataTemplate x:DataType="ifpastats:PlayersPointsByGivenPeriodStatistics">
                                     <ViewCell>
                                         <StackLayout Padding="10"
                                                      Orientation="Horizontal">
@@ -105,6 +105,7 @@
                                                    VerticalTextAlignment="Center"
                                                    Text="{Binding WpprPoints, StringFormat='{0:N2}'}"
                                                    LineBreakMode="NoWrap"
+                                                   HorizontalTextAlignment="End"
                                                    FontSize="18"
                                                    WidthRequest="80" />
                                         </StackLayout>
@@ -114,23 +115,25 @@
                         </ListView>
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>
-                <!--<tabView:SfTabItem Header="Most Events">
+                <tabView:SfTabItem Header="Most Events">
                     <tabView:SfTabItem.Content>
-                        <ListView x:Name="MostEventsListView" 
-                        ItemsSource="{Binding MostEventsPlayers}"
-                        VerticalOptions="FillAndExpand"
-                         HasUnevenRows="true"
-                         RefreshCommand="{Binding LoadItemsCommand}"
-                         IsPullToRefreshEnabled="true"
-                         IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                         CachingStrategy="RecycleElement"
-                         ItemSelected="MostEventsListView_ItemSelected">
+                        <ListView x:Name="MostEventsListView"
+                                  ItemsSource="{Binding MostEventsPlayers}"
+                                  VerticalOptions="FillAndExpand"
+                                  HasUnevenRows="true"
+                                  RefreshCommand="{Binding LoadItemsCommand}"
+                                  IsPullToRefreshEnabled="true"
+                                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                                  CachingStrategy="RecycleElement"
+                                  ItemSelected="MostEventsListView_ItemSelected">
                             <ListView.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate x:DataType="ifpastats:PlayersEventsAttendedByGivenPeriodStatistics">
                                     <ViewCell>
-                                        <StackLayout Padding="10" Orientation="Horizontal" >
-                                            <StackLayout Padding="10" Orientation="Vertical">
-                                                <Label LineBreakMode="NoWrap" FontSize="16">
+                                        <StackLayout Padding="10"
+                                                     Orientation="Horizontal">
+                                            <StackLayout Orientation="Vertical">
+                                                <Label LineBreakMode="NoWrap"
+                                                       FontSize="16">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <FormattedString.Spans>
@@ -141,7 +144,9 @@
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
-                                                <Label LineBreakMode="NoWrap" FontSize="12" TextColor="{DynamicResource SecondaryTextColor}">
+                                                <Label LineBreakMode="NoWrap"
+                                                       FontSize="12"
+                                                       TextColor="{DynamicResource SecondaryTextColor}">
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <FormattedString.Spans>
@@ -151,17 +156,21 @@
                                                     </Label.FormattedText>
                                                 </Label>
                                             </StackLayout>
-                                            <Label HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" Text="{Binding Count}" 
-                                                   LineBreakMode="NoWrap" 
-                                                   FontSize="18" WidthRequest="80" />
+                                            <Label HorizontalOptions="EndAndExpand"
+                                                   VerticalTextAlignment="Center"
+                                                   HorizontalTextAlignment="End"
+                                                   Text="{Binding TournamentCount}"
+                                                   LineBreakMode="NoWrap"
+                                                   FontSize="18"
+                                                   WidthRequest="80" />
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
                     </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>-->
-                <tabView:SfTabItem Header="Biggest Movers">
+                </tabView:SfTabItem>
+                <!--<tabView:SfTabItem Header="Biggest Movers">
                     <tabView:SfTabItem.Content>
                         <ListView x:Name="BiggestMoversListView"
                                   ItemsSource="{Binding BiggestMovers}"
@@ -213,7 +222,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
                     </tabView:SfTabItem.Content>
-                </tabView:SfTabItem>
+                </tabView:SfTabItem>-->
             </tabView:SfTabView>
         </Grid>
     </ContentPage.Content>

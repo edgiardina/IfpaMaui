@@ -1,11 +1,5 @@
 ﻿using Ifpa.Services;
-using PinballApi.Models.WPPR.Universal;
-using PinballApi.Models.WPPR.v1.Players;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using PinballApi.Models.WPPR.v2.Players;
 
 namespace Ifpa.Models
 {
@@ -127,7 +121,7 @@ namespace Ifpa.Models
             MyStatsCurrentWpprRank = currentWpprRank;
         }
 
-        public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<Result> results)
+        public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<PlayerResult> results)
         {
             return await LocalDatabase.ParseNewTournaments(results.Select(n => n.TournamentId));
         }      
