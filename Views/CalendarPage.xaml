@@ -12,7 +12,6 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:models="clr-namespace:Ifpa.Models"
-             xmlns:ifpacalendar="clr-namespace:PinballApi.Models.WPPR.v1.Calendar;assembly=PinballApi"
              xmlns:ifpatournamentsearch="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi"
              x:DataType="vm:CalendarViewModel"
              Title="{x:Static local:Strings.CalendarPage_Calendar}">

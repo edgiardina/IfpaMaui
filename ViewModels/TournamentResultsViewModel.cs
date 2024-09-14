@@ -15,7 +15,7 @@ namespace Ifpa.ViewModels
 
         public int TournamentId { get; set; }
 
-        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Tournament Results";
             Results = new ObservableCollectionRange<TournamentResult>();

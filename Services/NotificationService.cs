@@ -2,12 +2,8 @@
 using PinballApi;
 using PinballApi.Extensions;
 using Shiny.Notifications;
-using PinballApi.Models.WPPR.v1.Calendar;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui.ApplicationModel;
-using Microsoft.Maui.Devices.Sensors;
-using System.Net;
-using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.v2.Calendar;
 
@@ -23,9 +19,9 @@ namespace Ifpa.Services
 
         private readonly IGeocoding Geocoding;
 
-        public NotificationService(PinballRankingApiV1 pinballRankingApi, PinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
+        public NotificationService(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
-            PinballRankingApi = pinballRankingApi;
+            PinballRankingApiV2 = pinballRankingApiV2;
             UniversalPinballRankingApi = universalPinballRankingApi;
             Geocoding = geocoding;
 
@@ -34,7 +30,7 @@ namespace Ifpa.Services
             this.logger = logger;
             this.badge = badge;
         }
-        private PinballRankingApiV1 PinballRankingApi { get; set; }
+        private PinballRankingApiV2 PinballRankingApiV2 { get; set; }
         private PinballRankingApi UniversalPinballRankingApi { get; set; }
 
         public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
@@ -57,7 +53,8 @@ namespace Ifpa.Services
 
                 try
                 {
-                    var results = await PinballRankingApi.GetPlayerResults(Settings.MyStatsPlayerId);
+
+                    var results = await PinballRankingApiV2.GetPlayerResults(Settings.MyStatsPlayerId);
                     
                     var unseenTournaments = await Settings.FindUnseenTournaments(results.Results);
 
@@ -110,7 +107,7 @@ namespace Ifpa.Services
 
                 try
                 {
-                    var results = await PinballRankingApi.GetPlayerRecord(Settings.MyStatsPlayerId);
+                    var results = await PinballRankingApiV2.GetPlayer(Settings.MyStatsPlayerId);
 
                     var currentWpprRank = results.PlayerStats.CurrentWpprRank;
                     var lastRecordedWpprRank = Settings.MyStatsCurrentWpprRank;

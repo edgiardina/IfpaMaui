@@ -17,7 +17,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerOneId { get; set; }
         public int PlayerTwoId { get; set; }
-        public PlayerVersusPlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public PlayerVersusPlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             PlayerVersusPlayer = new ObservableCollection<PlayerVersusPlayerComparisonRecord>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());

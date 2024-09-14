@@ -16,7 +16,7 @@ namespace Ifpa.ViewModels
 
         private BlogPostService BlogPostService { get; set; }
 
-        public NewsViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<NewsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public NewsViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<NewsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             BlogPostService = blogPostService;
 

@@ -131,7 +131,7 @@ namespace Ifpa.ViewModels
 
         public bool IsRegistered => PlayerRecord.IfpaRegistered;
 
-        public PlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public PlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             AppSettings = appSettings;
@@ -207,7 +207,7 @@ namespace Ifpa.ViewModels
 
         public async Task PrepopulateTourneyResults(int playerId)
         {
-            var results = await PinballRankingApi.GetPlayerResults(playerId);
+            var results = await PinballRankingApiV2.GetPlayerResults(playerId);
 
             foreach (var result in results.Results)
             {

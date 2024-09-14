@@ -20,7 +20,7 @@ namespace Ifpa.ViewModels
 
         public bool HasNoPvpData { get; set; }
 
-        public PlayerVersusPlayerViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public PlayerVersusPlayerViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "PVP";
             AllResults = new ObservableCollection<Grouping<char, PlayerVersusRecord>>();
