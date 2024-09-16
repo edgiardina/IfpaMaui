@@ -30,10 +30,11 @@ namespace Ifpa.Views
             viewModel.StartingPosition = Preferences.Get("StartingRank", viewModel.StartingPosition);
             viewModel.CurrentRankingType = (RankingType)Enum.Parse(typeof(RankingType), Preferences.Get("RankingType", viewModel.CurrentRankingType.ToString()));
             viewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), Preferences.Get("RankingSystem", viewModel.CurrentRankingSystem.ToString()));
+            viewModel.CurrentProRankingType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("ProRankingType", viewModel.CurrentProRankingType.ToString()));
 
-         
             RankingTypePicker.SelectedItem = viewModel.CurrentRankingType.ToString();
             TypePicker.SelectedItem = viewModel.CurrentRankingSystem.ToString();
+            ProTypeFilter.SelectedItem = viewModel.CurrentProRankingType.ToString();
         }
 
         private async void CancelButton_Clicked(object sender, EventArgs e)
@@ -72,6 +73,8 @@ namespace Ifpa.Views
                 CountryLabel.IsVisible = true;
                 TypeLabel.IsVisible = false;
                 TypePicker.IsVisible = false;
+                ProTypeFilter.IsVisible = false;
+                ProTypeLabel.IsVisible = false;
             }
             else if (selectedType == RankingType.Women)
             {
@@ -79,6 +82,17 @@ namespace Ifpa.Views
                 CountryLabel.IsVisible = false;
                 TypeLabel.IsVisible = true;
                 TypePicker.IsVisible = true;
+                ProTypeFilter.IsVisible = false;
+                ProTypeLabel.IsVisible = false;
+            }
+            else if (selectedType == RankingType.Pro)
+            {
+                CountryPicker.IsVisible = false;
+                CountryLabel.IsVisible = false;
+                TypeLabel.IsVisible = false;
+                TypePicker.IsVisible = false;
+                ProTypeFilter.IsVisible = true;
+                ProTypeLabel.IsVisible = true;
             }
             else
             {
@@ -86,12 +100,15 @@ namespace Ifpa.Views
                 CountryLabel.IsVisible = false;
                 TypeLabel.IsVisible = false;
                 TypePicker.IsVisible = false;
+
+                ProTypeFilter.IsVisible = false;
+                ProTypeLabel.IsVisible = false;
                 viewModel.CountryToShow = viewModel.DefaultCountry;
             }
 
             viewModel.CurrentRankingType = selectedType;
 
-            Preferences.Set("RankingType", viewModel.CurrentRankingType.ToString());           
+            Preferences.Set("RankingType", viewModel.CurrentRankingType.ToString());
         }
 
         private void TypePicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -107,6 +124,13 @@ namespace Ifpa.Views
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
+        }
+
+        private void ProTypeFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            viewModel.CurrentProRankingType = (TournamentType)Enum.Parse(typeof(TournamentType), ((Picker)sender).SelectedItem.ToString());
+
+            Preferences.Set("ProRankingType", viewModel.CurrentProRankingType.ToString());
         }
     }
 }

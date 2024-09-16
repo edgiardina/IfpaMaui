@@ -31,10 +31,10 @@ namespace Ifpa.Views
 
                 ViewModel.CurrentRankingType = (RankingType)Enum.Parse(typeof(RankingType), Preferences.Get("RankingType", ViewModel.CurrentRankingType.ToString()));
                 ViewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), Preferences.Get("RankingSystem", ViewModel.CurrentRankingSystem.ToString()));
-                
+                ViewModel.CurrentProRankingType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("ProRankingType", ViewModel.CurrentProRankingType.ToString()));
+
                 ViewModel.CountryToShow = new Country { CountryName = Preferences.Get("CountryName", ViewModel.DefaultCountry.CountryName) };
 
-                //await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
                 ViewModel.LoadItemsCommand.Execute(null);
             }
             base.OnAppearing();

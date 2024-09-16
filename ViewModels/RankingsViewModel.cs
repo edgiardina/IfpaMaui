@@ -33,7 +33,11 @@ namespace Ifpa.ViewModels
         public RankingType CurrentRankingType { get; set; }
         public RankingSystem CurrentRankingSystem { get; set; }
 
-        public TournamentType CurrentTournamentType { get; set; } = TournamentType.Open;
+        public TournamentType CurrentProRankingType { get; set; }
+
+        public List<string> ProRankingTypes => Enum.GetNames(typeof(TournamentType))
+                                                   .Except(new List<string> { TournamentType.Main.ToString(), TournamentType.Youth.ToString() })
+                                                   .ToList();
         public List<string> RankingTypes => Enum.GetNames(typeof(RankingType)).ToList();
 
         public List<string> RankingSystems => Enum.GetNames(typeof(RankingSystem)).ToList();
@@ -67,10 +71,10 @@ namespace Ifpa.ViewModels
 
             try
             {
-                var countries = await PinballRankingApi.GetRankingCountries();
-
                 if (Countries.Count == 0)
                 {
+                    var countries = await PinballRankingApi.GetRankingCountries();
+
                     foreach (var stat in countries.Country.OrderBy(n => n.CountryName))
                     {
                         Countries.Add(stat);
@@ -89,7 +93,7 @@ namespace Ifpa.ViewModels
 
                 if (CurrentRankingType == RankingType.Pro)
                 {
-                    var proItems = await PinballRankingApi.ProRankingSearch(CurrentTournamentType);
+                    var proItems = await PinballRankingApi.ProRankingSearch(CurrentProRankingType);
                     if (proItems.Rankings != null)
                     {
                         foreach (var item in proItems.Rankings)
@@ -110,6 +114,7 @@ namespace Ifpa.ViewModels
                     }
                 }
 
+                OnPropertyChanged(nameof(CurrentProRankingType));
                 OnPropertyChanged(nameof(CurrentRankingType));
                 OnPropertyChanged(nameof(CurrentRankingSystem));
             }
