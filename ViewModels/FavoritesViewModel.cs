@@ -67,5 +67,24 @@ namespace Ifpa.ViewModels
             }
         }
 
+        public Command DeletePlayerCommand => new Command<int>(async (playerId) =>
+        {
+            try
+            {
+                await Settings.LocalDatabase.RemoveFavorite(playerId);
+
+                Players.Remove(Players.Single(n => n.PlayerId == playerId));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error deleting favorite");
+            }
+        });
+
+        public Command SelectPlayer => new Command<int>(async (playerId) =>
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={playerId}");
+
+        });
     }
 }
