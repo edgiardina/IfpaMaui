@@ -52,7 +52,6 @@
                         <Image Source="{Binding IconSource}"
                                Margin="10,0,10,0">
                             <Image.Behaviors>
-                                <!-- TODO: replace explicit color declaration with style found in theme, required TintColor to be bindable -->
                                 <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                             </Image.Behaviors>
                         </Image>
