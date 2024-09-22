@@ -179,7 +179,7 @@
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="0"
-                               Text="{Binding CurrentWpprValue, Mode=OneWay}"
+                               Text="{Binding CurrentWpprValue, Mode=OneWay, StringFormat='{0:N2}'}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="0"
                                Grid.Row="1"
@@ -188,7 +188,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_Rating}" />
                         <Label Grid.Column="1"
                                Grid.Row="1"
-                               Text="{Binding Rating, Mode=OneWay}"
+                               Text="{Binding Rating, Mode=OneWay, StringFormat='{0:N2}'}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="1"
@@ -205,7 +205,7 @@
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="2"
-                               Text="{Binding EfficiencyValue, Mode=OneWay}"
+                               Text="{Binding EfficiencyValue, Mode=OneWay, StringFormat='{0:N2}'}"
                                HorizontalTextAlignment="Center" />
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_RankingStatistics}" />
@@ -262,7 +262,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_TotalWpprs}" />
                         <Label Grid.Column="1"
                                Grid.Row="3"
-                               Text="{Binding TotalWpprs, Mode=OneWay}" />
+                               Text="{Binding TotalWpprs, Mode=OneWay, StringFormat='{0:N2}'}" />
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentStatistics}" />
                     <Grid>
