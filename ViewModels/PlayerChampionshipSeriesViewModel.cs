@@ -18,7 +18,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
 
-        public PlayerChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PlayerChampionshipSeriesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             ChampionshipSeries = new ObservableCollection<ChampionshipSeries>();
 

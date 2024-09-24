@@ -131,7 +131,7 @@ namespace Ifpa.ViewModels
 
         public bool IsRegistered => PlayerRecord.IfpaRegistered;
 
-        public PlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PlayerDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             AppSettings = appSettings;

@@ -23,7 +23,7 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
 
-        public PlayerResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerResultsViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PlayerResultsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerResultsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Results";
             State = ResultType.Active;

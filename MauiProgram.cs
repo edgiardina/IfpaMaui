@@ -115,7 +115,6 @@ public static class MauiProgram
         s.AddSingleton<NotificationService>();
         s.AddTransient<IReminderService, ReminderService>();
 
-        s.AddSingleton(x => new PinballRankingApiV1(appSettings.IfpaApiKey));
         s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
         s.AddSingleton(x => new PinballRankingApi(appSettings.IfpaApiKey));
         s.AddSingleton<IGeocoding>(Geocoding.Default);

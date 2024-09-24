@@ -27,7 +27,7 @@ namespace Ifpa.ViewModels
         private readonly PinballRankingApi UniveralPinballRankingApi;
 
 
-        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             UniveralPinballRankingApi = pinballRankingApi;
 

@@ -18,7 +18,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.ActivityFeedPage_MarkAllSeen}"
-                     Clicked="ToolbarItem_Clicked" />
+                     Command="{Binding MarkAllSeenCommand}" />
         <!--<ToolbarItem Text="+" Clicked="ToolbarItem_Clicked_1" />-->
     </ContentPage.ToolbarItems>
     <Grid>
@@ -27,7 +27,9 @@
         <CollectionView x:Name="ActivityFeedListView"
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         SelectionMode="Single"
-                        SelectionChanged="ActivityFeedListView_SelectionChanged"
+                        SelectionChangedCommand="{Binding MarkItemSeenCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem}"
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                         ItemTemplate="{StaticResource activityFeedDataTemplateSelector}"
                         ItemsSource="{Binding ActivityFeedItems}" />
     </Grid>
