@@ -45,6 +45,8 @@ namespace Ifpa.Services
         public static string NewTournamentOnCalendarTitle = Strings.NotificationService_NewTournamentOnCalendarTitle;
         protected readonly string NewTournamentOnCalendarDescription = Strings.NotificationService_NewTournamentOnCalendarDescription;
 
+        public event EventHandler<ActivityFeedNotificationChangedEventArgs> ActivityFeedNotificationChanged;
+
         public async Task NotifyIfUserHasNewlySubmittedTourneyResults()
         {
             if (Settings.HasConfiguredMyStats)
@@ -55,7 +57,7 @@ namespace Ifpa.Services
                 {
 
                     var results = await PinballRankingApiV2.GetPlayerResults(Settings.MyStatsPlayerId);
-                    
+
                     var unseenTournaments = await Settings.FindUnseenTournaments(results.Results);
 
                     if (unseenTournaments.Any())
@@ -83,10 +85,17 @@ namespace Ifpa.Services
                             };
 
                             await Settings.LocalDatabase.CreateActivityFeedRecord(record);
-                            
+
                             if (Settings.NotifyOnTournamentResult && !isHistoricalEventPopulation)
                             {
                                 await SendNotification(NewTournamentNotificationTitle, string.Format(NewTournamentNotificationDescription, result.TournamentName), $"///my-stats/tournament-results?tournamentId={result.TournamentId}");
+
+                                ActivityFeedNotificationChanged?.Invoke(this, new ActivityFeedNotificationChangedEventArgs
+                                {
+                                    ActivityFeedItem = record,
+                                    UnreadCount = await Settings.LocalDatabase.GetUnreadActivityCount()
+                                });
+
                                 await UpdateBadgeIfNeeded();
                             }
                         }
@@ -117,6 +126,13 @@ namespace Ifpa.Services
                         if (Settings.NotifyOnRankChange)
                         {
                             await SendNotification(NewRankNotificationTitle, string.Format(NewRankNotificationDescription, lastRecordedWpprRank.OrdinalSuffix(), currentWpprRank.OrdinalSuffix()), "///my-stats/activity-feed");
+
+                            ActivityFeedNotificationChanged?.Invoke(this, new ActivityFeedNotificationChangedEventArgs
+                            {
+                                ActivityFeedItem = null,
+                                UnreadCount = await Settings.LocalDatabase.GetUnreadActivityCount()
+                            });
+
                             await UpdateBadgeIfNeeded();
                         }
 
@@ -131,7 +147,7 @@ namespace Ifpa.Services
 
                         Settings.MyStatsCurrentWpprRank = currentWpprRank;
 
-                        await Settings.LocalDatabase.CreateActivityFeedRecord(record);                        
+                        await Settings.LocalDatabase.CreateActivityFeedRecord(record);
                     }
                 }
                 catch (Exception ex)
@@ -143,7 +159,7 @@ namespace Ifpa.Services
 
         public async Task NotifyIfNewBlogItemPosted()
         {
-            if(Settings.NotifyOnNewBlogPost)
+            if (Settings.NotifyOnNewBlogPost)
             {
                 logger.LogInformation("Checking for new blog posts");
 
@@ -157,7 +173,7 @@ namespace Ifpa.Services
 
                     if (latestGuidInPosts > Settings.LastBlogPostGuid)
                     {
-                        if(Settings.LastBlogPostGuid > 0)
+                        if (Settings.LastBlogPostGuid > 0)
                         {
                             await SendNotification(NewBlogPostTitle, string.Format(NewBlogPostDescription, latestPost.Title.Text), $"///more/news/news-detail?newsUri={latestPost.Links.FirstOrDefault().Uri}");
                         }
@@ -198,14 +214,14 @@ namespace Ifpa.Services
 
                     var newestCalendarItemId = items.Tournaments.Max(n => n.TournamentId);
 
-                    if(newestCalendarItemId > Settings.LastCalendarIdSeen && Settings.LastCalendarIdSeen > 0)
+                    if (newestCalendarItemId > Settings.LastCalendarIdSeen && Settings.LastCalendarIdSeen > 0)
                     {
                         foreach (var calendarItem in items.Tournaments.Where(n => n.TournamentId > Settings.LastCalendarIdSeen))
                         {
-                            await SendNotification(NewTournamentOnCalendarTitle, 
-                                                   string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.EventStartDate.DateTime.ToShortDateString()), 
+                            await SendNotification(NewTournamentOnCalendarTitle,
+                                                   string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.EventStartDate.DateTime.ToShortDateString()),
                                                    $"///calendar/calendar-detail?tournamentId={calendarItem.TournamentId}");
-                        }                        
+                        }
 
                         //TODO: Add badge to calendar tab item
                         //await UpdateBadgeIfNeeded();
@@ -220,17 +236,35 @@ namespace Ifpa.Services
             }
         }
 
+        public async Task ClearNotificationForActivityFeedItem(ActivityFeedItem item)
+        {
+            item.HasBeenSeen = true;
+            await Settings.LocalDatabase.UpdateActivityFeedRecord(item);
+
+            ActivityFeedNotificationChanged?.Invoke(this, new ActivityFeedNotificationChangedEventArgs
+            {
+                ActivityFeedItem = item,
+                UnreadCount = await Settings.LocalDatabase.GetUnreadActivityCount()
+            });
+
+            await UpdateBadgeIfNeeded();
+        }
+
         private async Task UpdateBadgeIfNeeded()
         {
-            if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
+            try
             {
                 var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
-           
+
                 badge.SetCount((uint)unreads);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error in UpdateBadgeIfNeeded");
             }
         }
 
-        public async Task SendNotification(string title, string description, string url)
+        private async Task SendNotification(string title, string description, string url)
         {
             logger.LogInformation("Sending notification: {0} - {1}", title, description);
 
@@ -254,4 +288,11 @@ namespace Ifpa.Services
             }
         }
     }
+
+    public class ActivityFeedNotificationChangedEventArgs : EventArgs
+    {
+        public ActivityFeedItem ActivityFeedItem { get; set; }
+        public int UnreadCount { get; set; }
+    }
+
 }

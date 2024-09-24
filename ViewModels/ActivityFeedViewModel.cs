@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using CommunityToolkit.Maui.ApplicationModel;
 using Ifpa.Models;
+using Ifpa.Services;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 
@@ -16,29 +17,28 @@ namespace Ifpa.ViewModels
 
         public ActivityFeedItem SelectedItem { get; set; }
 
-        public ActivityFeedViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ActivityFeedViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly NotificationService notificationService;
+
+        public ActivityFeedViewModel(PinballRankingApiV2 pinballRankingApiV2, NotificationService notificationService, ILogger<ActivityFeedViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Activity Feed";
             ActivityFeedItems = new ObservableCollection<ActivityFeedItem>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             MarkAllSeenCommand = new Command(async () => await ExecuteMarkAllSeenCommand());
             MarkItemSeenCommand = new Command(async () => await ExecuteMarkItemSeenCommand());
+
+            this.notificationService = notificationService;
         }
 
         private async Task ExecuteMarkItemSeenCommand()
         {
-            SelectedItem.HasBeenSeen = true;
-            await Settings.LocalDatabase.UpdateActivityFeedRecord(SelectedItem);
+            await notificationService.ClearNotificationForActivityFeedItem(SelectedItem);
 
             if (SelectedItem.ActivityType == ActivityFeedType.TournamentResult)
             {
                 await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedItem.RecordID.Value}");
             }
-
-            var remainingUnreads = await Settings.LocalDatabase.GetUnreadActivityCount();
-
-            Badge.SetCount((uint)remainingUnreads);
-
+           
             SelectedItem = null;
             LoadItemsCommand.Execute(null);
         }
@@ -47,11 +47,8 @@ namespace Ifpa.ViewModels
         {
             foreach (var i in ActivityFeedItems.Where(n => !n.HasBeenSeen))
             {
-                i.HasBeenSeen = true;
-                await Settings.LocalDatabase.UpdateActivityFeedRecord(i);
+                await notificationService.ClearNotificationForActivityFeedItem(i);
             }
-
-            Badge.SetCount(0);
 
             LoadItemsCommand.Execute(null);
         }
