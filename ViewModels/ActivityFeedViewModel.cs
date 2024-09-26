@@ -15,6 +15,8 @@ namespace Ifpa.ViewModels
         public Command MarkAllSeenCommand { get; set; }
         public Command MarkItemSeenCommand { get; set; }
 
+        public Command TestingShimCommand { get; set; }
+
         public ActivityFeedItem SelectedItem { get; set; }
 
         private readonly NotificationService notificationService;
@@ -26,6 +28,7 @@ namespace Ifpa.ViewModels
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             MarkAllSeenCommand = new Command(async () => await ExecuteMarkAllSeenCommand());
             MarkItemSeenCommand = new Command(async () => await ExecuteMarkItemSeenCommand());
+            TestingShimCommand = new Command(async () => await ExecuteTestingShimCommand());
 
             this.notificationService = notificationService;
         }
@@ -82,6 +85,9 @@ namespace Ifpa.ViewModels
             }
         }
 
-
+        private async Task ExecuteTestingShimCommand()
+        {
+            await notificationService.TestingShim();
+        }
     }
 }

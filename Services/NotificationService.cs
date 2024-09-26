@@ -90,13 +90,7 @@ namespace Ifpa.Services
                             {
                                 await SendNotification(NewTournamentNotificationTitle, string.Format(NewTournamentNotificationDescription, result.TournamentName), $"///my-stats/tournament-results?tournamentId={result.TournamentId}");
 
-                                ActivityFeedNotificationChanged?.Invoke(this, new ActivityFeedNotificationChangedEventArgs
-                                {
-                                    ActivityFeedItem = record,
-                                    UnreadCount = await Settings.LocalDatabase.GetUnreadActivityCount()
-                                });
-
-                                await UpdateBadgeIfNeeded();
+                                await RecalculateActivityFeedAndUpdateBadges(record);
                             }
                         }
                     }
@@ -123,19 +117,6 @@ namespace Ifpa.Services
 
                     if (currentWpprRank != lastRecordedWpprRank && lastRecordedWpprRank != 0)
                     {
-                        if (Settings.NotifyOnRankChange)
-                        {
-                            await SendNotification(NewRankNotificationTitle, string.Format(NewRankNotificationDescription, lastRecordedWpprRank.OrdinalSuffix(), currentWpprRank.OrdinalSuffix()), "///my-stats/activity-feed");
-
-                            ActivityFeedNotificationChanged?.Invoke(this, new ActivityFeedNotificationChangedEventArgs
-                            {
-                                ActivityFeedItem = null,
-                                UnreadCount = await Settings.LocalDatabase.GetUnreadActivityCount()
-                            });
-
-                            await UpdateBadgeIfNeeded();
-                        }
-
                         var record = new ActivityFeedItem
                         {
                             CreatedDateTime = DateTime.Now,
@@ -148,6 +129,11 @@ namespace Ifpa.Services
                         Settings.MyStatsCurrentWpprRank = currentWpprRank;
 
                         await Settings.LocalDatabase.CreateActivityFeedRecord(record);
+
+                        if (Settings.NotifyOnRankChange)
+                        {
+                            await RecalculateActivityFeedAndUpdateBadges(record);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -241,13 +227,35 @@ namespace Ifpa.Services
             item.HasBeenSeen = true;
             await Settings.LocalDatabase.UpdateActivityFeedRecord(item);
 
+            await RecalculateActivityFeedAndUpdateBadges(item);
+        }
+
+        public async Task RecalculateActivityFeedAndUpdateBadges(ActivityFeedItem activityFeedItem)
+        {
+            var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
+
             ActivityFeedNotificationChanged?.Invoke(this, new ActivityFeedNotificationChangedEventArgs
             {
-                ActivityFeedItem = item,
-                UnreadCount = await Settings.LocalDatabase.GetUnreadActivityCount()
+                ActivityFeedItem = activityFeedItem,
+                UnreadCount = unreads
             });
 
             await UpdateBadgeIfNeeded();
+        }
+
+        public async Task TestingShim()
+        {
+            var newItem = new ActivityFeedItem
+            {
+                ActivityType = ActivityFeedType.TournamentResult,
+                RecordID = 28089,
+                CreatedDateTime = DateTime.Now,
+                HasBeenSeen = false
+            };
+
+            await Settings.LocalDatabase.CreateActivityFeedRecord(newItem);
+
+            await RecalculateActivityFeedAndUpdateBadges(newItem);
         }
 
         private async Task UpdateBadgeIfNeeded()

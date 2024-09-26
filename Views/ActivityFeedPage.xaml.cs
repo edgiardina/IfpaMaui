@@ -26,21 +26,5 @@ namespace Ifpa.Views
 
             activityFeedViewModel.LoadItemsCommand.Execute(null);
         }
-
-        //Testing shim. 
-        //private async void ToolbarItem_Clicked_1(object sender, System.EventArgs e)
-        //{
-        //    var newItem = new ActivityFeedItem
-        //    {
-        //        ActivityType = ActivityFeedType.TournamentResult,
-        //        RecordID = 28089,
-        //        CreatedDateTime = DateTime.Now,
-        //        HasBeenSeen = false
-        //    };
-        //    await Settings.LocalDatabase.CreateActivityFeedRecord(newItem);
-
-        //    Badge.SetCount(1);
-        //    activityFeedViewModel.LoadItemsCommand.Execute(null);
-        //}
     }
 }

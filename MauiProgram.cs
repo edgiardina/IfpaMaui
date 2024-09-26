@@ -8,7 +8,6 @@ using Ifpa.Services;
 using Ifpa.Interfaces;
 using MauiIcons.Fluent;
 using Ifpa.BackgroundJobs;
-using Ifpa.Controls;
 using Shiny.Infrastructure;
 using PinballApi;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
@@ -17,6 +16,8 @@ using Serilog;
 using Shiny;
 using CommunityToolkit.Maui.ApplicationModel;
 using The49.Maui.BottomSheet;
+using Ifpa.Platforms.Renderers;
+using Ifpa.Controls;
 
 namespace Ifpa;
 
@@ -49,7 +50,7 @@ public static class MauiProgram
             .ConfigureMauiHandlers((handlers) =>
             {
 #if IOS
-                handlers.AddHandler(typeof(InsetTableView), typeof(iOS.Renderers.InsetTableViewRenderer));
+                handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewRenderer));
 #endif
             })
             .ConfigureLogging()
@@ -63,6 +64,11 @@ public static class MauiProgram
                     .OnAppAction(App.HandleAppActions);
 
                 essentials.UseVersionTracking();
+            })
+            // Show custom Tabbar Badges for iOS and Android
+            .ConfigureMauiHandlers(h =>
+            {
+                h.AddHandler<Shell, TabbarBadgeRenderer>();
             })
             /*
             .ConfigureLifecycleEvents(events =>

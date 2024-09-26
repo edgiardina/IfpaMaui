@@ -2,7 +2,7 @@
 using System.Drawing;
 using UIKit;
 
-namespace Ifpa.iOS.Renderers
+namespace Ifpa.Platforms.Renderers
 {
     class InsetTableViewRenderer : TableViewRenderer
     {
