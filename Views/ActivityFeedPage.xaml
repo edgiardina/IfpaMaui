@@ -19,8 +19,8 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.ActivityFeedPage_MarkAllSeen}"
                      Command="{Binding MarkAllSeenCommand}" />
-        <ToolbarItem Text="+"
-                     Command="{Binding TestingShimCommand}" />
+        <!--<ToolbarItem Text="+"
+                     Command="{Binding TestingShimCommand}" />-->
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"

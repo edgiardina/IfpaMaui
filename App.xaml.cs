@@ -10,12 +10,14 @@ namespace Ifpa;
 public partial class App : Application
 {
     protected INotificationManager NotificationManager { get; set; }
+    protected readonly NotificationService NotificationService;
 
-    public App(AppSettings appSettings, INotificationManager notificationManager)
+    public App(AppSettings appSettings, INotificationManager notificationManager, NotificationService notificationService)
     {
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
 
         NotificationManager = notificationManager;
+        NotificationService = notificationService;
 
         InitializeComponent();
 
@@ -44,6 +46,8 @@ public partial class App : Application
         base.OnStart();
 
         await NotificationManager.RequestAccess();
+
+        await NotificationService.RecalculateActivityFeedAndUpdateBadges(null);
     }
 
     public static async void HandleAppActions(AppAction appAction)
