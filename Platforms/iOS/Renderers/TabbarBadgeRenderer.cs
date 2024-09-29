@@ -12,6 +12,7 @@ namespace Ifpa.Platforms.Renderers
         {
             return new BadgeShellTabbarAppearanceTracker();
         }
+
     }
     class BadgeShellTabbarAppearanceTracker : ShellTabBarAppearanceTracker
     {
@@ -19,7 +20,7 @@ namespace Ifpa.Platforms.Renderers
 
         private const int myStatsTabIndex = 2;
 
-        private UITabBarItem? _cartTabbarItem;
+        private UITabBarItem? _myStatsTabBarItem;
 
         public BadgeShellTabbarAppearanceTracker()
         {
@@ -30,11 +31,10 @@ namespace Ifpa.Platforms.Renderers
         {
             base.UpdateLayout(controller);
 
-            if (_cartTabbarItem is null)
+            if (_myStatsTabBarItem is null)
             {
-
-                _cartTabbarItem = controller.TabBar.Items?[myStatsTabIndex];
-                if (_cartTabbarItem is not null)
+                _myStatsTabBarItem = controller.TabBar.Items?[myStatsTabIndex];
+                if (_myStatsTabBarItem is not null)
                 {
                     UpdateBadge(0);
                     notificationService.ActivityFeedNotificationChanged += OnCountChanged;
@@ -49,16 +49,16 @@ namespace Ifpa.Platforms.Renderers
 
         private void UpdateBadge(int count)
         {
-            if (_cartTabbarItem is not null)
+            if (_myStatsTabBarItem is not null)
             {
                 if (count <= 0)
                 {
-                    _cartTabbarItem.BadgeValue = null;
+                    _myStatsTabBarItem.BadgeValue = null;
                 }
                 else
                 {
-                    _cartTabbarItem.BadgeValue = count.ToString();
-                    _cartTabbarItem.BadgeColor = Colors.Red.ToPlatform();
+                    _myStatsTabBarItem.BadgeValue = count.ToString();
+                    _myStatsTabBarItem.BadgeColor = Colors.Red.ToPlatform();
                 }
             }
         }
@@ -68,4 +68,6 @@ namespace Ifpa.Platforms.Renderers
             notificationService.ActivityFeedNotificationChanged -= OnCountChanged;
         }
     }
+
+    
 }

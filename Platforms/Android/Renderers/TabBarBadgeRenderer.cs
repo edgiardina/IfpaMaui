@@ -1,5 +1,6 @@
 ﻿using Google.Android.Material.Badge;
 using Google.Android.Material.BottomNavigation;
+using Ifpa.Controls;
 using Ifpa.Services;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 using Microsoft.Maui.Controls.Platform.Compatibility;

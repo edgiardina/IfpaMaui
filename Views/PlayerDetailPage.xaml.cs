@@ -5,6 +5,7 @@ using MauiIcons.Core;
 using CommunityToolkit.Maui.Alerts;
 using static System.Net.Mime.MediaTypeNames;
 using System.Threading;
+using Ifpa.Interfaces;
 
 namespace Ifpa.Views
 {
@@ -12,17 +13,22 @@ namespace Ifpa.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PlayerDetailPage : ContentPage
     {
-        PlayerDetailViewModel ViewModel;
 
-        bool LoadMyStats = false;
 
         public int PlayerId { get; set; }
 
-        public PlayerDetailPage(PlayerDetailViewModel viewModel)
+        private bool LoadMyStats = false;
+
+        private readonly PlayerDetailViewModel ViewModel;
+
+        private readonly IToolbarBadgeService toolbarBadgeService;
+
+        public PlayerDetailPage(PlayerDetailViewModel viewModel, IToolbarBadgeService toolbarBadgeService)
         {
             InitializeComponent();
 
             BindingContext = this.ViewModel = viewModel;
+            this.toolbarBadgeService = toolbarBadgeService;
         }
 
         protected async override void OnAppearing()
@@ -54,8 +60,6 @@ namespace Ifpa.Views
                 {
                     await RedirectUserToPlayerSearch();
                 }
-
-                ViewModel.PostPlayerLoadCommand = new Command(async () => await PostPlayerLoad());
             }
             else
             {
@@ -77,19 +81,13 @@ namespace Ifpa.Views
             }
 
             await ViewModel.ExecuteLoadItemsCommand();
-        }
 
-        /// <summary>
-        /// Do tasks we need the UI to be fully re-drawn for.
-        /// </summary>
-        /// <returns></returns>
-        private async Task PostPlayerLoad()
-        {
-            var numOfUnread = await Settings.LocalDatabase.GetUnreadActivityCount();
-
-            //TODO: badge the icons in the toolbar
-            //DependencyService.Get<IToolbarItemBadgeService>().SetBadge(this, ToolbarItems.SingleOrDefault(n => n.Text == "Activity Feed"), numOfUnread.ToString(), Colors.Red, Colors.White);
-        }
+            //if loading My Stats player, refresh the activity feed counter.
+            if (LoadMyStats)
+            {
+                toolbarBadgeService.SetBadge(this, ActivityFeedButton, ViewModel.BadgeCount, Colors.Red, Colors.White);
+            }
+        }        
 
         private async void TournamentResults_Button_Clicked(object sender, EventArgs e)
         {
