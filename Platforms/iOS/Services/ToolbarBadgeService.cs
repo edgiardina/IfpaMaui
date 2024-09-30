@@ -5,6 +5,7 @@ using Ifpa.Platforms.Utils;
 using UIKit;
 using Microsoft.Maui.Controls.Platform.Compatibility;
 using System.Reflection;
+using Serilog;
 
 namespace Ifpa.Platforms.Services
 {
@@ -16,7 +17,7 @@ namespace Ifpa.Platforms.Services
             {
                 var rootViewController = UIApplication.SharedApplication.KeyWindow.RootViewController;
 
-                var rightButtonItems = FindRightBarButtonItemsInViewController(rootViewController);
+                var rightButtonItems = FindRightBarButtonItemsInViewController(rootViewController, page);
 
                 var index = page.ToolbarItems.IndexOf(item);
 
@@ -26,13 +27,21 @@ namespace Ifpa.Platforms.Services
                     index = page.ToolbarItems.Count - index - 1;
                 }
 
-                var barButtonItem = rightButtonItems[index];
-                barButtonItem.AddBadge(value, backgroundColor.ToPlatform(), textColor.ToPlatform());
+                if(rightButtonItems != null && index < rightButtonItems.Length)
+                {
+                    var barButtonItem = rightButtonItems[index];
+                    barButtonItem.AddBadge(value, backgroundColor.ToPlatform(), textColor.ToPlatform());
+                }
+                else
+                {
+                    //log that we couldn't find the right bar button items
+                    Log.Warning("ToolbarBadgeService - Couldn't find right bar button items");
+                }
             });
         }
 
 
-        private UIBarButtonItem[] FindRightBarButtonItemsInViewController(UIViewController viewController)
+        private UIBarButtonItem[] FindRightBarButtonItemsInViewController(UIViewController viewController, Page page)
         {
             if (viewController == null)
             {
@@ -43,9 +52,9 @@ namespace Ifpa.Platforms.Services
             if (viewController is ShellSectionRootRenderer shellSectionRootRenderer)
             {
                 // Return the RightBarButtonItems from the NavigationItem
-                //TODO: Why the fuck is it Title LRN? who knows. MAUI.
-                if (shellSectionRootRenderer.NavigationItem?.RightBarButtonItems != null && shellSectionRootRenderer.NavigationItem?.Title == "LRN")
+                if (shellSectionRootRenderer.NavigationItem?.RightBarButtonItems != null && shellSectionRootRenderer.NavigationItem?.Title == page.Title)
                 {
+                    Log.Information("ToolbarBadgeService - found Navigation Item with Title {Title}", shellSectionRootRenderer.NavigationItem?.Title);
                     return shellSectionRootRenderer.NavigationItem.RightBarButtonItems;
                 }
             }
@@ -53,7 +62,7 @@ namespace Ifpa.Platforms.Services
             // If not found, iterate through the child view controllers
             foreach (var childViewController in viewController.ChildViewControllers)
             {
-                var rightBarButtonItems = FindRightBarButtonItemsInViewController(childViewController);
+                var rightBarButtonItems = FindRightBarButtonItemsInViewController(childViewController, page);
 
                 if (rightBarButtonItems != null)
                 {
@@ -64,7 +73,7 @@ namespace Ifpa.Platforms.Services
             // If a presented view controller exists, check that one as well
             if (viewController.PresentedViewController != null)
             {
-                var presentedRightBarButtonItems = FindRightBarButtonItemsInViewController(viewController.PresentedViewController);
+                var presentedRightBarButtonItems = FindRightBarButtonItemsInViewController(viewController.PresentedViewController, page);
 
                 if (presentedRightBarButtonItems != null)
                 {

@@ -2,6 +2,7 @@
 using Google.Android.Material.Badge;
 using Ifpa.Interfaces;
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+using Serilog;
 
 namespace Ifpa.Platforms.Services
 {
@@ -45,6 +46,10 @@ namespace Ifpa.Platforms.Services
                             badgeDrawable.SetVisible(true);
                         }
                     }
+                }
+                else
+                {
+                    Log.Warning("ToolbarBadgeService - Couldn't find toolbar");
                 }
             });
         }
