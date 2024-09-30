@@ -110,7 +110,7 @@ jobs:
       - name: Use Xcode Version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '15.4'
+          xcode-version: '16.0'
 
       - uses: actions/checkout@v2
 
