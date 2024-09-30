@@ -37,7 +37,7 @@ namespace Ifpa.Platforms.Utils
                 NSLayoutConstraint.ActivateConstraints(new[]
                 {
                     badge.TopAnchor.ConstraintEqualTo(barButtonView.TopAnchor, 3), // Adjust position
-                    badge.RightAnchor.ConstraintEqualTo(barButtonView.RightAnchor, 5), // Adjust position
+                    badge.RightAnchor.ConstraintEqualTo(barButtonView.RightAnchor, 0), // Adjust position
                     badge.WidthAnchor.ConstraintEqualTo(18),
                     badge.HeightAnchor.ConstraintEqualTo(18)
                 });
