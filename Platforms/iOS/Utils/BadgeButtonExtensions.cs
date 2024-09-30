@@ -9,130 +9,64 @@ namespace Ifpa.Platforms.Utils
 {
     public static class BarButtonItemExtensions
     {
-        enum AssociationPolicy
+        public static void AddBadge(this UIBarButtonItem barButtonItem, int value, UIColor backgroundColor = null, UIColor textColor = null)
         {
-            ASSIGN = 0,
-            RETAIN_NONATOMIC = 1,
-            COPY_NONATOMIC = 3,
-            RETAIN = 01401,
-            COPY = 01403,
-        }
+            // Remove any existing badge
+            RemoveBadge(barButtonItem);
 
-        static NSString BadgeKey = new NSString(@"BadgeKey");
-
-        [DllImport(Constants.ObjectiveCLibrary)]
-        static extern void objc_setAssociatedObject(IntPtr obj, IntPtr key, IntPtr value, AssociationPolicy policy);
-
-
-        [DllImport(Constants.ObjectiveCLibrary)]
-        static extern IntPtr objc_getAssociatedObject(IntPtr obj, IntPtr key);
-
-        static CAShapeLayer GetBadgeLayer(UIBarButtonItem barButtonItem)
-        {
-            var handle = objc_getAssociatedObject(barButtonItem.Handle, BadgeKey.Handle);
-
-            if (handle != IntPtr.Zero)
+            // Create the badge view
+            var badge = new UILabel
             {
-                var value = ObjCRuntime.Runtime.GetNSObject(handle);
-                if (value != null)
-                    return value as CAShapeLayer;
-                else
-                    return null;
-            }
-            return null;
-        }
-
-        static void DrawRoundedRect(CAShapeLayer layer, CGRect rect, float radius, UIColor color, bool filled)
-        {
-            layer.FillColor = filled ? color.CGColor : UIColor.White.CGColor;
-            layer.StrokeColor = color.CGColor;
-            layer.Path = UIBezierPath.FromRoundedRect(rect, radius).CGPath;
-        }
-
-        public static void AddBadge(this UIBarButtonItem barButtonItem, string text, UIColor backgroundColor, UIColor textColor, bool filled = true, float fontSize = 11.0f)
-        {
-
-            if (string.IsNullOrEmpty(text))
-            {
-                return;
-            }
-
-            CGPoint offset = CGPoint.Empty;
-
-            if (backgroundColor == null)
-                backgroundColor = UIColor.Red;
-
-            var font = UIFont.SystemFontOfSize(fontSize);
-
-            if (UIDevice.CurrentDevice.CheckSystemVersion(9, 0))
-            {
-                font = UIFont.MonospacedDigitSystemFontOfSize(fontSize, UIFontWeight.Regular);
-            }
-
-            var view = barButtonItem.ValueForKey(new NSString(@"view")) as UIView;
-            var bLayer = GetBadgeLayer(barButtonItem);
-            bLayer?.RemoveFromSuperLayer();
-
-            var badgeSize = text.StringSize(font);
-
-            var height = badgeSize.Height;
-            var width = badgeSize.Width + 2; /* padding */
-
-            //make sure we have at least a circle
-            if (width < height)
-            {
-                width = height;
-            }
-
-            //x position is offset from right-hand side
-            var x = view.Frame.Width - width + offset.X;
-
-            var badgeFrame = new CGRect(new CGPoint(x: x, y: offset.Y), size: new CGSize(width: width, height: height));
-
-            bLayer = new CAShapeLayer();
-            DrawRoundedRect(bLayer, badgeFrame, 7.0f, backgroundColor, filled);
-            view.Layer.AddSublayer(bLayer);
-
-            // Initialize Badge's label
-            var label = new CATextLayer
-            {
-                String = text,
-                TextAlignmentMode = CATextLayerAlignmentMode.Center,
-                FontSize = font.PointSize,
-                Frame = badgeFrame,
-                ForegroundColor = filled ? textColor.CGColor : UIColor.White.CGColor,
-                BackgroundColor = UIColor.Clear.CGColor,
-                ContentsScale = UIScreen.MainScreen.Scale
+                Text = value.ToString(),
+                TextColor = textColor ?? UIColor.White,
+                BackgroundColor = backgroundColor ?? UIColor.Red,
+                TextAlignment = UITextAlignment.Center,
+                Font = UIFont.BoldSystemFontOfSize(11),
+                ClipsToBounds = true, // Removed as you pointed out
+                Layer = { CornerRadius = 9 }, // 18px height, so half is 9 for circular badge
+                Frame = new CGRect(0, 0, 18, 18), // Set frame explicitly
+                TranslatesAutoresizingMaskIntoConstraints = false                
             };
 
-            label.SetFont(CGFont.CreateWithFontName(font.Name));
-            bLayer.AddSublayer(label);
-
-            // Save Badge as UIBarButtonItem property
-            objc_setAssociatedObject(barButtonItem.Handle, BadgeKey.Handle, bLayer.Handle, AssociationPolicy.RETAIN_NONATOMIC);
-        }
-
-        public static void UpdateBadge(this UIBarButtonItem barButtonItem, string text, UIColor backgroundColor, UIColor textColor)
-        {
-            var bLayer = GetBadgeLayer(barButtonItem);
-
-            if (bLayer != null)
+            // Ensure the barButtonItem's view is available
+            if (barButtonItem.ValueForKey(new NSString("view")) is UIView barButtonView)
             {
-                bLayer.Hidden = string.IsNullOrEmpty(text) || text == "0";
-                if (bLayer.Hidden)
+                // Add the badge as a subview of the barButtonItem's view
+                barButtonView.AddSubview(badge);
+
+                NSLayoutConstraint.ActivateConstraints(new[]
                 {
-                    return;
-                }
-            }
+                    badge.TopAnchor.ConstraintEqualTo(barButtonView.TopAnchor, 0), // Adjust position
+                    badge.RightAnchor.ConstraintEqualTo(barButtonView.RightAnchor, -5), // Adjust position
+                    badge.WidthAnchor.ConstraintEqualTo(18),
+                    badge.HeightAnchor.ConstraintEqualTo(18)
+                });
 
-            var textLayer = bLayer?.Sublayers?.First(p => p is CATextLayer) as CATextLayer;
-            if (textLayer != null && textLayer.String != "0")
-            {
-                textLayer.String = text;
+                barButtonView.BringSubviewToFront(badge); // Ensure badge is on top
+
+                // Debugging: Print the frame to check position
+                Console.WriteLine($"Badge Frame: {badge.Frame}");
+                Console.WriteLine($"Bar Button View Frame: {barButtonView.Frame}");
             }
             else
             {
-                barButtonItem.AddBadge(text, backgroundColor, textColor);
+                Console.WriteLine("Could not find the UIBarButtonItem view.");
+            }
+        }
+
+        public static void RemoveBadge(this UIBarButtonItem barButtonItem)
+        {
+            // Ensure barButtonItem's view is available
+            if (barButtonItem.ValueForKey(new NSString("view")) is UIView barButtonView)
+            {
+                // Find the badge (if any) and remove it
+                foreach (var subview in barButtonView.Subviews)
+                {
+                    if (subview is UILabel badge && badge.BackgroundColor == UIColor.Red)
+                    {
+                        badge.RemoveFromSuperview();
+                    }
+                }
             }
         }
 
