@@ -194,7 +194,7 @@ jobs:
         run: |
           dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }}
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: ifpamaui-ios-signed-build
           if-no-files-found: error
