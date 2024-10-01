@@ -1,9 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.ServiceModel.Syndication;
 using Ifpa.Services;
 using System.Xml;
-using Microsoft.Extensions.Configuration;
 using PinballApi;
 using Microsoft.Extensions.Logging;
 
@@ -23,7 +21,7 @@ namespace Ifpa.ViewModels
         private BlogPostService BlogPostService { get; set; }
 
         //TODO: convert IConfiguration to IOptions?
-        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<NewsDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV2 pinballRankingApiV2, ILogger<NewsDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "News";
             BlogPostService = blogPostService;

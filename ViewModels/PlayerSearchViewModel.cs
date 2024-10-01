@@ -14,7 +14,7 @@ namespace Ifpa.ViewModels
 
         public bool IsLoaded { get; set; } = false;
 
-        public PlayerSearchViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PlayerSearchViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Player Search";
             Players = new ObservableCollection<Player>();

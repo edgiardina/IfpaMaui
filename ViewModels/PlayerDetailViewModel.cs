@@ -1,4 +1,6 @@
-﻿using Ifpa.Models;
+﻿using Ifpa.Interfaces;
+using Ifpa.Models;
+using Ifpa.Services;
 using LiveChartsCore;
 using LiveChartsCore.Kernel;
 using LiveChartsCore.SkiaSharpView;
@@ -9,6 +11,7 @@ using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using SkiaSharp;
+using Syncfusion.Maui.Core.Carousel;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -19,11 +22,9 @@ namespace Ifpa.ViewModels
         AppSettings AppSettings { get; set; }
 
         public Command LoadItemsCommand { get; set; }
-        public Command PostPlayerLoadCommand { get; set; }
-
 
         public int PlayerId { get; set; }
-        public int LastTournamentCount { get; set; }
+
         private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
         private static readonly int s_logBase = 10;
@@ -131,7 +132,9 @@ namespace Ifpa.ViewModels
 
         public bool IsRegistered => PlayerRecord.IfpaRegistered;
 
-        public PlayerDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public int BadgeCount { get; set; }
+
+        public PlayerDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             AppSettings = appSettings;
@@ -187,12 +190,13 @@ namespace Ifpa.ViewModels
                     OnPropertyChanged();
                     PlayerRecord = playerData;
 
-                    AddPlayerToAppLinks();
-
-                    if (PostPlayerLoadCommand != null)
+                    if(PlayerId == Settings.MyStatsPlayerId)
                     {
-                        PostPlayerLoadCommand.Execute(null);
+                        BadgeCount = await Settings.LocalDatabase.GetUnreadActivityCount();
+                        OnPropertyChanged(nameof(BadgeCount));
                     }
+
+                    AddPlayerToAppLinks();                   
                 }
             }
             catch (Exception ex)
