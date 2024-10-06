@@ -6,6 +6,7 @@ using CommunityToolkit.Maui.Alerts;
 using static System.Net.Mime.MediaTypeNames;
 using System.Threading;
 using Ifpa.Interfaces;
+using Microsoft.Maui.Layouts;
 
 namespace Ifpa.Views
 {
@@ -193,6 +194,56 @@ namespace Ifpa.Views
         {
             await Shell.Current.GoToAsync($"player-champ-series?playerId={ViewModel.PlayerId}");
         }
+
+        private bool isAvatarEnlarged = false;
+
+        private async void OnAvatarTapped(object sender, EventArgs e)
+        {
+            if (isAvatarEnlarged)
+            {
+                // Shrink enlarged avatar back to original size and position
+                EnlargedPlayerAvatar.ScaleTo(1, 250, Easing.CubicOut);
+                EnlargedPlayerAvatar.TranslateTo(0, 0, 250, Easing.CubicOut);
+
+                AvatarOverlay.IsVisible = false;
+                PlayerAvatar.IsVisible = true;
+
+                isAvatarEnlarged = false;
+            }
+            else
+            {
+                // Set EnlargedPlayerAvatar to match PlayerAvatar's size and position initially
+                AvatarOverlay.IsVisible = true;
+
+                // Set EnlargedPlayerAvatar to the initial position of PlayerAvatar
+                AbsoluteLayout.SetLayoutBounds(EnlargedPlayerAvatar, new Rect(PlayerAvatar.X, PlayerAvatar.Y, PlayerAvatar.Width, PlayerAvatar.Height));
+                AbsoluteLayout.SetLayoutFlags(EnlargedPlayerAvatar, AbsoluteLayoutFlags.None);
+
+                PlayerAvatar.IsVisible = false; // Hide original avatar
+
+                // Calculate the target size and position for the enlarged avatar
+                double screenWidth = this.Window.Width;
+                double screenHeight = this.Window.Height;
+
+                double targetWidth = screenWidth * 0.8;
+                double targetHeight = screenHeight * 0.8;
+
+                // Calculate the center position for the enlarged avatar
+                double targetX = (screenWidth - targetWidth) / 2;
+                double targetY = (screenHeight - targetHeight) / 2;
+
+                // Set the final bounds explicitly to ensure it's centered
+                AbsoluteLayout.SetLayoutBounds(EnlargedPlayerAvatar, new Rect(0.5, 0.5, targetWidth, targetHeight));
+                AbsoluteLayout.SetLayoutFlags(EnlargedPlayerAvatar, AbsoluteLayoutFlags.PositionProportional);
+
+                // Animate to the center with the new size
+                //EnlargedPlayerAvatar.TranslateTo(targetX, targetY - PlayerAvatar.Y, 250, Easing.CubicOut);
+                EnlargedPlayerAvatar.ScaleTo(targetWidth / PlayerAvatar.Width, 250, Easing.CubicOut);
+
+                isAvatarEnlarged = true;
+            }
+        }
+
     }
 
 
