@@ -20,6 +20,7 @@
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <toolkit:IsNotNullConverter x:Key="isNotNullConverter" />
             <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter" />
+            <converters:NotEqualMultiValueConverter x:Key="NotEqualMultiValueConverter" />
             <Style x:Key="calendarHeader"
                    TargetType="Label">
                 <Setter Property="TextColor"
@@ -114,11 +115,30 @@
                                 <Label Text="{x:Static local:Strings.CalendarDetailPage_Date}"
                                        Style="{DynamicResource labelStyle}"
                                        Grid.Column="0" />
-
-                                <Label Text="{Binding Tournament.EventStartDate, StringFormat='{0:d}', Mode=OneWay}"
-                                       Style="{DynamicResource valueStyle}"
-                                       Grid.Column="1" />
-
+                                <HorizontalStackLayout Grid.Column="1">
+                                    <Label Text="{Binding Tournament.EventStartDate, StringFormat='{0:d}', Mode=OneWay}"
+                                           Style="{DynamicResource valueStyle}" />
+                                    <Label Text="{x:Static local:Strings.Hyphen}"
+                                           HorizontalTextAlignment="Center"                  
+                                           Padding="10,0,0,0"
+                                           Margin="5,0,0,0">
+                                        <Label.IsVisible>
+                                            <MultiBinding Converter="{StaticResource NotEqualMultiValueConverter}">
+                                                <Binding Path="Tournament.EventStartDate" />
+                                                <Binding Path="Tournament.EventEndDate" />
+                                            </MultiBinding>
+                                        </Label.IsVisible>
+                                    </Label>
+                                    <Label Text="{Binding Tournament.EventEndDate, StringFormat='{0:d}', Mode=OneWay}"
+                                           Style="{DynamicResource valueStyle}">
+                                        <Label.IsVisible>
+                                            <MultiBinding Converter="{StaticResource NotEqualMultiValueConverter}">
+                                                <Binding Path="Tournament.EventStartDate" />
+                                                <Binding Path="Tournament.EventEndDate" />
+                                            </MultiBinding>
+                                        </Label.IsVisible>
+                                    </Label>
+                                </HorizontalStackLayout>
 
                                 <Label Text="{x:Static local:Strings.CalendarDetailPage_Director}"
                                        Style="{DynamicResource labelStyle}"

@@ -654,4 +654,10 @@
   <data name="CalendarFilterModalPage_RankingType" xml:space="preserve">
     <value>Ranking Type</value>
   </data>
+  <data name="CalendarFilterModalPage_ShowLeagues" xml:space="preserve">
+    <value>Show Leagues?</value>
+  </data>
+  <data name="Hyphen" xml:space="preserve">
+    <value>- </value>
+  </data>
 </root>

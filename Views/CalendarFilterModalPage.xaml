@@ -22,6 +22,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <!-- Location -->
             <Label Text="{x:Static local:Strings.CalendarFilterModalPage_Location}"
@@ -93,10 +94,20 @@
                     <!--<x:String>Youth</x:String>-->
                 </Picker.Items>
             </Picker>
+            
+            <!-- Event Type -->
+            <Label Text="{x:Static local:Strings.CalendarFilterModalPage_ShowLeagues}"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   VerticalTextAlignment="Center" />
+            <CheckBox Grid.Row="3"
+                      Grid.Column="1"
+                      Margin="20,0,5,0"
+                      x:Name="ShowLeaguesCheckBox" />
 
             <!-- Buttons -->
             <StackLayout Orientation="Horizontal"
-                         Grid.Row="3"
+                         Grid.Row="4"
                          Grid.ColumnSpan="4"
                          Margin="0, 20">
                 <Button WidthRequest="160"

@@ -9,6 +9,7 @@ using PinballApi.Models.WPPR.v2.Calendar;
 using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 using System.Windows.Input;
 using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 
 namespace Ifpa.ViewModels
 {
@@ -78,13 +79,15 @@ namespace Ifpa.ViewModels
                 }
 
                 var tournamentType = (TournamentType?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(TournamentType), Settings.CalendarRankingSystem));
+                TournamentEventType? eventType = Settings.CalendarShowLeagues ? null : TournamentEventType.Tournament;
 
                 var items = await pinballRankingApi.TournamentSearch(latitude, 
                                                                      longitude, 
                                                                      distance, DistanceType.Miles, 
                                                                      startDate: DateTime.Now, 
                                                                      endDate: DateTime.Now.AddYears(1), 
-                                                                     tournamentType: tournamentType, 
+                                                                     tournamentType: tournamentType,
+                                                                     tournamentEventType: eventType,
                                                                      totalReturn: 500);
 
                 logger.LogDebug("Api call completed at {0}", sw.ElapsedMilliseconds);
@@ -102,7 +105,6 @@ namespace Ifpa.ViewModels
                     TournamentCalendarItems = new EventCollection();
 
                     items.Tournaments
-                                  .Where(item => item.EventEndDate - item.EventStartDate <= 5.Days())
                                   .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
                                   .GroupBy(item => item.EventStartDate.Date)
                                   .ToList()

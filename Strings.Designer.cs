@@ -448,6 +448,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Leagues?.
+        /// </summary>
+        internal static string CalendarFilterModalPage_ShowLeagues {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_ShowLeagues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calendar.
         /// </summary>
         internal static string CalendarPage_Calendar {
@@ -597,6 +606,15 @@ namespace Ifpa {
         internal static string FavoritesPage_Delete {
             get {
                 return ResourceManager.GetString("FavoritesPage_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - .
+        /// </summary>
+        internal static string Hyphen {
+            get {
+                return ResourceManager.GetString("Hyphen", resourceCulture);
             }
         }
         

@@ -40,7 +40,7 @@ namespace Ifpa.ViewModels
                         {
                             var items = await PinballRankingApiV2.GetPlayersBySearch(new PlayerSearchFilter() { Name = text.Trim() });
 
-                            Players = items.Results.ToObservableCollection();
+                            Players = items.Results?.ToObservableCollection();
                             OnPropertyChanged("Players");
                         }
                         IsLoaded = true;
