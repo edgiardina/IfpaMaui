@@ -75,6 +75,12 @@ namespace Ifpa.Models
             set => Preferences.Set("CalendarRankingSystem", value);
         }
 
+        public static bool CalendarShowLeagues
+        {
+            get => Preferences.Get("CalendarShowLeagues", false);
+            set => Preferences.Set("CalendarShowLeagues", value);
+        }
+
         public static long LastCalendarIdSeen
         {
             get => Preferences.Get("LastCalendarIdSeen", 0L);

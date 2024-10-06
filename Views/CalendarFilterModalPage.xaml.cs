@@ -25,6 +25,7 @@ namespace Ifpa.Views
             LocationEntry.Text = lastCalendarLocation;
             DistanceText.Text = ((int)DistanceSlider.Value).ToString();
             RankingTypePicker.SelectedItem = lastCalendarRankingSystem;
+            ShowLeaguesCheckBox.IsChecked = Settings.CalendarShowLeagues;
         }
 
         private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -84,6 +85,7 @@ namespace Ifpa.Views
             Settings.LastCalendarLocation = LocationEntry.Text;
             Settings.LastCalendarDistance = (int)DistanceSlider.Value;
             Settings.CalendarRankingSystem = (string)RankingTypePicker.SelectedItem;
+            Settings.CalendarShowLeagues = ShowLeaguesCheckBox.IsChecked;
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();

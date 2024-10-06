@@ -148,7 +148,8 @@ namespace Ifpa.Views
             await Share.RequestAsync(new ShareTextRequest
             {
                 Uri = $"https://www.ifpapinball.com/player.php?p={ViewModel.PlayerId}",
-                Title = Strings.PlayerDetailPage_SharePlayer
+                Title = Strings.PlayerDetailPage_SharePlayer,
+
             });
         }
 
