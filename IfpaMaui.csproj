@@ -46,12 +46,6 @@
 		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
-	  <CodesignKey>iPhone Developer</CodesignKey>
-	  <CodesignProvision></CodesignProvision>
-	  <ProvisioningType>manual</ProvisioningType>
-	</PropertyGroup>
-
 	<!-- Package References -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
