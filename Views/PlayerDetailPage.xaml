@@ -73,6 +73,7 @@
         <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
             <StackLayout>
                 <Grid ColumnSpacing="10"
+                      MinimumHeightRequest="100"
                       BackgroundColor="{StaticResource SecondaryBanner}"
                       ColumnDefinitions="3*,*">
                     <Grid Grid.Column="0"
@@ -130,7 +131,7 @@
                     </Grid>
                     <toolkit:AvatarView Grid.Column="1"
                                         ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
-                                        HorizontalOptions="Center"
+                                        HorizontalOptions="End"
                                         Margin="10"
                                         Text="{Binding Initials, Mode=OneWay}"
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
@@ -149,7 +150,6 @@
                             <TapGestureRecognizer Tapped="OnAvatarTapped" />
                         </toolkit:AvatarView.GestureRecognizers>
                     </toolkit:AvatarView>
-
                 </Grid>
                 <StackLayout Spacing="10"
                              Margin="10">
