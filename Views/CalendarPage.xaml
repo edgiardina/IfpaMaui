@@ -62,7 +62,7 @@
                             SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="ifpatournamentsearch:Tournament">
-                        <VerticalStackLayout>
+                        <VerticalStackLayout HeightRequest="60">
                             <Grid ColumnDefinitions="2*,*,*"
                                   RowDefinitions="*,*"
                                   Margin="10,5">
@@ -97,6 +97,7 @@
                                 <controls:Chip Text="{Binding RankingSystem}"
                                                Grid.Column="2"
                                                Grid.Row="1"
+                                               HeightRequest="28"
                                                FontSize="10"
                                                HorizontalOptions="End" />
                             </Grid>
