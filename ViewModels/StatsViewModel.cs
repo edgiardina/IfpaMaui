@@ -4,6 +4,8 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore;
 using Microsoft.Extensions.Logging;
 using PinballApi.Models.WPPR.v2.Stats;
+using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace Ifpa.ViewModels
 {
@@ -21,9 +23,9 @@ namespace Ifpa.ViewModels
 
         public List<Axis> PlayersByYearAxis { get; set; } = new List<Axis>();
 
-        public ObservableCollectionRange<PlayersPointsByGivenPeriodStatistics> MostPointsPlayers { get; set; }
+        public ObservableCollection<PlayersPointsByGivenPeriodStatistics> MostPointsPlayers { get; set; }
 
-        public ObservableCollectionRange<PlayersEventsAttendedByGivenPeriodStatistics> MostEventsPlayers { get; set; }
+        public ObservableCollection<PlayersEventsAttendedByGivenPeriodStatistics> MostEventsPlayers { get; set; }
 
         //public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
 
@@ -32,8 +34,8 @@ namespace Ifpa.ViewModels
         public StatsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Stats";
-            MostPointsPlayers = new ObservableCollectionRange<PlayersPointsByGivenPeriodStatistics>();
-            MostEventsPlayers = new ObservableCollectionRange<PlayersEventsAttendedByGivenPeriodStatistics>();
+            MostPointsPlayers = new ObservableCollection<PlayersPointsByGivenPeriodStatistics>();
+            MostEventsPlayers = new ObservableCollection<PlayersEventsAttendedByGivenPeriodStatistics>();
             //BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
@@ -125,9 +127,13 @@ namespace Ifpa.ViewModels
 
                 OnPropertyChanged();
 
-                MostPointsPlayers.AddRange(mostPointsPlayers);
-                MostEventsPlayers.AddRange(mostEventsPlayers);
+                MostPointsPlayers = mostPointsPlayers.ToObservableCollection();
+                MostEventsPlayers = mostEventsPlayers.ToObservableCollection();
                 //BiggestMovers.AddRange(biggestMovers);
+
+                OnPropertyChanged(nameof(MostPointsPlayers));
+                OnPropertyChanged(nameof(MostEventsPlayers));
+
             }
             catch (Exception ex)
             {

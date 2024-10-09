@@ -62,10 +62,11 @@
                             SelectionChanged="TournamentListView_SelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="ifpatournamentsearch:Tournament">
-                        <VerticalStackLayout HeightRequest="60">
+                        <VerticalStackLayout>
                             <Grid ColumnDefinitions="2*,*,*"
                                   RowDefinitions="*,*"
-                                  Margin="10,5">
+                                  Margin="10,5"
+                                  HeightRequest="50">
                                 <Label Text="{Binding TournamentName}"
                                        Grid.ColumnSpan="3"
                                        FontAttributes="Bold" />

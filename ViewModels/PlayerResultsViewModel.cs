@@ -4,14 +4,16 @@ using PinballApi.Models.WPPR.v2;
 using Ifpa.Models;
 using PinballApi;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace Ifpa.ViewModels
 {
     public class PlayerResultsViewModel : BaseViewModel
     {
-        public ObservableCollectionRange<PlayerResult> ActiveResults { get; set; }
-        public ObservableCollectionRange<PlayerResult> UnusedResults { get; set; }
-        public ObservableCollectionRange<PlayerResult> PastResults { get; set; }
+        public ObservableCollection<PlayerResult> ActiveResults { get; set; }
+        public ObservableCollection<PlayerResult> UnusedResults { get; set; }
+        public ObservableCollection<PlayerResult> PastResults { get; set; }
 
         public Command LoadItemsCommand { get; set; }
 
@@ -28,9 +30,9 @@ namespace Ifpa.ViewModels
             Title = "Results";
             State = ResultType.Active;
             RankingType = RankingType.Main;
-            ActiveResults = new ObservableCollectionRange<PlayerResult>();
-            UnusedResults = new ObservableCollectionRange<PlayerResult>();
-            PastResults = new ObservableCollectionRange<PlayerResult>();
+            ActiveResults = new ObservableCollection<PlayerResult>();
+            UnusedResults = new ObservableCollection<PlayerResult>();
+            PastResults = new ObservableCollection<PlayerResult>();
 
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
@@ -53,20 +55,24 @@ namespace Ifpa.ViewModels
                 var activeResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Active);
                 if (activeResults.ResultsCount > 0)
                 {
-                    ActiveResults.AddRange(activeResults.Results);
+                    ActiveResults = activeResults.Results.ToObservableCollection();
                 }
                 
                 var unusedResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.NonActive);
                 if (unusedResults.ResultsCount > 0)
                 {
-                    UnusedResults.AddRange(unusedResults.Results);
+                    UnusedResults = unusedResults.Results.ToObservableCollection();
                 }
                 
                 var pastResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Inactive);
                 if (pastResults.ResultsCount > 0)
                 {
-                    PastResults.AddRange(pastResults.Results);
+                    PastResults = pastResults.Results.ToObservableCollection();
                 }
+
+                OnPropertyChanged(nameof(PastResults));
+                OnPropertyChanged(nameof(UnusedResults));
+                OnPropertyChanged(nameof(ActiveResults));
             }
             catch (Exception ex)
             {
