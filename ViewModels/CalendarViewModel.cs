@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 using Plugin.Maui.Calendar.Models;
 using PinballApi.Models.WPPR.v2.Calendar;
 using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
-using System.Windows.Input;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace Ifpa.ViewModels
 {
@@ -22,7 +22,7 @@ namespace Ifpa.ViewModels
     public class CalendarViewModel : BaseViewModel
     {
         public EventCollection TournamentCalendarItems { get; set; } = new EventCollection();
-        public ObservableCollectionRange<TournamentSearch> Tournaments { get; set; }
+        public ObservableCollection<TournamentSearch> Tournaments { get; set; }
 
         public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
 
@@ -45,7 +45,7 @@ namespace Ifpa.ViewModels
             this.pinballRankingApi = pinballRankingApi;
             this.geocoding = geocoding;
 
-            Tournaments = new ObservableCollectionRange<TournamentSearch>();
+            Tournaments = new ObservableCollection<TournamentSearch>();
             Pins = new ObservableCollection<Pin>();
             ChangeCalendarDisplayCommand = new Command(() => { CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList; OnPropertyChanged("CurrentType"); });
             ViewCalendarDetailsCommand = new Command<long>(async (tournamentId) => await ViewCalendarDetails(tournamentId));
@@ -94,7 +94,7 @@ namespace Ifpa.ViewModels
 
                 if (items.Tournaments.Any())
                 {
-                    Tournaments.AddRange(items.Tournaments.OrderBy(n => n.EventStartDate));
+                    Tournaments = items.Tournaments.OrderBy(n => n.EventStartDate).ToObservableCollection();
 
                     //Limit calendar to 100 future items. otherwise this page chugs
                     foreach (var detail in Tournaments)
@@ -110,6 +110,7 @@ namespace Ifpa.ViewModels
                                   .ToList()
                                   .ForEach(date => TournamentCalendarItems.Add(date.Key, date.ToList()));
 
+                    OnPropertyChanged(nameof(Tournaments));
                     OnPropertyChanged(nameof(TournamentCalendarItems));
                     OnPropertyChanged(nameof(Pins));
                     OnPropertyChanged(nameof(SelectedRankingSystem));
