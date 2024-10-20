@@ -4,7 +4,7 @@ using Ifpa.Models;
 using PinballApi;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Extensions.Logging;
-using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.NativeCalendar;
 using PinballApi.Models.WPPR.v2.Calendar;
 using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 using PinballApi.Models.WPPR.Universal;
@@ -21,7 +21,7 @@ namespace Ifpa.ViewModels
 
     public class CalendarViewModel : BaseViewModel
     {
-        public EventCollection TournamentCalendarItems { get; set; } = new EventCollection();
+        public ObservableCollection<NativeCalendarEvent> TournamentCalendarItems { get; set; } = new ObservableCollection<NativeCalendarEvent>();
         public ObservableCollection<TournamentSearch> Tournaments { get; set; }
 
         public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
@@ -102,13 +102,12 @@ namespace Ifpa.ViewModels
                         LoadEventOntoCalendar(detail);
                     }
 
-                    TournamentCalendarItems = new EventCollection();
+                    TournamentCalendarItems = new ObservableCollection<NativeCalendarEvent>();
 
                     items.Tournaments
                                   .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
                                   .GroupBy(item => item.EventStartDate.Date)
-                                  .ToList()
-                                  .ForEach(date => TournamentCalendarItems.Add(date.Key, date.ToList()));
+                                  .ToList();
 
                     OnPropertyChanged(nameof(Tournaments));
                     OnPropertyChanged(nameof(TournamentCalendarItems));
