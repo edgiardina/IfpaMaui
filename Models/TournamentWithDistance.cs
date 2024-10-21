@@ -2,7 +2,7 @@
 
 namespace Ifpa.Models
 {
-    internal class TournamentWithDistance : TournamentSearch
+    public class TournamentWithDistance : TournamentSearch
     {
         public TournamentWithDistance(TournamentSearch tournament, long distance)
         {

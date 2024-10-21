@@ -111,12 +111,17 @@
                                IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />
         </Grid>
-        <StackLayout IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}">
+        <VerticalStackLayout IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}">
             <calendar:NativeCalendarView x:Name="myCal"
+                                         HeightRequest="500"
+                                         BackgroundColor="Transparent"
+                                         MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
                                          SelectedDate="{Binding Source={x:Static sys:DateTime.Now}}"
                                          Events="{Binding TournamentCalendarItems}"
+                                         TintColor="{StaticResource IconAccentColor}"
+                                         DateChangedCommand="{Binding SelectedDateChangedCommand}"
                                          EventIndicatorColor="{StaticResource IconAccentColor}" />
-            <CollectionView>
+            <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:TournamentWithDistance">
                         <VerticalStackLayout>
@@ -182,6 +187,6 @@
                 </CollectionView.EmptyViewTemplate>
             </CollectionView>
 
-        </StackLayout>
+        </VerticalStackLayout>
     </Grid>
 </ContentPage>
