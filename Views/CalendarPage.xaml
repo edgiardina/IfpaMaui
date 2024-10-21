@@ -111,9 +111,11 @@
                                IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />
         </Grid>
-        <VerticalStackLayout IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}">
+        <Grid IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
+              RowDefinitions="450,*">
             <calendar:NativeCalendarView x:Name="myCal"
-                                         HeightRequest="500"
+                                         Grid.Row="0"
+                                         HeightRequest="450"
                                          BackgroundColor="Transparent"
                                          MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
                                          SelectedDate="{Binding Source={x:Static sys:DateTime.Now}}"
@@ -121,7 +123,7 @@
                                          TintColor="{StaticResource IconAccentColor}"
                                          DateChangedCommand="{Binding SelectedDateChangedCommand}"
                                          EventIndicatorColor="{StaticResource IconAccentColor}" />
-            <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}">
+            <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}" Grid.Row="1">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:TournamentWithDistance">
                         <VerticalStackLayout>
@@ -132,6 +134,7 @@
 
                             <Grid ColumnDefinitions="2*,*,*"
                                   RowDefinitions="*,*"
+                                  RowSpacing="5"
                                   Margin="10,5">
                                 <Label Text="{Binding TournamentName}"
                                        Grid.ColumnSpan="3"
@@ -187,6 +190,6 @@
                 </CollectionView.EmptyViewTemplate>
             </CollectionView>
 
-        </VerticalStackLayout>
+        </Grid>
     </Grid>
 </ContentPage>
