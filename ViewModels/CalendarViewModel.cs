@@ -44,7 +44,6 @@ namespace Ifpa.ViewModels
 
         private Location LastGeolocation { get; set; }
 
-
         private readonly PinballRankingApi pinballRankingApi;
         private readonly IGeocoding geocoding;
 

@@ -113,7 +113,7 @@
         </Grid>
         <Grid IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
               RowDefinitions="450,*">
-            <calendar:NativeCalendarView x:Name="myCal"
+            <calendar:NativeCalendarView x:Name="nativeCalendar"
                                          Grid.Row="0"
                                          HeightRequest="450"
                                          BackgroundColor="Transparent"
@@ -123,7 +123,9 @@
                                          TintColor="{StaticResource IconAccentColor}"
                                          DateChangedCommand="{Binding SelectedDateChangedCommand}"
                                          EventIndicatorColor="{StaticResource IconAccentColor}" />
-            <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}" Grid.Row="1">
+            <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}"
+                            Grid.Row="1"
+                            EmptyView="{x:Static local:Strings.CalendarPage_CalendarEmptyText}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:TournamentWithDistance">
                         <VerticalStackLayout>
@@ -179,15 +181,6 @@
                         </VerticalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-                <CollectionView.EmptyViewTemplate>
-                    <DataTemplate>
-                        <StackLayout>
-                            <Label Text="{x:Static local:Strings.CalendarPage_CalendarEmptyText}"
-                                   HorizontalTextAlignment="Center"
-                                   Margin="0,5,0,5" />
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.EmptyViewTemplate>
             </CollectionView>
 
         </Grid>

@@ -77,6 +77,8 @@ namespace Ifpa.Views
 
                 await ViewModel.ExecuteLoadItemsCommand(geoLocation, Settings.LastCalendarDistance);
 
+                //nativeCalendar.SelectedDate = DateTime.Today;
+
                 // For whatever reason Android on re-load via modal doesn't re-center the map.
                 map.MoveToRegion(mapSpan);
             }
