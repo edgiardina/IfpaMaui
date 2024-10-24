@@ -118,7 +118,7 @@
                                          HeightRequest="450"
                                          BackgroundColor="Transparent"
                                          MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
-                                         SelectedDate="{Binding Source={x:Static sys:DateTime.Now}}"
+                                         SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
                                          Events="{Binding TournamentCalendarItems}"
                                          TintColor="{StaticResource IconAccentColor}"
                                          DateChangedCommand="{Binding SelectedDateChangedCommand}"

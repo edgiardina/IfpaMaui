@@ -27,6 +27,7 @@ namespace Ifpa.ViewModels
         public ObservableCollection<TournamentWithDistance> SelectedDateCalendarItems { get; set; } = new ObservableCollection<TournamentWithDistance>();
 
         public ObservableCollection<TournamentSearch> Tournaments { get; set; }
+        public DateTime SelectedDate { get; set; } = DateTime.Today;
 
         public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
 
@@ -126,6 +127,8 @@ namespace Ifpa.ViewModels
                     OnPropertyChanged(nameof(TournamentCalendarItems));
                     OnPropertyChanged(nameof(Pins));
                     OnPropertyChanged(nameof(SelectedRankingSystem));
+
+                    SelectedDateChanged(new DateChangedEventArgs(SelectedDate, SelectedDate));
                 }
 
                 logger.LogDebug("Collections loaded at {0}", sw.ElapsedMilliseconds);
@@ -145,15 +148,9 @@ namespace Ifpa.ViewModels
             var longitude = LastGeolocation?.Longitude;
             var latitude = LastGeolocation?.Latitude;
 
-            SelectedDateCalendarItems.Clear();
-
-            foreach (var item in Tournaments)
-            {
-                if (item.EventStartDate.Date == e.NewDate)
-                {
-                    SelectedDateCalendarItems.Add(new TournamentWithDistance(item, (long)Location.CalculateDistance(latitude.Value, longitude.Value, item.Latitude, item.Longitude, DistanceUnits.Miles)));
-                }
-            }
+            SelectedDateCalendarItems = Tournaments.Where(n => n.EventStartDate.Date == e.NewDate)
+                                                   .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
+                                                   .ToObservableCollection();           
 
             OnPropertyChanged(nameof(SelectedDateCalendarItems));
         }
