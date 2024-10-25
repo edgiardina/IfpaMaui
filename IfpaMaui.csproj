@@ -98,6 +98,16 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<!--
+		Solves ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 	
+		https://github.com/xamarin/xamarin-macios/issues/21324#issuecomment-2382226489 
+	-->
+	<Target Name="DoNotLinkWithBrowserEngineKit" AfterTargets="_ComputeLinkNativeExecutableInputs">
+		<ItemGroup>
+			<_NativeExecutableFrameworks Remove="BrowserEngineKit" />
+		</ItemGroup>
+	</Target>
+
 	<!-- Compile Directives / File Compile Types -->
 	<ItemGroup>
 		<None Remove="appsettings.json" />

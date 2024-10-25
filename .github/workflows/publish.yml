@@ -179,6 +179,9 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      # The following command is due to some sort of maui build bug and iOS won't accept the binary:
+      # run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --version 8.0.401
+      # ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 
       - name: Install MAUI Workload
         run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
     
