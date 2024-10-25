@@ -186,7 +186,7 @@ jobs:
           dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --version 8.0.401
     
       - name: Restore nuget packages
-        run:  dotnet restore IfpaMaui.sln
+        run:  dotnet restore IfpaMaui.csproj
         
         # https://docs.microsoft.com/en-us/dotnet/maui/ios/deployment/overview
       - name : Publish iOS App
