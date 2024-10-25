@@ -180,7 +180,7 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Install MAUI Workload
-        run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --version 8.0.401
+        run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
     
       - name: Restore nuget packages
         run:  dotnet restore IfpaMaui.csproj
