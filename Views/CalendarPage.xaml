@@ -112,10 +112,10 @@
                                IsRunning="{Binding IsBusy}" />
         </Grid>
         <Grid IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
-              RowDefinitions="450,2,*">
+              RowDefinitions="Auto,2,*">
             <calendar:NativeCalendarView x:Name="nativeCalendar"
                                          Grid.Row="0"
-                                         HeightRequest="450"
+                                         MinimumHeightRequest="{OnPlatform iOS=456}"
                                          HorizontalOptions="{OnPlatform Android=Center}"
                                          BackgroundColor="Transparent"
                                          MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
