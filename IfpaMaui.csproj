@@ -58,7 +58,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="PinballApi" Version="3.0.10" />
-		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.1.8" />
+		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.8.2" />
 		<PackageReference Include="Scrutor" Version="5.0.1" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
 		<PackageReference Include="Shiny.Core" Version="3.3.3" />

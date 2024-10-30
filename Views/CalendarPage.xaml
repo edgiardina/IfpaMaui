@@ -115,9 +115,8 @@
               RowDefinitions="Auto,2,*">
             <calendar:NativeCalendarView x:Name="nativeCalendar"
                                          Grid.Row="0"
-                                         MinimumHeightRequest="{OnPlatform iOS=456}"
-                                         HorizontalOptions="{OnPlatform Android=Center}"
-                                         BackgroundColor="Transparent"
+                                         HeightRequest="{OnPlatform iOS=456, Android=340}"
+                                         HorizontalOptions="{OnPlatform Android=Center}"                                         
                                          MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
                                          SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
                                          Events="{Binding TournamentCalendarItems}"
