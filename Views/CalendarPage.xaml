@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:calendar="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+             xmlns:calendar="clr-namespace:Plugin.Maui.NativeCalendar;assembly=Plugin.Maui.NativeCalendar"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              x:Class="Ifpa.Views.CalendarPage"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
@@ -111,99 +111,79 @@
                                IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />
         </Grid>
-        <calendar:Calendar x:Name="myCal"
-                           SelectedDate="{Binding Source={x:Static sys:DateTime.Now}}"
-                           ArrowsSymbolNext="&gt;"
-                           ArrowsSymbolPrev="&lt;"
-                           ArrowsFontSize="20"
-                           ArrowsFontAttribute="Bold"
-                           ArrowsBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
-                           ArrowsBorderColor="Transparent"
-                           ArrowsColor="{StaticResource IconAccentColor}"
-                           Events="{Binding TournamentCalendarItems}"
-                           IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
-                           ShownDate="{Binding Source={x:Static sys:DateTime.Now}}"
-                           ShowYearPicker="False"
-                           TodayOutlineColor="{StaticResource IconAccentColor}"
-                           EventIndicatorColor="{StaticResource IconAccentColor}"
-                           SelectedDayBackgroundColor="{StaticResource IconAccentColor}"
-                           EventIndicatorSelectedColor="{StaticResource IconAccentColor}"
-                           MonthLabelColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
-                           SelectedDateColor="White"
-                           DisabledDayColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
-                           DeselectedDayTextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
-                           DaysTitleWeekendColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
-                           DaysTitleColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
-                           EventIndicatorSelectedTextColor="White"
-                           OtherMonthDayColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
-                           EventsScrollViewVisible="True"
-                           FooterSectionVisible="False"
-                           EventIndicatorTextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
-                           DisableSwipeDetection="True"
-                           SelectedDayTextColor="White">
-            <calendar:Calendar.EventTemplate>
-                <DataTemplate x:DataType="models:TournamentWithDistance">
-                    <VerticalStackLayout>
-                        <VerticalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
-                                                  CommandParameter="{Binding TournamentId}" />
-                        </VerticalStackLayout.GestureRecognizers>
+        <Grid IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
+              RowDefinitions="Auto,2,*">
+            <calendar:NativeCalendarView x:Name="nativeCalendar"
+                                         Grid.Row="0"
+                                         HeightRequest="{OnPlatform iOS=456, Android=340}"
+                                         HorizontalOptions="{OnPlatform Android=Center}"                                         
+                                         MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
+                                         SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                                         Events="{Binding TournamentCalendarItems}"
+                                         TintColor="{StaticResource IconAccentColor}"
+                                         DateChangedCommand="{Binding SelectedDateChangedCommand}"
+                                         EventIndicatorColor="{StaticResource IconAccentColor}" />
+            <BoxView Style="{StaticResource BoxSeperator}" Grid.Row="1" /> 
+            <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}"
+                            Grid.Row="2"
+                            EmptyView="{x:Static local:Strings.CalendarPage_CalendarEmptyText}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TournamentWithDistance">
+                        <VerticalStackLayout>
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
+                                                      CommandParameter="{Binding TournamentId}" />
+                            </VerticalStackLayout.GestureRecognizers>
 
-                        <Grid ColumnDefinitions="2*,*,*"
-                              RowDefinitions="*,*"
-                              Margin="10,5">
-                            <Label Text="{Binding TournamentName}"
-                                   Grid.ColumnSpan="3"
-                                   FontAttributes="Bold" />
+                            <Grid ColumnDefinitions="2*,*,*"
+                                  RowDefinitions="*,*"
+                                  RowSpacing="5"
+                                  Margin="10,5">
+                                <Label Text="{Binding TournamentName}"
+                                       Grid.ColumnSpan="3"
+                                       FontAttributes="Bold" />
 
-                            <Label FontSize="Small"
-                                   Grid.Row="1"
-                                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
-                                   LineBreakMode="WordWrap">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding City}" />
-                                        <Span Text=", " />
-                                        <Span Text="{Binding Stateprov}" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                                <Label FontSize="Small"
+                                       Grid.Row="1"
+                                       TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding City}" />
+                                            <Span Text=", " />
+                                            <Span Text="{Binding Stateprov}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
 
-                            <Label FontSize="Small"
-                                   Grid.Column="1"
-                                   Grid.Row="1"
-                                   HorizontalTextAlignment="Center"
-                                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
-                                   LineBreakMode="WordWrap">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding Distance}" />
-                                        <Span Text=" " />
-                                        <Span Text="{x:Static local:Strings.Miles_Abbreviation}" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                                <Label FontSize="Small"
+                                       Grid.Column="1"
+                                       Grid.Row="1"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Distance}" />
+                                            <Span Text=" " />
+                                            <Span Text="{x:Static local:Strings.Miles_Abbreviation}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
 
-                            <controls:Chip Grid.Row="1"
-                                           Text="{Binding RankingSystem}"
-                                           Grid.Column="2"
-                                           HorizontalOptions="End"
-                                           FontSize="10" />
+                                <controls:Chip Grid.Row="1"
+                                               Text="{Binding RankingSystem}"
+                                               Grid.Column="2"
+                                               HorizontalOptions="End"
+                                               FontSize="10" />
 
-                        </Grid>
-                        <BoxView Style="{StaticResource BoxSeperator}" />
-                    </VerticalStackLayout>
-                </DataTemplate>
-            </calendar:Calendar.EventTemplate>
-            <calendar:Calendar.EmptyTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <Label Text="{x:Static local:Strings.CalendarPage_CalendarEmptyText}"
-                               HorizontalTextAlignment="Center"
-                               Margin="0,5,0,5" />
-                    </StackLayout>
-                </DataTemplate>
-            </calendar:Calendar.EmptyTemplate>
-        </calendar:Calendar>
+                            </Grid>
+                            <BoxView Style="{StaticResource BoxSeperator}" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
     </Grid>
 </ContentPage>

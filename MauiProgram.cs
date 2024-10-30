@@ -19,6 +19,7 @@ using The49.Maui.BottomSheet;
 using Ifpa.Platforms.Renderers;
 using Ifpa.Platforms.Services;
 using Ifpa.Controls;
+using Plugin.Maui.NativeCalendar;
 
 namespace Ifpa;
 
@@ -42,6 +43,7 @@ public static class MauiProgram
             .UseShiny()
             .UseSkiaSharp(true)
             .UseBottomSheet()
+            .UseNativeCalendar()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {

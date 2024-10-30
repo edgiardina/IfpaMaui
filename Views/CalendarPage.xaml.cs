@@ -75,7 +75,7 @@ namespace Ifpa.Views
 
                 mapShim.Children.Add(map);
 
-                await ViewModel.ExecuteLoadItemsCommand(geoLocation, Settings.LastCalendarDistance);
+                await ViewModel.ExecuteLoadItemsCommand(geoLocation, Settings.LastCalendarDistance);                
 
                 // For whatever reason Android on re-load via modal doesn't re-center the map.
                 map.MoveToRegion(mapSpan);
