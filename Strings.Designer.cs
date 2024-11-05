@@ -1429,15 +1429,6 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Base Value: .
         /// </summary>
         internal static string TournamentInfoPage_BaseValue {
@@ -1686,6 +1677,24 @@ namespace Ifpa {
         internal static string TournamentResultsPage_TournamentValue {
             get {
                 return ResourceManager.GetString("TournamentResultsPage_TournamentValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for tournaments by name.
+        /// </summary>
+        internal static string TournamentSearchPage_Placeholder {
+            get {
+                return ResourceManager.GetString("TournamentSearchPage_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Search.
+        /// </summary>
+        internal static string TournamentSearchPage_Title {
+            get {
+                return ResourceManager.GetString("TournamentSearchPage_Title", resourceCulture);
             }
         }
     }

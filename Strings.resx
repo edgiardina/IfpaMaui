@@ -576,9 +576,6 @@
   <data name="NotificationService_NewTournamentOnCalendarTitle" xml:space="preserve">
     <value>New Tournament on Calendar</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -659,5 +656,11 @@
   </data>
   <data name="Hyphen" xml:space="preserve">
     <value>- </value>
+  </data>
+  <data name="TournamentSearchPage_Title" xml:space="preserve">
+    <value>Tournament Search</value>
+  </data>
+  <data name="TournamentSearchPage_Placeholder" xml:space="preserve">
+    <value>Search for tournaments by name</value>
   </data>
 </root>

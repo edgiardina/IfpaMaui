@@ -49,15 +49,16 @@
 
 	<!-- Package References -->
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.91" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.92" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.92" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.92" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="PinballApi" Version="3.0.10" />
+		<PackageReference Include="PinballApi" Version="3.0.12" />
 		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.8.2" />
 		<PackageReference Include="Scrutor" Version="5.0.1" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
@@ -156,6 +157,9 @@
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Strings.resx</DependentUpon>
 		</Compile>
+		<Compile Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml.cs">
+		  <DependentUpon>TournamentSearchDataTemplate.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml.cs">
 		  <DependentUpon>ProRankingDataTemplate.xaml</DependentUpon>
 		</Compile>
@@ -179,6 +183,9 @@
 		</Compile>
 		<Compile Update="Views\DataTemplates\PlayerResultDataTemplate.xaml.cs">
 			<DependentUpon>PlayerResultDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\TournamentSearchPage.xaml.cs">
+		  <DependentUpon>TournamentSearchPage.xaml</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
@@ -226,6 +233,9 @@
 		<MauiXaml Update="Views\CustomRankingsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -252,6 +262,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\MoreItemsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\TournamentSearchPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\NewsDetailPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
