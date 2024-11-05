@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CommunityToolkit.Maui.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Rankings;
@@ -18,7 +19,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public CustomRankingsDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             ViewResults = new ObservableCollection<CustomRankingViewResult>();
             Tournaments = new ObservableCollection<Tournament>();
@@ -47,16 +48,12 @@ namespace Ifpa.ViewModels
                         ViewFilters.Clear();
 
                         var tempList = await PinballRankingApiV2.GetRankingCustomView(ViewId);
-                   
-                        foreach (var tournament in tempList.Tournaments)
-                        {
-                            Tournaments.Add(tournament);
-                        }
 
-                        foreach (var viewResult in tempList.ViewResults)
-                        {
-                            ViewResults.Add(viewResult);
-                        }
+                        Tournaments = tempList.Tournaments.ToObservableCollection();
+                        OnPropertyChanged(nameof(Tournaments));
+
+                        ViewResults = tempList.ViewResults.ToObservableCollection();
+                        OnPropertyChanged(nameof(ViewResults));
 
                         foreach (var viewFilter in tempList.ViewFilters)
                         {

@@ -44,7 +44,7 @@
                                        HorizontalTextAlignment="Start"
                                        VerticalTextAlignment="Center"
                                        FontSize="Default"
-                                       Text="{Binding Title}"
+                                       Text="{Binding Title.Text}"
                                        Margin="0" />
                                 <Label Grid.Row="1"
                                        VerticalTextAlignment="Start"
@@ -57,10 +57,18 @@
                                          Padding="5"
                                          HorizontalOptions="FillAndExpand"
                                          BackgroundColor="{AppThemeBinding Light={DynamicResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                                <Label HorizontalTextAlignment="Start"
-                                       FontSize="Small"
-                                       Text="{Binding Authors}"
-                                       Margin="0" />
+                                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Authors}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="synd:SyndicationPerson">
+                                            <Label HorizontalTextAlignment="Start"
+                                                   FontSize="Small"
+                                                   Text="{Binding Name}"
+                                                   Margin="0" />
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+                                
+                           
                                 <Label HorizontalTextAlignment="End"
                                        FontSize="Small"
                                        Text="{Binding PublishDate, StringFormat='{0:d}'}" />

@@ -139,7 +139,7 @@
     <value>Events Outside Country</value>
   </data>
   <data name="CalendarDetailPage_Date" xml:space="preserve">
-    <value>Date: </value>
+    <value>Date</value>
   </data>
   <data name="PlayerDetailPage_RankingStatistics" xml:space="preserve">
     <value>Ranking Statistics</value>
@@ -265,7 +265,7 @@
     <value>Tournament Result Posted</value>
   </data>
   <data name="CalendarDetailPage_Director" xml:space="preserve">
-    <value>Director: </value>
+    <value>Director</value>
   </data>
   <data name="CalendarPage_MyLocation" xml:space="preserve">
     <value>My Location</value>
@@ -576,9 +576,6 @@
   <data name="NotificationService_NewTournamentOnCalendarTitle" xml:space="preserve">
     <value>New Tournament on Calendar</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -620,5 +617,50 @@
   </data>
   <data name="CalendarPage_CalendarEmptyText" xml:space="preserve">
     <value>No IFPA Tournaments for the selected day</value>
+  </data>
+  <data name="ChampionshipSeriesList_Title" xml:space="preserve">
+    <value>Championship Series</value>
+  </data>
+  <data name="RankingsPage_Title" xml:space="preserve">
+    <value>Rankings</value>
+  </data>
+  <data name="RankingsPage_EmptyView" xml:space="preserve">
+    <value>No players returned for the selected filter criteria</value>
+  </data>
+  <data name="CalendarDetailPage_SharePrompt" xml:space="preserve">
+    <value>Share Upcoming Tournament</value>
+  </data>
+  <data name="CalendarDetailPage_FinalsFormat" xml:space="preserve">
+    <value>Finals Format</value>
+  </data>
+  <data name="CalendarDetailPage_Matchplay" xml:space="preserve">
+    <value>Matchplay Link</value>
+  </data>
+  <data name="CalendarDetailPage_PlayerLimit" xml:space="preserve">
+    <value>Player Limit</value>
+  </data>
+  <data name="CalendarDetailPage_Private" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="CalendarDetailPage_QualifyingFormat" xml:space="preserve">
+    <value>Qualifying Format</value>
+  </data>
+  <data name="CalendarDetailPage_RegistrationDate" xml:space="preserve">
+    <value>Registration Date</value>
+  </data>
+  <data name="CalendarFilterModalPage_RankingType" xml:space="preserve">
+    <value>Ranking Type</value>
+  </data>
+  <data name="CalendarFilterModalPage_ShowLeagues" xml:space="preserve">
+    <value>Show Leagues?</value>
+  </data>
+  <data name="Hyphen" xml:space="preserve">
+    <value>- </value>
+  </data>
+  <data name="TournamentSearchPage_Title" xml:space="preserve">
+    <value>Tournament Search</value>
+  </data>
+  <data name="TournamentSearchPage_Placeholder" xml:space="preserve">
+    <value>Search for tournaments by name</value>
   </data>
 </root>

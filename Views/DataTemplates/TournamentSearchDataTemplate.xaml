@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:local="clr-namespace:Ifpa.Converters"
+              x:Class="Ifpa.Views.DataTemplates.TournamentSearchDataTemplate"
+              xmlns:ifpatournament="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi"
+              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+              x:DataType="ifpatournament:Tournament">
+    <VerticalStackLayout>
+        <Grid Padding="15,10"
+              RowDefinitions="*,*"
+              RowSpacing="10">
+            <Grid.Resources>
+                <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            </Grid.Resources>
+            <Grid Grid.Row="0"
+                  ColumnSpacing="10"
+                  ColumnDefinitions="*,150,Auto">
+                <Label Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding TournamentName}"
+                       FontSize="14"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Center" />
+                <Label Grid.Column="2"
+                       LineBreakMode="NoWrap"
+                       FontSize="12"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="End"
+                       TextColor="{DynamicResource SecondaryTextColor}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="{Binding PlayerCount}" />
+                                <Span Text=" Players" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+            </Grid>
+            <Grid Grid.Row="1"
+                  ColumnDefinitions="10*,6*,8*">
+                <Label Grid.Column="0"
+                       LineBreakMode="NoWrap"
+                       HorizontalTextAlignment="Start"
+                       FontSize="12"
+                       Text="{Binding EventName}"
+                       TextColor="{DynamicResource SecondaryTextColor}" />
+                <Label Grid.Column="1"
+                       Text="{Binding EventStartDate, StringFormat='{0:d}'}"
+                       FontSize="12"
+                       TextColor="{DynamicResource SecondaryTextColor}"
+                       HorizontalTextAlignment="Center" />
+                <HorizontalStackLayout Grid.Column="2"
+                                       HorizontalOptions="End">
+                    <Label LineBreakMode="NoWrap"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="End"
+                           HorizontalOptions="End"
+                           Text="{Binding Winner.PlayerName}"
+                           FontSize="12" />
+                    <Image Source="{mi:Fluent Icon=Trophy16, IconColor={StaticResource IconAccentColor}}"
+                           HeightRequest="16"
+                           Margin="5,0" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Grid>
+        <BoxView Style="{StaticResource BoxSeperator}" />
+    </VerticalStackLayout>
+</DataTemplate>

@@ -16,12 +16,10 @@ namespace Ifpa.ViewModels
         public ObservableCollection<Series> ChampionshipSeries { get; set; }
         public Command LoadItemsCommand { get; set; }
         
-        public ChampionshipSeriesListViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesListViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public ChampionshipSeriesListViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesListViewModel> logger) : base(pinballRankingApiV2, logger)
         {
 
             ChampionshipSeries = new ObservableCollection<Series>();
-
-            Title = "Championship Series";
 
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }

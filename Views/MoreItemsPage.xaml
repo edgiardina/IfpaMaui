@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:views="clr-namespace:Ifpa.Views"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              x:Class="Ifpa.Views.MoreItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{x:Static local:Strings.MoreItemsPage_More}"
@@ -16,6 +17,9 @@
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Favorites}"
                                          IconSource="favorite.png"
                                          Route="favorites" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.TournamentSearchPage_Title}"
+                                         IconSource="trophy.png"
+                                         Route="tournament-search" />
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_CustomRankings}"
                                          IconSource="numbered_list.png"
                                          Route="custom-rankings" />
@@ -46,18 +50,21 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="60" />
                         </Grid.ColumnDefinitions>
                         <Image Source="{Binding IconSource}"
                                Margin="10,0,10,0">
                             <Image.Behaviors>
-                                <!-- TODO: replace explicit color declaration with style found in theme, required TintColor to be bindable -->
-                                <toolkit:IconTintColorBehavior TintColor="#4579FB" />
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                             </Image.Behaviors>
                         </Image>
                         <Label Grid.Column="1"
                                Text="{Binding Title}"
                                VerticalTextAlignment="Center"
                                FontSize="18" />
+                        <Image Source="{mi:Fluent Icon=ChevronRight24, IconColor={StaticResource SecondaryTextColor}}"
+                               Grid.Column="2"
+                               HeightRequest="16"/>
                     </Grid>
                     <BoxView Style="{StaticResource BoxSeperator}" />
                 </StackLayout>

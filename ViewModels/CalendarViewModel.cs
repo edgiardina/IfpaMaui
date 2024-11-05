@@ -1,11 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using PinballApi.Models.WPPR.v1.Calendar;
 using Ifpa.Models;
 using PinballApi;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Extensions.Logging;
-using Plugin.Maui.Calendar.Models;
+using Plugin.Maui.NativeCalendar;
+using PinballApi.Models.WPPR.v2.Calendar;
+using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Tournaments.Search;
+using CommunityToolkit.Maui.Core.Extensions;
+using Microsoft.Maui.Devices.Sensors;
 
 namespace Ifpa.ViewModels
 {
@@ -17,12 +22,18 @@ namespace Ifpa.ViewModels
 
     public class CalendarViewModel : BaseViewModel
     {
-        public EventCollection TournamentCalenderItems { get; set; } = new EventCollection();
-        public ObservableCollectionRange<CalendarDetails> CalendarDetails { get; set; }
+        public ObservableCollection<NativeCalendarEvent> TournamentCalendarItems { get; set; } = new ObservableCollection<NativeCalendarEvent>();
+
+        public ObservableCollection<TournamentWithDistance> SelectedDateCalendarItems { get; set; } = new ObservableCollection<TournamentWithDistance>();
+
+        public ObservableCollection<TournamentSearch> Tournaments { get; set; }
+        public DateTime SelectedDate { get; set; } = DateTime.Today;
 
         public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
 
         public ObservableCollection<Pin> Pins { get; set; }
+
+        public string SelectedRankingSystem => Settings.CalendarRankingSystem;
 
         public Command LoadItemsCommand { get; set; }
 
@@ -30,55 +41,94 @@ namespace Ifpa.ViewModels
 
         public Command ViewCalendarDetailsCommand { get; set; }
 
-        public CalendarViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<CalendarViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public Command SelectedDateChangedCommand { get; set; }
+
+        private Location LastGeolocation { get; set; }
+
+        private readonly PinballRankingApi pinballRankingApi;
+        private readonly IGeocoding geocoding;
+
+        public CalendarViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, IGeocoding geocoding, ILogger<CalendarViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            CalendarDetails = new ObservableCollectionRange<CalendarDetails>();
+            this.pinballRankingApi = pinballRankingApi;
+            this.geocoding = geocoding;
+
+            Tournaments = new ObservableCollection<TournamentSearch>();
             Pins = new ObservableCollection<Pin>();
             ChangeCalendarDisplayCommand = new Command(() => { CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList; OnPropertyChanged("CurrentType"); });
-            ViewCalendarDetailsCommand = new Command<int>(async (calendarId) => await ViewCalendarDetails(calendarId));
+            ViewCalendarDetailsCommand = new Command<long>(async (tournamentId) => await ViewCalendarDetails(tournamentId));
+            SelectedDateChangedCommand = new Command<DateChangedEventArgs>(SelectedDateChanged);
         }
 
-        private async Task ViewCalendarDetails(int calendarId)
+        private async Task ViewCalendarDetails(long tournamentId)
         {
-            await Shell.Current.GoToAsync($"calendar-detail?calendarId={calendarId}");            
+            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={tournamentId}");
         }
 
-        public async Task ExecuteLoadItemsCommand(string address, int distance)
+        public async Task ExecuteLoadItemsCommand(Location geoLocation, int distance)
         {
             IsBusy = true;
 
             try
             {
                 var sw = Stopwatch.StartNew();
-                CalendarDetails.Clear();
+                Tournaments.Clear();
                 Pins.Clear();
 
                 logger.LogDebug("Cleared collections in {0}", sw.ElapsedMilliseconds);
 
-                var items = await PinballRankingApi.GetCalendarSearch(address, distance, DistanceUnit.Miles);
+                LastGeolocation = geoLocation;
+
+                var longitude = geoLocation?.Longitude;
+                var latitude = geoLocation?.Latitude;
+
+                if (longitude == null || latitude == null)
+                {
+                    logger.LogWarning("Unable to geocode address {0}", geoLocation);
+                    return;
+                }
+
+                var tournamentType = (TournamentType?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(TournamentType), Settings.CalendarRankingSystem));
+                TournamentEventType? eventType = Settings.CalendarShowLeagues ? null : TournamentEventType.Tournament;
+
+                var items = await pinballRankingApi.TournamentSearch(latitude,
+                                                                     longitude,
+                                                                     distance, DistanceType.Miles,
+                                                                     startDate: DateTime.Now,
+                                                                     endDate: DateTime.Now.AddYears(1),
+                                                                     tournamentType: tournamentType,
+                                                                     tournamentEventType: eventType,
+                                                                     totalReturn: 500);
 
                 logger.LogDebug("Api call completed at {0}", sw.ElapsedMilliseconds);
 
-                if (items.Calendar.Any())
+                if (items.Tournaments.Any())
                 {
-                    CalendarDetails.AddRange(items.Calendar.OrderBy(n => n.EndDate));
+                    Tournaments = items.Tournaments.OrderBy(n => n.EventStartDate).ToObservableCollection();
 
                     //Limit calendar to 100 future items. otherwise this page chugs
-                    foreach (var detail in CalendarDetails)
+                    foreach (var detail in Tournaments)
                     {
                         LoadEventOntoCalendar(detail);
                     }
 
-                    TournamentCalenderItems = new EventCollection();
+                    TournamentCalendarItems = items.Tournaments
+                                  .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
+                                  .Select(n => new NativeCalendarEvent
+                                  {
+                                      Location = n.Address1 + " " + n.City + ", " + n.Stateprov,
+                                      Title = n.TournamentName,
+                                      StartDate = n.EventStartDate.DateTime,
+                                      EndDate = n.EventEndDate.DateTime
+                                  })
+                                  .ToObservableCollection();
 
-                    items.Calendar.Where(item => item.EndDate - item.StartDate <= 5.Days())                                  
-                                  .GroupBy(item => item.StartDate.Date)
-                                  .ToList()
-                                  .ForEach(date => TournamentCalenderItems.Add(date.Key, date.ToList()));
+                    OnPropertyChanged(nameof(Tournaments));
+                    OnPropertyChanged(nameof(TournamentCalendarItems));
+                    OnPropertyChanged(nameof(Pins));
+                    OnPropertyChanged(nameof(SelectedRankingSystem));
 
-                    OnPropertyChanged("TournamentCalenderItems");
-                    OnPropertyChanged("CalendarDetails");
-                    OnPropertyChanged("Pins");
+                    SelectedDateChanged(new DateChangedEventArgs(SelectedDate, SelectedDate));
                 }
 
                 logger.LogDebug("Collections loaded at {0}", sw.ElapsedMilliseconds);
@@ -93,7 +143,19 @@ namespace Ifpa.ViewModels
             }
         }
 
-        private void LoadEventOntoCalendar(CalendarDetails detail)
+        private void SelectedDateChanged(DateChangedEventArgs e)
+        {
+            var longitude = LastGeolocation?.Longitude;
+            var latitude = LastGeolocation?.Latitude;
+
+            SelectedDateCalendarItems = Tournaments.Where(n => n.EventStartDate.Date == e.NewDate)
+                                                   .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
+                                                   .ToObservableCollection();           
+
+            OnPropertyChanged(nameof(SelectedDateCalendarItems));
+        }
+
+        private void LoadEventOntoCalendar(TournamentSearch detail)
         {
             var location = new Location(detail.Latitude, detail.Longitude);
 
@@ -104,9 +166,9 @@ namespace Ifpa.ViewModels
 
                 pin.Location = location;
                 pin.Label = detail.TournamentName;
-                pin.Address = detail.Address1 + " " + detail.City + ", " + detail.State;
+                pin.Address = detail.Address1 + " " + detail.City + ", " + detail.Stateprov;
                 pin.Type = PinType.Generic;
-                pin.MarkerId = detail.CalendarId.ToString();
+                pin.MarkerId = detail.TournamentId.ToString();
 
                 Pins.Add(pin);
             }

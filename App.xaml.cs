@@ -1,4 +1,5 @@
 ﻿using Ifpa.Models;
+using Ifpa.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Handlers;
 using Shiny.Notifications;
@@ -9,13 +10,15 @@ namespace Ifpa;
 public partial class App : Application
 {
     protected INotificationManager NotificationManager { get; set; }
+    protected readonly NotificationService NotificationService;
 
-    public App(AppSettings appSettings, INotificationManager notificationManager)
+    public App(AppSettings appSettings, INotificationManager notificationManager, NotificationService notificationService)
     {
         //TODO: can we move this to MauiProgram.cs?
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
 
         NotificationManager = notificationManager;
+        NotificationService = notificationService;
 
         InitializeComponent();
 
@@ -26,6 +29,17 @@ public partial class App : Application
 #if IOS
         (Application.Current as IApplicationController)?.SetAppIndexingProvider(new Microsoft.Maui.Controls.Compatibility.Platform.iOS.IOSAppIndexingProvider());
 #endif
+
+        // From https://github.com/borrmann/AppThemeBindingFix
+        // This git issue summarizes the bug with bottomsheets and AppTheme issues; 
+        // if the user dismisses the app to the background with a bottomsheet open,
+        // when restored the app switches themes unexpectedly
+        // https://github.com/the49ltd/The49.Maui.BottomSheet/issues/89
+        DeviceThemeService.Instance.ReloadRequestedTheme();
+
+        Current.RequestedThemeChanged += (sender, args) => {
+            DeviceThemeService.Instance.ReloadRequestedTheme();
+        };
     }
 
     protected override async void OnStart()
@@ -33,6 +47,8 @@ public partial class App : Application
         base.OnStart();
 
         await NotificationManager.RequestAccess();
+
+        await NotificationService.RecalculateActivityFeedAndUpdateBadges(null);
     }
 
     public static async void HandleAppActions(AppAction appAction)

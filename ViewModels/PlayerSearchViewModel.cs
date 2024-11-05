@@ -1,23 +1,23 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.Json;
+using CommunityToolkit.Maui.Core.Extensions;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi;
-using PinballApi.Models.WPPR.v1.Players;
-using static System.Net.Mime.MediaTypeNames;
+using PinballApi.Models.WPPR.v2.Players;
 
 namespace Ifpa.ViewModels
 {
     public class PlayerSearchViewModel : BaseViewModel
     {
-        public ObservableCollection<PlayerSearchResult> Players { get; set; }
+        public ObservableCollection<Player> Players { get; set; }
 
         public bool IsLoaded { get; set; } = false;
 
-        public PlayerSearchViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public PlayerSearchViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Player Search";
-            Players = new ObservableCollection<PlayerSearchResult>();
+            Players = new ObservableCollection<Player>();
         }
 
         private Command _searchCommand;
@@ -38,14 +38,10 @@ namespace Ifpa.ViewModels
 
                         if (text.Trim().Length > 2)
                         {
-                            var items = await PinballRankingApi.SearchForPlayerByName(text.Trim());
-                            foreach (var item in items.Search)
-                            {
-                                var serializedParent = JsonSerializer.Serialize(item);
-                                var c = JsonSerializer.Deserialize<PlayerSearchResult>(serializedParent);
+                            var items = await PinballRankingApiV2.GetPlayersBySearch(new PlayerSearchFilter() { Name = text.Trim() });
 
-                                Players.Add(c);
-                            }
+                            Players = items.Results?.ToObservableCollection();
+                            OnPropertyChanged("Players");
                         }
                         IsLoaded = true;
                         OnPropertyChanged("IsLoaded");

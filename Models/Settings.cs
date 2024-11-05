@@ -1,10 +1,5 @@
 ﻿using Ifpa.Services;
-using PinballApi.Models.WPPR.v1.Players;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using PinballApi.Models.WPPR.v2.Players;
 
 namespace Ifpa.Models
 {
@@ -74,9 +69,21 @@ namespace Ifpa.Models
             set => Preferences.Set("LastCalendarDistance", value);
         }
 
-        public static int LastCalendarIdSeen
+        public static string CalendarRankingSystem
         {
-            get => Preferences.Get("LastCalendarIdSeen", 0);
+            get => Preferences.Get("CalendarRankingSystem", "All");
+            set => Preferences.Set("CalendarRankingSystem", value);
+        }
+
+        public static bool CalendarShowLeagues
+        {
+            get => Preferences.Get("CalendarShowLeagues", false);
+            set => Preferences.Set("CalendarShowLeagues", value);
+        }
+
+        public static long LastCalendarIdSeen
+        {
+            get => Preferences.Get("LastCalendarIdSeen", 0L);
             set => Preferences.Set("LastCalendarIdSeen", value);
         }
 
@@ -120,7 +127,7 @@ namespace Ifpa.Models
             MyStatsCurrentWpprRank = currentWpprRank;
         }
 
-        public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<Result> results)
+        public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<PlayerResult> results)
         {
             return await LocalDatabase.ParseNewTournaments(results.Select(n => n.TournamentId));
         }      

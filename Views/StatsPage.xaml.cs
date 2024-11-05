@@ -1,5 +1,5 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v1.Statistics;
+using PinballApi.Models.WPPR.v2.Stats;
 
 
 namespace Ifpa.Views
@@ -25,7 +25,7 @@ namespace Ifpa.Views
 
         private async void PlayersListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var player = e.SelectedItem as PointsThisYearStat;
+            var player = e.SelectedItem as PlayersPointsByGivenPeriodStatistics;
             if (player == null)
                 return;
 
@@ -35,29 +35,29 @@ namespace Ifpa.Views
             PlayersListView.SelectedItem = null;
         }
 
-        //private async void MostEventsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        //{
-        //    var player = e.SelectedItem as MostEventsStat;
-        //    if (player == null)
-        //        return;
-
-        //    await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
-
-        //    // Manually deselect item.
-        //    MostEventsListView.SelectedItem = null;
-        //}
-
-        
-        private async void BiggestMoversListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void MostEventsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var player = e.SelectedItem as BiggestMoversStat;
+            var player = e.SelectedItem as PlayersEventsAttendedByGivenPeriodStatistics;
             if (player == null)
                 return;
 
             await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
 
             // Manually deselect item.
-            BiggestMoversListView.SelectedItem = null;
+            MostEventsListView.SelectedItem = null;
         }
+
+
+        //private async void BiggestMoversListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    var player = e.SelectedItem as BiggestMoversStat;
+        //    if (player == null)
+        //        return;
+
+        //    await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
+
+        //    // Manually deselect item.
+        //    BiggestMoversListView.SelectedItem = null;
+        //}
     }
 }

@@ -15,7 +15,7 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public FavoritesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<FavoritesViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public FavoritesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<FavoritesViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Favorites";
             Players = new ObservableCollection<Player>();
@@ -67,5 +67,24 @@ namespace Ifpa.ViewModels
             }
         }
 
+        public Command DeletePlayerCommand => new Command<int>(async (playerId) =>
+        {
+            try
+            {
+                await Settings.LocalDatabase.RemoveFavorite(playerId);
+
+                Players.Remove(Players.Single(n => n.PlayerId == playerId));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error deleting favorite");
+            }
+        });
+
+        public Command SelectPlayer => new Command<int>(async (playerId) =>
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={playerId}");
+
+        });
     }
 }

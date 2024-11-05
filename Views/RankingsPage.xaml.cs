@@ -1,6 +1,6 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2;
-using PinballApi.Models.WPPR.v2.Rankings;
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Rankings;
 
 namespace Ifpa.Views
 {
@@ -22,12 +22,19 @@ namespace Ifpa.Views
             {
                 ViewModel.CountOfItemsToFetch = Preferences.Get("PlayerCount", ViewModel.CountOfItemsToFetch);
                 ViewModel.StartingPosition = Preferences.Get("StartingRank", ViewModel.StartingPosition);
+
+                // if ranking type preference is 'Main', reset to 'Wppr' type
+                if (Preferences.Get("RankingType", ViewModel.CurrentRankingType.ToString()) == "Main")
+                {
+                    Preferences.Set("RankingType", "Wppr");
+                }
+
                 ViewModel.CurrentRankingType = (RankingType)Enum.Parse(typeof(RankingType), Preferences.Get("RankingType", ViewModel.CurrentRankingType.ToString()));
-                ViewModel.CurrentTournamentType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("TournamentType", ViewModel.CurrentTournamentType.ToString()));
-                
+                ViewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), Preferences.Get("RankingSystem", ViewModel.CurrentRankingSystem.ToString()));
+                ViewModel.CurrentProRankingType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("ProRankingType", ViewModel.CurrentProRankingType.ToString()));
+
                 ViewModel.CountryToShow = new Country { CountryName = Preferences.Get("CountryName", ViewModel.DefaultCountry.CountryName) };
 
-                //await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
                 ViewModel.LoadItemsCommand.Execute(null);
             }
             base.OnAppearing();
@@ -40,7 +47,7 @@ namespace Ifpa.Views
 
         private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var player = e.CurrentSelection.FirstOrDefault() as RankingResult;
+            var player = e.CurrentSelection.FirstOrDefault() as BaseRanking;
             if (player == null)
                 return;
 

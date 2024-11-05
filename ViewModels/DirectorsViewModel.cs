@@ -11,7 +11,7 @@ namespace Ifpa.ViewModels
         public ObservableCollection<Director> NacsDirectors { get; set; }
         public ObservableCollection<Director> CountryDirectors { get; set; }
 
-        public DirectorsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<DirectorsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public DirectorsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<DirectorsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Directors";
             NacsDirectors = new ObservableCollection<Director>();

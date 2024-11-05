@@ -22,7 +22,7 @@ namespace Ifpa.ViewModels
         public string SeriesCode { get; set; }
         public int Year { get; set; }
 
-        public ChampionshipSeriesDetailViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesDetailViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public ChampionshipSeriesDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
 
             RegionStandings = new RegionStandings();     

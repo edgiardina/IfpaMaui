@@ -36,6 +36,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("directors", typeof(DirectorsPage));
         Routing.RegisterRoute("settings", typeof(SettingsPage));
         Routing.RegisterRoute("about", typeof(AboutPage));
+        Routing.RegisterRoute("tournament-search", typeof(TournamentSearchPage));
     }
 
     protected override async void OnNavigating(ShellNavigatingEventArgs args)

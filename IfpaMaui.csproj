@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-ios;net8.0-maccatalyst;net8.0-android34.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-ios;net8.0-android34.0</TargetFrameworks>
 		<!--<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>-->
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
@@ -21,8 +21,9 @@
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<!-- Only supported on iOS 16 and greater due to NativeCalendar dependency -->
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">16.0</SupportedOSPlatformVersion>
+		<!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>-->
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
@@ -46,6 +47,42 @@
 		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
 	</PropertyGroup>
 
+	<!-- Package References -->
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.92" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.92" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.92" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="PinballApi" Version="3.0.12" />
+		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.8.2" />
+		<PackageReference Include="Scrutor" Version="5.0.1" />
+		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
+		<PackageReference Include="Shiny.Core" Version="3.3.3" />
+		<PackageReference Include="Shiny.Hosting.Maui" Version="3.3.3" />
+		<PackageReference Include="Shiny.Extensions.Configuration" Version="3.3.3" />
+		<PackageReference Include="Shiny.Jobs" Version="3.3.3" />
+		<PackageReference Include="Shiny.Notifications" Version="3.3.3" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.9" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.9" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.9" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.9" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
+		<PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />
+		<PackageReference Include="Serilog" Version="4.0.2" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+		<PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
+	</ItemGroup>
+
+	<!-- Maui Specifics -->
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#062C53" />
@@ -62,6 +99,17 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<!--
+		Solves ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 	
+		https://github.com/xamarin/xamarin-macios/issues/21324#issuecomment-2382226489 
+	-->
+	<Target Name="DoNotLinkWithBrowserEngineKit" AfterTargets="_ComputeLinkNativeExecutableInputs">
+		<ItemGroup>
+			<_NativeExecutableFrameworks Remove="BrowserEngineKit" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Compile Directives / File Compile Types -->
 	<ItemGroup>
 		<None Remove="appsettings.json" />
 		<None Remove="Platforms\Android\Resources\drawable\rounded_edge.xml" />
@@ -99,36 +147,8 @@
 		<MauiAsset Include="appsettings.json" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.14" />
-		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
-		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="PinballApi" Version="2.4.1" />
-		<PackageReference Include="Plugin.Maui.Calendar" Version="1.1.4" />
-		<PackageReference Include="Scrutor" Version="4.2.2" />
-		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
-		<PackageReference Include="Shiny.Core" Version="3.2.2" />
-		<PackageReference Include="Shiny.Hosting.Maui" Version="3.2.2" />
-		<PackageReference Include="Shiny.Extensions.Configuration" Version="3.2.2" />
-		<PackageReference Include="Shiny.Jobs" Version="3.2.2" />
-		<PackageReference Include="Shiny.Notifications" Version="3.2.2" />
-		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.8" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
-		<PackageReference Include="System.ServiceModel.Syndication" Version="8.0.0" />		
-		<PackageReference Include="Serilog" Version="3.1.1" />
-		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-		<PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<BundleResource Include="Platforms\iOS\PrivacyInfo.xcprivacy" LogicalName="PrivacyInfo.xcprivacy" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -136,6 +156,24 @@
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Strings.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml.cs">
+		  <DependentUpon>TournamentSearchDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml.cs">
+		  <DependentUpon>ProRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml.cs">
+		  <DependentUpon>YouthRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml.cs">
+		  <DependentUpon>WomensRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml.cs">
+		  <DependentUpon>CountryRankingDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml.cs">
+		  <DependentUpon>RankingDataTemplate.xaml</DependentUpon>
 		</Compile>
 		<Compile Update="Views\DataTemplates\ActivityFeedRankChangeDataTemplate.xaml.cs">
 			<DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
@@ -145,6 +183,9 @@
 		</Compile>
 		<Compile Update="Views\DataTemplates\PlayerResultDataTemplate.xaml.cs">
 			<DependentUpon>PlayerResultDataTemplate.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\TournamentSearchPage.xaml.cs">
+		  <DependentUpon>TournamentSearchPage.xaml</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
@@ -156,6 +197,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Controls\Chip.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\AboutPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -189,6 +233,24 @@
 		<MauiXaml Update="Views\CustomRankingsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\DataTemplates\PlayerResultDataTemplate.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
@@ -200,6 +262,9 @@
 		</MauiXaml>
 		<MauiXaml Update="Views\MoreItemsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\TournamentSearchPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Views\NewsDetailPage.xaml">
 			<Generator>MSBuild:Compile</Generator>

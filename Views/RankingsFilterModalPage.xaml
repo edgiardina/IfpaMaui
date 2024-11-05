@@ -62,10 +62,26 @@
                     Grid.Column="1"
                     Grid.Row="1"
                     HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding TournamentTypes, Mode=OneWay}"
-                    SelectedItem="{Binding CurrentTournamentType, Mode=TwoWay}"
+                    ItemsSource="{Binding RankingSystems, Mode=OneWay}"
+                    SelectedItem="{Binding CurrentRankingSystem, Mode=TwoWay}"
                     x:Name="TypePicker"
                     SelectedIndexChanged="TypePicker_SelectedIndexChanged" />
+
+            <Label Grid.Column="0"
+                   Grid.Row="1"
+                   Text="{x:Static local:Strings.RankingsFilterModalPage_TournamentType}"
+                   x:Name="ProTypeLabel"
+                   TextColor="{DynamicResource SecondaryTextColor}"
+                   VerticalTextAlignment="Center" />
+            <Picker Grid.ColumnSpan="2"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    HorizontalOptions="FillAndExpand"
+                    ItemsSource="{Binding ProRankingTypes, Mode=OneWay}"
+                    SelectedItem="{Binding CurrentProRankingType, Mode=TwoWay}"
+                    x:Name="ProTypeFilter"
+                    SelectedIndexChanged="ProTypeFilter_SelectedIndexChanged"/>
+
             <Label Grid.Column="0"
                    Grid.Row="2"
                    Text="{x:Static local:Strings.RankingsFilterModalPage_Players}"

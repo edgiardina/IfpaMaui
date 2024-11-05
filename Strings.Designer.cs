@@ -295,7 +295,7 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date: .
+        ///   Looks up a localized string similar to Date.
         /// </summary>
         internal static string CalendarDetailPage_Date {
             get {
@@ -304,11 +304,65 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Director: .
+        ///   Looks up a localized string similar to Director.
         /// </summary>
         internal static string CalendarDetailPage_Director {
             get {
                 return ResourceManager.GetString("CalendarDetailPage_Director", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finals Format.
+        /// </summary>
+        internal static string CalendarDetailPage_FinalsFormat {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_FinalsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matchplay Link.
+        /// </summary>
+        internal static string CalendarDetailPage_Matchplay {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Matchplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Limit.
+        /// </summary>
+        internal static string CalendarDetailPage_PlayerLimit {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_PlayerLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private.
+        /// </summary>
+        internal static string CalendarDetailPage_Private {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Private", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qualifying Format.
+        /// </summary>
+        internal static string CalendarDetailPage_QualifyingFormat {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_QualifyingFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Date.
+        /// </summary>
+        internal static string CalendarDetailPage_RegistrationDate {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_RegistrationDate", resourceCulture);
             }
         }
         
@@ -318,6 +372,15 @@ namespace Ifpa {
         internal static string CalendarDetailPage_Share {
             get {
                 return ResourceManager.GetString("CalendarDetailPage_Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share Upcoming Tournament.
+        /// </summary>
+        internal static string CalendarDetailPage_SharePrompt {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_SharePrompt", resourceCulture);
             }
         }
         
@@ -367,11 +430,29 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ranking Type.
+        /// </summary>
+        internal static string CalendarFilterModalPage_RankingType {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_RankingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set Calendar Location.
         /// </summary>
         internal static string CalendarFilterModalPage_SetCalendarLocation {
             get {
                 return ResourceManager.GetString("CalendarFilterModalPage_SetCalendarLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Leagues?.
+        /// </summary>
+        internal static string CalendarFilterModalPage_ShowLeagues {
+            get {
+                return ResourceManager.GetString("CalendarFilterModalPage_ShowLeagues", resourceCulture);
             }
         }
         
@@ -448,6 +529,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Championship Series.
+        /// </summary>
+        internal static string ChampionshipSeriesList_Title {
+            get {
+                return ResourceManager.GetString("ChampionshipSeriesList_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current Leader:.
         /// </summary>
         internal static string ChampionshipSeriesPage_CurrentLeader {
@@ -516,6 +606,15 @@ namespace Ifpa {
         internal static string FavoritesPage_Delete {
             get {
                 return ResourceManager.GetString("FavoritesPage_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - .
+        /// </summary>
+        internal static string Hyphen {
+            get {
+                return ResourceManager.GetString("Hyphen", resourceCulture);
             }
         }
         
@@ -1168,6 +1267,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No players returned for the selected filter criteria.
+        /// </summary>
+        internal static string RankingsPage_EmptyView {
+            get {
+                return ResourceManager.GetString("RankingsPage_EmptyView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>
         internal static string RankingsPage_Filter {
@@ -1182,6 +1290,15 @@ namespace Ifpa {
         internal static string RankingsPage_OverallRank {
             get {
                 return ResourceManager.GetString("RankingsPage_OverallRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rankings.
+        /// </summary>
+        internal static string RankingsPage_Title {
+            get {
+                return ResourceManager.GetString("RankingsPage_Title", resourceCulture);
             }
         }
         
@@ -1308,15 +1425,6 @@ namespace Ifpa {
         internal static string StatsPage_Stats {
             get {
                 return ResourceManager.GetString("StatsPage_Stats", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
@@ -1569,6 +1677,24 @@ namespace Ifpa {
         internal static string TournamentResultsPage_TournamentValue {
             get {
                 return ResourceManager.GetString("TournamentResultsPage_TournamentValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for tournaments by name.
+        /// </summary>
+        internal static string TournamentSearchPage_Placeholder {
+            get {
+                return ResourceManager.GetString("TournamentSearchPage_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Search.
+        /// </summary>
+        internal static string TournamentSearchPage_Title {
+            get {
+                return ResourceManager.GetString("TournamentSearchPage_Title", resourceCulture);
             }
         }
     }

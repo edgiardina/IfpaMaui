@@ -8,7 +8,6 @@ using Ifpa.Services;
 using Ifpa.Interfaces;
 using MauiIcons.Fluent;
 using Ifpa.BackgroundJobs;
-using Ifpa.Controls;
 using Shiny.Infrastructure;
 using PinballApi;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
@@ -16,6 +15,11 @@ using SkiaSharp.Views.Maui.Controls.Hosting;
 using Serilog;
 using Shiny;
 using CommunityToolkit.Maui.ApplicationModel;
+using The49.Maui.BottomSheet;
+using Ifpa.Platforms.Renderers;
+using Ifpa.Platforms.Services;
+using Ifpa.Controls;
+using Plugin.Maui.NativeCalendar;
 
 namespace Ifpa;
 
@@ -38,6 +42,8 @@ public static class MauiProgram
             .UseFluentMauiIcons()
             .UseShiny()
             .UseSkiaSharp(true)
+            .UseBottomSheet()
+            .UseNativeCalendar()
             .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
@@ -47,7 +53,7 @@ public static class MauiProgram
             .ConfigureMauiHandlers((handlers) =>
             {
 #if IOS
-                handlers.AddHandler(typeof(InsetTableView), typeof(iOS.Renderers.InsetTableViewRenderer));
+                handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewRenderer));
 #endif
             })
             .ConfigureLogging()
@@ -61,6 +67,11 @@ public static class MauiProgram
                     .OnAppAction(App.HandleAppActions);
 
                 essentials.UseVersionTracking();
+            })
+            // Show custom Tabbar Badges for iOS and Android
+            .ConfigureMauiHandlers(h =>
+            {
+                h.AddHandler<Shell, TabbarBadgeRenderer>();
             })
             /*
             .ConfigureLifecycleEvents(events =>
@@ -112,9 +123,11 @@ public static class MauiProgram
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
         s.AddTransient<IReminderService, ReminderService>();
+        s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
 
-        s.AddSingleton(x => new PinballRankingApiV1(appSettings.IfpaApiKey));
         s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
+        s.AddSingleton(x => new PinballRankingApi(appSettings.IfpaApiKey));
+        s.AddSingleton<IGeocoding>(Geocoding.Default);
         s.AddSingleton<IBadge>(Badge.Default);
 
         return builder;

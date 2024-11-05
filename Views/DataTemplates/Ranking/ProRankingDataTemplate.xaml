@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:converters="clr-namespace:Ifpa.Converters"
+              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+              x:Class="Ifpa.Views.DataTemplates.Ranking.ProRankingDataTemplate"
+              xmlns:local="clr-namespace:Ifpa"
+              xmlns:models="clr-namespace:Ifpa.Models"
+              x:DataType="ifparankings:ProRanking"
+              xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings;assembly=PinballApi">
+    <StackLayout>
+        <StackLayout.Resources>
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
+            <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
+        </StackLayout.Resources>
+        <Grid ColumnDefinitions="Auto,*,60"
+              RowDefinitions="*,*"
+              Margin="0,5">
+            <Label Grid.Column="0"
+                   Grid.RowSpan="2"
+                   Margin="10,5"
+                   VerticalTextAlignment="Center"
+                   Text="{Binding CurrentRank, Converter={StaticResource longToOrdinalString}}"
+                   LineBreakMode="NoWrap"
+                   FontSize="24"
+                   MinimumWidthRequest="58" />
+            <Label LineBreakMode="NoWrap"
+                   FontSize="16"
+                   Grid.Column="1"
+                   Grid.Row="0"
+                   Text="{Binding Name}" />
+            <Label Grid.Row="1"
+                   Grid.Column="1"
+                   FontSize="12"
+                   TextColor="{DynamicResource SecondaryTextColor}">
+                <Label.Text>
+                    <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                        <Binding Path="City" />
+                        <Binding Path="StateProvince" />
+                        <Binding Path="CountryName" />
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
+            <Label Grid.Column="2"
+                   Grid.Row="1"
+                   TextColor="{DynamicResource SecondaryTextColor}"
+                   Margin="10,0"
+                   HorizontalTextAlignment="End"
+                   Text="{Binding OriginalWpprPoints, StringFormat='{0:N2}'}"
+                   LineBreakMode="NoWrap"
+                   VerticalTextAlignment="Center"
+                   FontSize="10" />
+        </Grid>
+        <BoxView Style="{StaticResource BoxSeperator}" />
+    </StackLayout>
+</DataTemplate>

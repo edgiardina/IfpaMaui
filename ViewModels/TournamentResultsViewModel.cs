@@ -3,22 +3,24 @@ using PinballApi.Models.WPPR.v2.Tournaments;
 using Ifpa.Models;
 using PinballApi;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 
 namespace Ifpa.ViewModels
 {
     public class TournamentResultsViewModel : BaseViewModel
     {
-        public ObservableCollectionRange<TournamentResult> Results { get; set; }
+        public ObservableCollection<TournamentResult> Results { get; set; }
 
         public Tournament TournamentDetails { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public int TournamentId { get; set; }
 
-        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV1, pinballRankingApiV2, logger)
+        public TournamentResultsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Tournament Results";
-            Results = new ObservableCollectionRange<TournamentResult>();
+            Results = new ObservableCollection<TournamentResult>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
@@ -35,10 +37,11 @@ namespace Ifpa.ViewModels
                 var tournamentResults = await PinballRankingApiV2.GetTournamentResults(TournamentId);
                 TournamentDetails = await PinballRankingApiV2.GetTournament(TournamentId);
 
-                Results.AddRange(tournamentResults.Results);           
+                Results = tournamentResults.Results.ToObservableCollection();
 
                 Title = TournamentDetails.TournamentName;
                 OnPropertyChanged(nameof(TournamentDetails));
+                OnPropertyChanged(nameof(Results));
 
                 AddTournamentToAppLinks();
             }
