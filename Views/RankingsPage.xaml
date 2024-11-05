@@ -10,7 +10,7 @@
              xmlns:local="clr-namespace:Ifpa"
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
-             xmlns:models="clr-namespace:Ifpa.Models"
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
              x:DataType="vm:RankingsViewModel"
              xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking">
     <ContentPage.ToolbarItems>
@@ -21,27 +21,30 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <datatemplates:ProRankingDataTemplate x:Key="ProRankingDataTemplate" />
             <datatemplates:RankingDataTemplate x:Key="RankingDataTemplate" />
-            <datatemplates:RankingResultDataTemplateSelector x:Key="RankingResultDataTemplateSelector"                                                             
+            <datatemplates:RankingResultDataTemplateSelector x:Key="RankingResultDataTemplateSelector"
                                                              ProRankingTemplate="{StaticResource ProRankingDataTemplate}"
                                                              RankingResultTemplate="{StaticResource RankingDataTemplate}" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Shell.SearchHandler>
         <controls:PlayerSearchHandler x:Name="searchHandler"
-                                      SearchBoxVisibility="Collapsible"                                      
+                                      SearchBoxVisibility="Collapsible"
                                       Placeholder="Type a player's name to search"
-                                      QueryIcon="{mi:Fluent Icon=Search48, IconColor={StaticResource IconAccentColor}}"                           
+                                      QueryIcon="{mi:Fluent Icon=Search48, IconColor={StaticResource IconAccentColor}}"
                                       ShowsResults="true"
                                       Keyboard="Plain">
             <controls:PlayerSearchHandler.ItemTemplate>
-                <DataTemplate x:DataType="models:PlayerSearchResult">
+                <DataTemplate x:DataType="ifpaplayer:Player">
                     <StackLayout Padding="10,0">
                         <StackLayout Orientation="Horizontal">
-                            <StackLayout Padding="10" Orientation="Vertical">
-                                <Label LineBreakMode="NoWrap"  FontSize="16">
+                            <StackLayout Padding="10"
+                                         Orientation="Vertical">
+                                <Label LineBreakMode="NoWrap"
+                                       FontSize="16">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
@@ -53,21 +56,25 @@
                                     </Label.FormattedText>
                                 </Label>
 
-                                <Label TextColor="{StaticResource SecondaryTextColor}" FontSize="12">
+                                <Label TextColor="{StaticResource SecondaryTextColor}"
+                                       FontSize="12">
                                     <Label.Text>
                                         <MultiBinding Converter="{StaticResource AddressFormatConverter}">
                                             <Binding Path="City" />
-                                            <Binding Path="StateProvince" />
+                                            <Binding Path="Stateprov" />
                                             <Binding Path="CountryName" />
                                         </MultiBinding>
                                     </Label.Text>
                                 </Label>
                             </StackLayout>
-                            <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
-                                        LineBreakMode="NoWrap" FontSize="18" />
+                            <Label VerticalTextAlignment="Center"
+                                   HorizontalOptions="EndAndExpand"
+                                   Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource intToOrdinalString}}"
+                                   LineBreakMode="NoWrap"
+                                   FontSize="18" />
                         </StackLayout>
 
-                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                        <BoxView Style="{StaticResource BoxSeperator}" />
                     </StackLayout>
                 </DataTemplate>
             </controls:PlayerSearchHandler.ItemTemplate>

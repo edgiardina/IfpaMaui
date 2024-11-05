@@ -1,10 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.Text.Json;
 using CommunityToolkit.Maui.Core.Extensions;
-using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Models.WPPR.Universal.Players;
+using PlayerSearch = PinballApi.Models.WPPR.Universal.Players.Search.PlayerSearch;
 
 namespace Ifpa.ViewModels
 {
@@ -14,10 +13,13 @@ namespace Ifpa.ViewModels
 
         public bool IsLoaded { get; set; } = false;
 
-        public PlayerSearchViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly PinballRankingApi rankingApi;
+
+        public PlayerSearchViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Player Search";
             Players = new ObservableCollection<Player>();
+            rankingApi = pinballRankingApi;
         }
 
         private Command _searchCommand;
@@ -36,9 +38,9 @@ namespace Ifpa.ViewModels
                     {
                         Players.Clear();
 
-                        if (text.Trim().Length > 2)
+                        if (text.Trim().Length >= 4)
                         {
-                            var items = await PinballRankingApiV2.GetPlayersBySearch(new PlayerSearchFilter() { Name = text.Trim() });
+                            var items = await rankingApi.PlayerSearch(text.Trim());
 
                             Players = items.Results?.ToObservableCollection();
                             OnPropertyChanged("Players");
@@ -60,9 +62,12 @@ namespace Ifpa.ViewModels
 
         public async Task<PlayerSearch> SearchForPlayer(string name)
         {
+            if(string.IsNullOrWhiteSpace(name) || name.Length <= 3)
+                return new PlayerSearch();
+
             try
             {
-                return await PinballRankingApi.SearchForPlayerByName(name.Trim());
+                return await rankingApi.PlayerSearch(name);
             }
             catch (Exception ex)
             {

@@ -1,10 +1,5 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v1.Players;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.Controls
 {
@@ -14,7 +9,7 @@ namespace Ifpa.Controls
 
         public PlayerSearchHandler()
         {
-            //TODO: in a perfect world we'd be able to DI this          
+            //TODO: in a perfect world we'd be able to DI this
             viewModel = Application.Current.Handler.MauiContext.Services.GetService<PlayerSearchViewModel>();
         }
 
@@ -28,7 +23,7 @@ namespace Ifpa.Controls
             }
             else
             {
-                ItemsSource = (await viewModel.SearchForPlayer(newValue)).Search;
+                ItemsSource = (await viewModel.SearchForPlayer(newValue)).Results;
             }
         }
 
@@ -42,7 +37,7 @@ namespace Ifpa.Controls
             Platforms.KeyboardHelper.HideKeyboard();
 
             // The following route works because route names are unique in this app.
-            await Shell.Current.GoToAsync($"player-details?playerId={((Search)item).PlayerId}");            
+            await Shell.Current.GoToAsync($"player-details?playerId={((Player)item).PlayerId}");
         }
 
     }
