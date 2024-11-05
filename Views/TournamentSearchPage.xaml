@@ -17,6 +17,8 @@
                            IsRunning="{Binding IsBusy}" />
         <Grid RowDefinitions="50,*">
             <SearchBar Grid.Row="0" Text="{Binding SearchTerm, Mode=TwoWay}"
+                       Placeholder="{x:Static local:Strings.TournamentSearchPage_Placeholder}"
+                       PlaceholderColor="{StaticResource SecondaryTextColor}"
                        SearchCommand="{Binding TournamentSearchCommand}" />
             <CollectionView Grid.Row="1" x:Name="ActiveListView"
                             IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"

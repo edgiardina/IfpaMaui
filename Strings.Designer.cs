@@ -1681,6 +1681,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search for tournaments by name.
+        /// </summary>
+        internal static string TournamentSearchPage_Placeholder {
+            get {
+                return ResourceManager.GetString("TournamentSearchPage_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tournament Search.
         /// </summary>
         internal static string TournamentSearchPage_Title {
