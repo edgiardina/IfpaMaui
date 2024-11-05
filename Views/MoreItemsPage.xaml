@@ -17,6 +17,9 @@
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Favorites}"
                                          IconSource="favorite.png"
                                          Route="favorites" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.TournamentSearchPage_Title}"
+                                         IconSource="trophy.png"
+                                         Route="tournament-search" />
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_CustomRankings}"
                                          IconSource="numbered_list.png"
                                          Route="custom-rankings" />
