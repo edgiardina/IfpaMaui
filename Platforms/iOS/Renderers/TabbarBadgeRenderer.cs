@@ -27,6 +27,18 @@ namespace Ifpa.Platforms.Renderers
             notificationService = Application.Current.MainPage.Handler.MauiContext.Services.GetService<NotificationService>();
         }
 
+        public override void SetAppearance(UITabBarController controller, ShellAppearance appearance)
+        {
+            base.SetAppearance(controller, appearance);
+
+            // Tabbar has changed in iOS 18
+            // https://stackoverflow.com/questions/79049272/maui-floating-tabbar-on-ipads-in-ios-18
+            if (UIDevice.CurrentDevice.CheckSystemVersion(17, 0))
+            {
+                controller.TraitOverrides.HorizontalSizeClass = UIUserInterfaceSizeClass.Compact;
+            }
+        }
+
         public override void UpdateLayout(UITabBarController controller)
         {
             base.UpdateLayout(controller);
@@ -69,5 +81,5 @@ namespace Ifpa.Platforms.Renderers
         }
     }
 
-    
+
 }
