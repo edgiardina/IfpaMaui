@@ -1,11 +1,5 @@
-﻿using PinballApi.Models.WPPR.v2.Nacs;
-using PinballApi.Models.WPPR.v2.Series;
-using System;
+﻿using PinballApi.Models.WPPR.Universal.Series;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Microsoft.Extensions.Configuration;
 using PinballApi;
 using Microsoft.Extensions.Logging;
 
@@ -20,9 +14,12 @@ namespace Ifpa.ViewModels
         public string RegionCode { get; set; }
         public string SeriesCode { get; set; }
 
-        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PinballRankingApi PinballRankingApi { get; set; }
+
+        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             TournamentCardRecords = new ObservableCollection<PlayerCard>();
+            PinballRankingApi = pinballRankingApi;
 
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
@@ -40,7 +37,7 @@ namespace Ifpa.ViewModels
             try
             {
                 TournamentCardRecords.Clear();
-                var tournamentCard = await PinballRankingApiV2.GetSeriesPlayerCard(PlayerId, SeriesCode, RegionCode, Year);
+                var tournamentCard = await PinballRankingApi.GetSeriesPlayerCard(PlayerId, SeriesCode, RegionCode, Year);
 
                 foreach (var item in tournamentCard.PlayerCard)
                 {

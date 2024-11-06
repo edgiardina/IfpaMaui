@@ -58,7 +58,7 @@
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.911" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="PinballApi" Version="3.0.12" />
+		<PackageReference Include="PinballApi" Version="3.0.13" />
 		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.8.2" />
 		<PackageReference Include="Scrutor" Version="5.0.1" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
@@ -112,11 +112,6 @@
 	<!-- Compile Directives / File Compile Types -->
 	<ItemGroup>
 		<None Remove="appsettings.json" />
-		<None Remove="Platforms\Android\Resources\drawable\rounded_edge.xml" />
-		<None Remove="Platforms\Android\Resources\drawable\widgeticon.png" />
-		<None Remove="Platforms\Android\Resources\drawable\widgetpreview.png" />
-		<None Remove="Platforms\Android\Resources\layout\rankwidget.axml" />
-		<None Remove="Platforms\Android\Resources\xml\appwidgetprovider.xml" />
 		<None Remove="Resources\Images\about.svg" />
 		<None Remove="Resources\Images\activity_feed.svg" />
 		<None Remove="Resources\Images\calendar.svg" />
