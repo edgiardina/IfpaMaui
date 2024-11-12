@@ -1,11 +1,7 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2;
 using PinballApi.Models.WPPR.v2.Players;
-using System;
+using PinballApi.Models.WPPR.v2.Tournaments;
 using System.Collections.ObjectModel;
-using System.Linq;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {

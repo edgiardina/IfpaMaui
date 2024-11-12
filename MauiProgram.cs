@@ -41,7 +41,7 @@ public static class MauiProgram
             .UseMauiMaps()
             .UseFluentMauiIcons()
             .UseShiny()
-            .UseSkiaSharp(true)
+            .UseSkiaSharp()
             .UseBottomSheet()
             .UseNativeCalendar()
             .ConfigureSyncfusionCore()

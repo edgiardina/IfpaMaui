@@ -1,16 +1,15 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using CommunityToolkit.Maui.Core.Extensions;
 using Ifpa.Models;
-using PinballApi;
-using Microsoft.Maui.Controls.Maps;
 using Microsoft.Extensions.Logging;
-using Plugin.Maui.NativeCalendar;
-using PinballApi.Models.WPPR.v2.Calendar;
-using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
+using Microsoft.Maui.Controls.Maps;
+using PinballApi;
+using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
-using CommunityToolkit.Maui.Core.Extensions;
-using Microsoft.Maui.Devices.Sensors;
+using Plugin.Maui.NativeCalendar;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 
 namespace Ifpa.ViewModels
 {

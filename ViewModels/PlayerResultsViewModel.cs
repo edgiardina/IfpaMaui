@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Players;
-using PinballApi.Models.WPPR.v2;
-using Ifpa.Models;
-using PinballApi;
+﻿using CommunityToolkit.Maui.Core.Extensions;
 using Microsoft.Extensions.Logging;
+using PinballApi;
+using PinballApi.Models.WPPR;
+using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Models.WPPR.v2.Tournaments;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Maui.Core.Extensions;
 
 namespace Ifpa.ViewModels
 {

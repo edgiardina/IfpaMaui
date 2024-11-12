@@ -163,9 +163,9 @@ namespace Ifpa.ViewModels
                         GeometryFill = null,
                         GeometryStroke = null,
                         Stroke = new SolidColorPaint(SKColor.Parse(resourceColor.ToHex())) { StrokeThickness = 2 },
-                        Mapping = (history, point) =>
+                        Mapping = (history, number) =>
                         {
-                            point.Coordinate = new Coordinate(history.RankDate.Ticks, Math.Log(history.RankPosition, s_logBase));
+                            return new Coordinate(history.RankDate.Ticks, Math.Log(history.RankPosition, s_logBase));
                         }
                     };
                     PlayerRankHistoryLineSeries.Clear();
@@ -179,9 +179,9 @@ namespace Ifpa.ViewModels
                         GeometryFill = null,
                         GeometryStroke = null,
                         Stroke = new SolidColorPaint(SKColor.Parse(resourceColor.ToHex())) { StrokeThickness = 2 },
-                        Mapping = (history, point) =>
+                        Mapping = (history, number) =>
                         {
-                            point.Coordinate = new Coordinate(history.RatingDate.Ticks, history.Rating);
+                            return new Coordinate(history.RatingDate.Ticks, history.Rating);
                         }
                     };
                     PlayerRatingHistoryLineSeries.Clear();

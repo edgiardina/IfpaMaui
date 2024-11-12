@@ -1,7 +1,9 @@
-﻿using Ifpa.Models;
+﻿using Ifpa.Exceptions;
+using Ifpa.Models;
 using Ifpa.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Handlers;
+using Serilog;
 using Shiny.Notifications;
 using System.Web;
 
@@ -14,6 +16,14 @@ public partial class App : Application
 
     public App(AppSettings appSettings, INotificationManager notificationManager, NotificationService notificationService)
     {
+        // Try not to crash the app when an unexpected exception is thrown
+        MauiExceptions.UnhandledException += (sender, e) =>
+        {
+            // get logger from DI container
+            Log.Error(e.ExceptionObject as Exception, "Unhandled exception");
+        };
+
+
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
 
         NotificationManager = notificationManager;

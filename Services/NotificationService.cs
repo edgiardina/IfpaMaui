@@ -1,11 +1,10 @@
-﻿using Ifpa.Models;
-using PinballApi;
-using PinballApi.Extensions;
-using Shiny.Notifications;
+﻿using CommunityToolkit.Maui.ApplicationModel;
+using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using CommunityToolkit.Maui.ApplicationModel;
+using PinballApi;
+using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
-using PinballApi.Models.WPPR.v2.Calendar;
+using Shiny.Notifications;
 
 namespace Ifpa.Services
 {
