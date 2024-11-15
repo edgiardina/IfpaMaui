@@ -146,8 +146,8 @@ namespace Ifpa.ViewModels
         {
             var longitude = LastGeolocation?.Longitude;
             var latitude = LastGeolocation?.Latitude;
-
-            SelectedDateCalendarItems = Tournaments.Where(n => n.EventStartDate.Date == e.NewDate)
+            // NativeCalendarView.Events.Any(e => e.StartDate.Date <= new DateTime(year, month + 1, day) && e.EndDate.Date >= new DateTime(year, month + 1, day)))
+            SelectedDateCalendarItems = Tournaments.Where(n => n.EventStartDate.Date <= e.NewDate && n.EventEndDate.Date >= e.NewDate)
                                                    .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
                                                    .ToObservableCollection();           
 
