@@ -1,20 +1,19 @@
-﻿using Ifpa.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.Universal.Tournaments;
-using Syncfusion.Maui.Core.Carousel;
 using System.Windows.Input;
-using static System.Net.WebRequestMethods;
-
 
 namespace Ifpa.ViewModels
 {
     [QueryProperty("TournamentId", "tournamentId")]
-    public class CalendarDetailViewModel : BaseViewModel
+    public partial class CalendarDetailViewModel : BaseViewModel
     {
         private const string MATCHPLAY_TOURNAMENT_URL = "https://app.matchplay.events/tournaments/{0}";
 
-        public Tournament Tournament { get; set; }
+        [ObservableProperty]
+        private Tournament tournament;
 
         public Command LoadItemsCommand { get; set; }
         public ICommand LoadMatchPlayCommand { get; set; }
@@ -57,9 +56,6 @@ namespace Ifpa.ViewModels
             try
             {
                 Tournament = await UniveralPinballRankingApi.GetTournament(TournamentId);
-
-
-                OnPropertyChanged(null);
 
                 logger.LogDebug("loaded calendar item {0}", TournamentId);
             }
