@@ -7,7 +7,7 @@ using PinballApi;
 
 namespace Ifpa.ViewModels
 {
-    public partial class BaseViewModel : ObservableObject
+    public abstract partial class BaseViewModel : ObservableObject
     {
         public PinballRankingApiV2 PinballRankingApiV2 { get; private set; }
 
