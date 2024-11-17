@@ -24,7 +24,7 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-            activityFeedViewModel.LoadItemsCommand.Execute(null);
+            activityFeedViewModel.ExecuteLoadItems();
         }
     }
 }
