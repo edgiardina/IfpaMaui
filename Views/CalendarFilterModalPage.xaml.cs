@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Ifpa.Models;
-using PinballApi.Models.WPPR.Universal;
+﻿using Ifpa.Models;
 using Serilog;
 
 namespace Ifpa.Views

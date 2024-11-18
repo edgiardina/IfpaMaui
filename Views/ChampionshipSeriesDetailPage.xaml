@@ -28,7 +28,8 @@
                     <tabView:SfTabItem.Content>
                         <CollectionView ItemsSource="{Binding RegionStandings.Standings}"
                                         SelectionMode="Single"
-                                        SelectionChanged="StandingsCollectionView_SelectionChanged">
+                                        SelectionChangedCommand="{Binding SelectRegionStandingsCommand}"
+                                        SelectedItem="{Binding SelectedRegionStandings, Mode=TwoWay}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="ifpawppr:RegionStanding">
                                     <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
@@ -108,8 +109,9 @@
                 </tabView:SfTabItem>
                 <tabView:SfTabItem Header="Tournaments">
                     <tabView:SfTabItem.Content>
-                        <CollectionView SelectionChanged="TournamentResultsCollectionView_SelectionChanged"
-                                        SelectionMode="Single"
+                        <CollectionView SelectionMode="Single"
+                                        SelectionChangedCommand="{Binding SelectTournamentCommand}"
+                                        SelectedItem="{Binding SelectedTournament, Mode=TwoWay}"
                                         ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="ifpawppr:SubmittedTournament">

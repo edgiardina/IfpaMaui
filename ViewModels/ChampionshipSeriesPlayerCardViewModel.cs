@@ -9,7 +9,7 @@ namespace Ifpa.ViewModels
     public partial class ChampionshipSeriesPlayerCardViewModel : BaseViewModel
     {
         [ObservableProperty]
-        private List<PlayerCard> tournamentCardRecords;
+        private List<PlayerCard> tournamentCardRecords = new List<PlayerCard>();
         public Command LoadItemsCommand { get; set; }
         public int Year { get; set; }
         public int PlayerId { get; set; }

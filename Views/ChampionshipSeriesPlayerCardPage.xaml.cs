@@ -32,7 +32,10 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-            if (ViewModel.TournamentCardRecords.Count == 0)
+            // if viewmodel.tournamentcardrecords is null or its count is zero, then load items
+        
+
+            if (ViewModel.TournamentCardRecords?.Count == 0)
             {
                 ViewModel.PlayerId = PlayerId;
                 ViewModel.RegionCode = RegionCode;
