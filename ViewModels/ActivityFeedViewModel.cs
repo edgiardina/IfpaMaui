@@ -1,11 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using CommunityToolkit.Maui.ApplicationModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
 using Ifpa.Services;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
