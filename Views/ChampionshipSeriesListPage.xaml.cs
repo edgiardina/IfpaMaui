@@ -1,8 +1,4 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Series;
-using System.Linq;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
@@ -23,21 +19,9 @@ namespace Ifpa.Views
             base.OnAppearing();
 
             if (ViewModel.ChampionshipSeries.Count == 0)
-                ViewModel.LoadItemsCommand.Execute(null);
-        }
-
-        private async void ChampionshipSeriesCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.CurrentSelection.FirstOrDefault() != null)
             {
-                var championshipSeries = e.CurrentSelection.FirstOrDefault() as Series;
-
-                await Shell.Current.GoToAsync($"champ-series?seriesCode={championshipSeries.Code}&year={championshipSeries.Years.Max()}");
-
-                //Deselect Item
-                ((CollectionView)sender).SelectedItem = null;
+                ViewModel.LoadItems();
             }
         }
-
     }
 }

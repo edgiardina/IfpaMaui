@@ -1,12 +1,8 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Nacs;
 using PinballApi.Models.WPPR.v2.Series;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
-
     [QueryProperty("SeriesCode", "seriesCode")]
     [QueryProperty("RegionCode", "regionCode")]
     [QueryProperty("Year", "year")]
@@ -30,10 +26,7 @@ namespace Ifpa.Views
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-
-            // if viewmodel.tournamentcardrecords is null or its count is zero, then load items
-        
+            base.OnAppearing();        
 
             if (ViewModel.TournamentCardRecords?.Count == 0)
             {
