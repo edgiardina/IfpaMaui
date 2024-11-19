@@ -1,32 +1,27 @@
-﻿using PinballApi.Models.v2.WPPR;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Microsoft.Extensions.Configuration;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using PinballApi;
+using PinballApi.Models.v2.WPPR;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerChampionshipSeriesViewModel : BaseViewModel
+    public partial class PlayerChampionshipSeriesViewModel : BaseViewModel
     {
-        public ObservableCollection<ChampionshipSeries> ChampionshipSeries { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private List<ChampionshipSeries> championshipSeries = new List<ChampionshipSeries>();
+
+        [ObservableProperty]
+        private ChampionshipSeries selectedChampionshipSeries;
 
         public int PlayerId { get; set; }
 
         public PlayerChampionshipSeriesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            ChampionshipSeries = new ObservableCollection<ChampionshipSeries>();
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -35,13 +30,9 @@ namespace Ifpa.ViewModels
 
             try
             {
-                ChampionshipSeries.Clear();
                 var player = await PinballRankingApiV2.GetPlayer(PlayerId);
 
-                foreach (var item in player.ChampionshipSeries.Where(n => n.Year == DateTime.Now.Year))
-                {
-                    ChampionshipSeries.Add(item);
-                }
+                ChampionshipSeries = player.ChampionshipSeries.Where(n => n.Year == DateTime.Now.Year).ToList();
             }
             catch (Exception ex)
             {
@@ -51,6 +42,12 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ViewChampSeriesDetails()
+        {
+            await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={SelectedChampionshipSeries.SeriesCode}&regionCode={SelectedChampionshipSeries.RegionCode}&year={SelectedChampionshipSeries.Year}");
         }
     }
 }
