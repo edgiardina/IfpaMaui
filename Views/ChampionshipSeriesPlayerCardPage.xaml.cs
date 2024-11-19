@@ -35,20 +35,8 @@ namespace Ifpa.Views
                 ViewModel.SeriesCode = SeriesCode;     
                 ViewModel.Year = Year;
 
-                ViewModel.LoadItemsCommand.Execute(null);
+                ViewModel.LoadItems();
             }
-        }
-
-        private async void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var tournamentCardRecord = e.CurrentSelection.FirstOrDefault() as PlayerCard;
-            if (tournamentCardRecord == null)
-                return;
-
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={tournamentCardRecord.TournamentId}");
-
-            ////Deselect Item
-            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }

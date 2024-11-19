@@ -11,7 +11,8 @@
         <CollectionView x:Name="MyListView"
                         ItemsSource="{Binding TournamentCardRecords}"
                         SelectionMode="Single"
-                        SelectionChanged="MyListView_SelectionChanged">
+                        SelectionChangedCommand="{Binding SelectPlayerCardCommand}"
+                        SelectedItem="{Binding SelectedTournamentCard, Mode=TwoWay}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpawppr:PlayerCard">
                     <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
