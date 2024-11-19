@@ -1,7 +1,4 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Players;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
@@ -23,17 +20,6 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel; 
         }
 
-        async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
-        {            
-            var tournament = e.Item as PlayerVersusPlayerComparisonRecord;
-            if (tournament == null)
-                return;
-
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={tournament.TournamentId}");
-
-            //Deselect Item
-            ((ListView)sender).SelectedItem = null;
-        }
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -42,7 +28,7 @@ namespace Ifpa.Views
             {
                 ViewModel.PlayerOneId = PlayerId;
                 ViewModel.PlayerTwoId = ComparePlayerId;
-                ViewModel.LoadItemsCommand.Execute(null);
+                ViewModel.LoadItems();
             }
         }
     }
