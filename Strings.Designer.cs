@@ -1195,6 +1195,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player Search.
+        /// </summary>
+        internal static string PlayerSearchPage_Title {
+            get {
+                return ResourceManager.GetString("PlayerSearchPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to : .
         /// </summary>
         internal static string PlayerVersusPlayerDetailPage_ {

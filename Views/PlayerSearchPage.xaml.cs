@@ -19,20 +19,5 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
         }
-
-        private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.CurrentSelection.FirstOrDefault() != null)
-            {
-                var player = e.CurrentSelection.FirstOrDefault() as Player;
-                if (player == null)
-                    return;
-
-                await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
-
-                // Manually deselect item.
-                PlayersListView.SelectedItem = null;
-            }
-        }
     }
 }

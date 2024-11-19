@@ -18,7 +18,7 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.ActivityFeedPage_MarkAllSeen}"
-                     Command="{Binding ExecuteMarkItemSeenCommand}" />
+                     Command="{Binding ExecuteMarkAllSeenCommand}" />
         <!--<ToolbarItem Text="+"
                      Command="{Binding TestingShimCommand}" />-->
     </ContentPage.ToolbarItems>
