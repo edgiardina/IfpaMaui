@@ -255,6 +255,9 @@
   <data name="PlayerResultsPage_RankingProfile" xml:space="preserve">
     <value>Ranking Profile</value>
   </data>
+  <data name="PlayerResultsPage_Title" xml:space="preserve">
+    <value>Results</value>
+  </data>
   <data name="PlayerDetailPage_Player" xml:space="preserve">
     <value>Player #: </value>
   </data>
