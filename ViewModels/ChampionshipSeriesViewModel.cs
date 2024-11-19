@@ -1,40 +1,33 @@
-﻿using PinballApi.Models.WPPR.v2.Nacs;
-using PinballApi.Models.WPPR.v2.Series;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Microsoft.Extensions.Configuration;
-using System.Windows.Input;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using PinballApi;
+using PinballApi.Models.WPPR.v2.Series;
 
 namespace Ifpa.ViewModels
 {
-    public class ChampionshipSeriesViewModel : BaseViewModel
+    public partial class ChampionshipSeriesViewModel : BaseViewModel
     {
-        public ObservableCollection<SeriesOverallResult> SeriesOverallResults { get; set; }
-        public ICommand LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private List<SeriesOverallResult> seriesOverallResults = new List<SeriesOverallResult>();
 
-        public List<int> AvailableYears { get; set; }
+        [ObservableProperty]
+        private List<int> availableYears = new List<int>();
+
+        [ObservableProperty]
+        private SeriesOverallResult selectedSeriesOverallResult;
 
         public int Year { get; set; }
 
         public string SeriesCode { get; set; }
-        
+
         public ChampionshipSeriesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesViewModel> logger) : base(pinballRankingApiV2, logger)
-        {    
-            this.AvailableYears = new List<int>();
+        {
 
-            SeriesOverallResults = new ObservableCollection<SeriesOverallResult>();
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -53,21 +46,16 @@ namespace Ifpa.ViewModels
 
                 if (stateProvinceChampionshipSeries != null)
                 {
-                    foreach (var item in stateProvinceChampionshipSeries.OverallResults)
-                    {
-                        SeriesOverallResults.Add(item);
-                    }
+                    SeriesOverallResults = stateProvinceChampionshipSeries.OverallResults;
                 }
-                
-                if(Year != DateTime.Now.Year)
+
+                if (Year != DateTime.Now.Year)
                 {
                     Title = $"{SeriesCode} {Year}";
-                    OnPropertyChanged("Title");
                 }
                 else
                 {
                     Title = SeriesCode;
-                    OnPropertyChanged("Title");
                 }
             }
             catch (Exception ex)
@@ -78,6 +66,12 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task SelectChampSeriesDetail()
+        {
+            await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={SeriesCode}&regionCode={SelectedSeriesOverallResult.RegionCode}&year={Year}");
         }
     }
 }

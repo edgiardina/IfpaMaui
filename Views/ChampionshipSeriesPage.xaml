@@ -23,7 +23,8 @@
         <CollectionView x:Name="MyListView"
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding SeriesOverallResults}"
-                        SelectionChanged="MyListView_SelectionChanged"
+                        SelectionChangedCommand="{Binding SelectChampSeriesDetailCommand}"
+                        SelectedItem="{Binding SelectedSeriesOverallResult, Mode=TwoWay}"
                         SelectionMode="Single">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpawppr:SeriesOverallResult">
@@ -60,7 +61,8 @@
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
-                                                <Span Text="{x:Static local:Strings.ChampionshipSeriesPage_UniquePlayers}" />
+                                                <Span Text="{x:Static local:Strings.ChampionshipSeriesPage_UniquePlayers}"
+                                                      TextColor="{DynamicResource SecondaryTextColor}" />
                                                 <Span Text=" " />
                                                 <Span Text="{Binding UniquePlayerCount}" />
                                             </FormattedString.Spans>
@@ -74,7 +76,8 @@
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
-                                                <Span Text="{x:Static local:Strings.ChampionshipSeriesPage_PrizeValue}" />
+                                                <Span Text="{x:Static local:Strings.ChampionshipSeriesPage_PrizeValue}"
+                                                      TextColor="{DynamicResource SecondaryTextColor}" />
                                                 <Span Text=" " />
                                                 <Span Text="{Binding PrizeFund, StringFormat='{0:C}'}" />
                                             </FormattedString.Spans>
