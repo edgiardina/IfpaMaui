@@ -33,7 +33,8 @@
                                         IsVisible="{Binding IsPopulated}"
                                         ItemsSource="{Binding ViewResults}"
                                         SelectionMode="Single"
-                                        SelectionChanged="RankingsListView_SelectionChanged">
+                                        SelectionChangedCommand="{Binding SelectPlayerDetailsCommand}"
+                                        SelectedItem="{Binding SelectedViewResult}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="ifparankings:CustomRankingViewResult">
                                     <VerticalStackLayout>
@@ -147,7 +148,8 @@
                                         ItemsSource="{Binding Tournaments}"
                                         VerticalOptions="FillAndExpand"
                                         SelectionMode="Single"
-                                        SelectionChanged="TournamentListView_SelectionChanged">
+                                        SelectedItem="{Binding SelectedTournament}"
+                                        SelectionChangedCommand="{Binding SelectTournamentCommand}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="ifparankings:Tournament">
                                     <VerticalStackLayout>
