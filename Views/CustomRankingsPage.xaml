@@ -22,7 +22,8 @@
                             ItemsSource="{Binding CustomRankings}"
                             VerticalOptions="FillAndExpand"
                             SelectionMode="Single"
-                            SelectionChanged="OnItemSelected">
+                            SelectedItem="{Binding SelectedCustomRanking, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ViewCustomRankingDetailCommand}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="ifparankings:CustomRankingView">
                         <StackLayout>

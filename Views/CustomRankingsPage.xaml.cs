@@ -15,18 +15,6 @@ namespace Ifpa.Views
             BindingContext = ViewModel = viewModel;
         }
 
-        async void OnItemSelected(object sender, SelectionChangedEventArgs e)
-        {
-            var view = e.CurrentSelection.FirstOrDefault() as CustomRankingView;
-            if (view == null)
-                return;
-
-            await Shell.Current.GoToAsync($"custom-ranking-details?viewId={view.ViewId}");
-
-            // Manually deselect item.
-            RankingsListView.SelectedItem = null;
-        }
-
         protected override void OnAppearing()
         {
             if(ViewModel.CustomRankings.Count == 0)
