@@ -8,7 +8,7 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
-             Title="{Binding Title}"
+             Title="{x:Static local:Strings.FavoritesPage_Title}"
              xmlns:local="clr-namespace:Ifpa"
              x:Name="SearchPlayersPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
@@ -52,7 +52,7 @@
                             <StackLayout Padding="15,10"
                                          Orientation="Horizontal">
                                 <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.SelectPlayer}"
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.SelectPlayerCommand}"
                                                           CommandParameter="{Binding PlayerId}" />
                                 </StackLayout.GestureRecognizers>
                                 <StackLayout Orientation="Vertical">

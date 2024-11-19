@@ -465,6 +465,9 @@
   <data name="FavoritesPage_Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="FavoritesPage_Title" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
   <data name="PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet" xml:space="preserve">
     <value>Player has not played against competitors yet.</value>
   </data>

@@ -610,6 +610,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Favorites.
+        /// </summary>
+        internal static string FavoritesPage_Title {
+            get {
+                return ResourceManager.GetString("FavoritesPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to - .
         /// </summary>
         internal static string Hyphen {
