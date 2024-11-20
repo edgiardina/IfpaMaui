@@ -1,7 +1,5 @@
 ﻿using Ifpa.Models;
-using Ifpa.ViewModels;
-using Microsoft.Maui;
-
+using Ifpa.ViewModels; 
 
 namespace Ifpa.Views
 {
