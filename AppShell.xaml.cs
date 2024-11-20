@@ -26,7 +26,7 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute("calendar-detail", typeof(CalendarDetailPage));
 
-        //more menu
+        // more menu
         Routing.RegisterRoute("favorites", typeof(FavoritesPage));
         Routing.RegisterRoute("custom-rankings", typeof(CustomRankingsPage));
         Routing.RegisterRoute("custom-ranking-details", typeof(CustomRankingsDetailPage));
@@ -38,6 +38,9 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("settings", typeof(SettingsPage));
         Routing.RegisterRoute("about", typeof(AboutPage));
         Routing.RegisterRoute("tournament-search", typeof(TournamentSearchPage));
+
+        // modals
+        Routing.RegisterRoute("tournament-info", typeof(TournamentInfoPage));
     }
 
     protected override async void OnNavigating(ShellNavigatingEventArgs args)

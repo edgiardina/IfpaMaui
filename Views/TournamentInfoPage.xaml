@@ -6,6 +6,7 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.ModalPresentationStyle="PageSheet"
+             Shell.PresentationMode="Modal"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:TournamentResultsViewModel">
