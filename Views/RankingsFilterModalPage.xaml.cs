@@ -1,5 +1,4 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Rankings;
 
@@ -32,9 +31,9 @@ namespace Ifpa.Views
             viewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), Preferences.Get("RankingSystem", viewModel.CurrentRankingSystem.ToString()));
             viewModel.CurrentProRankingType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("ProRankingType", viewModel.CurrentProRankingType.ToString()));
 
-            RankingTypePicker.SelectedItem = viewModel.CurrentRankingType.ToString();
-            TypePicker.SelectedItem = viewModel.CurrentRankingSystem.ToString();
-            ProTypeFilter.SelectedItem = viewModel.CurrentProRankingType.ToString();
+            RankingTypePicker.SelectedItem = viewModel.CurrentRankingType;
+            TypePicker.SelectedItem = viewModel.CurrentRankingSystem;
+            ProTypeFilter.SelectedItem = viewModel.CurrentProRankingType;
         }
 
         private async void CancelButton_Clicked(object sender, EventArgs e)
@@ -106,21 +105,17 @@ namespace Ifpa.Views
                 viewModel.CountryToShow = viewModel.DefaultCountry;
             }
 
-            viewModel.CurrentRankingType = selectedType;
-
             Preferences.Set("RankingType", viewModel.CurrentRankingType.ToString());
         }
 
         private void TypePicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            viewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), ((Picker)sender).SelectedItem.ToString());
-
             Preferences.Set("RankingSystem", viewModel.CurrentRankingSystem.ToString());
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await Task.Run(() => viewModel.LoadItemsCommand.Execute(null));
+            viewModel.LoadItems();
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
@@ -128,8 +123,6 @@ namespace Ifpa.Views
 
         private void ProTypeFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            viewModel.CurrentProRankingType = (TournamentType)Enum.Parse(typeof(TournamentType), ((Picker)sender).SelectedItem.ToString());
-
             Preferences.Set("ProRankingType", viewModel.CurrentProRankingType.ToString());
         }
     }

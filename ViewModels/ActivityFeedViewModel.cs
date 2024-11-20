@@ -1,19 +1,15 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using CommunityToolkit.Maui.ApplicationModel;
+﻿using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
 using Ifpa.Services;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class ActivityFeedViewModel : BaseViewModel
+    public partial class ActivityFeedViewModel : BaseViewModel
     {
         public ObservableCollection<ActivityFeedItem> ActivityFeedItems { get; set; }
-        public Command LoadItemsCommand { get; set; }
-        public Command MarkAllSeenCommand { get; set; }
-        public Command MarkItemSeenCommand { get; set; }
 
         public Command TestingShimCommand { get; set; }
 
@@ -25,15 +21,12 @@ namespace Ifpa.ViewModels
         {
             Title = "Activity Feed";
             ActivityFeedItems = new ObservableCollection<ActivityFeedItem>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-            MarkAllSeenCommand = new Command(async () => await ExecuteMarkAllSeenCommand());
-            MarkItemSeenCommand = new Command(async () => await ExecuteMarkItemSeenCommand());
-            TestingShimCommand = new Command(async () => await ExecuteTestingShimCommand());
 
             this.notificationService = notificationService;
         }
 
-        private async Task ExecuteMarkItemSeenCommand()
+        [RelayCommand]
+        public async Task ExecuteMarkItemSeen()
         {
             await notificationService.ClearNotificationForActivityFeedItem(SelectedItem);
 
@@ -41,22 +34,24 @@ namespace Ifpa.ViewModels
             {
                 await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedItem.RecordID.Value}");
             }
-           
+
             SelectedItem = null;
-            LoadItemsCommand.Execute(null);
+            await ExecuteLoadItems();
         }
 
-        private async Task ExecuteMarkAllSeenCommand()
+        [RelayCommand]
+        public async Task ExecuteMarkAllSeen()
         {
             foreach (var i in ActivityFeedItems.Where(n => !n.HasBeenSeen))
             {
                 await notificationService.ClearNotificationForActivityFeedItem(i);
             }
 
-            LoadItemsCommand.Execute(null);
+            await ExecuteLoadItems();
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task ExecuteLoadItems()
         {
             if (IsBusy)
                 return;
@@ -85,7 +80,8 @@ namespace Ifpa.ViewModels
             }
         }
 
-        private async Task ExecuteTestingShimCommand()
+        [RelayCommand]
+        public async Task ExecuteTestingShim()
         {
             await notificationService.TestingShim();
         }

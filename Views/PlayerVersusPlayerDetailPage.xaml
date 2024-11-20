@@ -17,17 +17,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
-        <ListView x:Name="MyListView"
-                  ItemsSource="{Binding PlayerVersusPlayer}"
-                  RefreshCommand="{Binding LoadItemsCommand}"
-                  IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  ItemTapped="Handle_ItemTapped"
-                  CachingStrategy="RecycleElement"
-                  HasUnevenRows="true">
-            <ListView.ItemTemplate>
+        <CollectionView x:Name="MyListView"
+                        ItemsSource="{Binding PlayerVersusPlayer}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPlayerVersusPlayer}"
+                        SelectionChangedCommand="{Binding ViewTournamentResultsCommand}">
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:PlayerVersusPlayerComparisonRecord">
-                    <ViewCell>
+                    <VerticalStackLayout>
                         <Grid Margin="10"
                               ColumnDefinitions="*, 80"
                               ColumnSpacing="10">
@@ -77,9 +74,11 @@
                                 </Label>
                             </StackLayout>
                         </Grid>
-                    </ViewCell>
+
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </VerticalStackLayout>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

@@ -1,16 +1,17 @@
-﻿using Ifpa.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
-using System.Diagnostics;
 
 namespace Ifpa.ViewModels
 {
-    public class SettingsViewModel : BaseViewModel
+    public partial class SettingsViewModel : BaseViewModel
     {
         AppSettings AppSettings;
-        
+
+        [ObservableProperty]
         private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
         public string PlayerAvatar
@@ -42,8 +43,8 @@ namespace Ifpa.ViewModels
                 }
                 else
                 {
-                    playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
-                    OnPropertyChanged(null);
+                    PlayerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
+     
                 }
             }
             catch (Exception ex)
@@ -53,16 +54,6 @@ namespace Ifpa.ViewModels
             finally
             {
                 IsBusy = false;
-            }
-        }
-
-        public Player PlayerRecord
-        {
-            get { return playerRecord; }
-            set
-            {
-                playerRecord = value;
-                OnPropertyChanged(null);
             }
         }
 

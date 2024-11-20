@@ -2,13 +2,19 @@
 using System.Collections.ObjectModel;
 using PinballApi;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Ifpa.ViewModels
 {
-    public class ChampionshipSeriesPlayerCardViewModel : BaseViewModel
+    public partial class ChampionshipSeriesPlayerCardViewModel : BaseViewModel
     {
-        public ObservableCollection<PlayerCard> TournamentCardRecords { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private List<PlayerCard> tournamentCardRecords = new List<PlayerCard>();
+
+        [ObservableProperty]
+        private PlayerCard selectedTournamentCard;
+
         public int Year { get; set; }
         public int PlayerId { get; set; }
         public string RegionCode { get; set; }
@@ -18,14 +24,11 @@ namespace Ifpa.ViewModels
 
         public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            TournamentCardRecords = new ObservableCollection<PlayerCard>();
             PinballRankingApi = pinballRankingApi;
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             Title = $"{RegionCode} Championship Series";
 
@@ -39,10 +42,7 @@ namespace Ifpa.ViewModels
                 TournamentCardRecords.Clear();
                 var tournamentCard = await PinballRankingApi.GetSeriesPlayerCard(PlayerId, SeriesCode, RegionCode, Year);
 
-                foreach (var item in tournamentCard.PlayerCard)
-                {
-                    TournamentCardRecords.Add(item);
-                }
+                TournamentCardRecords = tournamentCard.PlayerCard;
 
                 Title = $"{RegionCode} {SeriesCode} ({Year}) - {tournamentCard.PlayerName}";
             }
@@ -54,6 +54,12 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task SelectPlayerCard()
+        {
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournamentCard.TournamentId}");
         }
     }
 }

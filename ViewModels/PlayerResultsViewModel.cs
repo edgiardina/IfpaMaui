@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR;
@@ -8,35 +10,35 @@ using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerResultsViewModel : BaseViewModel
+    public partial class PlayerResultsViewModel : BaseViewModel
     {
-        public ObservableCollection<PlayerResult> ActiveResults { get; set; }
-        public ObservableCollection<PlayerResult> UnusedResults { get; set; }
-        public ObservableCollection<PlayerResult> PastResults { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<PlayerResult> activeResults = new ObservableCollection<PlayerResult>();
+        
+        [ObservableProperty]
+        private ObservableCollection<PlayerResult> unusedResults = new ObservableCollection<PlayerResult>();
+        
+        [ObservableProperty]
+        private ObservableCollection<PlayerResult> pastResults = new ObservableCollection<PlayerResult>();
 
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private PlayerResult selectedResult;
 
         public ResultType State { get; set; }
         public RankingType RankingType { get; set; }
 
         public RankingType[] RankingTypeOptions => new[] { RankingType.Main, RankingType.Women, RankingType.Youth };
-     
 
         public int PlayerId { get; set; }
 
         public PlayerResultsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerResultsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            Title = "Results";
             State = ResultType.Active;
             RankingType = RankingType.Main;
-            ActiveResults = new ObservableCollection<PlayerResult>();
-            UnusedResults = new ObservableCollection<PlayerResult>();
-            PastResults = new ObservableCollection<PlayerResult>();
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -47,31 +49,23 @@ namespace Ifpa.ViewModels
             {
                 var player = await PinballRankingApiV2.GetPlayer(PlayerId);
 
-                ActiveResults.Clear();
-                UnusedResults.Clear();
-                PastResults.Clear();
-
                 var activeResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Active);
                 if (activeResults.ResultsCount > 0)
                 {
                     ActiveResults = activeResults.Results.ToObservableCollection();
                 }
-                
+
                 var unusedResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.NonActive);
                 if (unusedResults.ResultsCount > 0)
                 {
                     UnusedResults = unusedResults.Results.ToObservableCollection();
                 }
-                
+
                 var pastResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Inactive);
                 if (pastResults.ResultsCount > 0)
                 {
                     PastResults = pastResults.Results.ToObservableCollection();
                 }
-
-                OnPropertyChanged(nameof(PastResults));
-                OnPropertyChanged(nameof(UnusedResults));
-                OnPropertyChanged(nameof(ActiveResults));
             }
             catch (Exception ex)
             {
@@ -81,6 +75,12 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ViewTournamentResults()
+        {
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}");
         }
     }
 }

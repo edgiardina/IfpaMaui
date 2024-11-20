@@ -1,29 +1,35 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Players;
-using PinballApi;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using PinballApi;
+using PinballApi.Models.WPPR.v2.Players;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerVersusPlayerDetailViewModel : BaseViewModel
+    public partial class PlayerVersusPlayerDetailViewModel : BaseViewModel
     {
-        public ObservableCollection<PlayerVersusPlayerComparisonRecord> PlayerVersusPlayer { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<PlayerVersusPlayerComparisonRecord> playerVersusPlayer = new ObservableCollection<PlayerVersusPlayerComparisonRecord>();
 
-        public string PlayerOneInitials { get; set; }
+        [ObservableProperty]
+        private string playerOneInitials;
 
-        public string PlayerTwoInitials { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private string playerTwoInitials;
+
+        [ObservableProperty]
+        private PlayerVersusPlayerComparisonRecord selectedPlayerVersusPlayer;
 
         public int PlayerOneId { get; set; }
         public int PlayerTwoId { get; set; }
         public PlayerVersusPlayerDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            PlayerVersusPlayer = new ObservableCollection<PlayerVersusPlayerComparisonRecord>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -35,17 +41,12 @@ namespace Ifpa.ViewModels
                 PlayerVersusPlayer.Clear();
                 var pvpResults = await PinballRankingApiV2.GetPlayerVersusPlayerComparison(PlayerOneId, PlayerTwoId);
 
-                foreach (var item in pvpResults.ComparisonRecords.OrderByDescending(n => n.EventDate))
-                {
-                    PlayerVersusPlayer.Add(item);
-                }
+                PlayerVersusPlayer = pvpResults.ComparisonRecords.OrderByDescending(n => n.EventDate).ToObservableCollection();
 
                 Title = $"{pvpResults.PlayerOne.FirstName} {pvpResults.PlayerOne.LastName} vs {pvpResults.PlayerTwo.FirstName} {pvpResults.PlayerTwo.LastName}";
 
                 PlayerOneInitials = pvpResults.PlayerOne.FirstName.FirstOrDefault().ToString() + pvpResults.PlayerOne.LastName.FirstOrDefault().ToString();
                 PlayerTwoInitials = pvpResults.PlayerTwo.FirstName.FirstOrDefault().ToString() + pvpResults.PlayerTwo.LastName.FirstOrDefault().ToString();
-                OnPropertyChanged("PlayerOneInitials");
-                OnPropertyChanged("PlayerTwoInitials");
             }
             catch (Exception ex)
             {
@@ -55,6 +56,13 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ViewTournamentResults()
+        {
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedPlayerVersusPlayer.TournamentId}");
+            SelectedPlayerVersusPlayer = null;
         }
     }
 }

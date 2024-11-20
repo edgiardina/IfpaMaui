@@ -1,9 +1,4 @@
-﻿using CommunityToolkit.Maui.ApplicationModel;
-using Ifpa.Models;
-using Ifpa.Services;
-using Ifpa.ViewModels;
-//using Plugin.Badge;
-
+﻿using Ifpa.ViewModels;
 
 namespace Ifpa.Views
 {
@@ -24,7 +19,8 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-            activityFeedViewModel.LoadItemsCommand.Execute(null);
+            activityFeedViewModel.SelectedItem = null;
+            activityFeedViewModel.ExecuteLoadItems();
         }
     }
 }

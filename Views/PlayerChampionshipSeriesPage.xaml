@@ -24,7 +24,8 @@
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding ChampionshipSeries}"
                         SelectionMode="Single"
-                        SelectionChanged="MyListView_SelectionChanged">
+                        SelectionChangedCommand="{Binding ViewChampSeriesDetailsCommand}"
+                        SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpawppr:ChampionshipSeries">
                     <VerticalStackLayout>

@@ -1,31 +1,25 @@
-﻿using PinballApi.Models.WPPR.v2.Nacs;
-using PinballApi.Models.WPPR.v2.Series;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Microsoft.Extensions.Configuration;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using PinballApi;
+using PinballApi.Models.WPPR.v2.Series;
 
 namespace Ifpa.ViewModels
 {
-    public class ChampionshipSeriesListViewModel : BaseViewModel
+    public partial class ChampionshipSeriesListViewModel : BaseViewModel
     {
-        public ObservableCollection<Series> ChampionshipSeries { get; set; }
-        public Command LoadItemsCommand { get; set; }
-        
+        [ObservableProperty]
+        private List<Series> championshipSeries = new List<Series>();
+
+        [ObservableProperty]
+        private Series selectedChampionshipSeries;
+
         public ChampionshipSeriesListViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesListViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-
-            ChampionshipSeries = new ObservableCollection<Series>();
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -34,16 +28,7 @@ namespace Ifpa.ViewModels
 
             try
             {
-                ChampionshipSeries.Clear();
-                var series = await PinballRankingApiV2.GetSeries();
-
-                if (series != null)
-                {
-                    foreach (var item in series)
-                    {
-                        ChampionshipSeries.Add(item);
-                    }
-                }       
+                ChampionshipSeries = await PinballRankingApiV2.GetSeries();
             }
             catch (Exception ex)
             {
@@ -53,6 +38,12 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ViewChampionshipSeriesDetail(Series series)
+        {
+            await Shell.Current.GoToAsync($"champ-series?seriesCode={SelectedChampionshipSeries.Code}&year={SelectedChampionshipSeries.Years.Max()}");
         }
     }
 }

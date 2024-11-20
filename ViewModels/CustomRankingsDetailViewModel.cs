@@ -1,84 +1,87 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using CommunityToolkit.Maui.Core.Extensions;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Rankings;
 
 namespace Ifpa.ViewModels
 {
-    public class CustomRankingsDetailViewModel : BaseViewModel
+    public partial class CustomRankingsDetailViewModel : BaseViewModel
     {
         public int ViewId { get; internal set; }
-        public ObservableCollection<CustomRankingViewResult> ViewResults { get; set; }
 
-        public ObservableCollection<Tournament> Tournaments { get; set; }
+        [ObservableProperty]
+        private List<CustomRankingViewResult> viewResults = new List<CustomRankingViewResult>();
 
-        public ObservableCollection<CustomRankingViewFilter> ViewFilters { get; set; }
-        public bool IsPopulated => Tournaments.Count > 0 || dataNotLoaded;
+        [ObservableProperty]
+        private List<Tournament> tournaments = new List<Tournament>();
+
+        [ObservableProperty]
+        private List<CustomRankingViewFilter> viewFilters = new List<CustomRankingViewFilter>();
+
+        [ObservableProperty]
+        private CustomRankingViewResult selectedViewResult;
+
+        [ObservableProperty]
+        private Tournament selectedTournament;
+
+        [ObservableProperty]
+        private bool isPopulated;
 
         private bool dataNotLoaded = true;
 
         public CustomRankingsDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            ViewResults = new ObservableCollection<CustomRankingViewResult>();
-            Tournaments = new ObservableCollection<Tournament>();
-            ViewFilters = new ObservableCollection<CustomRankingViewFilter>();
 
         }
 
-        private Command _loadItemsCommand;
-        public Command LoadItemsCommand
+        [RelayCommand]
+        public async Task LoadItems()
         {
-            get
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            dataNotLoaded = false;
+
+            try
             {
-                return _loadItemsCommand ?? (_loadItemsCommand = new Command<string>(async (text) =>
-                {
-                    if (IsBusy)
-                        return;
+                var tempList = await PinballRankingApiV2.GetRankingCustomView(ViewId);
 
-                    IsBusy = true;
+                Tournaments = tempList.Tournaments;
+                ViewResults = tempList.ViewResults;
 
-                    dataNotLoaded = false;
+                // Use linq to trim the name property of the ViewFilters
+                ViewFilters = tempList.ViewFilters
+                                         .Select(x => new CustomRankingViewFilter { Name = x.Name.Trim(), Setting = x.Setting })
+                                         .ToList();
 
-                    try
-                    {
-                        Tournaments.Clear();
-                        ViewResults.Clear();
-                        ViewFilters.Clear();
+                Title = tempList.Title;
+                IsPopulated = Tournaments.Count > 0 || dataNotLoaded;
 
-                        var tempList = await PinballRankingApiV2.GetRankingCustomView(ViewId);
-
-                        Tournaments = tempList.Tournaments.ToObservableCollection();
-                        OnPropertyChanged(nameof(Tournaments));
-
-                        ViewResults = tempList.ViewResults.ToObservableCollection();
-                        OnPropertyChanged(nameof(ViewResults));
-
-                        foreach (var viewFilter in tempList.ViewFilters)
-                        {
-                            //For some reason some of these have carriage return / line feed. so strip that out.
-                            viewFilter.Name = viewFilter.Name.Trim();
-
-                            ViewFilters.Add(viewFilter);
-                        }
-
-                        Title = tempList.Title;
-
-                        OnPropertyChanged("IsPopulated");
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error loading custom rankings detail for view {0}", ViewId);
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                    }
-                }));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error loading custom rankings detail for view {0}", ViewId);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
-        
+        [RelayCommand]
+        public async Task SelectPlayerDetails()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectedViewResult.PlayerId}");
+        }
+
+        [RelayCommand]
+        public async Task SelectTournament()
+        {
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}"); 
+        }
+
     }
 }

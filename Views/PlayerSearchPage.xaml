@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.PlayerSearchPage"
              xmlns:converters="clr-namespace:Ifpa.Converters"
-             Title="{Binding Title}"
+             Title="{x:Static local:Strings.PlayerSearchPage_Title}"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
@@ -35,7 +35,8 @@
                                IsRunning="{Binding IsBusy}" />
             <CollectionView x:Name="PlayersListView"
                             ItemsSource="{Binding Players}"
-                            SelectionChanged="PlayersListView_SelectionChanged"
+                            SelectedItem="{Binding SelectedPlayer}"
+                            SelectionChangedCommand="{Binding ViewPlayerCommand}"
                             IsVisible="{Binding IsLoaded}"
                             Grid.Row="1"
                             SelectionMode="Single">

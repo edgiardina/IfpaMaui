@@ -8,12 +8,13 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:local="clr-namespace:Ifpa"
-             Title="{Binding Initials, Mode=OneWay}"
+             Title="{Binding PlayerRecord.Initials, Mode=OneWay}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerDetailViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter" />
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             <Style x:Key="playerHeader"
                    TargetType="Label">
@@ -52,7 +53,7 @@
                                 AbsoluteLayout.LayoutBounds="0.5,0.5,80,80"
                                 AbsoluteLayout.LayoutFlags="PositionProportional"
                                 ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
-                                Text="{Binding Initials, Mode=OneWay}"
+                                Text="{Binding PlayerRecord.Initials, Mode=OneWay}"
                                 BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                 BorderWidth="0"
                                 CornerRadius="8"
@@ -80,9 +81,18 @@
                           RowDefinitions="*,*,*"
                           Margin="10">
                         <Label Grid.Row="0"
-                               Text="{Binding Name, Mode=OneWay}"
                                Style="{StaticResource playerHeader}"
-                               FontSize="20" />
+                               FontSize="20">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="{Binding PlayerRecord.FirstName, Mode=OneWay}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding PlayerRecord.LastName, Mode=OneWay}" />
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
                         <StackLayout Grid.Row="1"
                                      Orientation="Horizontal"
                                      VerticalOptions="Center">
@@ -94,13 +104,13 @@
                                     <FormattedString>
                                         <FormattedString.Spans>
                                             <Span Text="{x:Static local:Strings.PlayerDetailPage_Player}" />
-                                            <Span Text="{Binding PlayerId, Mode=OneWay}" />
+                                            <Span Text="{Binding PlayerRecord.PlayerId, Mode=OneWay}" />
                                         </FormattedString.Spans>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
                             <Image Source="https://www.ifpapinball.com/images/confirmed.png"
-                                   IsVisible="{Binding IsRegistered}"
+                                   IsVisible="{Binding PlayerRecord.IfpaRegistered}"
                                    HeightRequest="16">
                                 <Image.Shadow>
                                     <Shadow Brush="Black"
@@ -133,7 +143,7 @@
                                         ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
                                         HorizontalOptions="End"
                                         Margin="10"
-                                        Text="{Binding Initials, Mode=OneWay}"
+                                        Text="{Binding PlayerRecord.Initials, Mode=OneWay}"
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                         BorderWidth="0"
                                         CornerRadius="8"
@@ -184,7 +194,7 @@
                                 LineBreakMode="WordWrap"
                                 x:Name="ChampButton"
                                 Clicked="CS_Button_Clicked"
-                                IsVisible="{Binding HasChampionshipSeriesData}" />
+                                IsVisible="{Binding PlayerRecord.ChampionshipSeries, Converter={StaticResource IsListNotNullOrEmptyConverter}}" />
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerOverview}" />
                     <Grid>
@@ -206,11 +216,11 @@
                         <Label TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                                Grid.Column="1"
                                Grid.Row="0"
-                               Text="{Binding Rank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}"
+                               Text="{Binding PlayerRecord.PlayerStats.CurrentWpprRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="0"
-                               Text="{Binding CurrentWpprValue, Mode=OneWay, StringFormat='{0:N2}'}"
+                               Text="{Binding PlayerRecord.PlayerStats.CurrentWpprValue, Mode=OneWay, StringFormat='{0:N2}'}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="0"
                                Grid.Row="1"
@@ -219,11 +229,11 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_Rating}" />
                         <Label Grid.Column="1"
                                Grid.Row="1"
-                               Text="{Binding Rating, Mode=OneWay, StringFormat='{0:N2}'}"
+                               Text="{Binding PlayerRecord.PlayerStats.RatingsRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}, TargetNullValue='Not Rated'}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="1"
-                               Text="{Binding RatingValue, Mode=OneWay}"
+                               Text="{Binding PlayerRecord.PlayerStats.RatingsValue, Mode=OneWay}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="0"
                                Grid.Row="2"
@@ -232,11 +242,11 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_EffPercent}" />
                         <Label Grid.Column="1"
                                Grid.Row="2"
-                               Text="{Binding PlayerRecord.PlayerStats.EfficiencyRank, TargetNullValue='Not Ranked', Mode=OneWay}"
+                               Text="{Binding PlayerRecord.PlayerStats.EfficiencyRank, Converter={StaticResource intToOrdinalString}, TargetNullValue='Not Ranked', Mode=OneWay}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="2"
-                               Text="{Binding EfficiencyValue, Mode=OneWay, StringFormat='{0:N2}'}"
+                               Text="{Binding PlayerRecord.PlayerStats.EfficiencyValue, Mode=OneWay, StringFormat='{0:N2}'}"
                                HorizontalTextAlignment="Center" />
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_RankingStatistics}" />
@@ -257,14 +267,13 @@
                                TextColor="{StaticResource SecondaryTextColor}"
                                Text="{x:Static local:Strings.PlayerDetailPage_HighestRank}" />
                         <Label Grid.Column="1"
-                               Grid.Row="0"
-                               Text="{Binding HighestRank, Mode=OneWay}">
+                               Grid.Row="0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span Text="{Binding HighestRank, Mode=OneWay}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.HighestRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
                                         <Span Text="{x:Static local:Strings.PlayerDetailPage_}" />
-                                        <Span Text="{Binding HighestRankDate, StringFormat='{0:MMMM, yyyy}'}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.HighestRankDate, StringFormat='{0:MMMM, yyyy}'}" />
                                         <Span Text="{x:Static local:Strings.RightParens}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
@@ -277,7 +286,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_LastMonthSRank}" />
                         <Label Grid.Column="1"
                                Grid.Row="1"
-                               Text="{Binding LastMonthRank, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.LastMonthRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
                         <Label Grid.Column="0"
                                Grid.Row="2"
                                LineBreakMode="NoWrap"
@@ -285,7 +294,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_LastYearSRank}" />
                         <Label Grid.Column="1"
                                Grid.Row="2"
-                               Text="{Binding LastYearRank, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.LastYearRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
                         <Label Grid.Column="0"
                                Grid.Row="3"
                                LineBreakMode="NoWrap"
@@ -293,7 +302,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_TotalWpprs}" />
                         <Label Grid.Column="1"
                                Grid.Row="3"
-                               Text="{Binding TotalWpprs, Mode=OneWay, StringFormat='{0:N2}'}" />
+                               Text="{Binding PlayerRecord.PlayerStats.WpprPointsAllTime, Mode=OneWay, StringFormat='{0:N2}'}" />
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentStatistics}" />
                     <Grid>
@@ -320,9 +329,9 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span Text="{Binding BestFinish, Mode=OneWay}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.BestFinish, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
                                         <Span Text=" (" />
-                                        <Span Text="{Binding BestFinishCount, Mode=OneWay}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.BestFinishCount, Mode=OneWay}" />
                                         <Span Text="{x:Static local:Strings.PlayerDetailPage_Times}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
@@ -335,7 +344,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_AvgFinish}" />
                         <Label Grid.Column="1"
                                Grid.Row="1"
-                               Text="{Binding AvgFinish, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.AverageFinish, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="2"
                                LineBreakMode="NoWrap"
@@ -343,7 +352,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_AvgFinishLastYear}" />
                         <Label Grid.Column="1"
                                Grid.Row="2"
-                               Text="{Binding AvgFinishLastYear, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.AverageFinishLastYear, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="3"
                                LineBreakMode="NoWrap"
@@ -351,7 +360,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_TotalEvents}" />
                         <Label Grid.Column="1"
                                Grid.Row="3"
-                               Text="{Binding TotalEvents, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.TotalEventsAllTime, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="4"
                                LineBreakMode="NoWrap"
@@ -359,7 +368,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_TotalActiveEvents}" />
                         <Label Grid.Column="1"
                                Grid.Row="4"
-                               Text="{Binding TotalActiveEvents, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.TotalActiveEvents, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="5"
                                LineBreakMode="NoWrap"
@@ -367,7 +376,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_EventsOutsideCountry}" />
                         <Label Grid.Column="1"
                                Grid.Row="5"
-                               Text="{Binding EventsOutsideCountry, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.TotalEventsAway, Mode=OneWay}" />
                     </Grid>
                     <StackLayout x:Name="ChartLayout"
                                  Margin="0,10,0,0">

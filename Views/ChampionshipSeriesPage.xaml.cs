@@ -1,11 +1,4 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Nacs;
-using PinballApi.Models.WPPR.v2.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
@@ -22,8 +15,7 @@ namespace Ifpa.Views
         {
             InitializeComponent();
 
-            //TODO: allow user to pick the year            
-
+            //TODO: allow user to pick the year
             BindingContext = this.ViewModel = viewModel;
         }
 
@@ -35,7 +27,7 @@ namespace Ifpa.Views
             {
                 ViewModel.Year = Year;
                 ViewModel.SeriesCode = SeriesCode;
-                ViewModel.LoadItemsCommand.Execute(null);
+                ViewModel.LoadItems();
             }
         }
 
@@ -47,20 +39,8 @@ namespace Ifpa.Views
             {
                 this.Year = yearValue;
                 ViewModel.Year = yearValue;
-                ViewModel.LoadItemsCommand.Execute(null);
+                ViewModel.LoadItems();
             }
-        }
-
-        private async void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var championshipStandings = e.CurrentSelection.FirstOrDefault() as SeriesOverallResult;
-            if (championshipStandings == null)
-                return;
-
-            await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={ViewModel.SeriesCode}&regionCode={championshipStandings.RegionCode}&year={Year}");
-
-            //Deselect Item
-            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }

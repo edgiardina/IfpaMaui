@@ -12,7 +12,8 @@
     <CollectionView x:Name="ChampionshipSeriesCollectionView"
                     ItemsSource="{Binding ChampionshipSeries}"
                     SelectionMode="Single"
-                    SelectionChanged="ChampionshipSeriesCollectionView_SelectionChanged">
+                    SelectionChangedCommand="{Binding ViewChampionshipSeriesDetailCommand}"
+                    SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}">
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="ifpacs:Series">
                 <StackLayout Orientation="Vertical">

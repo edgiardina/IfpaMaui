@@ -1,53 +1,47 @@
-﻿using Ifpa.Interfaces;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.Universal.Tournaments;
-using Syncfusion.Maui.Core.Carousel;
-using System.Windows.Input;
-using static System.Net.WebRequestMethods;
-
 
 namespace Ifpa.ViewModels
 {
     [QueryProperty("TournamentId", "tournamentId")]
-    public class CalendarDetailViewModel : BaseViewModel
+    public partial class CalendarDetailViewModel : BaseViewModel
     {
         private const string MATCHPLAY_TOURNAMENT_URL = "https://app.matchplay.events/tournaments/{0}";
 
-        public Tournament Tournament { get; set; }
-
-        public Command LoadItemsCommand { get; set; }
-        public ICommand LoadMatchPlayCommand { get; set; }
-        public ICommand LoadWebsiteCommand { get; set; }
+        [ObservableProperty]
+        private Tournament tournament;
 
         public int TournamentId { get; set; }
 
         private readonly IReminderService ReminderService;
 
-        private readonly PinballRankingApi UniveralPinballRankingApi;
+        private readonly PinballRankingApi UniversalPinballRankingApi;
 
 
         public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            UniveralPinballRankingApi = pinballRankingApi;
-
+            UniversalPinballRankingApi = pinballRankingApi;
             ReminderService = reminderService;
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-            LoadMatchPlayCommand = new Command(async () => await LoadMatchPlay());
-            LoadWebsiteCommand = new Command(async () => await LoadWebsite());
         }
 
-        private async Task LoadWebsite()
+        [RelayCommand]
+        public async Task LoadWebsite()
         {
             await Browser.OpenAsync(Tournament.Website, BrowserLaunchMode.SystemPreferred);
         }
 
-        private async Task LoadMatchPlay()
+        [RelayCommand]
+        public async Task LoadMatchPlay()
         {
             await Browser.OpenAsync(string.Format(MATCHPLAY_TOURNAMENT_URL, Tournament.MatchplayId), BrowserLaunchMode.SystemPreferred);
         }
 
-        public async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task ExecuteLoadItems()
         {
             if (IsBusy)
                 return;
@@ -56,10 +50,7 @@ namespace Ifpa.ViewModels
 
             try
             {
-                Tournament = await UniveralPinballRankingApi.GetTournament(TournamentId);
-
-
-                OnPropertyChanged(null);
+                Tournament = await UniversalPinballRankingApi.GetTournament(TournamentId);
 
                 logger.LogDebug("loaded calendar item {0}", TournamentId);
             }
@@ -73,6 +64,32 @@ namespace Ifpa.ViewModels
             }
         }
 
+        [RelayCommand]
+        public async Task ShareTournament()
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Uri = $"https://www.ifpapinball.com/tournaments/view.php?t={TournamentId}",
+                Title = Strings.CalendarDetailPage_SharePrompt
+            });
+        }
+
+        [RelayCommand]
+        public async Task OpenMap()
+        {
+            var placemark = new Placemark
+            {
+                CountryName = Tournament.CountryName,
+                AdminArea = Tournament.Stateprov,
+                Thoroughfare = Tournament.Address1,
+                Locality = Tournament.City
+            };
+            var options = new MapLaunchOptions { Name = Tournament.TournamentName };
+
+            await Map.OpenAsync(placemark, options);
+        }
+
+        [RelayCommand]
         public async Task AddToCalendar()
         {
             var status = await Permissions.CheckStatusAsync<Permissions.CalendarRead>();

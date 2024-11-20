@@ -255,6 +255,9 @@
   <data name="PlayerResultsPage_RankingProfile" xml:space="preserve">
     <value>Ranking Profile</value>
   </data>
+  <data name="PlayerResultsPage_Title" xml:space="preserve">
+    <value>Results</value>
+  </data>
   <data name="PlayerDetailPage_Player" xml:space="preserve">
     <value>Player #: </value>
   </data>
@@ -338,6 +341,9 @@
   </data>
   <data name="PlayerSearchPage_NoPlayersFound" xml:space="preserve">
     <value>No players found</value>
+  </data>
+  <data name="PlayerSearchPage_Title" xml:space="preserve">
+    <value>Player Search</value>
   </data>
   <data name="SettingsPage_IFPARankChange" xml:space="preserve">
     <value>IFPA Rank Change</value>
@@ -464,6 +470,9 @@
   </data>
   <data name="FavoritesPage_Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="FavoritesPage_Title" xml:space="preserve">
+    <value>Favorites</value>
   </data>
   <data name="PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet" xml:space="preserve">
     <value>Player has not played against competitors yet.</value>

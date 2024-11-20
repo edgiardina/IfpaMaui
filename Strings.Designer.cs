@@ -610,6 +610,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Favorites.
+        /// </summary>
+        internal static string FavoritesPage_Title {
+            get {
+                return ResourceManager.GetString("FavoritesPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to - .
         /// </summary>
         internal static string Hyphen {
@@ -1168,11 +1177,29 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Results.
+        /// </summary>
+        internal static string PlayerResultsPage_Title {
+            get {
+                return ResourceManager.GetString("PlayerResultsPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No players found.
         /// </summary>
         internal static string PlayerSearchPage_NoPlayersFound {
             get {
                 return ResourceManager.GetString("PlayerSearchPage_NoPlayersFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Search.
+        /// </summary>
+        internal static string PlayerSearchPage_Title {
+            get {
+                return ResourceManager.GetString("PlayerSearchPage_Title", resourceCulture);
             }
         }
         

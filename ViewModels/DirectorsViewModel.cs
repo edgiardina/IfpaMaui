@@ -1,64 +1,54 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Directors;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using PinballApi;
+using PinballApi.Models.WPPR.v2.Directors;
 
 namespace Ifpa.ViewModels
 {
-    public class DirectorsViewModel : BaseViewModel
+    public partial class DirectorsViewModel : BaseViewModel
     {
-        public ObservableCollection<Director> NacsDirectors { get; set; }
-        public ObservableCollection<Director> CountryDirectors { get; set; }
+        [ObservableProperty]
+        private List<Director> nacsDirectors = new List<Director>();
+
+        [ObservableProperty]
+        private List<Director> countryDirectors = new List<Director>();
+
+        [ObservableProperty]
+        private Director selectedDirector;
 
         public DirectorsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<DirectorsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             Title = "Directors";
-            NacsDirectors = new ObservableCollection<Director>();
-            CountryDirectors = new ObservableCollection<Director>();
         }
 
-        private Command _loadItemsCommand;
-        public Command LoadItemsCommand
+        [RelayCommand]
+        public async Task LoadItems()
         {
-            get
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
             {
-                return _loadItemsCommand ?? (_loadItemsCommand = new Command<string>(async (text) =>
-                {
-                    if (IsBusy)
-                        return;
-
-                    IsBusy = true;
-                    
-                    try
-                    {
-                        NacsDirectors.Clear();
-                        CountryDirectors.Clear();
-                      
-                        var nacsDirectors = await PinballRankingApiV2.GetNacsDirectors();
-                        var countryDirectors = await PinballRankingApiV2.GetCountryDirectors();
-
-                        foreach (var director in nacsDirectors)
-                        {
-                            NacsDirectors.Add(director);
-                        }
-
-                        foreach (var director in countryDirectors)
-                        {
-                            CountryDirectors.Add(director);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error loading directors");
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                    }
-                }));
+                NacsDirectors = await PinballRankingApiV2.GetNacsDirectors();
+                CountryDirectors = await PinballRankingApiV2.GetCountryDirectors();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error loading directors");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
+        [RelayCommand]
+        public async Task ViewDirectorDetail()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectedDirector.PlayerId}");
+        }
     }
 }

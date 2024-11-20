@@ -1,26 +1,31 @@
-﻿using Ifpa.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Players;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace Ifpa.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public partial class AboutViewModel : BaseViewModel
     {
-        AppSettings AppSettings { get; set; }
+        private AppSettings AppSettings { get; set; }
 
-        public ObservableCollection<Player> Sponsors { get; set; }
+        [ObservableProperty]
+        private List<Player> sponsors = new List<Player>();
+
+        public string CurrentVersion => VersionTracking.CurrentVersion;
+
+        public string MinorVersion => VersionTracking.CurrentBuild;
 
         public int CreatorIfpaNumber => 16927;
 
         public AboutViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             AppSettings = appSettings;
-            Sponsors = new ObservableCollection<Player>();
         }
 
+        [RelayCommand]
         public async Task LoadSponsors()
         {
             if (IsBusy)
@@ -34,12 +39,8 @@ namespace Ifpa.ViewModels
 
                 var tempList = await PinballRankingApiV2.GetPlayers(AppSettings.Sponsors);
 
-                foreach (var player in tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank))
-                {
-                    Sponsors.Add(player);
-                }
+                Sponsors = tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank).ToList();
 
-                OnPropertyChanged("Sponsors");
                 logger.LogDebug("Loaded {0} sponsors", Sponsors.Count);
             }
             catch (Exception ex)
@@ -53,6 +54,7 @@ namespace Ifpa.ViewModels
         }
 
         //TODO: when it's ported to MAUI, use store review plugin
+        [RelayCommand]
         public async Task OpenReview()
         {
             var url = string.Empty;
@@ -72,8 +74,23 @@ namespace Ifpa.ViewModels
             await Browser.OpenAsync(url, BrowserLaunchMode.External);
         }
 
-        public string CurrentVersion => VersionTracking.CurrentVersion;
+        [RelayCommand]
+        public async Task LearnMore()
+        {
+            await Browser.OpenAsync("http://tiltforums.com/t/ifpa-app-now-available-on-the-app-store/4543", BrowserLaunchMode.External);
+        }
 
-        public string MinorVersion => VersionTracking.CurrentBuild;
+        [RelayCommand]
+        public async Task ViewPlayer(int playerId)
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={playerId}");
+        }
+
+        [RelayCommand]
+        public async Task Flagpedia()
+        {
+            await Browser.OpenAsync("https://flagpedia.net/", BrowserLaunchMode.External);
+        }
+
     }
 }

@@ -9,7 +9,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              ios:Page.LargeTitleDisplay="Never"
              xmlns:local="clr-namespace:Ifpa"
-             Title="{Binding Title}"
+             Title="{x:Static local:Strings.PlayerResultsPage_Title}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerResultsViewModel">
     <ContentPage.ToolbarItems>
@@ -32,7 +32,8 @@
                     <CollectionView x:Name="ActiveListView"
                                     ItemsSource="{Binding ActiveResults}"
                                     SelectionMode="Single"
-                                    SelectionChanged="ActiveListView_SelectionChanged"
+                                    SelectionChangedCommand="{Binding ViewTournamentResultsCommand}"
+                                    SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
                                     ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                     EmptyView="No active tournament results" />
                 </tabView:SfTabItem.Content>
@@ -42,7 +43,8 @@
                     <CollectionView x:Name="UnusedListView"
                                     ItemsSource="{Binding UnusedResults}"
                                     SelectionMode="Single"
-                                    SelectionChanged="ActiveListView_SelectionChanged"
+                                    SelectionChangedCommand="{Binding ViewTournamentResultsCommand}"
+                                    SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
                                     ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                     EmptyView="No unused tournament results" />
                 </tabView:SfTabItem.Content>
@@ -52,7 +54,8 @@
                     <CollectionView x:Name="PastListView"
                                     ItemsSource="{Binding PastResults}"
                                     SelectionMode="Single"
-                                    SelectionChanged="ActiveListView_SelectionChanged"
+                                    SelectionChangedCommand="{Binding ViewTournamentResultsCommand}"
+                                    SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
                                     ItemTemplate="{StaticResource PlayerResultDataTemplate}"
                                     EmptyView="No past tournament results" />
                 </tabView:SfTabItem.Content>

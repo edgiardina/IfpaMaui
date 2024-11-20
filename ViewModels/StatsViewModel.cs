@@ -10,7 +10,7 @@ using CommunityToolkit.Maui.Core.Extensions;
 namespace Ifpa.ViewModels
 {
 
-    public class StatsViewModel : BaseViewModel
+    public partial class StatsViewModel : BaseViewModel
     {
 
         public List<ISeries> PlayersByCountrySeries { get; set; } = new List<ISeries>();

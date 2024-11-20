@@ -1,6 +1,4 @@
-﻿using Ifpa.Models;
-using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Players;
+﻿using Ifpa.ViewModels;
 
 namespace Ifpa.Views
 {
@@ -20,7 +18,7 @@ namespace Ifpa.Views
         {            
             base.OnAppearing();
 
-            ViewModel.LoadItemsCommand.Execute(null);
+            ViewModel.LoadItems();
         }
     }
 }

@@ -27,14 +27,10 @@ namespace Ifpa.Views
             viewModel.IsBusy = true;
         }
 
-        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+        protected override void OnAppearing()
         {
-            base.OnNavigatedTo(args);
-
-            if (ViewModel.Tournaments.Count == 0)
-            {
-                await UpdateCalendarData();
-            }
+            base.OnAppearing();
+            UpdateCalendarData();
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)
@@ -75,7 +71,7 @@ namespace Ifpa.Views
 
                 mapShim.Children.Add(map);
 
-                await ViewModel.ExecuteLoadItemsCommand(geoLocation, Settings.LastCalendarDistance);                
+                await ViewModel.LoadItems(geoLocation, Settings.LastCalendarDistance);                
 
                 // For whatever reason Android on re-load via modal doesn't re-center the map.
                 map.MoveToRegion(mapSpan);
