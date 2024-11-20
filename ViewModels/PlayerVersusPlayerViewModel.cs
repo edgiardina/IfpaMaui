@@ -4,10 +4,11 @@ using PinballApi.Models.WPPR.v2.Players;
 using Ifpa.Models;
 using PinballApi;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerVersusPlayerViewModel : BaseViewModel
+    public partial class PlayerVersusPlayerViewModel : BaseViewModel
     {
         public ObservableCollection<Grouping<char, PlayerVersusRecord>> AllResults { get; set; }
 
@@ -18,7 +19,8 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
 
-        public bool HasNoPvpData { get; set; }
+        [ObservableProperty]
+        private bool hasNoPvpData;
 
         public PlayerVersusPlayerViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerViewModel> logger) : base(pinballRankingApiV2, logger)
         {
@@ -59,8 +61,6 @@ namespace Ifpa.ViewModels
                 else
                 {
                     HasNoPvpData = true;
-
-                    OnPropertyChanged(nameof(HasNoPvpData));
                 }
             }
             catch (Exception ex)
@@ -103,8 +103,6 @@ namespace Ifpa.ViewModels
                 else
                 {
                     HasNoPvpData = true;
-
-                    OnPropertyChanged(nameof(HasNoPvpData));
                 }
             }
             catch (Exception ex)
