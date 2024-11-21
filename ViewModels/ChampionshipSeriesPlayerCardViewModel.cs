@@ -60,6 +60,7 @@ namespace Ifpa.ViewModels
         public async Task SelectPlayerCard()
         {
             await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournamentCard.TournamentId}");
+            SelectedTournamentCard = null;
         }
     }
 }

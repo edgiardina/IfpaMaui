@@ -44,6 +44,7 @@ namespace Ifpa.ViewModels
         public async Task ViewChampionshipSeriesDetail(Series series)
         {
             await Shell.Current.GoToAsync($"champ-series?seriesCode={SelectedChampionshipSeries.Code}&year={SelectedChampionshipSeries.Years.Max()}");
+            SelectedChampionshipSeries = null;
         }
     }
 }

@@ -57,12 +57,14 @@ namespace Ifpa.ViewModels
         public async Task SelectRegionStandings()
         {
             await Shell.Current.GoToAsync($"champ-series-player?seriesCode={SeriesCode}&regionCode={RegionCode}&year={Year}&playerId={SelectedRegionStandings.PlayerId}");
+            SelectedRegionStandings = null;
         }
 
         [RelayCommand]
         public async Task SelectTournament()
         {
             await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}");
+            SelectedTournament = null;
         }
     }
 }

@@ -72,6 +72,7 @@ namespace Ifpa.ViewModels
         public async Task SelectChampSeriesDetail()
         {
             await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={SeriesCode}&regionCode={SelectedSeriesOverallResult.RegionCode}&year={Year}");
+            SelectedSeriesOverallResult = null;
         }
     }
 }
