@@ -39,7 +39,6 @@ namespace Ifpa.ViewModels
 
             try
             {
-                TournamentCardRecords.Clear();
                 var tournamentCard = await PinballRankingApi.GetSeriesPlayerCard(PlayerId, SeriesCode, RegionCode, Year);
 
                 TournamentCardRecords = tournamentCard.PlayerCard;
