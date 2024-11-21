@@ -1,9 +1,8 @@
-﻿using PinballApi.Models.WPPR.Universal.Series;
-using System.Collections.ObjectModel;
-using PinballApi;
-using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using PinballApi;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
