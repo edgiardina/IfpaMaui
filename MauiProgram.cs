@@ -20,6 +20,7 @@ using Ifpa.Platforms.Renderers;
 using Ifpa.Platforms.Services;
 using Ifpa.Controls;
 using Plugin.Maui.NativeCalendar;
+using Ifpa.Extensions;
 
 namespace Ifpa;
 

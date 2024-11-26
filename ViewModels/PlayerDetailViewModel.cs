@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Ifpa.Extensions;
 using Ifpa.Models;
 using LiveChartsCore;
 using LiveChartsCore.Kernel;
@@ -157,6 +159,15 @@ namespace Ifpa.ViewModels
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error loading player details", PlayerId);
+                await Toast.Make($"Error loading player details\n {ex.Message}").Show();
+
+                // email ed@edgiardina.com the full exception details
+                await Email.ComposeAsync(new EmailMessage
+                {
+                    Subject = "Error loading player details",
+                    Body = ex.Dump(true),
+                    To = new List<string> { "ed@edgiardina.com" }
+                });
             }
             finally
             {
