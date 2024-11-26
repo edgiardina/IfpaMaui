@@ -80,8 +80,8 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewTournamentResults()
         {
-            SelectedResult = null;
             await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}");
+            SelectedResult = null;
         }
     }
 }
