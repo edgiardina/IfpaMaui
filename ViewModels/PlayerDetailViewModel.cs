@@ -112,7 +112,8 @@ namespace Ifpa.ViewModels
                     };
                     PlayerRankHistoryLineSeries.Clear();
                     PlayerRankHistoryLineSeries.Add(playerRankSeries);
-
+                    // TODO: can we get away with not calling OnPropertyChanged here?
+                    OnPropertyChanged(nameof(PlayerRankHistoryLineSeries));
 
                     var playerRatingSeries = new LineSeries<RatingHistory>
                     {
@@ -128,6 +129,8 @@ namespace Ifpa.ViewModels
                     };
                     PlayerRatingHistoryLineSeries.Clear();
                     PlayerRatingHistoryLineSeries.Add(playerRatingSeries);
+                    // TODO: can we get away with not calling OnPropertyChanged here?
+                    OnPropertyChanged(nameof(PlayerRatingHistoryLineSeries));
 
                     PlayerRecord = playerData;
 

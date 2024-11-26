@@ -70,7 +70,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewTournamentInfo()
         {
-            await Shell.Current.GoToAsync($"tournament-info?tournamentId={TournamentId}");            
+            await Shell.Current.GoToAsync($"tournament-info?tournamentId={TournamentId}");
         }
 
         [RelayCommand]

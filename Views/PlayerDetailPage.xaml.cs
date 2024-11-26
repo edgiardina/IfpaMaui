@@ -1,11 +1,9 @@
-﻿using Ifpa.ViewModels;
-using Ifpa.Models;
-using MauiIcons.Fluent;
-using MauiIcons.Core;
-using CommunityToolkit.Maui.Alerts;
-using static System.Net.Mime.MediaTypeNames;
-using System.Threading;
+﻿using CommunityToolkit.Maui.Alerts;
 using Ifpa.Interfaces;
+using Ifpa.Models;
+using Ifpa.ViewModels;
+using MauiIcons.Core;
+using MauiIcons.Fluent;
 using Microsoft.Maui.Layouts;
 
 namespace Ifpa.Views
@@ -14,8 +12,6 @@ namespace Ifpa.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PlayerDetailPage : ContentPage
     {
-
-
         public int PlayerId { get; set; }
 
         private bool LoadMyStats = false;
@@ -88,7 +84,7 @@ namespace Ifpa.Views
             {
                 toolbarBadgeService.SetBadge(this, ActivityFeedButton, ViewModel.BadgeCount, Colors.Red, Colors.White);
             }
-        }        
+        }
 
         private async void TournamentResults_Button_Clicked(object sender, EventArgs e)
         {
