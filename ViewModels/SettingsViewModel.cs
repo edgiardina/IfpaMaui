@@ -14,16 +14,8 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
-        public string PlayerAvatar
-        {
-            get
-            {
-                if (PlayerRecord.ProfilePhoto != null)
-                    return PlayerRecord.ProfilePhoto?.ToString();
-                else
-                    return AppSettings.IfpaPlayerNoProfilePicUrl;
-            }
-        }
+        [ObservableProperty]
+        public string playerAvatar;
 
         public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
@@ -37,14 +29,15 @@ namespace Ifpa.ViewModels
                 if (Settings.MyStatsPlayerId > 0)
                 {
                     IsBusy = true;
-                    var playerData = await PinballRankingApiV2.GetPlayer(Settings.MyStatsPlayerId);              
+                    var playerData = await PinballRankingApiV2.GetPlayer(Settings.MyStatsPlayerId);
 
-                    PlayerRecord = playerData;               
+                    PlayerRecord = playerData;
+                    PlayerAvatar = PlayerRecord.ProfilePhoto != null ? PlayerRecord.ProfilePhoto?.ToString() : AppSettings.IfpaPlayerNoProfilePicUrl;
                 }
                 else
                 {
-                    PlayerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
-     
+                    PlayerRecord = null;
+                    PlayerAvatar = AppSettings.IfpaPlayerNoProfilePicUrl;
                 }
             }
             catch (Exception ex)

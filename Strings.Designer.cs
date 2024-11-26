@@ -1384,6 +1384,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Player Selected.
+        /// </summary>
+        internal static string SettingsPage_NoPlayerSelected {
+            get {
+                return ResourceManager.GetString("SettingsPage_NoPlayerSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifications.
         /// </summary>
         internal static string SettingsPage_Notifications {

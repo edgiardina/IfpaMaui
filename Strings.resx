@@ -417,6 +417,9 @@
   <data name="SettingsPage_Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="SettingsPage_NoPlayerSelected" xml:space="preserve">
+    <value>No Player Selected</value>
+  </data>
   <data name="PlayerDetailPage_TournamentStatistics" xml:space="preserve">
     <value>Tournament Statistics</value>
   </data>
