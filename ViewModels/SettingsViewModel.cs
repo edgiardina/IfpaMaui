@@ -12,7 +12,7 @@ namespace Ifpa.ViewModels
         AppSettings AppSettings;
 
         [ObservableProperty]
-        private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
+        private Player playerRecord;
 
         [ObservableProperty]
         public string playerAvatar;
