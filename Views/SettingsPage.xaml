@@ -58,10 +58,24 @@
                                                         TextColor="{StaticResource ButtonTextColor}" />
                                     <Label Margin="15"
                                            FontSize="18"
-                                           Text="{Binding Name, TargetNullValue='No player selected'}"
                                            HorizontalOptions="StartAndExpand"
-                                           VerticalOptions="Center" />
-                                    <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}"
+                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
+                                           VerticalOptions="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding PlayerRecord.FirstName}" />
+                                                <Span Text="{x:Static local:Strings.SingleSpace}" />
+                                                <Span Text="{Binding PlayerRecord.LastName}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"
+                                           Margin="15"
+                                           FontSize="18"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalOptions="Center"
+                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource nullConverter}}" />
+                                    <ImageButton IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
                                                  Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}"
                                                  Margin="0,0,10,0"
                                                  HorizontalOptions="End"

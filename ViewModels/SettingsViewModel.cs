@@ -2,7 +2,6 @@
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi;
-using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 
 namespace Ifpa.ViewModels
@@ -15,7 +14,7 @@ namespace Ifpa.ViewModels
         private Player playerRecord;
 
         [ObservableProperty]
-        public string playerAvatar;
+        private string playerAvatar;
 
         public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
@@ -49,8 +48,6 @@ namespace Ifpa.ViewModels
                 IsBusy = false;
             }
         }
-
-        public string Name => PlayerRecord.FirstName != null || PlayerRecord.LastName != null ? PlayerRecord.FirstName + " " + PlayerRecord.LastName : null;
 
         public bool NotifyOnRankChange
         {
