@@ -145,7 +145,7 @@ public static class MauiProgram
         s.AddShinyCoreServices();
 
         s.AddJob(typeof(NotificationJob), requiredNetwork: Shiny.Jobs.InternetAccess.Any);
-        s.AddJob(typeof(CalendarSyncJob), requiredNetwork: Shiny.Jobs.InternetAccess.Any);
+        s.AddJob(typeof(CalendarSyncJob), nameof(CalendarSyncJob), Shiny.Jobs.InternetAccess.Any);
 
         // shiny.notifications
         s.AddNotifications(typeof(NotificationDelegate));

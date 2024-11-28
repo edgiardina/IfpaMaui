@@ -101,6 +101,11 @@ namespace Ifpa.BackgroundJobs
 
                     Logger.LogInformation("Calendar Sync Job Complete");
                 }
+                else
+                {
+                    Logger.LogInformation("Permissions not enabled or Setting for Sync is off");
+                }
+
             }
             catch (Exception ex)
             {

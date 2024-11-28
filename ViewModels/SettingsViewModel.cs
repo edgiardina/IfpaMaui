@@ -1,14 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Ifpa.BackgroundJobs;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Players;
+using Shiny.Jobs;
 
 namespace Ifpa.ViewModels
 {
     public partial class SettingsViewModel : BaseViewModel
     {
-        AppSettings AppSettings;
+        private readonly AppSettings AppSettings;
+        private readonly IJobManager JobManager;
 
         [ObservableProperty]
         private Player playerRecord;
@@ -16,9 +19,10 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private string playerAvatar;
 
-        public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, IJobManager jobManager, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             AppSettings = appSettings;
+            this.JobManager = jobManager;
         }
 
         public async Task LoadPlayer()
@@ -94,6 +98,27 @@ namespace Ifpa.ViewModels
             set
             {
                 Settings.SyncCalendarWithSystem = value;
+                if (value)
+                {
+                    var hasPermission = Permissions.CheckStatusAsync<Permissions.CalendarWrite>().Result;
+
+                    if (hasPermission == PermissionStatus.Granted)
+                    {
+                        JobManager.Run(nameof(CalendarSyncJob));
+                    }
+                    else
+                    {
+                        var request = Permissions.RequestAsync<Permissions.CalendarWrite>().Result;
+                        if (request != PermissionStatus.Granted)
+                        {
+                            Settings.SyncCalendarWithSystem = false;
+                        }
+                        else
+                        {
+                            JobManager.Run(nameof(CalendarSyncJob));
+                        }
+                    }
+                }
                 OnPropertyChanged(nameof(SyncCalendarWithSystem));
             }
         }
