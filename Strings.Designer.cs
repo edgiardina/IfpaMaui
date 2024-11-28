@@ -286,6 +286,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IFPA Companion requires your permission before adding items to your Calendar.
+        /// </summary>
+        internal static string CalendarDetailPage_AddCalendarPermissionRequest {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_AddCalendarPermissionRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add To Calendar.
         /// </summary>
         internal static string CalendarDetailPage_AddToCalendar {
@@ -367,6 +376,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select which calendar to add this tournament to.
+        /// </summary>
+        internal static string CalendarDetailPage_SelectCalendarPrompt {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_SelectCalendarPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Share.
         /// </summary>
         internal static string CalendarDetailPage_Share {
@@ -381,6 +399,24 @@ namespace Ifpa {
         internal static string CalendarDetailPage_SharePrompt {
             get {
                 return ResourceManager.GetString("CalendarDetailPage_SharePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament added to your Calendar.
+        /// </summary>
+        internal static string CalendarDetailPage_TournamentAdded {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_TournamentAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to add Tournament to your Calendar.
+        /// </summary>
+        internal static string CalendarDetailPage_TournamentNotAdded {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_TournamentNotAdded", resourceCulture);
             }
         }
         
@@ -813,6 +849,15 @@ namespace Ifpa {
         internal static string PercentSign {
             get {
                 return ResourceManager.GetString("PercentSign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permission Required.
+        /// </summary>
+        internal static string PermissionRequired {
+            get {
+                return ResourceManager.GetString("PermissionRequired", resourceCulture);
             }
         }
         

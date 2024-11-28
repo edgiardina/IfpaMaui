@@ -642,6 +642,18 @@
   <data name="CalendarDetailPage_SharePrompt" xml:space="preserve">
     <value>Share Upcoming Tournament</value>
   </data>
+  <data name="CalendarDetailPage_SelectCalendarPrompt" xml:space="preserve">
+    <value>Select which calendar to add this tournament to</value>
+  </data>
+  <data name="CalendarDetailPage_TournamentAdded" xml:space="preserve">
+    <value>Tournament added to your Calendar</value>
+  </data>
+  <data name="CalendarDetailPage_TournamentNotAdded" xml:space="preserve">
+    <value>Unable to add Tournament to your Calendar</value>
+  </data>
+  <data name="CalendarDetailPage_AddCalendarPermissionRequest" xml:space="preserve">
+    <value>IFPA Companion requires your permission before adding items to your Calendar</value>
+  </data>
   <data name="CalendarDetailPage_FinalsFormat" xml:space="preserve">
     <value>Finals Format</value>
   </data>
@@ -674,5 +686,8 @@
   </data>
   <data name="TournamentSearchPage_Placeholder" xml:space="preserve">
     <value>Search for tournaments by name</value>
+  </data>
+  <data name="PermissionRequired" xml:space="preserve">
+    <value>Permission Required</value>
   </data>
 </root>

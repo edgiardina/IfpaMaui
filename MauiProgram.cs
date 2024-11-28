@@ -20,6 +20,7 @@ using Ifpa.Platforms.Renderers;
 using Ifpa.Platforms.Services;
 using Ifpa.Controls;
 using Plugin.Maui.NativeCalendar;
+using Plugin.Maui.CalendarStore;
 
 namespace Ifpa;
 
@@ -122,13 +123,14 @@ public static class MauiProgram
 
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
-        s.AddTransient<IReminderService, ReminderService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
 
         s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
         s.AddSingleton(x => new PinballRankingApi(appSettings.IfpaApiKey));
-        s.AddSingleton<IGeocoding>(Geocoding.Default);
-        s.AddSingleton<IBadge>(Badge.Default);
+        s.AddSingleton(Geocoding.Default);
+        s.AddSingleton(Badge.Default);
+        s.AddSingleton(CalendarStore.Default);
+        s.AddSingleton(Map.Default);
 
         return builder;
     }

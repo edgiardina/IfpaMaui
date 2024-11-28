@@ -1,9 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.Universal.Tournaments;
+using Plugin.Maui.CalendarStore;
 
 namespace Ifpa.ViewModels
 {
@@ -17,15 +20,17 @@ namespace Ifpa.ViewModels
 
         public int TournamentId { get; set; }
 
-        private readonly IReminderService ReminderService;
+        private readonly ICalendarStore CalendarStore;
+        private readonly IMap Map;
 
         private readonly PinballRankingApi UniversalPinballRankingApi;
 
 
-        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             UniversalPinballRankingApi = pinballRankingApi;
-            ReminderService = reminderService;
+            CalendarStore = calendarStore;
+            Map = map;
         }
 
         [RelayCommand]
@@ -102,30 +107,38 @@ namespace Ifpa.ViewModels
             {
                 string selectedCalendar = null;
 
-                //iOS Supports multiple calendars. no idea how to do this in Android yet. 
-                if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
-                {
-                    var calendars = await ReminderService.GetCalendarList();
-                    selectedCalendar = await Shell.Current.DisplayActionSheet("This event will be added to your phone's calendar", "Cancel", null, calendars.ToArray());
-                }
+                var calendars = await CalendarStore.GetCalendars();
+                selectedCalendar = await Shell.Current.DisplayActionSheet(Strings.CalendarDetailPage_SelectCalendarPrompt, Strings.Cancel, null, calendars.Select(n => n.Name).ToArray());
 
-                if (selectedCalendar != "Cancel")
+                if (selectedCalendar != Strings.Cancel)
                 {
-                    var result = await ReminderService.CreateReminder(this, selectedCalendar);
+                    var selectedCalendarId = calendars.First(n => n.Name == selectedCalendar).Id;
+                    string newEventId = null;
 
-                    if (result)
+                    // TODO: what if the tournament is already in the calendar?
+
+                    newEventId = await CalendarStore.CreateEvent(selectedCalendarId,
+                                                    Tournament.TournamentName,
+                                                    Tournament.Details,
+                                                    $"{Tournament.Address1}, {Tournament.City}, {Tournament.Stateprov}, {Tournament.CountryName}",
+                                                    Tournament.EventStartDate,
+                                                    Tournament.EventEndDate,
+                                                    true);
+
+                    if (string.IsNullOrWhiteSpace(newEventId) == false)
                     {
-                        await Shell.Current.DisplayAlert("Success", "Tournament added to your Calendar", "OK");
+                        // TODO: it would be better if Toast was an interface so we could unit test this
+                        await Toast.Make(Strings.CalendarDetailPage_TournamentAdded).Show();
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("Error", "Unable to add Tournament to your Calendar", "OK");
+                        await Shell.Current.DisplayAlert(Strings.Error, Strings.CalendarDetailPage_TournamentNotAdded, Strings.OK);
                     }
                 }
             }
             else
             {
-                await Shell.Current.DisplayAlert("Permission Required", "IFPA Companion requires your permission before adding items to your Calendar", "OK");
+                await Shell.Current.DisplayAlert(Strings.PermissionRequired, Strings.CalendarDetailPage_AddCalendarPermissionRequest, Strings.OK);
             }
         }
     }
