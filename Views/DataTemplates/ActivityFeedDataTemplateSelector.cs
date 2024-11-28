@@ -1,8 +1,8 @@
-﻿using Ifpa.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Maui;
+using Ifpa.Models.Database;
 
 namespace Ifpa.Views.DataTemplates
 {

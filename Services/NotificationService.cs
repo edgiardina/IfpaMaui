@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.ApplicationModel;
 using Ifpa.Models;
+using Ifpa.Models.Database;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR;

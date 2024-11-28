@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
+using Ifpa.Models.Database;
 using Ifpa.Services;
 using Microsoft.Extensions.Logging;
 using PinballApi;
