@@ -108,7 +108,12 @@ namespace Ifpa.ViewModels
                 string selectedCalendar = null;
 
                 var calendars = await CalendarStore.GetCalendars();
-                selectedCalendar = await Shell.Current.DisplayActionSheet(Strings.CalendarDetailPage_SelectCalendarPrompt, Strings.Cancel, null, calendars.Select(n => n.Name).ToArray());
+                selectedCalendar = await Shell.Current.DisplayActionSheet(Strings.CalendarDetailPage_SelectCalendarPrompt, 
+                                                                          Strings.Cancel, 
+                                                                          null, 
+                                                                          calendars.Where(m => m.IsReadOnly == false)
+                                                                                   .Select(n => n.Name)
+                                                                                   .ToArray());
 
                 if (selectedCalendar != Strings.Cancel)
                 {

@@ -1,26 +1,26 @@
-﻿using Ifpa.ViewModels;
-using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
-using Ifpa.Views;
-using Syncfusion.Maui.Core.Hosting;
-using CommunityToolkit.Maui;
-using Ifpa.Services;
-using Ifpa.Interfaces;
-using MauiIcons.Fluent;
-using Ifpa.BackgroundJobs;
-using Shiny.Infrastructure;
-using PinballApi;
-using Microsoft.Maui.Controls.Compatibility.Hosting;
-using SkiaSharp.Views.Maui.Controls.Hosting;
-using Serilog;
-using Shiny;
+﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.ApplicationModel;
-using The49.Maui.BottomSheet;
+using Ifpa.BackgroundJobs;
+using Ifpa.Controls;
+using Ifpa.Interfaces;
+using Ifpa.Models;
 using Ifpa.Platforms.Renderers;
 using Ifpa.Platforms.Services;
-using Ifpa.Controls;
-using Plugin.Maui.NativeCalendar;
+using Ifpa.Services;
+using Ifpa.ViewModels;
+using Ifpa.Views;
+using MauiIcons.Fluent;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
+using PinballApi;
 using Plugin.Maui.CalendarStore;
+using Plugin.Maui.NativeCalendar;
+using Serilog;
+using Shiny;
+using Shiny.Infrastructure;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using Syncfusion.Maui.Core.Hosting;
+using The49.Maui.BottomSheet;
 
 namespace Ifpa;
 
@@ -62,9 +62,9 @@ public static class MauiProgram
             {
                 //TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
                 essentials
-                    .AddAppAction("calendar", "Calendar", "IFPA Tournament Calendar", "calendar")
-                    .AddAppAction("my-stats", "My Stats", "Your IFPA player data", "mystats")
-                    .AddAppAction("rankings/player-search", "Player Search", "Search for other players in the IFPA database", "search")
+                    .AddAppAction("calendar", Strings.AppShell_Calendar, "IFPA Tournament Calendar", "calendar")
+                    .AddAppAction("my-stats", Strings.AppShell_MyStats, "Your IFPA player data", "mystats")
+                    .AddAppAction("rankings/player-search", Strings.PlayerSearchPage_Title, "Search for other players in the IFPA database", "search")
                     .OnAppAction(App.HandleAppActions);
 
                 essentials.UseVersionTracking();
