@@ -1,4 +1,4 @@
-﻿using Ifpa.Models;
+﻿using Ifpa.Models.Database;
 using SQLite;
 
 namespace Ifpa.Services
