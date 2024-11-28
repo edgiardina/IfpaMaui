@@ -37,6 +37,9 @@
                         <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
                                     Text="{x:Static local:Strings.SettingsPage_NewTournamentOnCalendar}"
                                     On="{Binding NotifyOnNewCalendarEntry, Mode=TwoWay}" />
+                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
+                                    Text="{x:Static local:Strings.SettingsPage_SyncCalendarWithSystem}"
+                                    On="{Binding SyncCalendarWithSystem, Mode=TwoWay}" />
                     </TableSection>
                     <TableSection Title="{x:Static local:Strings.SettingsPage_MyStats}"
                                   TextColor="{StaticResource SecondaryTextColor}">

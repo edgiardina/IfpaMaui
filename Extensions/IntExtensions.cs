@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ifpa.Models
+namespace Ifpa.Extensions
 {
     public static class IntExtensions
     {
@@ -11,7 +11,7 @@ namespace Ifpa.Models
 
         public static TimeSpan Millisecond(this int thisInt)
         {
-            return Milliseconds(thisInt);
+            return thisInt.Milliseconds();
         }
 
         public static TimeSpan Seconds(this int thisInt)
@@ -21,7 +21,7 @@ namespace Ifpa.Models
 
         public static TimeSpan Second(this int thisInt)
         {
-            return Seconds(thisInt);
+            return thisInt.Seconds();
         }
 
         public static TimeSpan Minutes(this int thisInt)
@@ -31,7 +31,7 @@ namespace Ifpa.Models
 
         public static TimeSpan Minute(this int thisInt)
         {
-            return Minutes(thisInt);
+            return thisInt.Minutes();
         }
 
         public static TimeSpan Hours(this int thisInt)
@@ -41,7 +41,7 @@ namespace Ifpa.Models
 
         public static TimeSpan Hour(this int thisInt)
         {
-            return Hours(thisInt);
+            return thisInt.Hours();
         }
 
         public static TimeSpan Days(this int thisInt)
@@ -51,7 +51,7 @@ namespace Ifpa.Models
 
         public static TimeSpan Day(this int thisInt)
         {
-            return Days(thisInt);
+            return thisInt.Days();
         }
 
         public static DateTime MinutesAgo(this int thisInt)

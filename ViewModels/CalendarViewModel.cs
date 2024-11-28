@@ -5,6 +5,7 @@ using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Maps;
 using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
@@ -47,10 +48,10 @@ namespace Ifpa.ViewModels
 
         private Location LastGeolocation { get; set; }
 
-        private readonly PinballRankingApi pinballRankingApi;
+        private readonly IPinballRankingApi pinballRankingApi;
         private readonly IGeocoding geocoding;
 
-        public CalendarViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, IGeocoding geocoding, ILogger<CalendarViewModel> logger) : base(pinballRankingApiV2, logger)
+        public CalendarViewModel(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, IGeocoding geocoding, ILogger<CalendarViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             this.pinballRankingApi = pinballRankingApi;
             this.geocoding = geocoding;

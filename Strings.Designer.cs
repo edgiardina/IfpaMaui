@@ -1456,6 +1456,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sync IFPA Calendar on Device.
+        /// </summary>
+        internal static string SettingsPage_SyncCalendarWithSystem {
+            get {
+                return ResourceManager.GetString("SettingsPage_SyncCalendarWithSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tournament Result Posted.
         /// </summary>
         internal static string SettingsPage_TournamentResultPosted {

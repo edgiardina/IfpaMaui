@@ -87,5 +87,15 @@ namespace Ifpa.ViewModels
                 OnPropertyChanged(nameof(NotifyOnNewCalendarEntry));
             }
         }
+
+        public bool SyncCalendarWithSystem
+        {
+            get => Settings.SyncCalendarWithSystem;
+            set
+            {
+                Settings.SyncCalendarWithSystem = value;
+                OnPropertyChanged(nameof(SyncCalendarWithSystem));
+            }
+        }
     }
 }

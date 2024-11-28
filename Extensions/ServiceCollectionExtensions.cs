@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Ifpa.Models
+namespace Ifpa.Extensions
 {
     public static class ServiceCollectionExtensions
     {

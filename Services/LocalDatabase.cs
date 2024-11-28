@@ -11,6 +11,7 @@ namespace Ifpa.Services
             database = new SQLiteAsyncConnection(dbPath);
             database.CreateTableAsync<ActivityFeedItem>().Wait();
             database.CreateTableAsync<Favorite>().Wait();
+            database.CreateTableAsync<LocalCalendarTournament>().Wait();
         }
 
         public Task<List<ActivityFeedItem>> GetActivityFeedRecords()
@@ -65,6 +66,26 @@ namespace Ifpa.Services
         public async Task<bool> HasFavorite(int playerId)
         {
             return (await database.Table<Favorite>().CountAsync(n => n.PlayerID == playerId)) == 1;
+        }
+
+        public async Task<List<LocalCalendarTournament>> GetLocalCalendarTournaments()
+        {
+            return await database.Table<LocalCalendarTournament>().ToListAsync();
+        }
+
+        public async Task<LocalCalendarTournament> GetLocalCalendarTournamentByTournamentId(long tournamentId)
+        {
+            return await database.Table<LocalCalendarTournament>().FirstOrDefaultAsync(n => n.TournamentID == tournamentId);
+        }
+
+        public async Task<int> AddLocalCalendarTournament(long tournamentId, string eventId)
+        {
+            return await database.InsertAsync(new LocalCalendarTournament { TournamentID = tournamentId, LocalCalendarEventID = eventId });
+        }
+
+        public async Task ClearLocalCalendarTournaments()
+        {
+            await database.DeleteAllAsync<LocalCalendarTournament>();
         }
     }
 }

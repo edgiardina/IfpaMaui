@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Ifpa.ViewModels
 {
     public partial class TournamentSearchViewModel : ObservableObject
     {
-        private readonly PinballRankingApi pinballRankingApi;
+        private readonly IPinballRankingApi pinballRankingApi;
         private readonly ILogger<TournamentSearchViewModel> logger;
 
         [ObservableProperty]
@@ -50,7 +51,7 @@ namespace Ifpa.ViewModels
             await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}");
         }
 
-        public TournamentSearchViewModel(PinballRankingApi pinballRankingApi, ILogger<TournamentSearchViewModel> logger)
+        public TournamentSearchViewModel(IPinballRankingApi pinballRankingApi, ILogger<TournamentSearchViewModel> logger)
         {
             this.pinballRankingApi = pinballRankingApi;
             this.logger = logger;

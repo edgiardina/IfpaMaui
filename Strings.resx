@@ -465,6 +465,9 @@
   <data name="SettingsPage_NewTournamentOnCalendar" xml:space="preserve">
     <value>New Tournament on Calendar</value>
   </data>
+  <data name="SettingsPage_SyncCalendarWithSystem" xml:space="preserve">
+    <value>Sync IFPA Calendar on Device</value>
+  </data>
   <data name="RankingsPage_OverallRank" xml:space="preserve">
     <value>Overall Rank:</value>
   </data>

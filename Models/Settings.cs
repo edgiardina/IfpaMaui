@@ -80,6 +80,11 @@ namespace Ifpa.Models
             get => Preferences.Get("CalendarShowLeagues", false);
             set => Preferences.Set("CalendarShowLeagues", value);
         }
+        public static bool SyncCalendarWithSystem
+        {
+            get => Preferences.Get("SyncCalendarWithSystem", false);
+            set => Preferences.Set("SyncCalendarWithSystem", value);
+        }
 
         public static long LastCalendarIdSeen
         {

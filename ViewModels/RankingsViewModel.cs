@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Rankings;
 using System.Collections.ObjectModel;
@@ -49,9 +50,9 @@ namespace Ifpa.ViewModels
 
         public readonly Country DefaultCountry = new Country { CountryName = "United States", CountryCode = "US" };
 
-        private readonly PinballRankingApi PinballRankingApi;
+        private readonly IPinballRankingApi PinballRankingApi;
 
-        public RankingsViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        public RankingsViewModel(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             CountOfItemsToFetch = 100;
             StartingPosition = 1;

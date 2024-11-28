@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
@@ -19,9 +20,9 @@ namespace Ifpa.ViewModels
         public string RegionCode { get; set; }
         public string SeriesCode { get; set; }
 
-        public PinballRankingApi PinballRankingApi { get; set; }
+        public IPinballRankingApi PinballRankingApi { get; set; }
 
-        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV2, logger)
+        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             PinballRankingApi = pinballRankingApi;
         }
