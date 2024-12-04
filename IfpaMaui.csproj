@@ -47,6 +47,11 @@
 		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<SyncfusionVersion>24.1.45</SyncfusionVersion>
+		<ShinyVersion>3.3.3</ShinyVersion>
+	</PropertyGroup>
+
 	<!-- Package References -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.93" />
@@ -63,18 +68,18 @@
 		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.9.0" />
 		<PackageReference Include="Scrutor" Version="5.0.2" />
 		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
-		<PackageReference Include="Shiny.Core" Version="3.3.3" />
-		<PackageReference Include="Shiny.Hosting.Maui" Version="3.3.3" />
-		<PackageReference Include="Shiny.Extensions.Configuration" Version="3.3.3" />
-		<PackageReference Include="Shiny.Jobs" Version="3.3.3" />
-		<PackageReference Include="Shiny.Notifications" Version="3.3.3" />
+		<PackageReference Include="Shiny.Core" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Jobs" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Notifications" Version="$(ShinyVersion)" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.10" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.10" />
 		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.10" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
+		<PackageReference Include="Syncfusion.Maui.Core" Version="$(SyncfusionVersion)" />
+		<PackageReference Include="Syncfusion.Maui.TabView" Version="$(SyncfusionVersion)" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
 		<PackageReference Include="Serilog" Version="4.1.0" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />

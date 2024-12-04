@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.Universal.Tournaments;
@@ -11,6 +9,7 @@ using Plugin.Maui.CalendarStore;
 namespace Ifpa.ViewModels
 {
     [QueryProperty("TournamentId", "tournamentId")]
+    [QueryProperty("AddToCalendarOnLoad", "add")]
     public partial class CalendarDetailViewModel : BaseViewModel
     {
         private const string MATCHPLAY_TOURNAMENT_URL = "https://app.matchplay.events/tournaments/{0}";
@@ -19,6 +18,7 @@ namespace Ifpa.ViewModels
         private Tournament tournament;
 
         public int TournamentId { get; set; }
+        public bool AddToCalendarOnLoad { get; set; }
 
         private readonly ICalendarStore CalendarStore;
         private readonly IMap Map;
@@ -56,6 +56,11 @@ namespace Ifpa.ViewModels
             try
             {
                 Tournament = await UniversalPinballRankingApi.GetTournament(TournamentId);
+
+                if (AddToCalendarOnLoad)
+                {
+                    await AddToCalendar();
+                }
 
                 logger.LogDebug("loaded calendar item {0}", TournamentId);
             }

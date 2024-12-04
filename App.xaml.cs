@@ -2,7 +2,6 @@
 using Ifpa.Models;
 using Ifpa.Services;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Maui.Handlers;
 using Serilog;
 using Shiny.Notifications;
 using System.Web;

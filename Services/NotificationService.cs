@@ -3,6 +3,7 @@ using Ifpa.Models;
 using Ifpa.Models.Database;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using Shiny.Notifications;
@@ -11,27 +12,28 @@ namespace Ifpa.Services
 {
     public class NotificationService
     {
-        protected BlogPostService BlogPostService { get; set; }
+        private readonly BlogPostService BlogPostService;
+        private readonly PinballRankingApiV2 PinballRankingApiV2;
+        private readonly IPinballRankingApi UniversalPinballRankingApi;
 
-        readonly INotificationManager notificationManager;
-        private readonly ILogger<NotificationService> logger;
-        private readonly IBadge badge;
-
+        private readonly INotificationManager NotificationManager;
+        private readonly ILogger<NotificationService> Logger;
+        private readonly IBadge Badge;
         private readonly IGeocoding Geocoding;
 
-        public NotificationService(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
+        public NotificationService(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
             PinballRankingApiV2 = pinballRankingApiV2;
             UniversalPinballRankingApi = universalPinballRankingApi;
             Geocoding = geocoding;
 
             BlogPostService = blogPostService;
-            this.notificationManager = notificationManager;
-            this.logger = logger;
-            this.badge = badge;
+            this.NotificationManager = notificationManager;
+            this.Logger = logger;
+            this.Badge = badge;
+
+            InitializeChannelsAndActions();
         }
-        private PinballRankingApiV2 PinballRankingApiV2 { get; set; }
-        private PinballRankingApi UniversalPinballRankingApi { get; set; }
 
         public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
         protected readonly string NewTournamentNotificationDescription = Strings.NotificationService_NewTournamentNotificationDescription;
@@ -47,11 +49,17 @@ namespace Ifpa.Services
 
         public event EventHandler<ActivityFeedNotificationChangedEventArgs> ActivityFeedNotificationChanged;
 
+        public static string NEW_TOURAMENT_CHANNEL = Strings.SettingsPage_TournamentResultPosted;
+        public static string NEW_RANK_CHANNEL = Strings.SettingsPage_IFPARankChange;
+        public static string NEW_BLOG_CHANNEL = Strings.SettingsPage_NewsItemPosted;
+        public static string NEW_CALENDAR_CHANNEL = Strings.SettingsPage_NewTournamentOnCalendar;
+        public static string NEW_CALENDAR_ADD_ACTION = "NewCalendarAdd";
+
         public async Task NotifyIfUserHasNewlySubmittedTourneyResults()
         {
             if (Settings.HasConfiguredMyStats)
             {
-                logger.LogInformation("Checking for user's new tournament results");
+                Logger.LogInformation("Checking for user's new tournament results");
 
                 try
                 {
@@ -88,7 +96,11 @@ namespace Ifpa.Services
 
                             if (Settings.NotifyOnTournamentResult && !isHistoricalEventPopulation)
                             {
-                                await SendNotification(NewTournamentNotificationTitle, string.Format(NewTournamentNotificationDescription, result.TournamentName), $"///my-stats/tournament-results?tournamentId={result.TournamentId}");
+                                await SendNotification(NewTournamentNotificationTitle,
+                                                       string.Format(NewTournamentNotificationDescription,
+                                                       result.TournamentName),
+                                                       $"///my-stats/tournament-results?tournamentId={result.TournamentId}",
+                                                       NEW_TOURAMENT_CHANNEL);
 
                                 await RecalculateActivityFeedAndUpdateBadges(record);
                             }
@@ -97,7 +109,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error in NotifyIfUserHasNewlySubmittedTourneyResults");
+                    Logger.LogError(ex, "Error in NotifyIfUserHasNewlySubmittedTourneyResults");
                 }
             }
         }
@@ -106,7 +118,7 @@ namespace Ifpa.Services
         {
             if (Settings.HasConfiguredMyStats)
             {
-                logger.LogInformation("Checking for user's rank change");
+                Logger.LogInformation("Checking for user's rank change");
 
                 try
                 {
@@ -138,7 +150,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error in NotifyIfUsersRankChanged");
+                    Logger.LogError(ex, "Error in NotifyIfUsersRankChanged");
                 }
             }
         }
@@ -147,7 +159,7 @@ namespace Ifpa.Services
         {
             if (Settings.NotifyOnNewBlogPost)
             {
-                logger.LogInformation("Checking for new blog posts");
+                Logger.LogInformation("Checking for new blog posts");
 
                 try
                 {
@@ -161,7 +173,10 @@ namespace Ifpa.Services
                     {
                         if (Settings.LastBlogPostGuid > 0)
                         {
-                            await SendNotification(NewBlogPostTitle, string.Format(NewBlogPostDescription, latestPost.Title.Text), $"///more/news/news-detail?newsUri={latestPost.Links.FirstOrDefault().Uri}");
+                            await SendNotification(NewBlogPostTitle,
+                                                   string.Format(NewBlogPostDescription, latestPost.Title.Text),
+                                                   $"///more/news/news-detail?newsUri={latestPost.Links.FirstOrDefault().Uri}",
+                                                   NEW_BLOG_CHANNEL);
                         }
 
                         Settings.LastBlogPostGuid = latestGuidInPosts;
@@ -170,7 +185,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error in NotifyIfNewBlogItemPosted");
+                    Logger.LogError(ex, "Error in NotifyIfNewBlogItemPosted");
                 }
             }
         }
@@ -179,7 +194,7 @@ namespace Ifpa.Services
         {
             if (Settings.NotifyOnNewCalendarEntry)
             {
-                logger.LogInformation("Checking for new calendar entries");
+                Logger.LogInformation("Checking for new calendar entries");
 
                 try
                 {
@@ -206,7 +221,8 @@ namespace Ifpa.Services
                         {
                             await SendNotification(NewTournamentOnCalendarTitle,
                                                    string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.EventStartDate.DateTime.ToShortDateString()),
-                                                   $"///calendar/calendar-detail?tournamentId={calendarItem.TournamentId}");
+                                                   $"///calendar/calendar-detail?tournamentId={calendarItem.TournamentId}",
+                                                   NEW_CALENDAR_CHANNEL);
                         }
 
                         //TODO: Add badge to calendar tab item
@@ -217,7 +233,7 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Error in NotifyIfNewCalendarEntry");
+                    Logger.LogError(ex, "Error in NotifyIfNewCalendarEntry");
                 }
             }
         }
@@ -258,23 +274,35 @@ namespace Ifpa.Services
             await RecalculateActivityFeedAndUpdateBadges(newItem);
         }
 
+        private void InitializeChannelsAndActions()
+        {
+            // Add shiny Channels and Actions here
+            NotificationManager.ClearChannels();
+
+            NotificationManager.AddChannel(Channel.Create(NEW_TOURAMENT_CHANNEL));
+            NotificationManager.AddChannel(Channel.Create(NEW_RANK_CHANNEL));
+            NotificationManager.AddChannel(Channel.Create(NEW_BLOG_CHANNEL));
+            NotificationManager.AddChannel(Channel.Create(NEW_CALENDAR_CHANNEL, ChannelAction.Create(NEW_CALENDAR_ADD_ACTION, Strings.CalendarDetailPage_AddToCalendar, ChannelActionType.OpenApp)));
+        }
+
         private async Task UpdateBadgeIfNeeded()
         {
+            // TODO: should we use Shiny Badge manipulation here?
             try
             {
                 var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
 
-                badge.SetCount((uint)unreads);
+                Badge.SetCount((uint)unreads);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error in UpdateBadgeIfNeeded");
+                Logger.LogError(ex, "Error in UpdateBadgeIfNeeded");
             }
         }
 
-        private async Task SendNotification(string title, string description, string url)
+        private async Task SendNotification(string title, string description, string url, string channel)
         {
-            logger.LogInformation("Sending notification: {0} - {1}", title, description);
+            Logger.LogInformation("Sending notification: {0} - {1}", title, description);
 
             var payload = new Dictionary<string, string>
             {
@@ -285,15 +313,16 @@ namespace Ifpa.Services
             {
                 Title = title,
                 Message = description,
-                Payload = payload
+                Payload = payload,
+                Channel = channel
             };
 
-
-            var result = await notificationManager.RequestRequiredAccess(notification);
-            if (result == Shiny.AccessState.Available)
-            {
-                await notificationManager.Send(notification);
-            }
+            // TODO: can't request access in a background process
+            //var result = await NotificationManager.RequestRequiredAccess(notification);
+            //if (result.PostNotifications == Shiny.AccessState.Available)
+            //{
+            await NotificationManager.Send(notification);
+            //}
         }
     }
 
