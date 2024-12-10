@@ -25,14 +25,16 @@
             </Style>
             <Style x:Key="FrameButton"
                    TargetType="Frame">
-                <Setter Property="HeightRequest"
+                <Setter Property="MinimumHeightRequest"
                         Value="50" />
                 <Setter Property="CornerRadius"
                         Value="6.5" />
+                <Setter Property="MinimumWidthRequest"
+                        Value="100" />
                 <Setter Property="HasShadow"
                         Value="False" />
                 <Setter Property="Padding"
-                        Value="8,5" />
+                        Value="5,5" />
                 <Setter Property="Margin"
                         Value="{OnPlatform Android=1}" />
                 <Setter Property="BackgroundColor"
@@ -197,9 +199,7 @@
                         <Frame Style="{StaticResource FrameButton}"
                                Grid.Column="0">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
-                                   HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center" />
+                                   HorizontalTextAlignment="Center" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
                             </Frame.GestureRecognizers>
@@ -208,9 +208,7 @@
                         <Frame Style="{StaticResource FrameButton}"
                                Grid.Column="1">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
-                                   HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center" />
+                                   HorizontalTextAlignment="Center" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerVsPlayerCommand}" />
                             </Frame.GestureRecognizers>
@@ -222,8 +220,7 @@
                                x:Name="ChampButton">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center" />
+                                   VerticalOptions="Center" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerChampionshipSeriesCommand}" />
                             </Frame.GestureRecognizers>
