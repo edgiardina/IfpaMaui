@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
@@ -9,7 +8,6 @@ using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using Plugin.Maui.NativeCalendar;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 
@@ -34,16 +32,17 @@ namespace Ifpa.ViewModels
 
         public DateTime SelectedDate { get; set; } = DateTime.Today;
 
-        public CalendarType CurrentType { get; set; } = CalendarType.MapAndList;
+        [ObservableProperty]
+        private CalendarType currentType = CalendarType.MapAndList;
 
         [ObservableProperty]
         private List<Pin> pins = new List<Pin>();
 
-        public string SelectedRankingSystem => Settings.CalendarRankingSystem;
+        [ObservableProperty]
+        private string selectedRankingSystem = Settings.CalendarRankingSystem;
 
-        public Command ChangeCalendarDisplayCommand { get; set; }
-
-        public Command ViewCalendarDetailsCommand { get; set; }
+        [ObservableProperty]
+        private TournamentSearch selectedCalendarItem;
 
         private Location LastGeolocation { get; set; }
 
@@ -54,14 +53,19 @@ namespace Ifpa.ViewModels
         {
             this.pinballRankingApi = pinballRankingApi;
             this.geocoding = geocoding;
-
-            ChangeCalendarDisplayCommand = new Command(() => { CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList; OnPropertyChanged("CurrentType"); });
-            ViewCalendarDetailsCommand = new Command<long>(async (tournamentId) => await ViewCalendarDetails(tournamentId));
         }
 
-        private async Task ViewCalendarDetails(long tournamentId)
+        [RelayCommand]
+        public async Task ChangeCalendarDisplay()
         {
-            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={tournamentId}");
+            CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList;
+        }
+
+        [RelayCommand]
+        public async Task ShowCalendarDetail()
+        {
+            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={SelectedCalendarItem.TournamentId}");
+            SelectedCalendarItem = null;
         }
 
         public async Task LoadItems(Location geoLocation, int distance)
@@ -124,8 +128,6 @@ namespace Ifpa.ViewModels
                                       EndDate = n.EventEndDate.DateTime
                                   })
                                   .ToList();
-
-                    OnPropertyChanged(nameof(SelectedRankingSystem));
 
                     SelectedDateChanged(new DateChangedEventArgs(SelectedDate, SelectedDate));
                 }

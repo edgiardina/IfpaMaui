@@ -58,8 +58,9 @@
                             Grid.Row="1"
                             IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                             ItemsSource="{Binding Tournaments}"
-                            SelectionMode="Single"
-                            SelectionChanged="TournamentListView_SelectionChanged">
+                            SelectedItem="{Binding SelectedCalendarItem, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ShowCalendarDetailCommand}"
+                            SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="ifpatournamentsearch:Tournament">
                         <VerticalStackLayout>
@@ -126,14 +127,13 @@
             <BoxView Style="{StaticResource BoxSeperator}" Grid.Row="1" /> 
             <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}"
                             Grid.Row="2"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedCalendarItem, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ShowCalendarDetailCommand}"
                             EmptyView="{x:Static local:Strings.CalendarPage_CalendarEmptyText}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:TournamentWithDistance">
                         <VerticalStackLayout>
-                            <VerticalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewCalendarDetailsCommand, Source={RelativeSource AncestorType={x:Type views:CalendarPage}}}"
-                                                      CommandParameter="{Binding TournamentId}" />
-                            </VerticalStackLayout.GestureRecognizers>
 
                             <Grid ColumnDefinitions="2*,*,*"
                                   RowDefinitions="*,*"

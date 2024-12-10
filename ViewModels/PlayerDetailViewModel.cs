@@ -12,7 +12,6 @@ using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using SkiaSharp;
-using Syncfusion.Maui.Core.Carousel;
 
 namespace Ifpa.ViewModels
 {
