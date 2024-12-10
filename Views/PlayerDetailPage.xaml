@@ -23,6 +23,21 @@
                 <Setter Property="FontAttributes"
                         Value="Bold" />
             </Style>
+            <Style x:Key="FrameButton"
+                   TargetType="Frame">
+                <Setter Property="HeightRequest"
+                        Value="50" />
+                <Setter Property="CornerRadius"
+                        Value="6.5" />
+                <Setter Property="HasShadow"
+                        Value="False" />
+                <Setter Property="Padding"
+                        Value="8,5" />
+                <Setter Property="Margin"
+                        Value="{OnPlatform Android=1}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource ButtonBackgroundColor}" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -178,23 +193,42 @@
                                         Value="*,*" />
                             </DataTrigger>
                         </Grid.Triggers>
-                        <Button HeightRequest="50"
-                                Grid.Column="0"
-                                Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
-                                LineBreakMode="WordWrap"
-                                Clicked="TournamentResults_Button_Clicked" />
-                        <Button HeightRequest="50"
-                                Grid.Column="1"
-                                Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
-                                LineBreakMode="WordWrap"
-                                Clicked="Pvp_Button_Clicked" />
-                        <Button HeightRequest="50"
-                                Grid.Column="2"
-                                Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
-                                LineBreakMode="WordWrap"
-                                x:Name="ChampButton"
-                                Clicked="CS_Button_Clicked"
-                                IsVisible="{Binding PlayerRecord.ChampionshipSeries, Converter={StaticResource IsListNotNullOrEmptyConverter}}" />
+
+                        <Frame Style="{StaticResource FrameButton}"
+                               Grid.Column="0">
+                            <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+
+                        <Frame Style="{StaticResource FrameButton}"
+                               Grid.Column="1">
+                            <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPlayerVsPlayerCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+
+                        <Frame Style="{StaticResource FrameButton}"
+                               Grid.Column="2"
+                               IsVisible="{Binding PlayerRecord.ChampionshipSeries, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
+                               x:Name="ChampButton">
+                            <Label Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPlayerChampionshipSeriesCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerOverview}" />
                     <Grid>

@@ -86,16 +86,6 @@ namespace Ifpa.Views
             }
         }
 
-        private async void TournamentResults_Button_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"player-results?playerId={ViewModel.PlayerId}");
-        }
-
-        private async void Pvp_Button_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"pvp?playerId={ViewModel.PlayerId}");
-        }
-
         private async void StarButton_Clicked(object sender, EventArgs e)
         {
             try
@@ -184,11 +174,6 @@ namespace Ifpa.Views
             {
                 ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_Favorite).IconImageSource = filledHeartIcon;
             }
-        }
-
-        private async void CS_Button_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"player-champ-series?playerId={ViewModel.PlayerId}");
         }
 
         private bool isAvatarEnlarged = false;

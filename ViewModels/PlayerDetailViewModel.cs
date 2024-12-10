@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
 using Ifpa.Models.Database;
 using LiveChartsCore;
@@ -11,6 +12,7 @@ using PinballApi.Extensions;
 using PinballApi.Models.v2.WPPR;
 using PinballApi.Models.WPPR.v2.Players;
 using SkiaSharp;
+using Syncfusion.Maui.Core.Carousel;
 
 namespace Ifpa.ViewModels
 {
@@ -182,6 +184,24 @@ namespace Ifpa.ViewModels
                 };
                 await Settings.LocalDatabase.CreateActivityFeedRecord(record);
             }
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerChampionshipSeries()
+        {
+            await Shell.Current.GoToAsync($"player-champ-series?playerId={PlayerId}");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerVsPlayer()
+        {
+            await Shell.Current.GoToAsync($"pvp?playerId={PlayerId}");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerTournamentResults()
+        {
+            await Shell.Current.GoToAsync($"player-results?playerId={PlayerId}");
         }
 
         private void AddPlayerToAppLinks()
