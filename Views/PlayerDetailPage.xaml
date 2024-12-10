@@ -199,7 +199,8 @@
                         <Frame Style="{StaticResource FrameButton}"
                                Grid.Column="0">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
-                                   HorizontalTextAlignment="Center" />
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
                             </Frame.GestureRecognizers>
@@ -208,7 +209,8 @@
                         <Frame Style="{StaticResource FrameButton}"
                                Grid.Column="1">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
-                                   HorizontalTextAlignment="Center" />
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerVsPlayerCommand}" />
                             </Frame.GestureRecognizers>
