@@ -82,23 +82,7 @@ namespace Ifpa.Views
             }
         }
 
-        // TODO: This should be in a trigger in the XAML but toolbaritems don't support triggers yet
-        private void ToggleView_Clicked(object sender, EventArgs e)
-        {
-            var colorDictionary = Application.Current.Resources.MergedDictionaries.First();
-            var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
-            var vm = (CalendarViewModel)BindingContext;
-
-            if (vm.CurrentType == CalendarType.MapAndList)
-            {
-                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.CalendarLtr28, IconColor = toolbarIconColor };
-            }
-            else
-            {
-                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Map24, IconColor = toolbarIconColor };
-            }
-        }
-
+        // TODO: Pin Markers and Info Windows don't currently support commanding
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
         {
             var pin = (Pin)sender;

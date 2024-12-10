@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:calendar="clr-namespace:Plugin.Maui.NativeCalendar;assembly=Plugin.Maui.NativeCalendar"
              xmlns:controls="clr-namespace:Ifpa.Controls"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.CalendarPage"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -19,6 +20,7 @@
         <ResourceDictionary>
             <toolkit:IsEqualConverter x:Key="IsEqualConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <converters:CalendarTypeToIconConverter x:Key="CalendarTypeToIconConverter" />
             <DataTemplate x:Key="PinDataTemplate"
                           x:Name="PinDataTemplate">
                 <maps:Pin MarkerClicked="Pin_MarkerClicked"
@@ -37,9 +39,7 @@
                      IconImageSource="{mi:Fluent Icon=Location48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="{x:Static local:Strings.CalendarPage_ToggleView}"
                      Command="{Binding ChangeCalendarDisplayCommand}"
-                     Clicked="ToggleView_Clicked"
-                     IconImageSource="{mi:Fluent Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}">
-        </ToolbarItem>
+                     IconImageSource="{Binding CurrentType, Converter={StaticResource CalendarTypeToIconConverter}}" />
     </ContentPage.ToolbarItems>
 
     <Grid>
@@ -117,14 +117,15 @@
             <calendar:NativeCalendarView x:Name="nativeCalendar"
                                          Grid.Row="0"
                                          HeightRequest="{OnPlatform iOS=456, Android=340}"
-                                         HorizontalOptions="{OnPlatform Android=Center}"                                         
+                                         HorizontalOptions="{OnPlatform Android=Center}"
                                          MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
                                          SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
                                          Events="{Binding TournamentCalendarItems}"
                                          TintColor="{StaticResource IconAccentColor}"
                                          DateChangedCommand="{Binding SelectedDateChangedCommand}"
                                          EventIndicatorColor="{StaticResource IconAccentColor}" />
-            <BoxView Style="{StaticResource BoxSeperator}" Grid.Row="1" /> 
+            <BoxView Style="{StaticResource BoxSeperator}"
+                     Grid.Row="1" />
             <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}"
                             Grid.Row="2"
                             SelectionMode="Single"
