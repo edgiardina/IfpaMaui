@@ -418,7 +418,7 @@
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                        <lvc:CartesianChart HeightRequest="300"
+                        <lvc:CartesianChart HeightRequest="300"                                            
                                             YAxes="{Binding RankAxis}"
                                             LegendPosition="Hidden"
                                             ZoomMode="None"
