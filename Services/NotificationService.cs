@@ -3,6 +3,7 @@ using Ifpa.Models;
 using Ifpa.Models.Database;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
 using Shiny.Notifications;
@@ -19,7 +20,7 @@ namespace Ifpa.Services
 
         private readonly IGeocoding Geocoding;
 
-        public NotificationService(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
+        public NotificationService(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
             PinballRankingApiV2 = pinballRankingApiV2;
             UniversalPinballRankingApi = universalPinballRankingApi;
@@ -31,7 +32,7 @@ namespace Ifpa.Services
             this.badge = badge;
         }
         private PinballRankingApiV2 PinballRankingApiV2 { get; set; }
-        private PinballRankingApi UniversalPinballRankingApi { get; set; }
+        private IPinballRankingApi UniversalPinballRankingApi { get; set; }
 
         public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
         protected readonly string NewTournamentNotificationDescription = Strings.NotificationService_NewTournamentNotificationDescription;

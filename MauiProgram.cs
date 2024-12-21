@@ -13,6 +13,7 @@ using MauiIcons.Fluent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using PinballApi;
+using PinballApi.Interfaces;
 using Plugin.Maui.CalendarStore;
 using Plugin.Maui.NativeCalendar;
 using Serilog;
@@ -126,7 +127,7 @@ public static class MauiProgram
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
 
         s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
-        s.AddSingleton(x => new PinballRankingApi(appSettings.IfpaApiKey));
+        s.AddSingleton<IPinballRankingApi>(x => new PinballRankingApi(appSettings.IfpaApiKey));
         s.AddSingleton(Geocoding.Default);
         s.AddSingleton(Badge.Default);
         s.AddSingleton(CalendarStore.Default);

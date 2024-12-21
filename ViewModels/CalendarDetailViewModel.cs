@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using Plugin.Maui.CalendarStore;
 
@@ -23,10 +22,10 @@ namespace Ifpa.ViewModels
         private readonly ICalendarStore CalendarStore;
         private readonly IMap Map;
 
-        private readonly PinballRankingApi UniversalPinballRankingApi;
+        private readonly IPinballRankingApi UniversalPinballRankingApi;
 
 
-        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             UniversalPinballRankingApi = pinballRankingApi;
             CalendarStore = calendarStore;
