@@ -1,8 +1,6 @@
 ﻿using Ifpa.Exceptions;
 using Ifpa.Models;
 using Ifpa.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Maui.Handlers;
 using Serilog;
 using Shiny.Notifications;
 using System.Web;
@@ -12,9 +10,7 @@ namespace Ifpa;
 public partial class App : Application
 {
     protected INotificationManager NotificationManager { get; set; }
-    protected readonly NotificationService NotificationService;
-
-  
+    protected readonly NotificationService NotificationService;  
 
     public App(AppSettings appSettings, INotificationManager notificationManager, NotificationService notificationService)
     {

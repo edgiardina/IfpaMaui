@@ -56,6 +56,7 @@ namespace Ifpa.ViewModels
         public async Task ViewCustomRankingDetail()
         {
             await Shell.Current.GoToAsync($"custom-ranking-details?viewId={SelectedCustomRanking.ViewId}");
+            SelectedCustomRanking = null;
         }
     }
 
