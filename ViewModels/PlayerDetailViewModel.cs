@@ -119,7 +119,11 @@ namespace Ifpa.ViewModels
                     if (logRange < 4)
                     {
                         var padding = 4 - logRange; // Calculate how many extra points are needed
-                        logMin -= padding; // Extend downward for better ranks
+
+                        if(logMin > 0)
+                            logMin -= padding; // Extend upward for better ranks
+                        else
+                            logMax += padding; // Extend downward for better ranks
                     }
 
                     // Generate log-based separators (log values)
