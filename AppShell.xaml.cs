@@ -13,6 +13,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
         Routing.RegisterRoute("player-search", typeof(PlayerSearchPage));
         Routing.RegisterRoute("player-details", typeof(PlayerDetailPage));
+        Routing.RegisterRoute("player-details-no-player-selected", typeof(PlayerDetailNoPlayerSelectedPage));
         Routing.RegisterRoute("player-results", typeof(PlayerResultsPage));
         Routing.RegisterRoute("activity-feed", typeof(ActivityFeedPage));
         Routing.RegisterRoute("pvp", typeof(PlayerVersusPlayerPage));
@@ -43,33 +44,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("tournament-info", typeof(TournamentInfoPage));
     }
 
-    protected override async void OnNavigating(ShellNavigatingEventArgs args)
-    {
-        base.OnNavigating(args);
-
-        ShellNavigatingDeferral token = args.GetDeferral();
-
-        //If a user hasn't set up my stats, redirect to player search
-
-        try
-        {
-            if (!Settings.HasConfiguredMyStats
-                && args.Target.Location.ToString().Contains("my-stats")
-            )
-            {
-                await DisplayAlert("Configure your Stats", "Looks like you haven't configured your 'My Stats' page. Use the Player Search under 'Rankings' to find your Player, and press the Star to configure your Stats", "OK");
-                args.Cancel();
-            }
-
-        }
-        catch (Exception ex)
-        {
-            //TODO: dependency inject this?
-            Log.Logger.Error(ex, "Error checking if user has configured my stats");
-        }
-
-        token?.Complete();
-    }
     // TODO: this is a hack to get the correct tab to show when navigating to a page
     // https://github.com/dotnet/maui/issues/16568
     public void ConfirmSelectedTabIsCorrect(string route)

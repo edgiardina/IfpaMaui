@@ -121,8 +121,10 @@ namespace Ifpa.Views
 
         private async Task RedirectUserToPlayerSearch()
         {
-            await DisplayAlert(Strings.PlayerDetailPage_ConfigureYourStats, Strings.PlayerDetailPage_HaventConfiguredMyStats, Strings.OK);
-            await Shell.Current.GoToAsync("///rankings/player-search");
+            //await DisplayAlert(Strings.PlayerDetailPage_ConfigureYourStats, Strings.PlayerDetailPage_HaventConfiguredMyStats, Strings.OK);
+            //await Shell.Current.GoToAsync("///rankings/player-search");
+
+            await Shell.Current.GoToAsync("/player-details-no-player-selected");
         }
 
         private async void ActivityFeedButton_Clicked(object sender, EventArgs e)
