@@ -618,9 +618,6 @@
   <data name="PlayerDetailPage_ErrorMyStats" xml:space="preserve">
     <value>There was an error trying to select this player as your 'My Stats' player.</value>
   </data>
-  <data name="PlayerDetailPage_HaventConfiguredMyStats" xml:space="preserve">
-    <value>Looks like you haven't configured your 'My Stats' page. Use the Player Search to find your Player, and press the Star to configure your Stats</value>
-  </data>
   <data name="PlayerDetailPage_RemoveFavorite" xml:space="preserve">
     <value>This player has been removed from your favorites</value>
   </data>

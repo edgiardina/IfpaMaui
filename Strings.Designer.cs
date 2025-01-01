@@ -1078,15 +1078,6 @@ namespace Ifpa {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Looks like you haven&apos;t configured your &apos;My Stats&apos; page. Use the Player Search to find your Player, and press the Star to configure your Stats.
-        /// </summary>
-        internal static string PlayerDetailPage_HaventConfiguredMyStats {
-            get {
-                return ResourceManager.GetString("PlayerDetailPage_HaventConfiguredMyStats", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Highest Rank.
         /// </summary>
         internal static string PlayerDetailPage_HighestRank {
