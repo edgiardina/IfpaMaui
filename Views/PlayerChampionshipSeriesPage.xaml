@@ -7,6 +7,7 @@
              ios:Page.LargeTitleDisplay="Never"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              Title="{x:Static local:Strings.PlayerChampionshipSeriesPage_ChampionshipSeries}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerChampionshipSeriesViewModel"
@@ -17,6 +18,11 @@
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{x:Static local:Strings.ChampionshipSeriesPage_Filter}"
+                     Command="{Binding FilterChampSeriesCommand}"
+                     IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
+    </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
@@ -25,7 +31,8 @@
                         ItemsSource="{Binding ChampionshipSeries}"
                         SelectionMode="Single"
                         SelectionChangedCommand="{Binding ViewChampSeriesDetailsCommand}"
-                        SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}">
+                        SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}"
+                        EmptyView="{x:Static local:Strings.PlayerChampionshipSeriesPage_EmptyText}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpawppr:ChampionshipSeries">
                     <VerticalStackLayout>

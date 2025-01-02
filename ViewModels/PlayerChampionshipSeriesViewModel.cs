@@ -14,6 +14,9 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private ChampionshipSeries selectedChampionshipSeries;
 
+        [ObservableProperty]
+        private int year = DateTime.Now.Year;
+
         public int PlayerId { get; set; }
 
         public PlayerChampionshipSeriesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(pinballRankingApiV2, logger)
@@ -32,7 +35,7 @@ namespace Ifpa.ViewModels
             {
                 var player = await PinballRankingApiV2.GetPlayer(PlayerId);
 
-                ChampionshipSeries = player.ChampionshipSeries.Where(n => n.Year == DateTime.Now.Year).ToList();
+                ChampionshipSeries = player.ChampionshipSeries.Where(n => n.Year == Year).ToList();
             }
             catch (Exception ex)
             {
@@ -49,6 +52,22 @@ namespace Ifpa.ViewModels
         {
             await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={SelectedChampionshipSeries.SeriesCode}&regionCode={SelectedChampionshipSeries.RegionCode}&year={SelectedChampionshipSeries.Year}");
             SelectedChampionshipSeries = null;
+        }
+
+        [RelayCommand]
+        public async Task FilterChampSeries()
+        {
+            var player = await PinballRankingApiV2.GetPlayer(PlayerId);
+
+            var availableYears = player.ChampionshipSeries.Select(n => n.Year).Distinct().ToList();
+
+            string action = await Shell.Current.DisplayActionSheet(Strings.PlayerChampionshipSeriesPage_YearPrompt, Strings.Cancel, null, availableYears.Select(n => n.ToString()).ToArray());
+
+            if (int.TryParse(action, out var yearValue))
+            {
+                Year = yearValue;
+                await LoadItems();
+            }
         }
     }
 }

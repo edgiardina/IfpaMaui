@@ -708,4 +708,10 @@
   <data name="PlayerDetailNoPlayerSelectedPage_Search" xml:space="preserve">
     <value>Search for My Player Record</value>
   </data>
+  <data name="PlayerChampionshipSeriesPage_EmptyText" xml:space="preserve">
+    <value>No championship data for the selected year</value>
+  </data>
+  <data name="PlayerChampionshipSeriesPage_YearPrompt" xml:space="preserve">
+    <value>Championship Series Year</value>
+  </data>
 </root>

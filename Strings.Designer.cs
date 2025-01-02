@@ -871,6 +871,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No championship data for the selected year.
+        /// </summary>
+        internal static string PlayerChampionshipSeriesPage_EmptyText {
+            get {
+                return ResourceManager.GetString("PlayerChampionshipSeriesPage_EmptyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Series Year.
+        /// </summary>
+        internal static string PlayerChampionshipSeriesPage_YearPrompt {
+            get {
+                return ResourceManager.GetString("PlayerChampionshipSeriesPage_YearPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search for My Player Record.
         /// </summary>
         internal static string PlayerDetailNoPlayerSelectedPage_Search {
