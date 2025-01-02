@@ -77,7 +77,7 @@ namespace Ifpa.Views
                 ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_ActivityFeed));
             }
 
-            await ViewModel.ExecuteLoadItemsCommand();
+            await ViewModel.LoadItems();
 
             //if loading My Stats player, refresh the activity feed counter.
             if (LoadMyStats)
