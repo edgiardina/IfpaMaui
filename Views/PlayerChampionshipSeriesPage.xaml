@@ -8,7 +8,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
-             Title="{x:Static local:Strings.PlayerChampionshipSeriesPage_ChampionshipSeries}"
+             Title="{Binding Title}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerChampionshipSeriesViewModel"
              xmlns:ifpawppr="clr-namespace:PinballApi.Models.v2.WPPR;assembly=PinballApi">

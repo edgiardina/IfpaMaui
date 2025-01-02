@@ -36,6 +36,8 @@ namespace Ifpa.ViewModels
                 var player = await PinballRankingApiV2.GetPlayer(PlayerId);
 
                 ChampionshipSeries = player.ChampionshipSeries.Where(n => n.Year == Year).ToList();
+
+                Title = $"{Strings.PlayerChampionshipSeriesPage_ChampionshipSeries} - {Year}";
             }
             catch (Exception ex)
             {
