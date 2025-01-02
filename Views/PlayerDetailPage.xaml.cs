@@ -121,7 +121,7 @@ namespace Ifpa.Views
 
         private async Task RedirectUserToPlayerSearch()
         {
-            await Shell.Current.GoToAsync("/player-details-no-player-selected");
+            await Shell.Current.GoToAsync("player-details-no-player-selected");
         }
 
         private async void ActivityFeedButton_Clicked(object sender, EventArgs e)

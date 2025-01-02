@@ -44,6 +44,32 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("tournament-info", typeof(TournamentInfoPage));
     }
 
+    protected override async void OnNavigating(ShellNavigatingEventArgs args)
+    {
+        base.OnNavigating(args);
+
+        ShellNavigatingDeferral token = args.GetDeferral();
+
+        // Prevent user from re-navigating to empty My Stats page
+        try
+        {
+            if (!Settings.HasConfiguredMyStats
+                && args.Target.Location.ToString().Contains("my-stats")
+                && args.Current.Location.ToString().Contains("player-details-no-player-selected")
+            )
+            {
+                 args.Cancel();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            //TODO: dependency inject this?
+            Log.Logger.Error(ex, "Error checking if user has configured my stats");
+        }
+
+        token?.Complete();
+    }
     // TODO: this is a hack to get the correct tab to show when navigating to a page
     // https://github.com/dotnet/maui/issues/16568
     public void ConfirmSelectedTabIsCorrect(string route)
