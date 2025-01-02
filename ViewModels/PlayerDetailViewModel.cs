@@ -20,8 +20,6 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         AppSettings appSettings;
 
-        public Command LoadItemsCommand { get; set; }
-
         public int PlayerId { get; set; }
 
         [ObservableProperty]
@@ -86,11 +84,14 @@ namespace Ifpa.ViewModels
 
         public PlayerDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             AppSettings = appSettings;
+
+            // Start page busy to show loading indicator
+            IsBusy = true;
         }
 
-        public async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             Color resourceColor = null;
             if (App.Current.Resources.TryGetValue("IconAccentColor", out var color))
