@@ -125,8 +125,8 @@ namespace Ifpa.ViewModels
                                                     Tournament.TournamentName,
                                                     Tournament.Details,
                                                     $"{Tournament.Address1}, {Tournament.City}, {Tournament.Stateprov}, {Tournament.CountryName}",
-                                                    new DateTimeOffset(Tournament.EventStartDate, TimeOnly.MinValue, TimeSpan.Zero),
-                                                    new DateTimeOffset(Tournament.EventEndDate, TimeOnly.MinValue, TimeSpan.Zero),
+                                                    new DateTimeOffset(Tournament.EventStartDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local)),
+                                                    new DateTimeOffset(Tournament.EventEndDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local)),
                                                     true);
 
                     if (string.IsNullOrWhiteSpace(newEventId) == false)
