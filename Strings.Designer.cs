@@ -871,6 +871,87 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No championship data for the selected year.
+        /// </summary>
+        internal static string PlayerChampionshipSeriesPage_EmptyText {
+            get {
+                return ResourceManager.GetString("PlayerChampionshipSeriesPage_EmptyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Series Year.
+        /// </summary>
+        internal static string PlayerChampionshipSeriesPage_YearPrompt {
+            get {
+                return ResourceManager.GetString("PlayerChampionshipSeriesPage_YearPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for My Player Record.
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_Search {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Star Icon on the Player Details view to select that player as you..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepFour {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepFour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Search Icon on the Rankings Page to navigate to the player search..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepOne {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the player you wish to use from the list..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepThree {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepThree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type a partial or full name into the search bar and press &quot;Search&quot;..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepTwo {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow these steps to add your IFPA player record to your &apos;My Stats&apos; for tracking your progress.
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_Subheader {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_Subheader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You haven&apos;t selected a &apos;My Stats&apos; Player..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_Title {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  (.
         /// </summary>
         internal static string PlayerDetailPage_ {
@@ -1011,15 +1092,6 @@ namespace Ifpa {
         internal static string PlayerDetailPage_Favorite {
             get {
                 return ResourceManager.GetString("PlayerDetailPage_Favorite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Looks like you haven&apos;t configured your &apos;My Stats&apos; page. Use the Player Search to find your Player, and press the Star to configure your Stats.
-        /// </summary>
-        internal static string PlayerDetailPage_HaventConfiguredMyStats {
-            get {
-                return ResourceManager.GetString("PlayerDetailPage_HaventConfiguredMyStats", resourceCulture);
             }
         }
         

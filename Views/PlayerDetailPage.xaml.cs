@@ -28,9 +28,9 @@ namespace Ifpa.Views
             this.toolbarBadgeService = toolbarBadgeService;
         }
 
-        protected async override void OnAppearing()
+        protected async override void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            base.OnAppearing();
+            base.OnNavigatedTo(args);
 
             if (PlayerId == 0)
                 LoadMyStats = true;
@@ -77,23 +77,13 @@ namespace Ifpa.Views
                 ToolbarItems.Remove(ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_ActivityFeed));
             }
 
-            await ViewModel.ExecuteLoadItemsCommand();
+            await ViewModel.LoadItems();
 
             //if loading My Stats player, refresh the activity feed counter.
             if (LoadMyStats)
             {
                 toolbarBadgeService.SetBadge(this, ActivityFeedButton, ViewModel.BadgeCount, Colors.Red, Colors.White);
             }
-        }
-
-        private async void TournamentResults_Button_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"player-results?playerId={ViewModel.PlayerId}");
-        }
-
-        private async void Pvp_Button_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"pvp?playerId={ViewModel.PlayerId}");
         }
 
         private async void StarButton_Clicked(object sender, EventArgs e)
@@ -131,8 +121,7 @@ namespace Ifpa.Views
 
         private async Task RedirectUserToPlayerSearch()
         {
-            await DisplayAlert(Strings.PlayerDetailPage_ConfigureYourStats, Strings.PlayerDetailPage_HaventConfiguredMyStats, Strings.OK);
-            await Shell.Current.GoToAsync("///rankings/player-search");
+            await Shell.Current.GoToAsync("player-details-no-player-selected");
         }
 
         private async void ActivityFeedButton_Clicked(object sender, EventArgs e)
@@ -184,11 +173,6 @@ namespace Ifpa.Views
             {
                 ToolbarItems.SingleOrDefault(n => n.Text == Strings.PlayerDetailPage_Favorite).IconImageSource = filledHeartIcon;
             }
-        }
-
-        private async void CS_Button_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"player-champ-series?playerId={ViewModel.PlayerId}");
         }
 
         private bool isAvatarEnlarged = false;

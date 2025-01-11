@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Interfaces;
@@ -127,8 +125,8 @@ namespace Ifpa.ViewModels
                                                     Tournament.TournamentName,
                                                     Tournament.Details,
                                                     $"{Tournament.Address1}, {Tournament.City}, {Tournament.Stateprov}, {Tournament.CountryName}",
-                                                    Tournament.EventStartDate,
-                                                    Tournament.EventEndDate,
+                                                    new DateTimeOffset(Tournament.EventStartDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local)),
+                                                    new DateTimeOffset(Tournament.EventEndDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local)),
                                                     true);
 
                     if (string.IsNullOrWhiteSpace(newEventId) == false)

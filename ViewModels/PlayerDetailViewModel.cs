@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
 using Ifpa.Models.Database;
 using LiveChartsCore;
@@ -18,8 +19,6 @@ namespace Ifpa.ViewModels
     {
         [ObservableProperty]
         AppSettings appSettings;
-
-        public Command LoadItemsCommand { get; set; }
 
         public int PlayerId { get; set; }
 
@@ -44,20 +43,26 @@ namespace Ifpa.ViewModels
             }
         };
 
-        public Axis[] RankAxis { get; set; } =
+        [ObservableProperty]
+        public Axis[] rankAxis =
         {
             new Axis
             {
                 IsInverted = true,
-                Labeler = value => Math.Pow(s_logBase, value).ToString("F0")
+                Labeler = value => Math.Pow(s_logBase, value).ToString("F0"),
+                MinLimit = 0, // log10(1)
+                MaxLimit = 6, // log10(1,000,000) for example                
+                CustomSeparators = new double[] { 0, 1, 2, 3, 4, 5 }, // These represent log10 values for 1, 10, 100, etc.
+                MinStep = 1 // Ensure regular spacing for each base-10 step
             }
         };
 
-        public Axis[] RatingAxis { get; set; } =
+        [ObservableProperty]
+        public Axis[] ratingAxis =
         {
             new Axis
             {
-                CustomSeparators = new double[] { 0, 500, 1000, 1500, 2000, 2500 },
+                CustomSeparators = [0, 500, 1000, 1500, 2000, 2500],
                 MinLimit = 1,
                 MinStep = 1,
                 ForceStepToMin = true
@@ -79,11 +84,14 @@ namespace Ifpa.ViewModels
 
         public PlayerDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
         {
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
             AppSettings = appSettings;
+
+            // Start page busy to show loading indicator
+            IsBusy = true;
         }
 
-        public async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             Color resourceColor = null;
             if (App.Current.Resources.TryGetValue("IconAccentColor", out var color))
@@ -99,6 +107,45 @@ namespace Ifpa.ViewModels
                     var playerData = await PinballRankingApiV2.GetPlayer(PlayerId);
                     var playerHistoryData = await PinballRankingApiV2.GetPlayerHistory(PlayerId);
 
+                    // Determine min and max rank
+                    var minRank = playerHistoryData.RankHistory.Min(h => h.RankPosition);
+                    var maxRank = playerHistoryData.RankHistory.Max(h => h.RankPosition);
+
+                    // Calculate logarithmic range
+                    var logMin = Math.Floor(Math.Log10(minRank)); // Round down to nearest power of 10
+                    var logMax = Math.Ceiling(Math.Log10(maxRank)); // Round up to nearest power of 10
+
+                    // Ensure a minimum of 4 points
+                    var logRange = (int)(logMax - logMin) + 1; // Current range
+                    if (logRange < 4)
+                    {
+                        var padding = 4 - logRange; // Calculate how many extra points are needed
+
+                        if(logMin > 0)
+                            logMin -= padding; // Extend upward for better ranks
+                        else
+                            logMax += padding; // Extend downward for better ranks
+                    }
+
+                    // Generate log-based separators (log values)
+                    var separators = Enumerable.Range((int)logMin, (int)(logMax - logMin) + 1)
+                                                .Select(log => (double)log) // Use log values for axis
+                                                .ToArray();
+
+                    // Update the RankAxis dynamically
+                    RankAxis = new Axis[]
+                    {
+                        new Axis
+                        {
+                            IsInverted = true,
+                            Labeler = value => Math.Pow(s_logBase, value).ToString("F0"),
+                            MinLimit = logMin,
+                            MaxLimit = logMax,
+                            CustomSeparators = separators,
+                            MinStep = 1
+                        }
+                    };
+
                     var playerRankSeries = new LineSeries<RankHistory>
                     {
                         Values = playerHistoryData.RankHistory,
@@ -106,15 +153,12 @@ namespace Ifpa.ViewModels
                         GeometryFill = null,
                         GeometryStroke = null,
                         Stroke = new SolidColorPaint(SKColor.Parse(resourceColor.ToHex())) { StrokeThickness = 2 },
-                        Mapping = (history, number) =>
-                        {
-                            return new Coordinate(history.RankDate.Ticks, Math.Log(history.RankPosition, s_logBase));
-                        }
+
+                        Mapping = (logPoint, index) =>
+                                new(logPoint.RankDate.Ticks, Math.Log(logPoint.RankPosition, s_logBase))
                     };
-                    PlayerRankHistoryLineSeries.Clear();
-                    PlayerRankHistoryLineSeries.Add(playerRankSeries);
-                    // TODO: can we get away with not calling OnPropertyChanged here?
-                    OnPropertyChanged(nameof(PlayerRankHistoryLineSeries));
+
+                    PlayerRankHistoryLineSeries = new List<ISeries> { playerRankSeries };
 
                     var playerRatingSeries = new LineSeries<RatingHistory>
                     {
@@ -128,10 +172,8 @@ namespace Ifpa.ViewModels
                             return new Coordinate(history.RatingDate.Ticks, history.Rating);
                         }
                     };
-                    PlayerRatingHistoryLineSeries.Clear();
-                    PlayerRatingHistoryLineSeries.Add(playerRatingSeries);
-                    // TODO: can we get away with not calling OnPropertyChanged here?
-                    OnPropertyChanged(nameof(PlayerRatingHistoryLineSeries));
+
+                    PlayerRatingHistoryLineSeries = new List<ISeries> { playerRatingSeries };
 
                     PlayerRecord = playerData;
 
@@ -182,6 +224,24 @@ namespace Ifpa.ViewModels
                 };
                 await Settings.LocalDatabase.CreateActivityFeedRecord(record);
             }
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerChampionshipSeries()
+        {
+            await Shell.Current.GoToAsync($"player-champ-series?playerId={PlayerId}");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerVsPlayer()
+        {
+            await Shell.Current.GoToAsync($"pvp?playerId={PlayerId}");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerTournamentResults()
+        {
+            await Shell.Current.GoToAsync($"player-results?playerId={PlayerId}");
         }
 
         private void AddPlayerToAppLinks()

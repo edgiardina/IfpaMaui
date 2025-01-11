@@ -5,6 +5,9 @@ namespace Ifpa.Models
 {
     public static class Settings
     {
+        private static string PLAYER_ID = "PlayerId";
+        private static string CURRENT_WPPR_RANK = "CurrentWpprRank";
+
         static LocalDatabase localDatabase;
 
         //Groupname is so we can share the player ID with the upcoming iOS Widget. 
@@ -24,61 +27,61 @@ namespace Ifpa.Models
 
         public static int CurrentTabIndex
         {
-            get => Preferences.Get("CurrentTabIndex", 0);
-            set => Preferences.Set("CurrentTabIndex", value);
+            get => Preferences.Get(nameof(CurrentTabIndex), 0);
+            set => Preferences.Set(nameof(CurrentTabIndex), value);
         }
 
         public static bool NotifyOnRankChange
         {
-            get => Preferences.Get("NotifyOnRankChange", true);
-            set => Preferences.Set("NotifyOnRankChange", value);
+            get => Preferences.Get(nameof(NotifyOnRankChange), true);
+            set => Preferences.Set(nameof(NotifyOnRankChange), value);
         }
         public static bool NotifyOnTournamentResult
         {
-            get => Preferences.Get("NotifyOnTournamentResult", true);
-            set => Preferences.Set("NotifyOnTournamentResult", value);
+            get => Preferences.Get(nameof(NotifyOnTournamentResult), true);
+            set => Preferences.Set(nameof(NotifyOnTournamentResult), value);
         }
 
         public static bool NotifyOnNewBlogPost
         {
-            get => Preferences.Get("NotifyOnNewBlogPost", false);
-            set => Preferences.Set("NotifyOnNewBlogPost", value);
+            get => Preferences.Get(nameof(NotifyOnNewBlogPost), false);
+            set => Preferences.Set(nameof(NotifyOnNewBlogPost), value);
         }
 
         public static bool NotifyOnNewCalendarEntry
         {
-            get => Preferences.Get("NotifyOnNewCalendarEntry", false);
-            set => Preferences.Set("NotifyOnNewCalendarEntry", value);
+            get => Preferences.Get(nameof(NotifyOnNewCalendarEntry), false);
+            set => Preferences.Set(nameof(NotifyOnNewCalendarEntry), value);
         }
 
         public static int LastBlogPostGuid
         {
-            get => Preferences.Get("LastBlogPostGuid", 0);
-            set => Preferences.Set("LastBlogPostGuid", value);
+            get => Preferences.Get(nameof(LastBlogPostGuid), 0);
+            set => Preferences.Set(nameof(LastBlogPostGuid), value);
         }
 
         public static string LastCalendarLocation
         {
-            get => Preferences.Get("LastCalendarLocation", "Chicago, Il");
-            set => Preferences.Set("LastCalendarLocation", value);
+            get => Preferences.Get(nameof(LastCalendarLocation), "Chicago, Il");
+            set => Preferences.Set(nameof(LastCalendarLocation), value);
         }
 
         public static int LastCalendarDistance
         {
-            get => Preferences.Get("LastCalendarDistance", 150);
-            set => Preferences.Set("LastCalendarDistance", value);
+            get => Preferences.Get(nameof(LastCalendarDistance), 150);
+            set => Preferences.Set(nameof(LastCalendarDistance), value);
         }
 
         public static string CalendarRankingSystem
         {
-            get => Preferences.Get("CalendarRankingSystem", "All");
-            set => Preferences.Set("CalendarRankingSystem", value);
+            get => Preferences.Get(nameof(CalendarRankingSystem), "All");
+            set => Preferences.Set(nameof(CalendarRankingSystem), value);
         }
 
         public static bool CalendarShowLeagues
         {
-            get => Preferences.Get("CalendarShowLeagues", false);
-            set => Preferences.Set("CalendarShowLeagues", value);
+            get => Preferences.Get(nameof(CalendarShowLeagues), false);
+            set => Preferences.Set(nameof(CalendarShowLeagues), value);
         }
         public static bool SyncCalendarWithSystem
         {
@@ -88,8 +91,8 @@ namespace Ifpa.Models
 
         public static long LastCalendarIdSeen
         {
-            get => Preferences.Get("LastCalendarIdSeen", 0L);
-            set => Preferences.Set("LastCalendarIdSeen", value);
+            get => Preferences.Get(nameof(LastCalendarIdSeen), 0L);
+            set => Preferences.Set(nameof(LastCalendarIdSeen), value);
         }
 
         public static bool HasConfiguredMyStats
@@ -101,26 +104,26 @@ namespace Ifpa.Models
         {
             get
             {
-                var playerIdGroup = Preferences.Get("PlayerId", 0, groupName);
-                var playerId = Preferences.Get("PlayerId", 0);
+                var playerIdGroup = Preferences.Get(PLAYER_ID, 0, groupName);
+                var playerId = Preferences.Get(PLAYER_ID, 0);
                 if (playerId != 0 && playerIdGroup == 0)
                 {
-                    Preferences.Set("PlayerId", playerId, groupName);
+                    Preferences.Set(PLAYER_ID, playerId, groupName);
                 }
-                return Preferences.Get("PlayerId", 0);
+                return Preferences.Get(PLAYER_ID, 0);
             }
             private set
             {
-                Preferences.Set("PlayerId", value);
+                Preferences.Set(PLAYER_ID, value);
                 //Save to group for Widget access
-                Preferences.Set("PlayerId", value, groupName);
+                Preferences.Set(PLAYER_ID, value, groupName);
             }
         }
 
         public static int MyStatsCurrentWpprRank
         {
-            get => Preferences.Get("CurrentWpprRank", 0);
-            set => Preferences.Set("CurrentWpprRank", value);
+            get => Preferences.Get(CURRENT_WPPR_RANK, 0);
+            set => Preferences.Set(CURRENT_WPPR_RANK, value);
         }
 
         public static async Task SetMyStatsPlayer(int playerId, int currentWpprRank)

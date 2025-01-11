@@ -4,12 +4,6 @@ using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Ifpa.ViewModels
 {

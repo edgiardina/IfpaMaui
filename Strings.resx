@@ -621,9 +621,6 @@
   <data name="PlayerDetailPage_ErrorMyStats" xml:space="preserve">
     <value>There was an error trying to select this player as your 'My Stats' player.</value>
   </data>
-  <data name="PlayerDetailPage_HaventConfiguredMyStats" xml:space="preserve">
-    <value>Looks like you haven't configured your 'My Stats' page. Use the Player Search to find your Player, and press the Star to configure your Stats</value>
-  </data>
   <data name="PlayerDetailPage_RemoveFavorite" xml:space="preserve">
     <value>This player has been removed from your favorites</value>
   </data>
@@ -692,5 +689,32 @@
   </data>
   <data name="PermissionRequired" xml:space="preserve">
     <value>Permission Required</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_Subheader" xml:space="preserve">
+    <value>Follow these steps to add your IFPA player record to your 'My Stats' for tracking your progress</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepOne" xml:space="preserve">
+    <value>Use the Search Icon on the Rankings Page to navigate to the player search.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepTwo" xml:space="preserve">
+    <value>Type a partial or full name into the search bar and press "Search".</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepThree" xml:space="preserve">
+    <value>Select the player you wish to use from the list.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepFour" xml:space="preserve">
+    <value>Use the Star Icon on the Player Details view to select that player as you.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_Title" xml:space="preserve">
+    <value>You haven't selected a 'My Stats' Player.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_Search" xml:space="preserve">
+    <value>Search for My Player Record</value>
+  </data>
+  <data name="PlayerChampionshipSeriesPage_EmptyText" xml:space="preserve">
+    <value>No championship data for the selected year</value>
+  </data>
+  <data name="PlayerChampionshipSeriesPage_YearPrompt" xml:space="preserve">
+    <value>Championship Series Year</value>
   </data>
 </root>

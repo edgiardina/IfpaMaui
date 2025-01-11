@@ -1,8 +1,6 @@
 ﻿using Ifpa.Exceptions;
 using Ifpa.Models;
 using Ifpa.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Maui.Handlers;
 using Serilog;
 using Shiny.Notifications;
 using System.Web;
@@ -12,7 +10,7 @@ namespace Ifpa;
 public partial class App : Application
 {
     protected INotificationManager NotificationManager { get; set; }
-    protected readonly NotificationService NotificationService;
+    protected readonly NotificationService NotificationService;  
 
     public App(AppSettings appSettings, INotificationManager notificationManager, NotificationService notificationService)
     {
@@ -23,7 +21,7 @@ public partial class App : Application
             Log.Error(e.ExceptionObject as Exception, "Unhandled exception");
         };
 
-
+        // TODO should this license registration be in MauiProgram.cs?
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(appSettings.SyncFusionLicenseKey);
 
         NotificationManager = notificationManager;
@@ -70,17 +68,6 @@ public partial class App : Application
         });
         await Task.Delay(500);
         ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
-    }
-
-    //Some places we can't Dependency Inject so we add this static helper
-    public static AppSettings GetAppSettings()
-    {
-        var config = new ConfigurationBuilder()
-           .SetBasePath(AppContext.BaseDirectory)
-           .AddJsonPlatformBundle()
-           .Build();
-
-        return config.GetSection("AppSettings").Get<AppSettings>();
     }
 
     protected override async void OnAppLinkRequestReceived(Uri uri)

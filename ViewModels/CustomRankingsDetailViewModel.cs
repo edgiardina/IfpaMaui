@@ -75,12 +75,14 @@ namespace Ifpa.ViewModels
         public async Task SelectPlayerDetails()
         {
             await Shell.Current.GoToAsync($"player-details?playerId={SelectedViewResult.PlayerId}");
+            SelectedViewResult = null;
         }
 
         [RelayCommand]
         public async Task SelectTournament()
         {
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}"); 
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}");
+            SelectedTournament = null;
         }
 
     }
