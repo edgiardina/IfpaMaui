@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Ifpa.BackgroundJobs;
 using Ifpa.Models;
+using Ifpa.Services;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Models.WPPR.v2.Players;
+using Plugin.Maui.CalendarStore;
 using Shiny.Jobs;
 
 namespace Ifpa.ViewModels
@@ -12,6 +14,7 @@ namespace Ifpa.ViewModels
     {
         private readonly AppSettings AppSettings;
         private readonly IJobManager JobManager;
+        private readonly ICalendarSyncService CalendarSyncService;
 
         [ObservableProperty]
         private Player playerRecord;
@@ -19,10 +22,11 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private string playerAvatar;
 
-        public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, IJobManager jobManager, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, IJobManager jobManager, ICalendarSyncService calendarSyncService, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
         {
             AppSettings = appSettings;
             this.JobManager = jobManager;
+            CalendarSyncService = calendarSyncService;
         }
 
         public async Task LoadPlayer()
@@ -118,6 +122,10 @@ namespace Ifpa.ViewModels
                             JobManager.Run(nameof(CalendarSyncJob));
                         }
                     }
+                }
+                else
+                {
+                    CalendarSyncService.DeleteIfpaDeviceCalendarAndClearLocalEvents();
                 }
                 OnPropertyChanged(nameof(SyncCalendarWithSystem));
             }

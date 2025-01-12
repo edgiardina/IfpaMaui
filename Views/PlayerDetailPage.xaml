@@ -199,6 +199,7 @@
                         <Frame Style="{StaticResource FrameButton}"
                                Grid.Column="0">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center" />
                             <Frame.GestureRecognizers>
@@ -209,6 +210,7 @@
                         <Frame Style="{StaticResource FrameButton}"
                                Grid.Column="1">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center" />
                             <Frame.GestureRecognizers>
@@ -221,6 +223,7 @@
                                IsVisible="{Binding PlayerRecord.ChampionshipSeries, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
                                x:Name="ChampButton">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center" />
                             <Frame.GestureRecognizers>

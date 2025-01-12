@@ -112,6 +112,9 @@ public static class MauiProgram
         //and RankingsFilterPage
         s.AddSingleton<RankingsViewModel>();
 
+        // TODO: the filter should probably have its own viewmodel
+        s.AddTransient<CalendarFilterModalPage>();
+
         s.AddSingleton(appSettings);
 
         return builder;
@@ -126,6 +129,7 @@ public static class MauiProgram
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
+        s.AddSingleton<ICalendarSyncService, CalendarSyncService>();
 
         s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
         s.AddSingleton<IPinballRankingApi>(x => new PinballRankingApi(appSettings.IfpaApiKey));

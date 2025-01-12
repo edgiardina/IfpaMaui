@@ -12,15 +12,16 @@ namespace Ifpa.Views
     public partial class CalendarPage : ContentPage
     {
         public CalendarViewModel ViewModel { get; set; }
-
+        public readonly CalendarFilterModalPage CalendarFilterModalPage;
 
         private readonly ILogger<CalendarPage> logger;
 
-        public CalendarPage(CalendarViewModel viewModel, ILogger<CalendarPage> logger)
+        public CalendarPage(CalendarViewModel viewModel, CalendarFilterModalPage calendarFilterModalPage, ILogger<CalendarPage> logger)
         {
             InitializeComponent();
 
             this.logger = logger;
+            this.CalendarFilterModalPage = calendarFilterModalPage;
 
             BindingContext = ViewModel = viewModel;
             viewModel.IsBusy = true;
@@ -34,11 +35,9 @@ namespace Ifpa.Views
 
         private async void MyLocation_Clicked(object sender, EventArgs e)
         {
-            var filterPage = new CalendarFilterModalPage();
+            CalendarFilterModalPage.FilterSaved += async () => { await UpdateCalendarData(); };
 
-            filterPage.FilterSaved += async () => { await UpdateCalendarData(); };
-
-            await Navigation.PushModalAsync(filterPage);
+            await Navigation.PushModalAsync(CalendarFilterModalPage);
         }
 
         private async Task UpdateCalendarData()

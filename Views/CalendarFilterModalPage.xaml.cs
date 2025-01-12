@@ -1,4 +1,6 @@
 ﻿using Ifpa.Models;
+using Ifpa.Services;
+using Plugin.Maui.CalendarStore;
 using Serilog;
 
 namespace Ifpa.Views
@@ -9,10 +11,13 @@ namespace Ifpa.Views
         public delegate void FilterSavedDelegate();
 
         public event FilterSavedDelegate FilterSaved;
+        private readonly ICalendarSyncService CalendarSyncService;
 
-        public CalendarFilterModalPage()
+        public CalendarFilterModalPage(ICalendarSyncService calendarSyncService)
         {
             InitializeComponent();
+
+            CalendarSyncService = calendarSyncService;
 
             // TODO: bindings instead of explicit assignment
             var lastCalendarLocation = Settings.LastCalendarLocation;
@@ -84,6 +89,13 @@ namespace Ifpa.Views
             Settings.LastCalendarDistance = (int)DistanceSlider.Value;
             Settings.CalendarRankingSystem = (string)RankingTypePicker.SelectedItem;
             Settings.CalendarShowLeagues = ShowLeaguesCheckBox.IsChecked;
+
+            // When we change the filter, we need to clear the local calendar events and re-sync on the new location
+            if (Settings.SyncCalendarWithSystem)
+            {
+                await CalendarSyncService.DeleteIfpaDeviceCalendarAndClearLocalEvents();
+                await CalendarSyncService.SyncIfpaCalendarWithDeviceCalendar();
+            }
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
