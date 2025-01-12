@@ -93,8 +93,13 @@ namespace Ifpa.Views
             // When we change the filter, we need to clear the local calendar events and re-sync on the new location
             if (Settings.SyncCalendarWithSystem)
             {
-                await CalendarSyncService.DeleteIfpaDeviceCalendarAndClearLocalEvents();
-                await CalendarSyncService.SyncIfpaCalendarWithDeviceCalendar();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                Task.Run(async () =>
+                {
+                    await CalendarSyncService.DeleteIfpaDeviceCalendarAndClearLocalEvents();
+                    await CalendarSyncService.SyncIfpaCalendarWithDeviceCalendar();
+                });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
 
             await Navigation.PopModalAsync();
