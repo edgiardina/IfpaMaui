@@ -39,3 +39,8 @@ Github Actions available for build and publishing
 
 CLI build supported via
 `dotnet build IfpaMaui.csproj -c Release -f net7.0-android/ios`
+
+#### Special Thanks
+
+Jannie Touch redrew the IFPA logo as an SVG. Thanks Jannie!
+https://jannietouch.com/
