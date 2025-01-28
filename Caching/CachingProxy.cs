@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using Polly;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,8 +15,6 @@ namespace Ifpa.Caching
         private AsyncPolicy _policy;
         private ILogger _logger;
 
-        public event Action<string, object[]> CachedValueUsed;
-
         public void Configure(T decorated, AsyncPolicy policy, ILogger logger)
         {
             _decorated = decorated;
@@ -22,27 +22,48 @@ namespace Ifpa.Caching
             _logger = logger;
         }
 
-        protected override object Invoke(MethodInfo targetMethod, object[] args)
+        protected override object? Invoke(MethodInfo targetMethod, object[] args)
         {
-            _logger.LogInformation($"Invoking {targetMethod.Name}");
-
-            return _policy.Execute(() =>
+            // Check if the method is asynchronous
+            if (typeof(Task).IsAssignableFrom(targetMethod.ReturnType))
             {
-                _logger.LogInformation($"Fetching fresh data for {targetMethod.Name}");
-                return targetMethod.Invoke(_decorated, args);
-            });
+                // Handle async methods
+                return InvokeAsync(targetMethod, args);
+            }
+            else
+            {
+                // Handle sync methods by wrapping in a Task and using ExecuteAsync
+                return _policy.ExecuteAsync(() => Task.Run(() =>
+                {
+                    _logger.LogInformation($"Executing synchronous method {targetMethod.Name}");
+                    return targetMethod.Invoke(_decorated, args);
+                })).GetAwaiter().GetResult(); // Unwrap the result for synchronous execution
+            }
         }
 
-        protected override async Task<object> InvokeAsync(MethodInfo targetMethod, object[] args)
+        private async Task<object?> InvokeAsync(MethodInfo targetMethod, object[] args)
         {
-            _logger.LogInformation($"Invoking {targetMethod.Name}");
-
             return await _policy.ExecuteAsync(async () =>
             {
-                _logger.LogInformation($"Fetching fresh data for {targetMethod.Name}");
-                return await (Task<object>)targetMethod.Invoke(_decorated, args);
+                _logger.LogInformation($"Executing async method {targetMethod.Name}");
+                var result = targetMethod.Invoke(_decorated, args);
+
+                if (result is Task task)
+                {
+                    await task.ConfigureAwait(false);
+
+                    // For Task<T>, get the result property
+                    if (targetMethod.ReturnType.IsGenericType)
+                    {
+                        return ((dynamic)task).Result;
+                    }
+                    return null;
+                }
+
+                return result;
             });
         }
     }
+
 
 }

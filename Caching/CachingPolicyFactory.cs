@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Polly.Caching;
 using Polly;
+using Ifpa.Models;
 
 namespace Ifpa.Caching
 {
-    public static class PollyPolicyFactory
+    public static class CachingPolicyFactory
     {
         public static AsyncPolicy CreatePolicy(IAsyncCacheProvider cacheProvider, ILogger logger)
         {
@@ -22,18 +18,18 @@ namespace Ifpa.Caching
                     {
                         App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", "OK");
                     });
-                    return await Task.FromResult(default(object));
+                    //return await Task.FromResult(default(object));
                 },
-                onFallbackAsync: async (context, cancellationToken) =>
+                onFallbackAsync: async (exception, task) =>
                 {
-                    logger.LogError($"Fallback executed for {context.OperationKey}: No data available.");
+                    logger.LogError($"Fallback executed for {task.OperationKey}: No data available.");
                 }
             );
 
             // Cache policy with SQLite
             var cachePolicy = Policy.CacheAsync(
                 cacheProvider: cacheProvider,
-                ttl: TimeSpan.FromDays(30),
+                ttl: Settings.CacheDuration,
                 onCacheGet: (context, key) =>
                 {
                     logger.LogWarning($"Cache hit for {context.OperationKey}");
@@ -41,10 +37,22 @@ namespace Ifpa.Caching
                     {
                         App.Current.MainPage.DisplayAlert("Cached Data", "Using cached data as the network is unavailable.", "OK");
                     });
+                },                
+                onCachePut: (context, key) =>
+                {
+                    logger.LogInformation($"Data put in cache for {context.OperationKey}");
                 },
                 onCacheMiss: (context, key) =>
                 {
                     logger.LogInformation($"Cache miss for {context.OperationKey}");
+                },
+                onCacheGetError: (context, key, exception) =>
+                {
+                    logger.LogError(exception, $"Error getting cached data for {context.OperationKey}");
+                },
+                onCachePutError: (context, key, exception) =>
+                {
+                    logger.LogError(exception, $"Error putting data in cache for {context.OperationKey}");
                 }
             );
 

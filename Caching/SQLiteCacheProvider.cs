@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Ifpa.Models;
 using Polly.Caching;
 using SQLite;
 
@@ -11,8 +12,6 @@ namespace Ifpa.Caching
 {
     public class SQLiteCacheProvider : IAsyncCacheProvider
     {
-        private readonly TimeSpan _ttl = TimeSpan.FromDays(30);
-
         private readonly SQLiteAsyncConnection _db;
 
         public SQLiteCacheProvider(string dbPath)
@@ -49,8 +48,8 @@ namespace Ifpa.Caching
 
         public async Task PutAsync(string key, object value, Ttl ttl, CancellationToken cancellationToken, bool continueOnCapturedContext)
         {
-            if (ttl.Timespan > _ttl)
-                ttl.Timespan = _ttl;
+            if (ttl.Timespan > Settings.CacheDuration)
+                ttl.Timespan = Settings.CacheDuration;
 
             var item = new CacheItem
             {

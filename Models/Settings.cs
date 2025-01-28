@@ -8,6 +8,8 @@ namespace Ifpa.Models
         private static string PLAYER_ID = "PlayerId";
         private static string CURRENT_WPPR_RANK = "CurrentWpprRank";
 
+        public static TimeSpan CacheDuration = TimeSpan.FromDays(30);
+
         static LocalDatabase localDatabase;
 
         //Groupname is so we can share the player ID with the upcoming iOS Widget. 
