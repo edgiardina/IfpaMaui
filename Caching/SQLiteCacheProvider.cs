@@ -17,8 +17,8 @@ namespace Ifpa.Caching
         public SQLiteCacheProvider(string dbPath)
         {
             _db = new SQLiteAsyncConnection(dbPath);
-            _db.CreateTableAsync<CacheItem>().Wait();
-            CleanupExpiredItems().Wait(); // Remove expired items on initialization
+            Task.Run(() => _db.CreateTableAsync<CacheItem>()).Wait();
+            Task.Run(CleanupExpiredItems).Wait(); // Remove expired items on initialization
         }
 
         private async Task CleanupExpiredItems()
