@@ -7,18 +7,20 @@ namespace Ifpa.Caching
 {
     public static class CachingPolicyFactory
     {
-        public static AsyncPolicy CreatePolicy(IAsyncCacheProvider cacheProvider, ILogger logger)
+        public static AsyncPolicy<object> CreatePolicy(IAsyncCacheProvider cacheProvider, ILogger logger)
         {
             // Fallback policy for handling cache misses and no network
-            var fallbackPolicy = Policy.Handle<Exception>().FallbackAsync(
-                fallbackAction: async (context, cancellationToken) =>
+            var fallbackPolicy = Policy<object>
+                                        .Handle<Exception>()
+                                        .FallbackAsync(
+                fallbackAction: (context, cancellationToken) =>
                 {
                     logger.LogWarning($"Fallback triggered for {context.OperationKey}: No cached data and no network.");
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", "OK");
+                        App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", Strings.OK);
                     });
-                    //return await Task.FromResult(default(object));
+                    return null;
                 },
                 onFallbackAsync: async (exception, task) =>
                 {
@@ -35,16 +37,16 @@ namespace Ifpa.Caching
                     logger.LogWarning($"Cache hit for {context.OperationKey}");
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        App.Current.MainPage.DisplayAlert("Cached Data", "Using cached data as the network is unavailable.", "OK");
+                        App.Current.MainPage.DisplayAlert("Cached Data", "Using cached data as the network is unavailable.", Strings.OK);
                     });
-                },                
+                },
                 onCachePut: (context, key) =>
                 {
-                    logger.LogInformation($"Data put in cache for {context.OperationKey}");
+                    logger.LogDebug($"Data put in cache for {context.OperationKey}");
                 },
                 onCacheMiss: (context, key) =>
                 {
-                    logger.LogInformation($"Cache miss for {context.OperationKey}");
+                    logger.LogDebug($"Cache miss for {context.OperationKey}");
                 },
                 onCacheGetError: (context, key, exception) =>
                 {
@@ -57,7 +59,31 @@ namespace Ifpa.Caching
             );
 
             // Combine fallback and cache policies
-            return fallbackPolicy.WrapAsync(cachePolicy);
+            //return fallbackPolicy.WrapAsync(cachePolicy);
+            return fallbackPolicy;
+        }
+
+        public static IAsyncPolicy<T> CreateFallbackPolicy<T>(ILogger logger)
+        {
+            return Policy<T>.Handle<Exception>().FallbackAsync(
+                fallbackAction: async (context, cancellationToken) =>
+                {
+                    logger.LogWarning("Fallback triggered: Returning default value for {type}", typeof(T));
+
+                    if (typeof(T) == typeof(Task))
+                    {
+                        return await Task.FromResult(default(T)); // Return a default Task<T>
+                    }
+                    else
+                    {
+                        return default; // Return a default value for sync methods
+                    }
+                },
+                onFallbackAsync: async (exception, task) =>
+                {
+                    logger.LogError($"Fallback executed for {task.OperationKey}: No data available.");
+                }
+            );
         }
     }
 

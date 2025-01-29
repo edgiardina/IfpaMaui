@@ -138,14 +138,18 @@ public static class MauiProgram
             var api = provider.GetRequiredService<PinballRankingApi>();
             var logger = provider.GetRequiredService<ILogger<CachingProxy<IPinballRankingApi>>>();
 
-            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app_cache.db");
+            return CachingProxyFactory.Create<IPinballRankingApi>(api, logger);
+
+            /*
+             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app_cache.db");
             var sqliteCacheProvider = new SQLiteCacheProvider(dbPath);
 
             var cachingPolicy = CachingPolicyFactory.CreatePolicy(sqliteCacheProvider, logger);
 
             return CachingProxyFactory.Create<IPinballRankingApi>(api, cachingPolicy, logger);
+             
+             */
         });
-
 
         s.AddSingleton(Geocoding.Default);
         s.AddSingleton(Badge.Default);

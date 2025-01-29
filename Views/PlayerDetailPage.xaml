@@ -200,7 +200,8 @@
                                Grid.Column="0">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}"/>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
                             </Frame.GestureRecognizers>
@@ -210,7 +211,8 @@
                                Grid.Column="1">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerVsPlayerCommand}" />
                             </Frame.GestureRecognizers>
@@ -222,7 +224,8 @@
                                x:Name="ChampButton">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerChampionshipSeriesCommand}" />
                             </Frame.GestureRecognizers>
