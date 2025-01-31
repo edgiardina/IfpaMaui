@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Android.Content;
+using Flurl.Http;
+using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Fallback;
 using System.Reflection;
@@ -14,59 +16,90 @@ namespace Ifpa.Caching
         public void Configure(T decorated, ILogger logger)
         {
             _decorated = decorated;
-           // _policy = policy; 
+            // _policy = policy; 
             _logger = logger;
         }
 
         protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
-            _logger.LogInformation("Invoking {decoratedClass}.{methodName}", typeof(T), targetMethod.Name);
-
-            // Get the return type of the method
-            Type returnType = targetMethod.ReturnType;
-            bool isAsync = typeof(Task).IsAssignableFrom(returnType);
-
-            // Dynamically create the correct fallback policy for the return type
-            var createFallbackMethod = typeof(CachingPolicyFactory)
-                                            .GetMethod(nameof(CachingPolicyFactory.CreateFallbackPolicy))
-                                            ?.MakeGenericMethod(returnType);
-
-            if (createFallbackMethod == null)
-                throw new InvalidOperationException($"Could not find a suitable fallback policy for {returnType}");
-
-            var fallbackPolicy = createFallbackMethod.Invoke(null, new object[] { _logger });
-
-            if (isAsync)
+            try
             {
-                // Ensure we cast the policy to the correct async policy type
-                Convert.ChangeType(fallbackPolicy, returnType);
-                var asyncFallbackPolicy = fallbackPolicy as IAsyncPolicy<dynamic>;
+                _logger.LogInformation("Logging something before invoking {decoratedClass}.{methodName}",
+                    _decorated, targetMethod.Name);
 
-                // Execute the async method with Polly fallback
-                return asyncFallbackPolicy.ExecuteAsync(async () =>
+                //var policy = Policy<object>
+                //            .Handle<Exception>()
+                //            .FallbackAsync(
+                //    fallbackAction: (context, cancellationToken) =>
+                //    {
+                //        _logger.LogWarning($"Fallback triggered for {context.OperationKey}: No cached data and no network.");
+                //        MainThread.BeginInvokeOnMainThread(() =>
+                //        {
+                //            App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", Strings.OK);
+                //        });
+                //        return null;
+                //    },
+                //    onFallbackAsync: async (exception, task) =>
+                //    {
+                //        _logger.LogError($"Fallback executed for {task.OperationKey}: No data available.");
+                //    }
+                //);
+
+                //var policy = Policy<object>.Handle<Exception>().Fallback(fallbackAction: (context, cancellationToken) =>
+                //{
+                //    _logger.LogWarning($"Fallback triggered for {context.OperationKey}: No cached data and no network.");
+                //    MainThread.BeginInvokeOnMainThread(() =>
+                //    {
+                //        App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", Strings.OK);
+                //    });
+                //    return null;
+                //},
+                //onFallback: (exception, task) =>
+                //{
+                //    _logger.LogError($"Fallback executed for {task.OperationKey}: No data available.");
+                //});
+
+                //var result = policy.ExecuteAndCaptureAsync(async () => targetMethod.Invoke(_decorated, args));
+
+                var result = targetMethod.Invoke(_decorated, args);
+
+                if (result is Task resultTask)
                 {
-                    _logger.LogInformation("Executing async method {decoratedClass}.{methodName}", typeof(T), targetMethod.Name);
-                    var result = targetMethod.Invoke(_decorated, args);
-
-                    if (result is Task task)
+                    resultTask.ContinueWith(task =>
                     {
-                        await task.ConfigureAwait(false);
-                        return returnType.IsGenericType ? ((dynamic)task).Result : null;
-                    }
+                        if (task.IsFaulted)
+                        {
+                            _logger.LogError(task.Exception,
+                                "An unhandled exception was raised during execution of {decoratedClass}.{methodName}",
+                                _decorated, targetMethod.Name);
 
-                    return result;
-                });
-            }
-            else
-            {
-                // Execute the sync method with Polly fallback
-                return ((ISyncPolicy)fallbackPolicy).Execute(() =>
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", Strings.OK);
+                            });
+                        }
+                        _logger.LogInformation("Log something after {decoratedClass}.{methodName} completed",
+                            _decorated, targetMethod.Name);
+                    });
+                }
+                else
                 {
-                    _logger.LogInformation("Executing sync method {decoratedClass}.{methodName}", typeof(T), targetMethod.Name);
-                    return targetMethod.Invoke(_decorated, args);
-                });
+                    _logger.LogInformation("Logging something after method {decoratedClass}.{methodName} completion.",
+                        _decorated, targetMethod.Name);
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.InnerException ?? ex,
+                    "Error during invocation of {decoratedClass}.{methodName}",
+                    _decorated, targetMethod.Name);
+                throw ex.InnerException ?? ex;
             }
         }
+
+
 
     }
 
