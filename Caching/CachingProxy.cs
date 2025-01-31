@@ -73,10 +73,20 @@ namespace Ifpa.Caching
                                 "An unhandled exception was raised during execution of {decoratedClass}.{methodName}",
                                 _decorated, targetMethod.Name);
 
-                            MainThread.BeginInvokeOnMainThread(() =>
+                            if (task.Exception.InnerException is FlurlHttpException flurlException)
                             {
-                                App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", Strings.OK);
-                            });
+                                MainThread.BeginInvokeOnMainThread(() =>
+                                {
+                                    App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", Strings.OK);
+                                });
+                            }
+                            else
+                            {
+                                MainThread.BeginInvokeOnMainThread(() =>
+                                {
+                                    App.Current.MainPage.DisplayAlert("Error", "An error occurred while processing your request.", Strings.OK);
+                                });
+                            }
                         }
                         _logger.LogInformation("Log something after {decoratedClass}.{methodName} completed",
                             _decorated, targetMethod.Name);
@@ -98,9 +108,6 @@ namespace Ifpa.Caching
                 throw ex.InnerException ?? ex;
             }
         }
-
-
-
     }
 
 
