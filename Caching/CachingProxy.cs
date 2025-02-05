@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using CommunityToolkit.Maui.Alerts;
 using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Polly;
@@ -77,14 +78,14 @@ namespace Ifpa.Caching
                             {
                                 MainThread.BeginInvokeOnMainThread(() =>
                                 {
-                                    App.Current.MainPage.DisplayAlert("No Data", "No cached data is available, and the network is offline.", Strings.OK);
+                                    Toast.Make("Unable to load data, a network connection is required.", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                                 });
                             }
                             else
                             {
                                 MainThread.BeginInvokeOnMainThread(() =>
                                 {
-                                    App.Current.MainPage.DisplayAlert("Error", "An error occurred while processing your request.", Strings.OK);
+                                    Toast.Make("An error occurred while loading data", CommunityToolkit.Maui.Core.ToastDuration.Long).Show();
                                 });
                             }
                         }

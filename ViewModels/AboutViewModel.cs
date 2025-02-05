@@ -2,14 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.ViewModels
 {
     public partial class AboutViewModel : BaseViewModel
     {
         private AppSettings AppSettings { get; set; }
+
+        private IPinballRankingApi PinballRankingApi { get; set; }
 
         [ObservableProperty]
         private List<Player> sponsors = new List<Player>();
@@ -20,9 +22,10 @@ namespace Ifpa.ViewModels
 
         public int CreatorIfpaNumber => 16927;
 
-        public AboutViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(pinballRankingApiV2, logger)
+        public AboutViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(logger)
         {
             AppSettings = appSettings;
+            this.PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -37,9 +40,9 @@ namespace Ifpa.ViewModels
             {
                 Sponsors.Clear();
 
-                var tempList = await PinballRankingApiV2.GetPlayers(AppSettings.Sponsors);
+                var tempList = await PinballRankingApi.GetPlayers(AppSettings.Sponsors);
 
-                Sponsors = tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank).ToList();
+                Sponsors = tempList.OrderBy(i => i.PlayerStats.System.FirstOrDefault().CurrentRank).ToList();
 
                 logger.LogDebug("Loaded {0} sponsors", Sponsors.Count);
             }

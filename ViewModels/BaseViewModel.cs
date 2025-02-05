@@ -24,5 +24,10 @@ namespace Ifpa.ViewModels
             PinballRankingApiV2 = pinballRankingApiV2;
             this.logger = logger;
         }
+
+        protected BaseViewModel(ILogger<BaseViewModel> logger)
+        {
+            this.logger = logger;
+        }
     }
 }
