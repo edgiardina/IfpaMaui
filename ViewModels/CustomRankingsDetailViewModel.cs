@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Rankings;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Rankings.Custom;
+using PinballApi.Models.WPPR.Universal.Tournaments;
 
 namespace Ifpa.ViewModels
 {
@@ -11,16 +12,16 @@ namespace Ifpa.ViewModels
         public int ViewId { get; internal set; }
 
         [ObservableProperty]
-        private List<CustomRankingViewResult> viewResults = new List<CustomRankingViewResult>();
+        private List<ViewResult> viewResults = new List<ViewResult>();
 
         [ObservableProperty]
-        private List<Tournament> tournaments = new List<Tournament>();
+        private List<CustomViewTournament> tournaments = new List<CustomViewTournament>();
 
         [ObservableProperty]
-        private List<CustomRankingViewFilter> viewFilters = new List<CustomRankingViewFilter>();
+        private List<ViewFilter> viewFilters = new List<ViewFilter>();
 
         [ObservableProperty]
-        private CustomRankingViewResult selectedViewResult;
+        private ViewResult selectedViewResult;
 
         [ObservableProperty]
         private Tournament selectedTournament;
@@ -30,8 +31,11 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public CustomRankingsDetailViewModel(IPinballRankingApi pinballRankingApi, ILogger<CustomRankingsDetailViewModel> logger) : base(logger)
         {
+            PinballRankingApi = pinballRankingApi;
 
         }
 
@@ -47,14 +51,14 @@ namespace Ifpa.ViewModels
 
             try
             {
-                var tempList = await PinballRankingApiV2.GetRankingCustomView(ViewId);
+                var tempList = await PinballRankingApi.GetCustomRankingViewResult(ViewId);
 
                 Tournaments = tempList.Tournaments;
                 ViewResults = tempList.ViewResults;
 
                 // Use linq to trim the name property of the ViewFilters
                 ViewFilters = tempList.ViewFilters
-                                         .Select(x => new CustomRankingViewFilter { Name = x.Name.Trim(), Setting = x.Setting })
+                                         .Select(x => new ViewFilter { Name = x.Name.Trim(), Setting = x.Setting })
                                          .ToList();
 
                 Title = tempList.Title;

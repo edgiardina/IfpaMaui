@@ -5,7 +5,7 @@
              Title="{x:Static local:Strings.ChampionshipSeriesList_Title}"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
-             xmlns:ifpacs="clr-namespace:PinballApi.Models.WPPR.v2.Series;assembly=PinballApi"
+             xmlns:ifpacs="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi"
              x:DataType="vm:ChampionshipSeriesListViewModel">
     <!-- RefreshView doesn't size correctly in iOS so it's been removed for now
          https://github.com/dotnet/maui/issues/7315 -->
