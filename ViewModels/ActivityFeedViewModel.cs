@@ -18,7 +18,7 @@ namespace Ifpa.ViewModels
 
         private readonly NotificationService notificationService;
 
-        public ActivityFeedViewModel(PinballRankingApiV2 pinballRankingApiV2, NotificationService notificationService, ILogger<ActivityFeedViewModel> logger) : base(pinballRankingApiV2, logger)
+        public ActivityFeedViewModel(NotificationService notificationService, ILogger<ActivityFeedViewModel> logger) : base(logger)
         {
             Title = "Activity Feed";
             ActivityFeedItems = new ObservableCollection<ActivityFeedItem>();

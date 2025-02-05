@@ -9,6 +9,7 @@ namespace Ifpa.ViewModels
 {
     public abstract partial class BaseViewModel : ObservableObject
     {
+        [Obsolete("PinballRankingApiV2 is slated for deprecation, use the universal API")]
         public PinballRankingApiV2 PinballRankingApiV2 { get; private set; }
 
         protected readonly ILogger logger;

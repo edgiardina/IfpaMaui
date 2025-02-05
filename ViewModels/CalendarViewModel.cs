@@ -50,7 +50,7 @@ namespace Ifpa.ViewModels
         private readonly IPinballRankingApi pinballRankingApi;
         private readonly IGeocoding geocoding;
 
-        public CalendarViewModel(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, IGeocoding geocoding, ILogger<CalendarViewModel> logger) : base(pinballRankingApiV2, logger)
+        public CalendarViewModel(IPinballRankingApi pinballRankingApi, IGeocoding geocoding, ILogger<CalendarViewModel> logger) : base(logger)
         {
             this.pinballRankingApi = pinballRankingApi;
             this.geocoding = geocoding;
