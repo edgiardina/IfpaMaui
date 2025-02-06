@@ -2,10 +2,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
-using PinballApi.Models.WPPR.v2.Players;
-using PinballApi.Models.WPPR.v2.Tournaments;
+using PinballApi.Models.WPPR.Universal.Players;
 using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
@@ -25,16 +24,20 @@ namespace Ifpa.ViewModels
         private PlayerResult selectedResult;
 
         public ResultType State { get; set; }
-        public RankingType RankingType { get; set; }
+        public PlayerRankingSystem RankingType { get; set; }
 
-        public RankingType[] RankingTypeOptions => new[] { RankingType.Main, RankingType.Women, RankingType.Youth };
+        public PlayerRankingSystem[] RankingTypeOptions => new[] { PlayerRankingSystem.Main, PlayerRankingSystem.Women, PlayerRankingSystem.Youth };
 
         public int PlayerId { get; set; }
 
-        public PlayerResultsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerResultsViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+
+        public PlayerResultsViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerResultsViewModel> logger) : base(logger)
         {
             State = ResultType.Active;
-            RankingType = RankingType.Main;
+            RankingType = PlayerRankingSystem.Main;
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -47,21 +50,21 @@ namespace Ifpa.ViewModels
 
             try
             {
-                var player = await PinballRankingApiV2.GetPlayer(PlayerId);
+                var player = await PinballRankingApi.GetPlayer(PlayerId);
 
-                var activeResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Active);
+                var activeResults = await PinballRankingApi.GetPlayerResults(PlayerId, RankingType, ResultType.Active);
                 if (activeResults.ResultsCount > 0)
                 {
                     ActiveResults = activeResults.Results.ToObservableCollection();
                 }
 
-                var unusedResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.NonActive);
+                var unusedResults = await PinballRankingApi.GetPlayerResults(PlayerId, RankingType, ResultType.NonActive);
                 if (unusedResults.ResultsCount > 0)
                 {
                     UnusedResults = unusedResults.Results.ToObservableCollection();
                 }
 
-                var pastResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Inactive);
+                var pastResults = await PinballRankingApi.GetPlayerResults(PlayerId, RankingType, ResultType.Inactive);
                 if (pastResults.ResultsCount > 0)
                 {
                     PastResults = pastResults.Results.ToObservableCollection();
