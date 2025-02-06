@@ -14,7 +14,17 @@ namespace Ifpa.Converters
                 return "Not Ranked";
             }
 
-            return ((int)value).OrdinalSuffix();
+            // whether long or int, call value.OrdinalSuffix() extension method
+            if(value is long longVal)
+            {
+                return longVal.OrdinalSuffix();
+            }
+            else if (value is int intVal)
+            {
+                return intVal.OrdinalSuffix();
+            }
+
+            throw new ArgumentException("Value must be of type long or int");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

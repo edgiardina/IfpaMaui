@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.ViewModels
 {
@@ -17,8 +17,11 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public FavoritesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<FavoritesViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public FavoritesViewModel(IPinballRankingApi pinballRankingApi, ILogger<FavoritesViewModel> logger) : base(logger)
         {
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -40,10 +43,10 @@ namespace Ifpa.ViewModels
                     //Chunk into 50 to solve https://github.com/edgiardina/Ifpa/issues/148
                     foreach (var favoritesChunk in favorites.Chunk(50))
                     {
-                        tempList.AddRange(await PinballRankingApiV2.GetPlayers(favoritesChunk.Select(n => n.PlayerID).ToList()));                        
+                        tempList.AddRange(await PinballRankingApi.GetPlayers(favoritesChunk.Select(n => n.PlayerID).ToList()));                        
                     }
 
-                    Players = tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank).ToList();
+                    Players = tempList.OrderBy(i => i.PlayerStats.System.FirstOrDefault().CurrentRank).ToList();
                 }
 
                 IsPopulated = Players.Count > 0 || dataNotLoaded;
