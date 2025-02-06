@@ -14,7 +14,7 @@
              xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -50,7 +50,7 @@
                                          VerticalOptions="Center">
                                 <Label LineBreakMode="NoWrap"
                                        HorizontalTextAlignment="End"
-                                       Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding Rank, Converter={StaticResource longToOrdinalString}}"
                                        FontSize="24" />
                             </StackLayout>
                         </StackLayout>

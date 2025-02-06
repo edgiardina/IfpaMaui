@@ -835,6 +835,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Ranked.
+        /// </summary>
+        internal static string NotRanked {
+            get {
+                return ResourceManager.GetString("NotRanked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         internal static string OK {

@@ -11,20 +11,10 @@ namespace Ifpa.Converters
         {
             if(object.Equals(value, null) || object.Equals(value, 0))
             {
-                return "Not Ranked";
+                return Strings.NotRanked;
             }
 
-            // whether long or int, call value.OrdinalSuffix() extension method
-            if(value is long longVal)
-            {
-                return longVal.OrdinalSuffix();
-            }
-            else if (value is int intVal)
-            {
-                return intVal.OrdinalSuffix();
-            }
-
-            throw new ArgumentException("Value must be of type long or int");
+            return ((int)value).OrdinalSuffix();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
