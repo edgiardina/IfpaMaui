@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
 using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
@@ -22,10 +22,13 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private PlayerVersusPlayerComparisonRecord selectedPlayerVersusPlayer;
 
+        private readonly IPinballRankingApi PinballRankingApi;
+
         public int PlayerOneId { get; set; }
         public int PlayerTwoId { get; set; }
-        public PlayerVersusPlayerDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PlayerVersusPlayerDetailViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerVersusPlayerDetailViewModel> logger) : base(logger)
         {
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -39,7 +42,7 @@ namespace Ifpa.ViewModels
             try
             {
                 PlayerVersusPlayer.Clear();
-                var pvpResults = await PinballRankingApiV2.GetPlayerVersusPlayerComparison(PlayerOneId, PlayerTwoId);
+                var pvpResults = await PinballRankingApi.GetPlayerVersusPlayerComparison(PlayerOneId, PlayerTwoId);
 
                 PlayerVersusPlayer = pvpResults.ComparisonRecords.OrderByDescending(n => n.EventDate).ToObservableCollection();
 
