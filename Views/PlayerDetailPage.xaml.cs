@@ -111,7 +111,7 @@ namespace Ifpa.Views
 
         private async Task ChangePlayerAndRedirect()
         {
-            await Settings.SetMyStatsPlayer(ViewModel.PlayerId, ViewModel.PlayerRecord.PlayerStats.CurrentWpprRank);
+            await Settings.SetMyStatsPlayer(ViewModel.PlayerId, ViewModel.PlayerRecord.GetIntegerRank());
             await ViewModel.PrepopulateTourneyResults(ViewModel.PlayerId);
 
             await DisplayAlert(Strings.PlayerDetailPage_Congratulations, Strings.PlayerDetailPage_ConfiguredStats, Strings.OK);
