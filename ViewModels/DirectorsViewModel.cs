@@ -2,24 +2,28 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi;
-using PinballApi.Models.WPPR.v2.Directors;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Directors;
 
 namespace Ifpa.ViewModels
 {
     public partial class DirectorsViewModel : BaseViewModel
     {
-        [ObservableProperty]
-        private List<Director> nacsDirectors = new List<Director>();
+        //[ObservableProperty]
+        //private List<Director> nacsDirectors = new List<Director>();
 
         [ObservableProperty]
-        private List<Director> countryDirectors = new List<Director>();
+        private List<CountryDirector> countryDirectors = new List<CountryDirector>();
 
         [ObservableProperty]
-        private Director selectedDirector;
+        private CountryDirector selectedDirector;
 
-        public DirectorsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<DirectorsViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+        
+        public DirectorsViewModel(IPinballRankingApi pinballRankingApi, ILogger<DirectorsViewModel> logger) : base(logger)
         {
             Title = "Directors";
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -32,8 +36,8 @@ namespace Ifpa.ViewModels
 
             try
             {
-                NacsDirectors = await PinballRankingApiV2.GetNacsDirectors();
-                CountryDirectors = await PinballRankingApiV2.GetCountryDirectors();
+                //NacsDirectors = await PinballRankingApi.getre;
+                CountryDirectors = await PinballRankingApi.GetCountryDirectors();
             }
             catch (Exception ex)
             {
@@ -48,7 +52,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewDirectorDetail()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectedDirector.PlayerId}");
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectedDirector.PlayerProfile.PlayerId}");
         }
     }
 }

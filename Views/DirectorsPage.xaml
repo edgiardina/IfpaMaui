@@ -12,7 +12,7 @@
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:DirectorsViewModel"
              x:Name="SearchPlayersPage"
-             xmlns:ifpadirectors="clr-namespace:PinballApi.Models.WPPR.v2.Directors;assembly=PinballApi">
+             xmlns:ifpadirectors="clr-namespace:PinballApi.Models.WPPR.Universal.Directors;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -21,7 +21,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <tabView:SfTabView Style="{StaticResource TabView}">
-            <tabView:SfTabItem Header="NACS Directors">
+            <!--<tabView:SfTabItem Header="NACS Directors">
                 <tabView:SfTabItem.Content>
                     <CollectionView x:Name="NacsDirectorsListView"
                                     ItemsSource="{Binding NacsDirectors}"
@@ -30,7 +30,7 @@
                                     SelectionChangedCommand="{Binding ViewDirectorDetailCommand}"
                                     SelectedItem="{Binding SelectedDirector, Mode=TwoWay}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="ifpadirectors:Director">
+                            <DataTemplate x:DataType="ifpadirectors:DirectorProfile">
 
                                 <VerticalStackLayout>
                                     <VerticalStackLayout Padding="10">
@@ -62,11 +62,11 @@
 
                                     </VerticalStackLayout>
 
-                                    <!--<Label HorizontalOptions="EndAndExpand"
+                                    --><!--<Label HorizontalOptions="EndAndExpand"
                                                Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"
                                                LineBreakMode="NoWrap"
                                                FontSize="18"
-                                               WidthRequest="80" />-->
+                                               WidthRequest="80" />--><!--
 
 
                                     <BoxView Style="{StaticResource BoxSeperator}" />
@@ -76,7 +76,7 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
+            </tabView:SfTabItem>-->
             <tabView:SfTabItem Header="Country Directors">
                 <tabView:SfTabItem.Content>
                     <CollectionView x:Name="CountryDirectorsListView"
@@ -86,28 +86,19 @@
                                     SelectionChangedCommand="{Binding ViewDirectorDetailCommand}"
                                     SelectedItem="{Binding SelectedDirector, Mode=TwoWay}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="ifpadirectors:Director">
+                            <DataTemplate x:DataType="ifpadirectors:CountryDirector">
 
                                 <VerticalStackLayout>
                                     <VerticalStackLayout Padding="10">
                                         <Label LineBreakMode="NoWrap"
-                                               FontSize="16">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <FormattedString.Spans>
-                                                        <Span Text="{Binding FirstName}" />
-                                                        <Span Text=" " />
-                                                        <Span Text="{Binding LastName}" />
-                                                    </FormattedString.Spans>
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
+                                               FontSize="16"
+                                               Text="{Binding PlayerProfile.Name}" />                   
                                         <Label LineBreakMode="NoWrap"
                                                FontSize="12">
                                             <Label.FormattedText>
                                                 <FormattedString>
                                                     <FormattedString.Spans>
-                                                        <Span Text="{Binding CountryName}"
+                                                        <Span Text="{Binding PlayerProfile.CountryName}"
                                                               TextColor="{DynamicResource SecondaryTextColor}" />
                                                     </FormattedString.Spans>
                                                 </FormattedString>
