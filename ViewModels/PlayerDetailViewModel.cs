@@ -215,13 +215,13 @@ namespace Ifpa.ViewModels
 
         public async Task PrepopulateTourneyResults(int playerId)
         {
-            var results = await PinballRankingApiV2.GetPlayerResults(playerId);
+            var results = await PinballRankingApi.GetPlayerResults(playerId);
 
             foreach (var result in results.Results)
             {
                 var record = new ActivityFeedItem
                 {
-                    CreatedDateTime = result.EventDate,
+                    CreatedDateTime = result.EventDate.ToDateTime(TimeOnly.MinValue),
                     HasBeenSeen = true,
                     RecordID = result.TournamentId,
                     IntOne = result.Position,
