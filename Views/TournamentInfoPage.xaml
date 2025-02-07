@@ -103,7 +103,7 @@
             <Label Grid.Column="1"
                    Grid.Row="5"
                    Style="{DynamicResource valueStyle}"
-                   Text="{Binding TournamentDetails.RankingType, Mode=OneWay}" />
+                   Text="{Binding TournamentDetails.RankingSystem, Mode=OneWay}" />
             <Label Grid.Column="0"
                    Grid.Row="6"
                    Style="{DynamicResource labelStyle}"
