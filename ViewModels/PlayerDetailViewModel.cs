@@ -86,6 +86,8 @@ namespace Ifpa.ViewModels
 
         private readonly IPinballRankingApi PinballRankingApi;
 
+        private const long TicksInADay = 864000000000;
+
         public PlayerDetailViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(logger)
         {
             AppSettings = appSettings;
@@ -161,7 +163,7 @@ namespace Ifpa.ViewModels
                         Stroke = new SolidColorPaint(SKColor.Parse(resourceColor.ToHex())) { StrokeThickness = 2 },
 
                         Mapping = (logPoint, index) =>
-                                new(logPoint.RankDate.DayNumber, Math.Log(logPoint.RankPosition, s_logBase))
+                                new(logPoint.RankDate.DayNumber * TicksInADay, Math.Log(logPoint.RankPosition, s_logBase))
                     };
 
                     PlayerRankHistoryLineSeries = new List<ISeries> { playerRankSeries };
