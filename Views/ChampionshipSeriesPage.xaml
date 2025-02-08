@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:ChampionshipSeriesViewModel"
-             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.v2.Series;assembly=PinballApi">
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi">
     <ContentPage.Resources>
         <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
     </ContentPage.Resources>

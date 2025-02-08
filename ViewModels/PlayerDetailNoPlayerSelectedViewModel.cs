@@ -7,7 +7,7 @@ namespace Ifpa.ViewModels
     public partial class PlayerDetailNoPlayerSelectedViewModel : BaseViewModel
     {
 
-        public PlayerDetailNoPlayerSelectedViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerDetailNoPlayerSelectedViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PlayerDetailNoPlayerSelectedViewModel(ILogger<PlayerDetailNoPlayerSelectedViewModel> logger) : base(logger)
         {
 
         }

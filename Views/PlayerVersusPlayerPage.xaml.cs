@@ -1,5 +1,5 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.Views
 {

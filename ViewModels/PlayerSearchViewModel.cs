@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
 using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
@@ -19,8 +19,11 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private Player selectedPlayer;
 
-        public PlayerSearchViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public PlayerSearchViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerSearchViewModel> logger) : base(logger)
         {
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -37,7 +40,7 @@ namespace Ifpa.ViewModels
 
                 if (text.Trim().Length > 0)
                 {
-                    var items = await PinballRankingApiV2.GetPlayersBySearch(new PlayerSearchFilter() { Name = text.Trim() });
+                    var items = await PinballRankingApi.PlayerSearch(name: text.Trim());
 
                     Players = items.Results?.ToObservableCollection();
                 }
@@ -45,7 +48,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error searching for player", text);
+                logger.LogError(ex, "Error searching for player {text}", text);
             }
             finally
             {

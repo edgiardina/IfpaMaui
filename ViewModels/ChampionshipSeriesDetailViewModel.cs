@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Series;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
@@ -20,13 +20,16 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private SubmittedTournament selectedTournament;
 
+        private IPinballRankingApi PinballRankingApi { get; set; }
+
         public string RegionCode { get; set; }
         public string SeriesCode { get; set; }
         public int Year { get; set; }
 
-        public ChampionshipSeriesDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public ChampionshipSeriesDetailViewModel(IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesDetailViewModel> logger) : base(logger)
         {
-        }        
+            PinballRankingApi = pinballRankingApi;
+        }
 
         [RelayCommand]
         public async Task LoadItems()
@@ -40,8 +43,8 @@ namespace Ifpa.ViewModels
 
             try
             {
-                RegionStandings = await PinballRankingApiV2.GetSeriesStandingsForRegion(SeriesCode, RegionCode, Year);
-                SeriesTournaments = await PinballRankingApiV2.GetSeriesTournamentsForRegion(SeriesCode, RegionCode, Year);
+                RegionStandings = await PinballRankingApi.GetSeriesStandingsForRegion(SeriesCode, RegionCode, Year);
+                SeriesTournaments = await PinballRankingApi.GetSeriesTournamentsForRegion(SeriesCode, RegionCode, Year);
             }
             catch (Exception ex)
             {

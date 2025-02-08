@@ -11,7 +11,7 @@
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:ChampionshipSeriesDetailViewModel"
              Title="{Binding Title}"
-             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.v2.Series;assembly=PinballApi">
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />

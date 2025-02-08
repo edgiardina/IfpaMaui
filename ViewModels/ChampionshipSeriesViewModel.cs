@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Series;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
@@ -17,13 +17,15 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private SeriesOverallResult selectedSeriesOverallResult;
 
+        private readonly IPinballRankingApi PinballRankingApi;
+
         public int Year { get; set; }
 
         public string SeriesCode { get; set; }
 
-        public ChampionshipSeriesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesViewModel> logger) : base(pinballRankingApiV2, logger)
+        public ChampionshipSeriesViewModel(IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesViewModel> logger) : base(logger)
         {
-
+            this.PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -39,8 +41,8 @@ namespace Ifpa.ViewModels
             try
             {
                 SeriesOverallResults.Clear();
-                var stateProvinceChampionshipSeries = await PinballRankingApiV2.GetSeriesOverallStanding(SeriesCode, Year);
-                var seriesDetails = await PinballRankingApiV2.GetSeries();
+                var stateProvinceChampionshipSeries = await PinballRankingApi.GetSeriesOverallStanding(SeriesCode, Year);
+                var seriesDetails = await PinballRankingApi.GetSeries();
 
                 AvailableYears = seriesDetails.First(n => n.Code == SeriesCode).Years;
 

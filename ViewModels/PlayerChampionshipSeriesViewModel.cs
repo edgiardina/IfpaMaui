@@ -1,26 +1,29 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.v2.WPPR;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
     public partial class PlayerChampionshipSeriesViewModel : BaseViewModel
     {
         [ObservableProperty]
-        private List<ChampionshipSeries> championshipSeries = new List<ChampionshipSeries>();
+        private List<SeriesRank> championshipSeries = new List<SeriesRank>();
 
         [ObservableProperty]
-        private ChampionshipSeries selectedChampionshipSeries;
+        private SeriesRank selectedChampionshipSeries;
 
         [ObservableProperty]
         private int year = DateTime.Now.Year;
 
         public int PlayerId { get; set; }
 
-        public PlayerChampionshipSeriesViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public PlayerChampionshipSeriesViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(logger)
         {
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -33,9 +36,9 @@ namespace Ifpa.ViewModels
 
             try
             {
-                var player = await PinballRankingApiV2.GetPlayer(PlayerId);
+                var player = await PinballRankingApi.GetPlayer(PlayerId);
 
-                ChampionshipSeries = player.ChampionshipSeries.Where(n => n.Year == Year).ToList();
+                ChampionshipSeries = player.Series.Where(n => n.Year == Year).ToList();
 
                 Title = $"{Strings.PlayerChampionshipSeriesPage_ChampionshipSeries} - {Year}";
             }
@@ -59,9 +62,9 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task FilterChampSeries()
         {
-            var player = await PinballRankingApiV2.GetPlayer(PlayerId);
+            var player = await PinballRankingApi.GetPlayer(PlayerId);
 
-            var availableYears = player.ChampionshipSeries.Select(n => n.Year).Distinct().ToList();
+            var availableYears = player.Series.Select(n => n.Year).Distinct().ToList();
 
             string action = await Shell.Current.DisplayActionSheet(Strings.PlayerChampionshipSeriesPage_YearPrompt, Strings.Cancel, null, availableYears.Select(n => n.ToString()).ToArray());
 

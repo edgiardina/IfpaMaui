@@ -8,10 +8,11 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerSearchViewModel"
-             xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
+             xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />            
+            <converters:PlayerToRankConverter x:Key="playerToRankConverter" />
             <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -68,11 +69,14 @@
                                         </Label.Text>
                                     </Label>
                                 </StackLayout>
+                                <!-- TODO: PlayerStats don't come for free w/ a player search :( -->
+                                <!--
                                 <Label VerticalTextAlignment="Center"
                                        HorizontalOptions="EndAndExpand"
-                                       Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding PlayerStats, Converter={StaticResource playerToRankConverter}}"
                                        LineBreakMode="NoWrap"
                                        FontSize="18" />
+                                -->
                             </StackLayout>
                             <BoxView Style="{StaticResource BoxSeperator}" />
                         </StackLayout>

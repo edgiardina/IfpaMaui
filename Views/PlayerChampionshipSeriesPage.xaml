@@ -11,10 +11,10 @@
              Title="{Binding Title}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerChampionshipSeriesViewModel"
-             xmlns:ifpawppr="clr-namespace:PinballApi.Models.v2.WPPR;assembly=PinballApi">
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -34,7 +34,7 @@
                         SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}"
                         EmptyView="{x:Static local:Strings.PlayerChampionshipSeriesPage_EmptyText}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="ifpawppr:ChampionshipSeries">
+                <DataTemplate x:DataType="ifpawppr:SeriesRank">
                     <VerticalStackLayout>
                         <StackLayout Orientation="Horizontal"
                                      Margin="10">
@@ -50,7 +50,7 @@
                                          VerticalOptions="Center">
                                 <Label LineBreakMode="NoWrap"
                                        HorizontalTextAlignment="End"
-                                       Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding Rank, Converter={StaticResource longToOrdinalString}}"
                                        FontSize="24" />
                             </StackLayout>
                         </StackLayout>

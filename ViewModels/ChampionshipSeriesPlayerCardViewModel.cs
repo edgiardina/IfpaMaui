@@ -22,7 +22,7 @@ namespace Ifpa.ViewModels
 
         public IPinballRankingApi PinballRankingApi { get; set; }
 
-        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(pinballRankingApiV2, logger)
+        public ChampionshipSeriesPlayerCardViewModel(IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(logger)
         {
             PinballRankingApi = pinballRankingApi;
         }

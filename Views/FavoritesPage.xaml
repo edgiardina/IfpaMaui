@@ -13,7 +13,7 @@
              x:Name="SearchPlayersPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:FavoritesViewModel"
-             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -80,7 +80,7 @@
                                 </StackLayout>
                                 <Label HorizontalOptions="EndAndExpand"
                                        VerticalTextAlignment="Center"
-                                       Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource intToOrdinalString}}"
                                        LineBreakMode="NoWrap"
                                        FontSize="18" />
                             </StackLayout>

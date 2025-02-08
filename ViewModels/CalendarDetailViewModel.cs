@@ -25,7 +25,7 @@ namespace Ifpa.ViewModels
         private readonly IPinballRankingApi UniversalPinballRankingApi;
 
 
-        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, IPinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(logger)
         {
             UniversalPinballRankingApi = pinballRankingApi;
             CalendarStore = calendarStore;

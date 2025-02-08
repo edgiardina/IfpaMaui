@@ -3,7 +3,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi;
-using PinballApi.Models.WPPR.v2.Tournaments;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Tournaments;
 using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
@@ -19,10 +20,13 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private TournamentResult selectedPlayer;
 
-        public TournamentResultsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<TournamentResultsViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public TournamentResultsViewModel(IPinballRankingApi pinballRankingApi, ILogger<TournamentResultsViewModel> logger) : base(logger)
         {
             Title = "Tournament Results";
             Results = new ObservableCollection<TournamentResult>();
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -36,8 +40,8 @@ namespace Ifpa.ViewModels
             try
             {
                 Results.Clear();
-                var tournamentResults = await PinballRankingApiV2.GetTournamentResults(TournamentId);
-                TournamentDetails = await PinballRankingApiV2.GetTournament(TournamentId);
+                var tournamentResults = await PinballRankingApi.GetTournamentResults(TournamentId);
+                TournamentDetails = await PinballRankingApi.GetTournament(TournamentId);
 
                 Results = tournamentResults.Results.ToObservableCollection();
 

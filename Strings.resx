@@ -714,4 +714,7 @@
   <data name="PlayerChampionshipSeriesPage_YearPrompt" xml:space="preserve">
     <value>Championship Series Year</value>
   </data>
+  <data name="NotRanked" xml:space="preserve">
+    <value>Not Ranked</value>
+  </data>
 </root>

@@ -15,7 +15,7 @@
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter" />
-            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
             <Style x:Key="playerHeader"
                    TargetType="Label">
                 <Setter Property="TextColor"
@@ -200,7 +200,8 @@
                                Grid.Column="0">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}"/>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
                             </Frame.GestureRecognizers>
@@ -210,7 +211,8 @@
                                Grid.Column="1">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerVsPlayerCommand}" />
                             </Frame.GestureRecognizers>
@@ -218,11 +220,12 @@
 
                         <Frame Style="{StaticResource FrameButton}"
                                Grid.Column="2"
-                               IsVisible="{Binding PlayerRecord.ChampionshipSeries, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
+                               IsVisible="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
                                x:Name="ChampButton">
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
                                    HorizontalTextAlignment="Center"
-                                   VerticalOptions="Center" />
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerChampionshipSeriesCommand}" />
                             </Frame.GestureRecognizers>
@@ -249,11 +252,11 @@
                         <Label TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                                Grid.Column="1"
                                Grid.Row="0"
-                               Text="{Binding PlayerRecord.PlayerStats.CurrentWpprRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].CurrentRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="0"
-                               Text="{Binding PlayerRecord.PlayerStats.CurrentWpprValue, Mode=OneWay, StringFormat='{0:N2}'}"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].CurrentPoints, Mode=OneWay, StringFormat='{0:N2}'}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="0"
                                Grid.Row="1"
@@ -262,11 +265,11 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_Rating}" />
                         <Label Grid.Column="1"
                                Grid.Row="1"
-                               Text="{Binding PlayerRecord.PlayerStats.RatingsRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}, TargetNullValue='Not Rated'}"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].RatingsRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}, TargetNullValue='Not Rated'}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="1"
-                               Text="{Binding PlayerRecord.PlayerStats.RatingsValue, Mode=OneWay}"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].RatingsValue, Mode=OneWay}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="0"
                                Grid.Row="2"
@@ -275,11 +278,11 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_EffPercent}" />
                         <Label Grid.Column="1"
                                Grid.Row="2"
-                               Text="{Binding PlayerRecord.PlayerStats.EfficiencyRank, Converter={StaticResource intToOrdinalString}, TargetNullValue='Not Ranked', Mode=OneWay}"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].EfficiencyRank, Converter={StaticResource longToOrdinalString}, TargetNullValue='Not Ranked', Mode=OneWay}"
                                HorizontalTextAlignment="Center" />
                         <Label Grid.Column="2"
                                Grid.Row="2"
-                               Text="{Binding PlayerRecord.PlayerStats.EfficiencyValue, Mode=OneWay, StringFormat='{0:N2}'}"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].EfficiencyValue, Mode=OneWay, StringFormat='{0:N2}'}"
                                HorizontalTextAlignment="Center" />
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_RankingStatistics}" />
@@ -304,9 +307,9 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span Text="{Binding PlayerRecord.PlayerStats.HighestRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].HighestRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
                                         <Span Text="{x:Static local:Strings.PlayerDetailPage_}" />
-                                        <Span Text="{Binding PlayerRecord.PlayerStats.HighestRankDate, StringFormat='{0:MMMM, yyyy}'}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].HighestRankDate, StringFormat='{0:MMMM, yyyy}'}" />
                                         <Span Text="{x:Static local:Strings.RightParens}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
@@ -319,7 +322,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_LastMonthSRank}" />
                         <Label Grid.Column="1"
                                Grid.Row="1"
-                               Text="{Binding PlayerRecord.PlayerStats.LastMonthRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].LastMonthRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
                         <Label Grid.Column="0"
                                Grid.Row="2"
                                LineBreakMode="NoWrap"
@@ -327,7 +330,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_LastYearSRank}" />
                         <Label Grid.Column="1"
                                Grid.Row="2"
-                               Text="{Binding PlayerRecord.PlayerStats.LastYearRank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].LastYearRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
                         <Label Grid.Column="0"
                                Grid.Row="3"
                                LineBreakMode="NoWrap"
@@ -335,7 +338,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_TotalWpprs}" />
                         <Label Grid.Column="1"
                                Grid.Row="3"
-                               Text="{Binding PlayerRecord.PlayerStats.WpprPointsAllTime, Mode=OneWay, StringFormat='{0:N2}'}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].AllTimePoints, Mode=OneWay, StringFormat='{0:N2}'}" />
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentStatistics}" />
                     <Grid>
@@ -362,9 +365,9 @@
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span Text="{Binding PlayerRecord.PlayerStats.BestFinish, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].BestFinish, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
                                         <Span Text=" (" />
-                                        <Span Text="{Binding PlayerRecord.PlayerStats.BestFinishCount, Mode=OneWay}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].BestFinishCount, Mode=OneWay}" />
                                         <Span Text="{x:Static local:Strings.PlayerDetailPage_Times}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
@@ -377,7 +380,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_AvgFinish}" />
                         <Label Grid.Column="1"
                                Grid.Row="1"
-                               Text="{Binding PlayerRecord.PlayerStats.AverageFinish, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].AverageFinish, Converter={StaticResource longToOrdinalString}, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="2"
                                LineBreakMode="NoWrap"
@@ -385,7 +388,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_AvgFinishLastYear}" />
                         <Label Grid.Column="1"
                                Grid.Row="2"
-                               Text="{Binding PlayerRecord.PlayerStats.AverageFinishLastYear, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].AverageFinishLastYear, Converter={StaticResource longToOrdinalString}, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="3"
                                LineBreakMode="NoWrap"
@@ -393,7 +396,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_TotalEvents}" />
                         <Label Grid.Column="1"
                                Grid.Row="3"
-                               Text="{Binding PlayerRecord.PlayerStats.TotalEventsAllTime, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].TotalEventsAllTime, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="4"
                                LineBreakMode="NoWrap"
@@ -401,7 +404,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_TotalActiveEvents}" />
                         <Label Grid.Column="1"
                                Grid.Row="4"
-                               Text="{Binding PlayerRecord.PlayerStats.TotalActiveEvents, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].TotalActiveEvents, Mode=OneWay}" />
                         <Label Grid.Column="0"
                                Grid.Row="5"
                                LineBreakMode="NoWrap"
@@ -409,7 +412,7 @@
                                Text="{x:Static local:Strings.PlayerDetailPage_EventsOutsideCountry}" />
                         <Label Grid.Column="1"
                                Grid.Row="5"
-                               Text="{Binding PlayerRecord.PlayerStats.TotalEventsAway, Mode=OneWay}" />
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].TotalEventsAway, Mode=OneWay}" />
                     </Grid>
                     <StackLayout x:Name="ChartLayout"
                                  Margin="0,10,0,0">

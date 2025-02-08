@@ -13,7 +13,7 @@
              x:Name="SearchPlayersPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:CustomRankingsDetailViewModel"
-             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
+             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings.Custom;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -36,7 +36,7 @@
                                         SelectionChangedCommand="{Binding SelectPlayerDetailsCommand}"
                                         SelectedItem="{Binding SelectedViewResult}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ifparankings:CustomRankingViewResult">
+                                <DataTemplate x:DataType="ifparankings:ViewResult">
                                     <VerticalStackLayout>
                                         <StackLayout Margin="15,10"
                                                      Orientation="Horizontal">
@@ -44,17 +44,8 @@
                                                          VerticalOptions="Center"
                                                          HorizontalOptions="StartAndExpand">
                                                 <Label LineBreakMode="NoWrap"
-                                                       FontSize="16">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="{Binding FirstName}" />
-                                                                <Span Text="{x:Static local:Strings.SingleSpace}" />
-                                                                <Span Text="{Binding LastName}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
+                                                       FontSize="16"
+                                                       Text="{Binding Name}" />
                                                 <Label TextColor="{DynamicResource SecondaryTextColor}">
                                                     <Label.Text>
                                                         <MultiBinding Converter="{StaticResource AddressFormatConverter}">
@@ -124,7 +115,7 @@
                                         ItemsSource="{Binding ViewFilters}"
                                         SelectionMode="None">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ifparankings:CustomRankingViewFilter">
+                                <DataTemplate x:DataType="ifparankings:ViewFilter">
                                     <VerticalStackLayout>
                                         <StackLayout Margin="15"
                                                      Orientation="Horizontal">
@@ -151,7 +142,7 @@
                                         SelectedItem="{Binding SelectedTournament}"
                                         SelectionChangedCommand="{Binding SelectTournamentCommand}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ifparankings:Tournament">
+                                <DataTemplate x:DataType="ifparankings:CustomViewTournament">
                                     <VerticalStackLayout>
                                         <VerticalStackLayout Spacing="10"
                                                              Padding="10">

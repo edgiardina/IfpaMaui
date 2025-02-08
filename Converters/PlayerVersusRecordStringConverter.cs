@@ -1,4 +1,4 @@
-﻿using PinballApi.Models.WPPR.v2.Players;
+﻿using PinballApi.Models.WPPR.Universal.Players;
 using System.Globalization;
 
 namespace Ifpa.Converters

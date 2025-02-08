@@ -52,7 +52,7 @@ namespace Ifpa.ViewModels
 
         private readonly IPinballRankingApi PinballRankingApi;
 
-        public RankingsViewModel(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        public RankingsViewModel(IPinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(logger)
         {
             CountOfItemsToFetch = 100;
             StartingPosition = 1;

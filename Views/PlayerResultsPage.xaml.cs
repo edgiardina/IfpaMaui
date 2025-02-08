@@ -1,5 +1,5 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Tournaments;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.Views
 {
@@ -34,7 +34,7 @@ namespace Ifpa.Views
 
             if (action != Strings.Cancel)
             {
-                ViewModel.RankingType = (RankingType)Enum.Parse(typeof(RankingType), action);
+                ViewModel.RankingType = (PlayerRankingSystem)Enum.Parse(typeof(PlayerRankingSystem), action);
                 ViewModel.LoadItems();
             }
         }

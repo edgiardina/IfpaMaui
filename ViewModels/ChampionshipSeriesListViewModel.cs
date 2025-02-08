@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Series;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
@@ -14,8 +14,11 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private Series selectedChampionshipSeries;
 
-        public ChampionshipSeriesListViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<ChampionshipSeriesListViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public ChampionshipSeriesListViewModel(IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesListViewModel> logger) : base(logger)
         {
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -28,7 +31,7 @@ namespace Ifpa.ViewModels
 
             try
             {
-                ChampionshipSeries = await PinballRankingApiV2.GetSeries();
+                ChampionshipSeries = await PinballRankingApi.GetSeries();
             }
             catch (Exception ex)
             {

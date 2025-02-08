@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Models.WPPR.Universal.Players;
 using Ifpa.Models;
 using PinballApi;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.ComponentModel;
+using PinballApi.Interfaces;
 
 namespace Ifpa.ViewModels
 {
@@ -19,16 +20,19 @@ namespace Ifpa.ViewModels
 
         public int PlayerId { get; set; }
 
+        private readonly IPinballRankingApi PinballRankingApi;
+
         [ObservableProperty]
         private bool hasNoPvpData;
 
-        public PlayerVersusPlayerViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<PlayerVersusPlayerViewModel> logger) : base(pinballRankingApiV2, logger)
+        public PlayerVersusPlayerViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerVersusPlayerViewModel> logger) : base(logger)
         {
             Title = "PVP";
             AllResults = new ObservableCollection<Grouping<char, PlayerVersusRecord>>();
             EliteResults = new ObservableCollection<Grouping<char, PlayerVersusRecord>>();
             LoadAllItemsCommand = new Command(async () => await ExecuteLoadAllItemsCommand());
             LoadEliteItemsCommand = new Command(async () => await ExecuteLoadEliteItemsCommand());
+            PinballRankingApi = pinballRankingApi;
         }
 
         async Task ExecuteLoadEliteItemsCommand()
@@ -41,13 +45,13 @@ namespace Ifpa.ViewModels
             try
             {
                 EliteResults.Clear();
-                var pvpResults = await PinballRankingApiV2.GetPlayerVersusElitePlayer(PlayerId);
+                var pvpResults = await PinballRankingApi.GetPlayerVersusPlayer(PlayerId);
 
-                if (pvpResults.Records != null)
+                if (pvpResults.PlayerVersusPlayerRecords != null)
                 {
-                    var lastNames = pvpResults.Records
+                    var lastNames = pvpResults.PlayerVersusPlayerRecords
                                             .OrderBy(n => n.LastName).Select(n => n.LastName).ToList();
-                    var groupedResults = pvpResults.Records
+                    var groupedResults = pvpResults.PlayerVersusPlayerRecords
                                             .OrderBy(n => n.LastName)
                                             .ThenBy(n => n.FirstName)
                                             .GroupBy(c => char.ToUpper(c.LastName.FirstOrDefault()))
@@ -83,7 +87,7 @@ namespace Ifpa.ViewModels
             try
             {
                 AllResults.Clear();
-                var pvpResults = await PinballRankingApiV2.GetPlayerVersusPlayer(PlayerId);
+                var pvpResults = await PinballRankingApi.GetPlayerVersusPlayer(PlayerId);
 
                 if (pvpResults.PlayerVersusPlayerRecords != null)
                 {

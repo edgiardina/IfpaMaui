@@ -29,15 +29,18 @@ namespace Ifpa.ViewModels
 
         //public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
 
+        private readonly PinballRankingApiV2 PinballRankingApiV2;
+
         public Command LoadItemsCommand { get; set; }
 
-        public StatsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(pinballRankingApiV2, logger)
+        public StatsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(logger)
         {
             Title = "Stats";
             MostPointsPlayers = new ObservableCollection<PlayersPointsByGivenPeriodStatistics>();
             MostEventsPlayers = new ObservableCollection<PlayersEventsAttendedByGivenPeriodStatistics>();
             //BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            PinballRankingApiV2 = pinballRankingApiV2;
         }
 
         public async Task ExecuteLoadItemsCommand()

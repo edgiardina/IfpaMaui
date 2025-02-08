@@ -9,8 +9,10 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Extensions;
-using PinballApi.Models.v2.WPPR;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Players;
+using PinballApi.Models.WPPR.Universal.Series;
 using SkiaSharp;
 
 namespace Ifpa.ViewModels
@@ -23,7 +25,7 @@ namespace Ifpa.ViewModels
         public int PlayerId { get; set; }
 
         [ObservableProperty]
-        private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
+        private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, Series = new List<SeriesRank> { } };
 
         private static readonly int s_logBase = 10;
 
@@ -82,9 +84,15 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private string playerAvatar;
 
-        public PlayerDetailViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        private const long TicksInADay = 864000000000;
+
+        public PlayerDetailViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<PlayerDetailViewModel> logger) : base(logger)
         {
             AppSettings = appSettings;
+
+            PinballRankingApi = pinballRankingApi;
 
             // Start page busy to show loading indicator
             IsBusy = true;
@@ -104,8 +112,8 @@ namespace Ifpa.ViewModels
                 if (PlayerId > 0)
                 {
                     IsBusy = true;
-                    var playerData = await PinballRankingApiV2.GetPlayer(PlayerId);
-                    var playerHistoryData = await PinballRankingApiV2.GetPlayerHistory(PlayerId);
+                    var playerData = await PinballRankingApi.GetPlayer(PlayerId);
+                    var playerHistoryData = await PinballRankingApi.GetPlayerHistory(PlayerId);
 
                     // Determine min and max rank
                     var minRank = playerHistoryData.RankHistory.Min(h => h.RankPosition);
@@ -155,7 +163,7 @@ namespace Ifpa.ViewModels
                         Stroke = new SolidColorPaint(SKColor.Parse(resourceColor.ToHex())) { StrokeThickness = 2 },
 
                         Mapping = (logPoint, index) =>
-                                new(logPoint.RankDate.Ticks, Math.Log(logPoint.RankPosition, s_logBase))
+                                new(logPoint.RankDate.DayNumber * TicksInADay, Math.Log(logPoint.RankPosition, s_logBase))
                     };
 
                     PlayerRankHistoryLineSeries = new List<ISeries> { playerRankSeries };
@@ -191,7 +199,7 @@ namespace Ifpa.ViewModels
                         PlayerAvatar = AppSettings.IfpaPlayerNoProfilePicUrl;
                     }
 
-                    Location = $"{PlayerRecord.City}{(!string.IsNullOrEmpty(PlayerRecord.City) && !string.IsNullOrEmpty(PlayerRecord.StateProvince) ? "," : string.Empty)} {PlayerRecord.StateProvince} {PlayerRecord.CountryName}".Trim().Replace("  ", " ");
+                    Location = $"{PlayerRecord.City}{(!string.IsNullOrEmpty(PlayerRecord.City) && !string.IsNullOrEmpty(PlayerRecord.Stateprov) ? "," : string.Empty)} {PlayerRecord.Stateprov} {PlayerRecord.CountryName}".Trim().Replace("  ", " ");
                     CountryFlag = $"https://flagcdn.com/w80/{PlayerRecord.CountryCode?.ToLower()}.png";
 
                     AddPlayerToAppLinks();
@@ -209,13 +217,13 @@ namespace Ifpa.ViewModels
 
         public async Task PrepopulateTourneyResults(int playerId)
         {
-            var results = await PinballRankingApiV2.GetPlayerResults(playerId);
+            var results = await PinballRankingApi.GetPlayerResults(playerId);
 
             foreach (var result in results.Results)
             {
                 var record = new ActivityFeedItem
                 {
-                    CreatedDateTime = result.EventDate,
+                    CreatedDateTime = result.EventDate.ToDateTime(TimeOnly.MinValue),
                     HasBeenSeen = true,
                     RecordID = result.TournamentId,
                     IntOne = result.Position,
@@ -251,7 +259,7 @@ namespace Ifpa.ViewModels
             var entry = new AppLinkEntry
             {
                 Title = PlayerRecord.FirstName + " " + PlayerRecord.LastName,
-                Description = PlayerRecord.PlayerStats.CurrentWpprRank.OrdinalSuffix(),
+                Description = PlayerRecord.GetRank(),
                 AppLinkUri = new Uri(url, UriKind.RelativeOrAbsolute),
                 IsLinkActive = true,
                 Thumbnail = ImageSource.FromUri(new Uri(PlayerAvatar, UriKind.RelativeOrAbsolute))

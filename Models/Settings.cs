@@ -13,6 +13,9 @@ namespace Ifpa.Models
         //Groupname is so we can share the player ID with the upcoming iOS Widget. 
         private const string groupName = "group.com.edgiardina.ifpa";
 
+
+        public static string CacheDatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "app_cache.db3");
+        public static TimeSpan CacheDuration = TimeSpan.FromDays(30);
         public static LocalDatabase LocalDatabase
         {
             get
@@ -133,7 +136,7 @@ namespace Ifpa.Models
         public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<PlayerResult> results)
         {
             return await LocalDatabase.ParseNewTournaments(results.Select(n => n.TournamentId));
-        }      
+        }
 
     }
 }

@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Players;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.ViewModels
 {
@@ -16,9 +16,12 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private string playerAvatar;
 
-        public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public SettingsViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(logger)
         {
             AppSettings = appSettings;
+            PinballRankingApi = pinballRankingApi;
         }
 
         public async Task LoadPlayer()
@@ -28,7 +31,7 @@ namespace Ifpa.ViewModels
                 if (Settings.MyStatsPlayerId > 0)
                 {
                     IsBusy = true;
-                    var playerData = await PinballRankingApiV2.GetPlayer(Settings.MyStatsPlayerId);
+                    var playerData = await PinballRankingApi.GetPlayer(Settings.MyStatsPlayerId);
 
                     PlayerRecord = playerData;
                     PlayerAvatar = PlayerRecord.ProfilePhoto != null ? PlayerRecord.ProfilePhoto?.ToString() : AppSettings.IfpaPlayerNoProfilePicUrl;

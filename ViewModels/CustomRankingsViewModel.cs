@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Rankings;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Rankings.Custom;
 
 namespace Ifpa.ViewModels
 {
@@ -19,9 +19,12 @@ namespace Ifpa.ViewModels
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public CustomRankingsViewModel(IPinballRankingApi pinballRankingApi, ILogger<CustomRankingsViewModel> logger) : base(logger)
         {
             Title = "Custom Rankings";
+            PinballRankingApi = pinballRankingApi;
         }
 
         [RelayCommand]
@@ -36,9 +39,7 @@ namespace Ifpa.ViewModels
 
             try
             {
-                var tempList = await PinballRankingApiV2.GetRankingCustomViewList();
-
-                CustomRankings = tempList.CustomRankingView;
+                CustomRankings = await PinballRankingApi.GetCustomRankings();
 
                 IsPopulated = CustomRankings.Count > 0 || dataNotLoaded;
             }
