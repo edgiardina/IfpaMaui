@@ -1,5 +1,4 @@
-﻿using Android.Content;
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui.Alerts;
 using Flurl.Http;
 using Microsoft.Extensions.Logging;
 using Polly;
