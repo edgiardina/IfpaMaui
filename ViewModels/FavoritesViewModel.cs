@@ -62,11 +62,11 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task DeletePlayer(int playerId)
+        public async Task DeletePlayer(long playerId)
         {
             try
             {
-                await Settings.LocalDatabase.RemoveFavorite(playerId);
+                await Settings.LocalDatabase.RemoveFavorite((int)playerId);
 
                 Players.Remove(Players.Single(n => n.PlayerId == playerId));
             }
@@ -77,7 +77,7 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task SelectPlayer(int playerId)
+        public async Task SelectPlayer(long playerId)
         {
             await Shell.Current.GoToAsync($"player-details?playerId={playerId}");
 

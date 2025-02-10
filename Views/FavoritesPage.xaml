@@ -16,7 +16,7 @@
              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
             <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
@@ -80,7 +80,7 @@
                                 </StackLayout>
                                 <Label HorizontalOptions="EndAndExpand"
                                        VerticalTextAlignment="Center"
-                                       Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource longToOrdinalString}}"
                                        LineBreakMode="NoWrap"
                                        FontSize="18" />
                             </StackLayout>
