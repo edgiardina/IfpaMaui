@@ -13,24 +13,39 @@
             <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
             <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
         </StackLayout.Resources>
-        <Grid ColumnDefinitions="Auto,*,60"
+        <Grid ColumnDefinitions="58,60,2*,60"
               RowDefinitions="*,*"
-              Margin="0,5">
+              ColumnSpacing="10"
+              Margin="10,5">
             <Label Grid.Column="0"
                    Grid.RowSpan="2"
-                   Margin="10,5"
                    VerticalTextAlignment="Center"
                    Text="{Binding CurrentRank, Converter={StaticResource longToOrdinalString}}"
                    LineBreakMode="NoWrap"
                    FontSize="24"
                    MinimumWidthRequest="58" />
+
+            <toolkit:AvatarView Grid.Column="1"
+                                Grid.RowSpan="2"
+                                ImageSource="{Binding ProfilePhoto, Mode=OneWay}"
+                                BorderWidth="0"
+                                CornerRadius="8"
+                                HeightRequest="60"
+                                WidthRequest="60"
+                                x:Name="PlayerAvatar"
+                                ZIndex="2">
+                <toolkit:AvatarView.Shadow>
+                    <Shadow Brush="Black"
+                            Opacity="0.8" />
+                </toolkit:AvatarView.Shadow>
+            </toolkit:AvatarView>
             <Label LineBreakMode="NoWrap"
                    FontSize="16"
-                   Grid.Column="1"
+                   Grid.Column="2"
                    Grid.Row="0"
                    Text="{Binding Name}" />
             <Label Grid.Row="1"
-                   Grid.Column="1"
+                   Grid.Column="2"
                    FontSize="12"
                    TextColor="{DynamicResource SecondaryTextColor}">
                 <Label.Text>
@@ -41,10 +56,9 @@
                     </MultiBinding>
                 </Label.Text>
             </Label>
-            <Label Grid.Column="2"
+            <Label Grid.Column="3"
                    Grid.Row="1"
                    TextColor="{DynamicResource SecondaryTextColor}"
-                   Margin="10,0"
                    HorizontalTextAlignment="End"
                    Text="{Binding WpprPoints, StringFormat='{0:N2}'}"
                    LineBreakMode="NoWrap"
