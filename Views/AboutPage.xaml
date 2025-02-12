@@ -8,7 +8,7 @@
              x:DataType="vm:AboutViewModel"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:views="clr-namespace:Ifpa.Views"
-             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsListNotNullOrEmptyConverter x:Key="isListNotNullOrEmptyConverter" />
@@ -97,8 +97,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Grid HorizontalOptions="FillAndExpand"
-                          Margin="0, 20">
+                    <Grid Margin="0, 20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -109,15 +108,13 @@
                         <Button Grid.Column="0"
                                 WidthRequest="160"
                                 Padding="10,0,10,0"
-                                HorizontalOptions="CenterAndExpand"
                                 Text="{x:Static local:Strings.AboutPage_LearnMore}"
                                 Command="{Binding LearnMoreCommand}" />
                         <Button Grid.Column="1"
                                 WidthRequest="160"
                                 Padding="10,0,10,0"
-                                HorizontalOptions="CenterAndExpand"
                                 Text="{x:Static local:Strings.AboutPage_LeaveAReview}"
-                                Command="{Binding OpenReviewCommand}"/>
+                                Command="{Binding OpenReviewCommand}" />
                     </Grid>
                     <!-- TODO:  IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}" 
                                 hide the stacklayout if we have no sponsors. This crashes in iOS -->
