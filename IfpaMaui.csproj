@@ -52,7 +52,7 @@
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc4.5" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="PinballApi" Version="3.1.7" />
+		<PackageReference Include="PinballApi" Version="3.1.8" />
 		<PackageReference Include="Plugin.Maui.CalendarStore" Version="2.0.1" />
 		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.9.0" />
 		<PackageReference Include="Polly" Version="8.5.1" />
