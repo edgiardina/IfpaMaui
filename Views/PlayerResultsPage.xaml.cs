@@ -1,5 +1,4 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.Views
 {
@@ -28,15 +27,5 @@ namespace Ifpa.Views
             }
         }
 
-        private async void RankingProfileButton_Clicked(object sender, EventArgs e)
-        {
-            string action = await DisplayActionSheet(Strings.PlayerResultsPage_RankingProfile, Strings.Cancel, null, ViewModel.RankingTypeOptions.Select(a => a.ToString()).ToArray());
-
-            if (action != Strings.Cancel)
-            {
-                ViewModel.RankingType = (PlayerRankingSystem)Enum.Parse(typeof(PlayerRankingSystem), action);
-                ViewModel.LoadItems();
-            }
-        }
     }
 }
