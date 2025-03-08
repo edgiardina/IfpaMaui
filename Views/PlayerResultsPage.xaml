@@ -15,7 +15,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.PlayerResultsPage_RankingProfile}"
                      x:Name="RankingProfileButton"
-                     Clicked="RankingProfileButton_Clicked"
+                     Command="{Binding RankingProfileSelectCommand}"
                      IconImageSource="{mi:Fluent Icon=People48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>

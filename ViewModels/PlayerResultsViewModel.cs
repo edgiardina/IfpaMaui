@@ -21,12 +21,13 @@ namespace Ifpa.ViewModels
         private ObservableCollection<PlayerResult> pastResults = new ObservableCollection<PlayerResult>();
 
         [ObservableProperty]
+        private ObservableCollection<PlayerRankingSystem> rankingTypeOptions = new ObservableCollection<PlayerRankingSystem>();
+
+        [ObservableProperty]
         private PlayerResult selectedResult;
 
         public ResultType State { get; set; }
         public PlayerRankingSystem RankingType { get; set; }
-
-        public PlayerRankingSystem[] RankingTypeOptions => new[] { PlayerRankingSystem.Main, PlayerRankingSystem.Women, PlayerRankingSystem.Youth };
 
         public int PlayerId { get; set; }
 
@@ -51,6 +52,8 @@ namespace Ifpa.ViewModels
             try
             {
                 var player = await PinballRankingApi.GetPlayer(PlayerId);
+               
+                RankingTypeOptions = player.PlayerStats.System.Select(s => s.System).ToObservableCollection();
 
                 var activeResults = await PinballRankingApi.GetPlayerResults(PlayerId, RankingType, ResultType.Active);
                 if (activeResults.ResultsCount > 0)
@@ -85,6 +88,18 @@ namespace Ifpa.ViewModels
         {
             await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}");
             SelectedResult = null;
+        }
+
+        [RelayCommand]
+        public async Task RankingProfileSelect()
+        {
+            string action = await Shell.Current.DisplayActionSheet(Strings.PlayerResultsPage_RankingProfile, Strings.Cancel, null, RankingTypeOptions.Select(a => a.ToString()).ToArray());
+
+            if (action != null && action != Strings.Cancel)
+            {
+                RankingType = (PlayerRankingSystem)Enum.Parse(typeof(PlayerRankingSystem), action);
+                LoadItems();
+            }
         }
     }
 }
