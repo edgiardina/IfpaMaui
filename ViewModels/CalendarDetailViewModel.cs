@@ -114,7 +114,7 @@ namespace Ifpa.ViewModels
                                                                                    .Select(n => n.Name)
                                                                                    .ToArray());
 
-                if (selectedCalendar != Strings.Cancel)
+                if (selectedCalendar != null && selectedCalendar != Strings.Cancel)
                 {
                     var selectedCalendarId = calendars.First(n => n.Name == selectedCalendar).Id;
                     string newEventId = null;
