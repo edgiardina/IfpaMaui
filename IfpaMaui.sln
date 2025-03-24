@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{EDD012
 		.github\workflows\publish.yml = .github\workflows\publish.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfpaMaui.Tests", "IfpaMaui.Tests\IfpaMaui.Tests.csproj", "{726987AE-6634-4E7E-84E6-73462AA7FFF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{B6E4FAD7-4619-4A30-9F76-47457E68112D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6E4FAD7-4619-4A30-9F76-47457E68112D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6E4FAD7-4619-4A30-9F76-47457E68112D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
