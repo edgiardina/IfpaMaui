@@ -13,7 +13,7 @@ namespace Ifpa.ViewModels
     {
         public ObservableCollection<TournamentResult> Results { get; set; }
 
-        public Tournament TournamentDetails { get; set; }        
+        public Tournament TournamentDetails { get; set; }
 
         public int TournamentId { get; set; }
 
@@ -80,7 +80,15 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewPlayerDetails()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId.Value}");
+            if (SelectedPlayer == null)
+                return;
+
+            // Player may be suppressed and not have a player id
+            if (SelectedPlayer.PlayerId.HasValue)
+            {
+                await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId.Value}");
+            }
+
             SelectedPlayer = null;
         }
 
@@ -103,7 +111,7 @@ namespace Ifpa.ViewModels
             {
                 Application.Current.AppLinks.RegisterLink(entry);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex, "Error registering app link {0}", entry);
             }
