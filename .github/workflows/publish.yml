@@ -80,24 +80,24 @@ jobs:
         run: dotnet workload install maui android
 
       - name: Restore Dependencies
-        run: dotnet restore IfpaMaui.csproj
+        run: dotnet restore IfpaMaui/IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f net8.0-android34.0 -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
+        run: dotnet publish IfpaMaui/IfpaMaui.csproj -c Release -f net8.0-android34.0 -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: ifpamaui-android-signed-build
-          path: bin/Release/net8.0-android34.0/publish/com.edgiardina.ifpa-Signed.aab
+          path: IfpaMaui/bin/Release/net8.0-android34.0/publish/com.edgiardina.ifpa-Signed.aab
 
       - name: Deploy to Google Play (Production)
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.edgiardina.ifpa
-          releaseFiles: bin/Release/net8.0-android34.0/publish/com.edgiardina.ifpa-Signed.aab
+          releaseFiles: IfpaMaui/bin/Release/net8.0-android34.0/publish/com.edgiardina.ifpa-Signed.aab
           releaseName: ${{ env.VERSION }}
           track: production
 
@@ -186,24 +186,24 @@ jobs:
         run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
     
       - name: Restore nuget packages
-        run:  dotnet restore IfpaMaui.csproj
+        run:  dotnet restore IfpaMaui/IfpaMaui.csproj
         
         # https://docs.microsoft.com/en-us/dotnet/maui/ios/deployment/overview
       - name : Publish iOS App
         shell: bash
         run: |
-          dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }}
+          dotnet publish IfpaMaui/IfpaMaui.csproj -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: ifpamaui-ios-signed-build
           if-no-files-found: error
           path: |
-            bin/Release/net8.0-ios/**/*.ipa
+            IfpaMaui/bin/Release/net8.0-ios/**/*.ipa
 
       - name: Upload app to App Store Connect
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
         run: |
-          xcrun altool --upload-app -t ios -f "bin/Release/net8.0-ios/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+          xcrun altool --upload-app -t ios -f "IfpaMaui/bin/Release/net8.0-ios/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"

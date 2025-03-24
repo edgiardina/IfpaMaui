@@ -3,7 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IfpaMaui", "IfpaMaui.csproj", "{B6E4FAD7-4619-4A30-9F76-47457E68112D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IfpaMaui", "IfpaMaui\IfpaMaui.csproj", "{B6E4FAD7-4619-4A30-9F76-47457E68112D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ifpa", "ifpa", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{EDD01248-8113-439B-B8E7-59BE2D754784}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\publish.yml = .github\workflows\publish.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfpaMaui.Tests", "IfpaMaui.Tests\IfpaMaui.Tests.csproj", "{726987AE-6634-4E7E-84E6-73462AA7FFF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,9 +31,16 @@ Global
 		{B6E4FAD7-4619-4A30-9F76-47457E68112D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6E4FAD7-4619-4A30-9F76-47457E68112D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6E4FAD7-4619-4A30-9F76-47457E68112D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{726987AE-6634-4E7E-84E6-73462AA7FFF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EDD01248-8113-439B-B8E7-59BE2D754784} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
