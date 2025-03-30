@@ -47,7 +47,12 @@ namespace Ifpa.Views
             {
                 mapShim.Children.Clear();
 
-                Location geoLocation;
+                Location geoLocation = null;
+
+                // Default to Chicago if we can't get a location
+                var defaultLocation = new Location(41.8781, -87.6298);
+
+                var locationPermission = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
 
                 try
                 {
@@ -57,7 +62,16 @@ namespace Ifpa.Views
                 {
                     logger.LogWarning(e, "Error geolocating");
 
-                    geoLocation = await Geolocation.GetLastKnownLocationAsync();
+                    if (locationPermission == PermissionStatus.Granted)
+                    {
+                        geoLocation = await Geolocation.GetLastKnownLocationAsync();
+
+                    }
+
+                    if (geoLocation == null)
+                    {
+                        geoLocation = defaultLocation;
+                    }
                 }
 
                 var mapSpan = MapSpan.FromCenterAndRadius(new Location(geoLocation.Latitude, geoLocation.Longitude),
