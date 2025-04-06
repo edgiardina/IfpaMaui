@@ -29,7 +29,7 @@
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer 
                             Command="{Binding SendLogsCommand}"
-                           />
+                            NumberOfTapsRequired="2" />
                     </Image.GestureRecognizers>
                 </Image>
             </StackLayout>
