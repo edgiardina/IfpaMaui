@@ -717,4 +717,25 @@
   <data name="NotRanked" xml:space="preserve">
     <value>Not Ranked</value>
   </data>
+  <data name="AboutPage_SendLogs" xml:space="preserve">
+    <value>Send Logs</value>
+  </data>
+  <data name="AboutPage_NoLogsTitle" xml:space="preserve">
+    <value>No Logs</value>
+  </data>
+  <data name="AboutPage_NoLogsMessage" xml:space="preserve">
+    <value>No log files were found to send.</value>
+  </data>
+  <data name="AboutPage_LogsEmailSubject" xml:space="preserve">
+    <value>IFPA App Logs - {0}</value>
+  </data>
+  <data name="AboutPage_LogsEmailBody" xml:space="preserve">
+    <value>Attached are the log files from the IFPA app.</value>
+  </data>
+  <data name="AboutPage_ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="AboutPage_ErrorMessage" xml:space="preserve">
+    <value>There was an error sending the log files. Please try again later.</value>
+  </data>
 </root>

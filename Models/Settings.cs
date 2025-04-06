@@ -138,5 +138,7 @@ namespace Ifpa.Models
             return await LocalDatabase.ParseNewTournaments(results.Select(n => n.TournamentId));
         }
 
+        public static readonly string LogFilePath = Path.Combine(FileSystem.AppDataDirectory, "logs", "log-.txt");
+
     }
 }

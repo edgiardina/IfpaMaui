@@ -16,5 +16,6 @@ namespace Ifpa.Models
         public string IfpaPlayerNoProfilePicUrl { get; set; }
 
         public List<int> Sponsors { get; set; }
+        public int LogRetentionDays { get; set; }
     }
 }
