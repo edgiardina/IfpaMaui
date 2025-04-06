@@ -1,309 +1,310 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFrameworks>net8.0-ios;net8.0-android34.0</TargetFrameworks>
-		<OutputType>Exe</OutputType>
-		<RootNamespace>Ifpa</RootNamespace>
-		<UseMaui>true</UseMaui>
-		<SingleProject>true</SingleProject>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<NullabilityInfoContextSupport>true</NullabilityInfoContextSupport>
+    <PropertyGroup>
+        <TargetFrameworks>net8.0-ios;net8.0-android34.0</TargetFrameworks>
+        <OutputType>Exe</OutputType>
+        <RootNamespace>Ifpa</RootNamespace>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <NullabilityInfoContextSupport>true</NullabilityInfoContextSupport>
 
-		<!-- Display name -->
-		<ApplicationTitle>IFPA</ApplicationTitle>
+        <!-- Display name -->
+        <ApplicationTitle>IFPA</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.edgiardina.ifpa</ApplicationId>
-		<ApplicationIdGuid>FCADEDB0-78D6-407F-94AC-AB1050CE4B16</ApplicationIdGuid>
+        <!-- App Identifier -->
+        <ApplicationId>com.edgiardina.ifpa</ApplicationId>
+        <ApplicationIdGuid>FCADEDB0-78D6-407F-94AC-AB1050CE4B16</ApplicationIdGuid>
 
-		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+        <!-- Versions -->
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
 
-		<!-- Only supported on iOS 16 and greater due to NativeCalendar dependency -->
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">16.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Release'">
-		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
-		<CodesignKey>iPhone Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
-		<CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
-		<ArchiveOnBuild>true</ArchiveOnBuild>
-		<MtouchLink>None</MtouchLink>
-		<UseInterpreter>true</UseInterpreter>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Debug'">
-		<CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
-		<CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
-	</PropertyGroup>
+        <!-- Only supported on iOS 16 and greater due to NativeCalendar dependency -->
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">16.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Release'">
+        <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+        <CodesignKey>iPhone Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
+        <CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
+        <ArchiveOnBuild>true</ArchiveOnBuild>
+        <MtouchLink>None</MtouchLink>
+        <UseInterpreter>true</UseInterpreter>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Debug'">
+        <CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
+        <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
+    </PropertyGroup>
 
-	<PropertyGroup>
-		<CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
-	</PropertyGroup>
+    <PropertyGroup>
+        <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+    </PropertyGroup>
 
-	<!-- Package References -->
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.100" />
-		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.100" />
-		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
-		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc4.5" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-		<PackageReference Include="PinballApi" Version="3.1.8" />
-		<PackageReference Include="Plugin.Maui.CalendarStore" Version="3.0.0" />
-		<PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.9.0" />
-		<PackageReference Include="Polly" Version="8.5.1" />
-		<PackageReference Include="Scrutor" Version="5.1.0" />
-		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
-		<PackageReference Include="Shiny.Core" Version="3.3.3" />
-		<PackageReference Include="Shiny.Hosting.Maui" Version="3.3.3" />
-		<PackageReference Include="Shiny.Extensions.Configuration" Version="3.3.3" />
-		<PackageReference Include="Shiny.Jobs" Version="3.3.3" />
-		<PackageReference Include="Shiny.Notifications" Version="3.3.3" />
-		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.10" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.10" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.10" />
-		<PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
-		<PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
-		<PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
-		<PackageReference Include="Serilog" Version="4.2.0" />
-		<PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
-		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
-		<PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
-	</ItemGroup>
+    <!-- Package References -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.100" />
+        <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.100" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc4.5" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+        <PackageReference Include="PinballApi" Version="3.1.8" />
+        <PackageReference Include="Plugin.Maui.CalendarStore" Version="3.0.0" />
+        <PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.9.0" />
+        <PackageReference Include="Polly" Version="8.5.1" />
+        <PackageReference Include="Scrutor" Version="5.1.0" />
+        <PackageReference Include="Shiny.Core" Version="3.3.3" />
+        <PackageReference Include="Shiny.Hosting.Maui" Version="3.3.3" />
+        <PackageReference Include="Shiny.Extensions.Configuration" Version="3.3.3" />
+        <PackageReference Include="Shiny.Jobs" Version="3.3.3" />
+        <PackageReference Include="Shiny.Notifications" Version="3.3.3" />
+        <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+        <PackageReference Include="SQLitePCLRaw.core" Version="2.1.10" />
+        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
+        <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.10" />
+        <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.10" />
+        <PackageReference Include="Syncfusion.Maui.Core" Version="24.1.45" />
+        <PackageReference Include="Syncfusion.Maui.TabView" Version="24.1.45" />
+        <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
+        <PackageReference Include="Serilog" Version="4.2.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+        <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
+    </ItemGroup>
 
-	<!-- Maui Specifics -->
-	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#062C53" />
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.png" Color="#062C53" BaseSize="256,88" />
+    <!-- Maui Specifics -->
+    <ItemGroup>
+        <!-- App Icon -->
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#062C53" />
+        <!-- Splash Screen -->
+        <MauiSplashScreen Include="Resources\Splash\splash.png" Color="#062C53" BaseSize="256,88" />
 
-		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
+        <!-- Images -->
+        <MauiImage Include="Resources\Images\*" />
 
-		<!-- Custom Fonts -->
-		<MauiFont Include="Resources\Fonts\*" />
+        <!-- Custom Fonts -->
+        <MauiFont Include="Resources\Fonts\*" />
 
-		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
+        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
 
-	<!--
+    <!--
 		Solves ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 	
 		https://github.com/xamarin/xamarin-macios/issues/21324#issuecomment-2382226489 
 	-->
-	<Target Name="DoNotLinkWithBrowserEngineKit" AfterTargets="_ComputeLinkNativeExecutableInputs">
-		<ItemGroup>
-			<_NativeExecutableFrameworks Remove="BrowserEngineKit" />
-		</ItemGroup>
-	</Target>
+    <Target Name="DoNotLinkWithBrowserEngineKit" AfterTargets="_ComputeLinkNativeExecutableInputs">
+        <ItemGroup>
+            <_NativeExecutableFrameworks Remove="BrowserEngineKit" />
+        </ItemGroup>
+    </Target>
 
-	<!-- Compile Directives / File Compile Types -->
-	<ItemGroup>
-		<None Remove="appsettings.json" />
-		<None Remove="Resources\Images\about.svg" />
-		<None Remove="Resources\Images\activity_feed.svg" />
-		<None Remove="Resources\Images\calendar.svg" />
-		<None Remove="Resources\Images\calendar_add.svg" />
-		<None Remove="Resources\Images\directors.svg" />
-		<None Remove="Resources\Images\favorite.svg" />
-		<None Remove="Resources\Images\favorite_outline.svg" />
-		<None Remove="Resources\Images\filter.svg" />
-		<None Remove="Resources\Images\location.svg" />
-		<None Remove="Resources\Images\map.svg" />
-		<None Remove="Resources\Images\more.svg" />
-		<None Remove="Resources\Images\mystats.svg" />
-		<None Remove="Resources\Images\news.svg" />
-		<None Remove="Resources\Images\numbered_list.svg" />
-		<None Remove="Resources\Images\rankchange.svg" />
-		<None Remove="Resources\Images\ranking_profile.svg" />
-		<None Remove="Resources\Images\ribbon.svg" />
-		<None Remove="Resources\Images\rules.svg" />
-		<None Remove="Resources\Images\search.svg" />
-		<None Remove="Resources\Images\settings.svg" />
-		<None Remove="Resources\Images\share.svg" />
-		<None Remove="Resources\Images\star.svg" />
-		<None Remove="Resources\Images\stats.svg" />
-		<None Remove="Resources\Images\trophy.svg" />
-	</ItemGroup>
+    <!-- Compile Directives / File Compile Types -->
+    <ItemGroup>
+        <None Remove="appsettings.json" />
+        <None Remove="Resources\Images\about.svg" />
+        <None Remove="Resources\Images\activity_feed.svg" />
+        <None Remove="Resources\Images\calendar.svg" />
+        <None Remove="Resources\Images\calendar_add.svg" />
+        <None Remove="Resources\Images\directors.svg" />
+        <None Remove="Resources\Images\favorite.svg" />
+        <None Remove="Resources\Images\favorite_outline.svg" />
+        <None Remove="Resources\Images\filter.svg" />
+        <None Remove="Resources\Images\location.svg" />
+        <None Remove="Resources\Images\map.svg" />
+        <None Remove="Resources\Images\more.svg" />
+        <None Remove="Resources\Images\mystats.svg" />
+        <None Remove="Resources\Images\news.svg" />
+        <None Remove="Resources\Images\numbered_list.svg" />
+        <None Remove="Resources\Images\rankchange.svg" />
+        <None Remove="Resources\Images\ranking_profile.svg" />
+        <None Remove="Resources\Images\ribbon.svg" />
+        <None Remove="Resources\Images\rules.svg" />
+        <None Remove="Resources\Images\search.svg" />
+        <None Remove="Resources\Images\settings.svg" />
+        <None Remove="Resources\Images\share.svg" />
+        <None Remove="Resources\Images\star.svg" />
+        <None Remove="Resources\Images\stats.svg" />
+        <None Remove="Resources\Images\trophy.svg" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<MauiAsset Include="appsettings.json" />
-	</ItemGroup>
+    <ItemGroup>
+        <MauiAsset Include="appsettings.json" />
+    </ItemGroup>
 
-	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
-		<BundleResource Include="Platforms\iOS\PrivacyInfo.xcprivacy" LogicalName="PrivacyInfo.xcprivacy" />
-	</ItemGroup>
+    <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+        <BundleResource Include="Platforms\iOS\PrivacyInfo.xcprivacy" LogicalName="PrivacyInfo.xcprivacy" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Strings.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Strings.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml.cs">
-		  <DependentUpon>TournamentSearchDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml.cs">
-		  <DependentUpon>ProRankingDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml.cs">
-		  <DependentUpon>YouthRankingDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml.cs">
-		  <DependentUpon>WomensRankingDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml.cs">
-		  <DependentUpon>CountryRankingDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml.cs">
-		  <DependentUpon>RankingDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\ActivityFeedRankChangeDataTemplate.xaml.cs">
-			<DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\ActivityFeedTournamentResultDataTemplate.xaml.cs">
-			<DependentUpon>ActivityFeedTournamentResultDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\DataTemplates\PlayerResultDataTemplate.xaml.cs">
-			<DependentUpon>PlayerResultDataTemplate.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\TournamentSearchPage.xaml.cs">
-		  <DependentUpon>TournamentSearchPage.xaml</DependentUpon>
-		</Compile>
-	</ItemGroup>
+    <ItemGroup>
+        <Compile Update="Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml.cs">
+            <DependentUpon>TournamentSearchDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml.cs">
+            <DependentUpon>ProRankingDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml.cs">
+            <DependentUpon>YouthRankingDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml.cs">
+            <DependentUpon>WomensRankingDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml.cs">
+            <DependentUpon>CountryRankingDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml.cs">
+            <DependentUpon>RankingDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\ActivityFeedRankChangeDataTemplate.xaml.cs">
+            <DependentUpon>ActivityFeedRankChangeDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\ActivityFeedTournamentResultDataTemplate.xaml.cs">
+            <DependentUpon>ActivityFeedTournamentResultDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\DataTemplates\PlayerResultDataTemplate.xaml.cs">
+            <DependentUpon>PlayerResultDataTemplate.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Views\TournamentSearchPage.xaml.cs">
+            <DependentUpon>TournamentSearchPage.xaml</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-	<ItemGroup>
-	  <EmbeddedResource Update="Strings.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	</ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Strings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 
-	<ItemGroup>
-		<MauiXaml Update="Controls\Chip.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\AboutPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\ActivityFeedPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\CalendarDetailPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\CalendarFilterModalPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\CalendarPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\ChampionshipSeriesDetailPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\ChampionshipSeriesListPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\ChampionshipSeriesPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\ChampionshipSeriesPlayerCardPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\CustomRankingsDetailPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\CustomRankingsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DataTemplates\PlayerResultDataTemplate.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\DirectorsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\FavoritesPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\MoreItemsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\PlayerDetailNoPlayerSelectedPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\TournamentSearchPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\NewsDetailPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\NewsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\PlayerChampionshipSeriesPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\PlayerDetailPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\PlayerResultsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\PlayerSearchPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\PlayerVersusPlayerDetailPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\PlayerVersusPlayerPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\RankingsFilterModalPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\RankingsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\RulesPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\SettingsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\StatsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\TournamentInfoPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\TournamentResultsPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-	</ItemGroup>
+    <ItemGroup>
+        <MauiXaml Update="Controls\Chip.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\AboutPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\ActivityFeedPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\CalendarDetailPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\CalendarFilterModalPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\CalendarPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\ChampionshipSeriesDetailPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\ChampionshipSeriesListPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\ChampionshipSeriesPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\ChampionshipSeriesPlayerCardPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\CustomRankingsDetailPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\CustomRankingsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DataTemplates\TournamentSearchDataTemplate.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DataTemplates\Ranking\ProRankingDataTemplate.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DataTemplates\Ranking\YouthRankingDataTemplate.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DataTemplates\Ranking\WomensRankingDataTemplate.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DataTemplates\Ranking\CountryRankingDataTemplate.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DataTemplates\Ranking\RankingDataTemplate.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DataTemplates\PlayerResultDataTemplate.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\DirectorsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\FavoritesPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\MoreItemsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\PlayerDetailNoPlayerSelectedPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\TournamentSearchPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\NewsDetailPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\NewsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\PlayerChampionshipSeriesPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\PlayerDetailPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\PlayerResultsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\PlayerSearchPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\PlayerVersusPlayerDetailPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\PlayerVersusPlayerPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\RankingsFilterModalPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\RankingsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\RulesPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\SettingsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\StatsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\TournamentInfoPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\TournamentResultsPage.xaml">
+            <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+    </ItemGroup>
 </Project>

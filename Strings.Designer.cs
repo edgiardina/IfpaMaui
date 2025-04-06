@@ -79,6 +79,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error sending the log files. Please try again later..
+        /// </summary>
+        internal static string AboutPage_ErrorMessage {
+            get {
+                return ResourceManager.GetString("AboutPage_ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string AboutPage_ErrorTitle {
+            get {
+                return ResourceManager.GetString("AboutPage_ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flagpedia.
         /// </summary>
         internal static string AboutPage_Flagpedia {
@@ -124,11 +142,56 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attached are the log files from the IFPA app..
+        /// </summary>
+        internal static string AboutPage_LogsEmailBody {
+            get {
+                return ResourceManager.GetString("AboutPage_LogsEmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IFPA App Logs - {0}.
+        /// </summary>
+        internal static string AboutPage_LogsEmailSubject {
+            get {
+                return ResourceManager.GetString("AboutPage_LogsEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .NET MAUI.
         /// </summary>
         internal static string AboutPage_NETMAUI {
             get {
                 return ResourceManager.GetString("AboutPage_NETMAUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No log files were found to send..
+        /// </summary>
+        internal static string AboutPage_NoLogsMessage {
+            get {
+                return ResourceManager.GetString("AboutPage_NoLogsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Logs.
+        /// </summary>
+        internal static string AboutPage_NoLogsTitle {
+            get {
+                return ResourceManager.GetString("AboutPage_NoLogsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Logs.
+        /// </summary>
+        internal static string AboutPage_SendLogs {
+            get {
+                return ResourceManager.GetString("AboutPage_SendLogs", resourceCulture);
             }
         }
         

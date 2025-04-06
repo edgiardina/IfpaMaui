@@ -4,6 +4,11 @@ using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Players;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System;
+using Microsoft.Maui.Controls;
 
 namespace Ifpa.ViewModels
 {
@@ -95,5 +100,55 @@ namespace Ifpa.ViewModels
             await Browser.OpenAsync("https://flagpedia.net/", BrowserLaunchMode.External);
         }
 
+        [RelayCommand]
+        public async Task SendLogs()
+        {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                var logPath = Path.GetDirectoryName(Settings.LogFilePath);
+                var logFiles = Directory.GetFiles(logPath, "log-*.txt");
+
+                if (!logFiles.Any())
+                {
+                    await Shell.Current.DisplayAlert(
+                        Strings.AboutPage_NoLogsTitle,
+                        Strings.AboutPage_NoLogsMessage,
+                        Strings.OK);
+                    return;
+                }
+
+                var emailMessage = new EmailMessage
+                {
+                    Subject = string.Format(Strings.AboutPage_LogsEmailSubject, DateTime.Now.ToString("yyyy-MM-dd")),
+                    Body = Strings.AboutPage_LogsEmailBody,
+                    To = new List<string> { "ed@edgiardina.com" } 
+                };
+
+                foreach (var logFile in logFiles)
+                {
+                    emailMessage.Attachments.Add(new EmailAttachment(logFile));
+                }
+
+                await Email.ComposeAsync(emailMessage);
+                logger.LogInformation("Log files sent successfully");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error sending log files");
+                await Shell.Current.DisplayAlert(
+                    Strings.AboutPage_ErrorTitle,
+                    Strings.AboutPage_ErrorMessage,
+                    Strings.OK);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
     }
 }

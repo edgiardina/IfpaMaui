@@ -37,5 +37,10 @@
       <action android:name="android.intent.action.VIEW" />
       <data android:scheme="geo" />
     </intent>
+    <!-- Needed so we can send logs -->
+      <intent>
+          <action android:name="android.intent.action.SENDTO" />
+          <data android:scheme="mailto" />
+      </intent>
   </queries>
 </manifest>

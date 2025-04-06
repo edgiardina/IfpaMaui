@@ -190,6 +190,10 @@ public static class MauiProgram
 #if DEBUG
         .WriteTo.Debug()
 #endif
+        .WriteTo.File(Settings.LogFilePath,
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: builder.Configuration.GetRequiredSection("AppSettings").Get<AppSettings>().LogRetentionDays)
+
         .CreateLogger();
 
         builder.Logging.AddSerilog(dispose: true);
