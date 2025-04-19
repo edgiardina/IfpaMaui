@@ -20,7 +20,7 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-            await ViewModel.ExecuteLoadItemsCommand();
+            await ViewModel.LoadItems();
         }
 
         private async void PlayersListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

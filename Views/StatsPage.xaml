@@ -17,6 +17,9 @@
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Select Year" Command="{Binding SelectYearCommand}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
             <ActivityIndicator IsVisible="{Binding IsBusy}"

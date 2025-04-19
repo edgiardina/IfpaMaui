@@ -1,11 +1,13 @@
-﻿using Ifpa.Models;
-using PinballApi;
-using LiveChartsCore.SkiaSharpView;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 using Microsoft.Extensions.Logging;
-using PinballApi.Models.WPPR.v2.Stats;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
+using PinballApi.Models.WPPR.Universal.Stats;
 using System.Collections.ObjectModel;
-using CommunityToolkit.Maui.Core.Extensions;
 
 namespace Ifpa.ViewModels
 {
@@ -29,21 +31,22 @@ namespace Ifpa.ViewModels
 
         //public ObservableCollectionRange<BiggestMoversStat> BiggestMovers { get; set; }
 
-        private readonly PinballRankingApiV2 PinballRankingApiV2;
+        private readonly IPinballRankingApi PinballRankingApi;
 
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private int selectedYear = DateTime.Now.Year;
 
-        public StatsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<StatsViewModel> logger) : base(logger)
+        public StatsViewModel(IPinballRankingApi pinballRankingApi, ILogger<StatsViewModel> logger) : base(logger)
         {
             Title = "Stats";
             MostPointsPlayers = new ObservableCollection<PlayersPointsByGivenPeriodStatistics>();
             MostEventsPlayers = new ObservableCollection<PlayersEventsAttendedByGivenPeriodStatistics>();
             //BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-            PinballRankingApiV2 = pinballRankingApiV2;
+            PinballRankingApi = pinballRankingApi;
         }
-
-        public async Task ExecuteLoadItemsCommand()
+        
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -56,14 +59,14 @@ namespace Ifpa.ViewModels
                 MostEventsPlayers.Clear();
                 //BiggestMovers.Clear();
 
-                DateTime firstDay = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
-                DateTime lastDay = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999);
+                var firstDay = new DateOnly(SelectedYear, 1, 1);
+                var lastDay = new DateOnly(SelectedYear, 12, 31);
 
-                var playersByCountryTask = PinballRankingApiV2.GetPlayersByCountryStatistics();
-                var eventsByYearTask = PinballRankingApiV2.GetEventsByYearStatistics();
-                var playersByYearTask = PinballRankingApiV2.GetPlayersByYearStatistics();
-                var mostPointsPlayersTask = PinballRankingApiV2.GetPlayersPointsByGivenPeriod(firstDay, lastDay);
-                var mostEventsPlayersTask = PinballRankingApiV2.GetPlayersEventsAttendedByGivenPeriod(firstDay, lastDay);
+                var playersByCountryTask = PinballRankingApi.GetPlayersByCountryStatistics();
+                var eventsByYearTask = PinballRankingApi.GetEventsByYearStatistics();
+                var playersByYearTask = PinballRankingApi.GetPlayersByYearStatistics();
+                var mostPointsPlayersTask = PinballRankingApi.GetPlayersPointsByGivenPeriod(firstDay, lastDay);
+                var mostEventsPlayersTask = PinballRankingApi.GetPlayersEventsAttendedByGivenPeriod(firstDay, lastDay);
                 //var biggestMoversTask = PinballRankingApiV2..GetBiggestMoversStat();
 
                 await Task.WhenAll(playersByCountryTask, 
@@ -82,10 +85,10 @@ namespace Ifpa.ViewModels
                 //var biggestMovers = await biggestMoversTask;
 
                 var groupedStats = playersByCountry.GroupBy(
-                    stat => stat.Count < 100 ? "Other" : stat.CountryName,
+                    stat => stat.PlayerCount < 100 ? "Other" : stat.CountryName,
                     (key, group) => new PlayersByCountryStatistics
                     {
-                        Count = key == "Other" ? group.Sum(item => item.Count) : group.First().Count,
+                        PlayerCount = key == "Other" ? group.Sum(item => item.PlayerCount) : group.First().PlayerCount,
                         CountryName = key
                     });
 
@@ -93,7 +96,7 @@ namespace Ifpa.ViewModels
                 {
                     var series = new PieSeries<int>
                     {
-                        Values = new List<int> { item.Count },
+                        Values = new List<int> { item.PlayerCount },
                         Name = item.CountryName
                     };
 
@@ -103,7 +106,7 @@ namespace Ifpa.ViewModels
                 EventsByYearSeries.Add(new ColumnSeries<int>
                 {
                     Name = "Events",
-                    Values = eventsByYear.OrderBy(x => x.Year).Select(x => x.Count).ToArray()
+                    Values = eventsByYear.OrderBy(x => x.Year).Select(x => x.PlayerCount).ToArray()
                 });
 
                 EventsByYearAxis.Add(new Axis
@@ -125,7 +128,7 @@ namespace Ifpa.ViewModels
                 PlayersByYearSeries.Add(new ColumnSeries<int>
                 {
                     Name = "Players",
-                    Values = playersByYear.OrderBy(x => x.Year).Select(x => x.Count).ToArray()
+                    Values = playersByYear.OrderBy(x => x.Year).Select(x => x.CurrentYearCount).ToArray()
                 });
 
                 OnPropertyChanged();
@@ -146,6 +149,22 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task SelectYear()
+        {
+            var seriesDetails = await PinballRankingApi.GetSeries();
+            var availableYears = seriesDetails.Select(n => n.Years).Distinct();
+
+            string action = await Shell.Current.DisplayActionSheet("Select Year", "Cancel", null, availableYears.Select(y => y.ToString()).ToArray());
+
+            if (int.TryParse(action, out var year))
+            {
+                SelectedYear = year;
+            }
+
+            logger.LogInformation($"Selected year: {SelectedYear}");
         }
     }
 }
