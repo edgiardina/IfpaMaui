@@ -46,7 +46,7 @@ namespace Ifpa.ViewModels
                         tempList.AddRange(await PinballRankingApi.GetPlayers(favoritesChunk.Select(n => n.PlayerID).ToList()));                        
                     }
 
-                    Players = tempList.OrderBy(i => i.PlayerStats.System.FirstOrDefault().CurrentRank).ToList();
+                    Players = tempList.OrderBy(i => i.PlayerStats.Open.CurrentRank).ToList();
                 }
 
                 IsPopulated = Players.Count > 0 || dataNotLoaded;

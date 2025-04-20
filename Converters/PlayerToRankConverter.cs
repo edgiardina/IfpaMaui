@@ -10,7 +10,7 @@ namespace Ifpa.Converters
         {
             if(value is PlayerStats player)
             {
-                var firstSeriesRank = player.System.FirstOrDefault()?.CurrentRank;
+                var firstSeriesRank = player.Open?.CurrentRank;
 
                 if (firstSeriesRank.HasValue == false)
                 {

@@ -47,7 +47,7 @@ namespace Ifpa.ViewModels
 
                 var tempList = await PinballRankingApi.GetPlayers(AppSettings.Sponsors);
 
-                Sponsors = tempList.OrderBy(i => i.PlayerStats.System.FirstOrDefault().CurrentRank).ToList();
+                Sponsors = tempList.OrderBy(i => i.PlayerStats.Open?.CurrentRank).ToList();
 
                 logger.LogDebug("Loaded {0} sponsors", Sponsors.Count);
             }

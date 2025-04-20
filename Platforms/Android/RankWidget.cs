@@ -51,7 +51,7 @@ namespace Ifpa.Platforms.Android
 
                     var player = await PinballRankingApi.GetPlayer(playerId);
 
-                    var playerStats = player.PlayerStats.System.FirstOrDefault();
+                    var playerStats = player.PlayerStats.Open;
 
                     widgetView.SetTextViewText(Resource.Id.widgetName, $"{player.FirstName} {player.LastName}");
                     widgetView.SetTextViewText(Resource.Id.widgetRank, playerStats.CurrentRank.OrdinalSuffix());

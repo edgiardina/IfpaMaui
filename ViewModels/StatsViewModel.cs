@@ -5,7 +5,6 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
-using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
 using System.Collections.ObjectModel;
 
@@ -35,6 +34,12 @@ namespace Ifpa.ViewModels
 
         [ObservableProperty]
         private int selectedYear = DateTime.Now.Year;
+
+        [ObservableProperty]
+        private PlayersPointsByGivenPeriodStatistics selectededMostPointsPlayer;
+
+        [ObservableProperty]
+        private PlayersEventsAttendedByGivenPeriodStatistics selectededMostEventsPlayer;
 
         public StatsViewModel(IPinballRankingApi pinballRankingApi, ILogger<StatsViewModel> logger) : base(logger)
         {
@@ -169,6 +174,24 @@ namespace Ifpa.ViewModels
             }
 
             logger.LogInformation($"Selected year: {SelectedYear}");
+            await LoadItems();
+        }
+
+        [RelayCommand]
+        public async Task SelectedMostPointsPlayerChanged()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectededMostPointsPlayer.PlayerId}");
+
+            // Manually deselect item.
+            SelectededMostPointsPlayer = null;
+        }
+
+        [RelayCommand]
+        public async Task SelectedMostEventsPlayerChanged()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectededMostEventsPlayer.PlayerId}");
+            // Manually deselect item.
+            SelectededMostEventsPlayer = null;
         }
     }
 }
