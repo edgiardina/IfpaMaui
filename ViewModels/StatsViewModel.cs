@@ -44,7 +44,7 @@ namespace Ifpa.ViewModels
             //BiggestMovers = new ObservableCollectionRange<BiggestMoversStat>();
             PinballRankingApi = pinballRankingApi;
         }
-        
+
         [RelayCommand]
         public async Task LoadItems()
         {
@@ -69,7 +69,7 @@ namespace Ifpa.ViewModels
                 var mostEventsPlayersTask = PinballRankingApi.GetPlayersEventsAttendedByGivenPeriod(firstDay, lastDay);
                 //var biggestMoversTask = PinballRankingApiV2..GetBiggestMoversStat();
 
-                await Task.WhenAll(playersByCountryTask, 
+                await Task.WhenAll(playersByCountryTask,
                                    eventsByYearTask,
                                    playersByYearTask,
                                    mostPointsPlayersTask,
@@ -155,7 +155,11 @@ namespace Ifpa.ViewModels
         public async Task SelectYear()
         {
             var seriesDetails = await PinballRankingApi.GetSeries();
-            var availableYears = seriesDetails.Select(n => n.Years).Distinct();
+            var availableYears = seriesDetails.Where(sd => sd.Years != null)
+                                              .SelectMany(sd => sd.Years)
+                                              .OrderBy(y => y)
+                                              .Distinct()
+                                              .ToList();
 
             string action = await Shell.Current.DisplayActionSheet("Select Year", "Cancel", null, availableYears.Select(y => y.ToString()).ToArray());
 
