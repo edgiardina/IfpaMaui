@@ -41,7 +41,7 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet build IfpaMaui.csproj -c Debug -f net8.0-android34.0 --no-restore
+        run: dotnet build IfpaMaui.csproj -c Release -f net8.0-android34.0 --no-restore
 
 # MAUI iOS Build
   build-ios:
