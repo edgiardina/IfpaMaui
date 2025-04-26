@@ -76,20 +76,9 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
         <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
-    </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(Configuration)' == 'Debug'">
-            <ItemGroup>
-                <ProjectReference Include="..\PinballApi\PinballApi\PinballApi.csproj" />
-            </ItemGroup>
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="PinballApi" Version="3.1.9" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
+        <PackageReference Include="PinballApi" Version="3.1.9" />
+    </ItemGroup>    
 
     <!-- Maui Specifics -->
     <ItemGroup>
