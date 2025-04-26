@@ -8,12 +8,12 @@ namespace Ifpa.Models
 
         public static string GetRank(this Player player)
         {
-            return player.PlayerStats.System.FirstOrDefault()?.CurrentRank.OrdinalSuffix() ?? Strings.NotRanked;
+            return player.PlayerStats.Open?.CurrentRank.OrdinalSuffix() ?? Strings.NotRanked;
         }
 
         public static int GetIntegerRank(this Player player)
         {
-            return (int)(player.PlayerStats.System.FirstOrDefault()?.CurrentRank ?? 0);
+            return (int)(player.PlayerStats.Open?.CurrentRank ?? 0);
         }
     }
 }

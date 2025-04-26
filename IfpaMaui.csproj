@@ -51,8 +51,7 @@
         <PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc4.5" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-        <PackageReference Include="PinballApi" Version="3.1.8" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />        
         <PackageReference Include="Plugin.Maui.CalendarStore" Version="3.0.0" />
         <PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.9.0" />
         <PackageReference Include="Polly" Version="8.5.1" />
@@ -77,7 +76,9 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
         <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
-    </ItemGroup>
+
+        <PackageReference Include="PinballApi" Version="3.1.9" />
+    </ItemGroup>    
 
     <!-- Maui Specifics -->
     <ItemGroup>

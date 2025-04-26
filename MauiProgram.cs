@@ -129,7 +129,6 @@ public static class MauiProgram
         s.AddSingleton<NotificationService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
 
-        s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
         s.AddSingleton<PinballRankingApi>(x => new PinballRankingApi(appSettings.IfpaApiKey));
 
         // Set up caching for IPinballRankingApi

@@ -20,9 +20,8 @@ namespace Ifpa.Services
 
         private readonly IGeocoding Geocoding;
 
-        public NotificationService(PinballRankingApiV2 pinballRankingApiV2, IPinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
+        public NotificationService(IPinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
-            PinballRankingApiV2 = pinballRankingApiV2;
             UniversalPinballRankingApi = universalPinballRankingApi;
             Geocoding = geocoding;
 
@@ -31,7 +30,6 @@ namespace Ifpa.Services
             this.logger = logger;
             this.badge = badge;
         }
-        private PinballRankingApiV2 PinballRankingApiV2 { get; set; }
         private IPinballRankingApi UniversalPinballRankingApi { get; set; }
 
         public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
@@ -57,7 +55,7 @@ namespace Ifpa.Services
                 try
                 {
 
-                    var results = await PinballRankingApiV2.GetPlayerResults(Settings.MyStatsPlayerId);
+                    var results = await UniversalPinballRankingApi.GetPlayerResults(Settings.MyStatsPlayerId);
 
                     var unseenTournaments = await Settings.FindUnseenTournaments(results.Results);
 
@@ -77,7 +75,7 @@ namespace Ifpa.Services
 
                             var record = new ActivityFeedItem
                             {
-                                CreatedDateTime = isHistoricalEventPopulation ? result.EventDate : DateTime.Now,
+                                CreatedDateTime = isHistoricalEventPopulation ? result.EventDate.ToDateTime(TimeOnly.MinValue) : DateTime.Now,
                                 HasBeenSeen = isHistoricalEventPopulation,
                                 RecordID = result.TournamentId,
                                 IntOne = result.Position,
@@ -111,9 +109,9 @@ namespace Ifpa.Services
 
                 try
                 {
-                    var results = await PinballRankingApiV2.GetPlayer(Settings.MyStatsPlayerId);
+                    var results = await UniversalPinballRankingApi.GetPlayer(Settings.MyStatsPlayerId);
 
-                    var currentWpprRank = results.PlayerStats.CurrentWpprRank;
+                    var currentWpprRank = results.PlayerStats.Open.CurrentRank;
                     var lastRecordedWpprRank = Settings.MyStatsCurrentWpprRank;
 
                     if (currentWpprRank != lastRecordedWpprRank && lastRecordedWpprRank != 0)
@@ -122,12 +120,12 @@ namespace Ifpa.Services
                         {
                             CreatedDateTime = DateTime.Now,
                             HasBeenSeen = false,
-                            IntOne = currentWpprRank,
+                            IntOne = Convert.ToInt32(currentWpprRank),
                             IntTwo = lastRecordedWpprRank,
                             ActivityType = ActivityFeedType.RankChange
                         };
 
-                        Settings.MyStatsCurrentWpprRank = currentWpprRank;
+                        Settings.MyStatsCurrentWpprRank = Convert.ToInt32(currentWpprRank);
 
                         await Settings.LocalDatabase.CreateActivityFeedRecord(record);
 
