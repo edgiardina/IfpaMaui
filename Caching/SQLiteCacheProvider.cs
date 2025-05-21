@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Ifpa.Models;
+﻿using Ifpa.Models;
 using Polly.Caching;
 using SQLite;
+using System.Text.Json;
 
 namespace Ifpa.Caching
 {

@@ -12,6 +12,7 @@ using Ifpa.ViewModels;
 using Ifpa.Views;
 using MauiIcons.Fluent;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using PinballApi;
@@ -19,6 +20,7 @@ using PinballApi.Interfaces;
 using Plugin.Maui.CalendarStore;
 using Plugin.Maui.NativeCalendar;
 using Polly;
+using Polly.Caching;
 using Serilog;
 using Shiny;
 using Shiny.Infrastructure;
@@ -128,28 +130,12 @@ public static class MauiProgram
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
-
-        s.AddSingleton<PinballRankingApi>(x => new PinballRankingApi(appSettings.IfpaApiKey));
-
-        // Set up caching for IPinballRankingApi
-        builder.Services.AddSingleton<IPinballRankingApi>(provider =>
+        s.AddSingleton<IPinballRankingApi>(sp =>
         {
-            var api = provider.GetRequiredService<PinballRankingApi>();
-            var logger = provider.GetRequiredService<ILogger<CachingProxy<IPinballRankingApi>>>();
-
-            return CachingProxyFactory.Create<IPinballRankingApi>(api, logger);
-
-            /*
-             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "app_cache.db");
-            var sqliteCacheProvider = new SQLiteCacheProvider(dbPath);
-
-            var cachingPolicy = CachingPolicyFactory.CreatePolicy(sqliteCacheProvider, logger);
-
-            return CachingProxyFactory.Create<IPinballRankingApi>(api, cachingPolicy, logger);
-             
-             */
+            var cache = new SQLiteCacheProvider(Settings.CacheDatabasePath);
+            var online = new PinballRankingApi(appSettings.IfpaApiKey);
+            return new CachingPinballRankingApi(online, cache);
         });
-
         s.AddSingleton(Geocoding.Default);
         s.AddSingleton(Badge.Default);
         s.AddSingleton(CalendarStore.Default);
