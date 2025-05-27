@@ -1,7 +1,11 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using Android.Net.Http;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Flurl.Http;
+using Ifpa.Exceptions;
 using Ifpa.Models;
+using Microsoft.Extensions.Logging;
+using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
@@ -25,45 +29,51 @@ namespace Ifpa.Caching
         private readonly IPinballRankingApi onlineApi;
         private readonly IAsyncCacheProvider cache;
         private readonly Ttl ttl = new Ttl(1.Hour());
+        private readonly ILogger<CachingPinballRankingApi> logger;
 
-        public CachingPinballRankingApi(IPinballRankingApi onlineApi, IAsyncCacheProvider cache)
+        public CachingPinballRankingApi(IPinballRankingApi onlineApi, IAsyncCacheProvider cache, ILogger<CachingPinballRankingApi> logger)
         {
             this.onlineApi = onlineApi ?? throw new ArgumentNullException(nameof(onlineApi));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            this.logger = logger;
         }
 
         private async Task<T> ExecuteWithCache<T>(string cacheKey, Func<Task<T>> fetch)
         {
-            try
-            {
-                // Try the network
-                var result = await Policy
-                    .Handle<FlurlHttpException>()
-                    .Or<HttpRequestException>()
-                    .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(1 << i))
-                    .ExecuteAsync(_ => fetch(), new Context(cacheKey));
+            // 1) retry policy
+            var retry = Policy<T>
+                .Handle<Exception>(ex => ex is not NetworkUnavailableException)
+                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(1 << i));
 
-                // On success, write-through cache
-                await cache.PutAsync(cacheKey, result, ttl, CancellationToken.None, false);
-                return result;
-            }
-            catch (Exception ex) when (
-                ex is FlurlHttpException ||
-                ex is HttpRequestException)
-            {
-                // On failure, fall back to cache
-                var (hit, cached) = await cache.TryGetAsync(cacheKey, CancellationToken.None, false);
+            // 2) cache-on-success policy (write-through)
+            var cachePol = Policy.CacheAsync<T>(cache, TimeSpan.FromHours(1));
 
-                if (hit)
+            // 3) fallback-on-failure policy (read-from-cache)
+            var fallback = Policy<T>
+                .Handle<Exception>()
+                .FallbackAsync<T>(
+                    async (outcome, ctx, ct) =>
+                    {
+                        var (hit, val) = await cache.TryGetAsync(ctx.OperationKey!, ct, false);
+                        if (!hit) throw outcome.Exception!;
+                        MainThread.BeginInvokeOnMainThread(() =>
+                            Toast.Make("Offline — using cached data.", ToastDuration.Long).Show());
+                        return (T)val;
+                    });
+
+            // wrap them all together: fallback → cache → retry
+            var policy = Policy.WrapAsync(fallback, cachePol, retry);
+            return (await policy.ExecuteAndCaptureAsync(_ => {
+
+                var access = Connectivity.Current.NetworkAccess;
+                if (access == NetworkAccess.None || access == NetworkAccess.Local)
                 {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                        Toast.Make("Offline — using cached data.", ToastDuration.Long).Show());
-                    return (T)cached;
+                    logger.LogWarning("Network access indicates device cannot reach IFPA Api - State {access}", access);
+                    throw new NetworkUnavailableException("No internet connection available.");
                 }
 
-                // No cache either → rethrow
-                throw;
-            }
+                return fetch(); 
+            }, new Context(cacheKey))).Result;
         }
 
         public Task<List<CountryDirector>> GetCountryDirectors() =>

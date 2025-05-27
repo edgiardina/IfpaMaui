@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net8.0-ios;net8.0-android34.0</TargetFrameworks>
+        <TargetFrameworks>net8.0-android34.0;net8.0-ios</TargetFrameworks>
         <OutputType>Exe</OutputType>
         <RootNamespace>Ifpa</RootNamespace>
         <UseMaui>true</UseMaui>
@@ -77,7 +77,7 @@
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
         <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
 
-        <PackageReference Include="PinballApi" Version="3.1.9" />
+        <PackageReference Include="PinballApi" Version="3.1.10" />
     </ItemGroup>    
 
     <!-- Maui Specifics -->

@@ -134,7 +134,8 @@ public static class MauiProgram
         {
             var cache = new SQLiteCacheProvider(Settings.CacheDatabasePath);
             var online = new PinballRankingApi(appSettings.IfpaApiKey);
-            return new CachingPinballRankingApi(online, cache);
+            var logger = sp.GetRequiredService<ILogger<CachingPinballRankingApi>>();
+            return new CachingPinballRankingApi(online, cache, logger);
         });
         s.AddSingleton(Geocoding.Default);
         s.AddSingleton(Badge.Default);
