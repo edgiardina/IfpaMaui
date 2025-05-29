@@ -1,11 +1,8 @@
-﻿using Android.Net.Http;
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using Flurl.Http;
 using Ifpa.Exceptions;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal;
@@ -27,19 +24,19 @@ namespace Ifpa.Caching
     public class CachingPinballRankingApi : IPinballRankingApi
     {
         private readonly IPinballRankingApi onlineApi;
-        private readonly IAsyncCacheProvider cache;
         private readonly Ttl ttl = new Ttl(1.Hour());
         private readonly ILogger<CachingPinballRankingApi> logger;
 
-        public CachingPinballRankingApi(IPinballRankingApi onlineApi, IAsyncCacheProvider cache, ILogger<CachingPinballRankingApi> logger)
+        public CachingPinballRankingApi(IPinballRankingApi onlineApi, ILogger<CachingPinballRankingApi> logger)
         {
             this.onlineApi = onlineApi ?? throw new ArgumentNullException(nameof(onlineApi));
-            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
             this.logger = logger;
         }
 
         private async Task<T> ExecuteWithCache<T>(string cacheKey, Func<Task<T>> fetch)
         {
+            var cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath);
+
             // 1) retry policy
             var retry = Policy<T>
                 .Handle<Exception>(ex => ex is not NetworkUnavailableException)
@@ -51,14 +48,19 @@ namespace Ifpa.Caching
             // 3) fallback-on-failure policy (read-from-cache)
             var fallback = Policy<T>
                 .Handle<Exception>()
-                .FallbackAsync<T>(
-                    async (outcome, ctx, ct) =>
+                .FallbackAsync(
+                    async (delegateResult, ctx, ct) =>
                     {
-                        var (hit, val) = await cache.TryGetAsync(ctx.OperationKey!, ct, false);
-                        if (!hit) throw outcome.Exception!;
+                        var (hit, val) = await cache.TryGetAsync(ctx.OperationKey, new CancellationToken(), false);
+                        if (!hit) throw new Exception();
                         MainThread.BeginInvokeOnMainThread(() =>
                             Toast.Make("Offline — using cached data.", ToastDuration.Long).Show());
-                        return (T)val;
+                        return val;
+                    },
+                    async (delegateResult, ctx) =>
+                    {
+                        logger.LogWarning(delegateResult.Exception, "Falling back to cache for key {Key}", ctx.OperationKey);
+                        await Task.CompletedTask;
                     });
 
             // wrap them all together: fallback → cache → retry

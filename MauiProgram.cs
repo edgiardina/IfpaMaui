@@ -132,10 +132,9 @@ public static class MauiProgram
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
         s.AddSingleton<IPinballRankingApi>(sp =>
         {
-            var cache = new SQLiteCacheProvider(Settings.CacheDatabasePath);
             var online = new PinballRankingApi(appSettings.IfpaApiKey);
             var logger = sp.GetRequiredService<ILogger<CachingPinballRankingApi>>();
-            return new CachingPinballRankingApi(online, cache, logger);
+            return new CachingPinballRankingApi(online, logger);
         });
         s.AddSingleton(Geocoding.Default);
         s.AddSingleton(Badge.Default);
