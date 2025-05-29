@@ -738,4 +738,10 @@
   <data name="AboutPage_ErrorMessage" xml:space="preserve">
     <value>There was an error sending the log files. Please try again later.</value>
   </data>
+  <data name="Toast_Offline_Cache" xml:space="preserve">
+    <value>Offline — using cached data.</value>
+  </data>
+  <data name="Toast_Offline_NoCache" xml:space="preserve">
+    <value>Offline — no cached data available.</value>
+  </data>
 </root>

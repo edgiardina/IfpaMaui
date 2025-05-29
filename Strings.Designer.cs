@@ -1654,6 +1654,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offline — using cached data..
+        /// </summary>
+        internal static string Toast_Offline_Cache {
+            get {
+                return ResourceManager.GetString("Toast_Offline_Cache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline — no cached data available..
+        /// </summary>
+        internal static string Toast_Offline_NoCache {
+            get {
+                return ResourceManager.GetString("Toast_Offline_NoCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Base Value: .
         /// </summary>
         internal static string TournamentInfoPage_BaseValue {

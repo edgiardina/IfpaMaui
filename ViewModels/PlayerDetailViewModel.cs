@@ -7,10 +7,7 @@ using LiveChartsCore.Kernel;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Extensions;
 using PinballApi.Interfaces;
-using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Series;
 using SkiaSharp;
@@ -211,7 +208,11 @@ namespace Ifpa.ViewModels
             }
             finally
             {
-                IsBusy = false;
+                if(PlayerRecord.PlayerId != default)
+                {
+                    // if we don't get the user's record, keep the busy indicator up
+                    IsBusy = false;
+                }            
             }
         }
 
