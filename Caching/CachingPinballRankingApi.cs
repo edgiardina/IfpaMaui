@@ -37,14 +37,14 @@ namespace Ifpa.Caching
         {
             var cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath);
 
-            // 1) retry everything except “no network”
+            // Retry on non network‐unavailable errors
             var retry = Policy<T>
                 .Handle<Exception>(ex => ex is not NetworkUnavailableException)
-                .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(1 << i));
+                .WaitAndRetryAsync(3, i => TimeSpan.FromMilliseconds(250 * (1 << (i - 1))));
 
-            // 2) fallback-on-failure (read from cache)
+            // Fallback to cache if the network is unavailable or if the fetch fails
             var fallback = Policy<T>
-                .Handle<Exception>()   // catch anything that bubbles out of retry
+                .Handle<Exception>()
                 .FallbackAsync(
                     async (outcome, ctx, ct) =>
                     {
@@ -54,10 +54,19 @@ namespace Ifpa.Caching
                                                 continueOnCapturedContext: false);
 
                         if (!hit)
-                            throw outcome.Exception!;   // no cache → real error
+                        {
+                            logger.LogWarning(outcome.Exception,
+                                "Cache miss for {Key}", ctx.OperationKey);
+
+                            MainThread.BeginInvokeOnMainThread(() =>
+                                Toast.Make(Strings.Toast_Offline_NoCache,
+                                           ToastDuration.Long).Show());
+
+                            throw outcome.Exception!;   // no cache -> real error
+                        }
 
                         MainThread.BeginInvokeOnMainThread(() =>
-                            Toast.Make("Offline — using cached data.",
+                            Toast.Make(Strings.Toast_Offline_Cache,
                                        ToastDuration.Long).Show());
                         return (T)val!;
                     },
@@ -68,10 +77,10 @@ namespace Ifpa.Caching
                         await Task.CompletedTask;
                     });
 
-            // 3) wrap fallback around retry
+            // wrap fallback around retry
             var pipeline = Policy.WrapAsync(fallback, retry);
 
-            // 4) execute: if offline, retry will see NetworkUnavailableException
+            // execute: if offline, retry will see NetworkUnavailableException
             //    and skip directly to fallback; if online, fetch runs, then we cache it
             var q = await pipeline.ExecuteAndCaptureAsync(async (ctx) =>
             {
