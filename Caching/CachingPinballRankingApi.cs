@@ -37,45 +37,63 @@ namespace Ifpa.Caching
         {
             var cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath);
 
-            // 1) retry policy
+            // 1) retry everything except “no network”
             var retry = Policy<T>
                 .Handle<Exception>(ex => ex is not NetworkUnavailableException)
                 .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(1 << i));
 
-            // 2) cache-on-success policy (write-through)
-            var cachePol = Policy.CacheAsync<T>(cache, TimeSpan.FromHours(1));
-
-            // 3) fallback-on-failure policy (read-from-cache)
+            // 2) fallback-on-failure (read from cache)
             var fallback = Policy<T>
-                .Handle<Exception>()
+                .Handle<Exception>()   // catch anything that bubbles out of retry
                 .FallbackAsync(
-                    async (delegateResult, ctx, ct) =>
+                    async (outcome, ctx, ct) =>
                     {
-                        var (hit, val) = await cache.TryGetAsync(ctx.OperationKey, new CancellationToken(), false);
-                        if (!hit) throw new Exception();
+                        var (hit, val) = await cache.TryGetAsync(
+                                                ctx.OperationKey!,
+                                                ct,
+                                                continueOnCapturedContext: false);
+
+                        if (!hit)
+                            throw outcome.Exception!;   // no cache → real error
+
                         MainThread.BeginInvokeOnMainThread(() =>
-                            Toast.Make("Offline — using cached data.", ToastDuration.Long).Show());
-                        return val;
+                            Toast.Make("Offline — using cached data.",
+                                       ToastDuration.Long).Show());
+                        return (T)val!;
                     },
-                    async (delegateResult, ctx) =>
+                    onFallbackAsync: async (outcome, ctx) =>
                     {
-                        logger.LogWarning(delegateResult.Exception, "Falling back to cache for key {Key}", ctx.OperationKey);
+                        logger.LogWarning(outcome.Exception,
+                            "Falling back to cache for {Key}", ctx.OperationKey);
                         await Task.CompletedTask;
                     });
 
-            // wrap them all together: fallback → cache → retry
-            var policy = Policy.WrapAsync(fallback, cachePol, retry);
-            return (await policy.ExecuteAndCaptureAsync(_ => {
+            // 3) wrap fallback around retry
+            var pipeline = Policy.WrapAsync(fallback, retry);
 
+            // 4) execute: if offline, retry will see NetworkUnavailableException
+            //    and skip directly to fallback; if online, fetch runs, then we cache it
+            var q = await pipeline.ExecuteAndCaptureAsync(async (ctx) =>
+            {
+                // network‐unavailable check
                 var access = Connectivity.Current.NetworkAccess;
-                if (access == NetworkAccess.None || access == NetworkAccess.Local)
-                {
-                    logger.LogWarning("Network access indicates device cannot reach IFPA Api - State {access}", access);
-                    throw new NetworkUnavailableException("No internet connection available.");
-                }
+                if (access is NetworkAccess.None or NetworkAccess.Local)
+                    throw new NetworkUnavailableException();
 
-                return fetch(); 
-            }, new Context(cacheKey))).Result;
+                // real network call
+                var result = await fetch().ConfigureAwait(false);
+
+                // write‐through cache
+                await cache.PutAsync(ctx.OperationKey!,
+                                     result,
+                                     new Ttl(TimeSpan.FromHours(1)),
+                                     CancellationToken.None,
+                                     continueOnCapturedContext: false);
+
+                return result;
+            },
+            new Context(cacheKey));
+            return q.Result;
         }
 
         public Task<List<CountryDirector>> GetCountryDirectors() =>
