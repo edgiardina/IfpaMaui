@@ -53,7 +53,6 @@ jobs:
         with:
           files: 'appsettings.json'
         env:
-          AppSettings.SyncFusionLicenseKey: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
       
       - name: Add Google Maps API Key to Android Manifest
@@ -171,7 +170,6 @@ jobs:
         with:
           files: 'appsettings.json'
         env:
-          AppSettings.SyncFusionLicenseKey: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
       
       - name: Setup .NET 9
