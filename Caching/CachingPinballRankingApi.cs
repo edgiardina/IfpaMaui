@@ -24,7 +24,6 @@ namespace Ifpa.Caching
     public class CachingPinballRankingApi : IPinballRankingApi
     {
         private readonly IPinballRankingApi onlineApi;
-        private readonly Ttl ttl = new Ttl(1.Hour());
         private readonly ILogger<CachingPinballRankingApi> logger;
 
         public CachingPinballRankingApi(IPinballRankingApi onlineApi, ILogger<CachingPinballRankingApi> logger)
