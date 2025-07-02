@@ -12,20 +12,17 @@ using Ifpa.ViewModels;
 using Ifpa.Views;
 using MauiIcons.Fluent;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
 using PinballApi;
 using PinballApi.Interfaces;
 using Plugin.Maui.CalendarStore;
 using Plugin.Maui.NativeCalendar;
-using Polly;
-using Polly.Caching;
 using Serilog;
 using Shiny;
 using Shiny.Infrastructure;
 using SkiaSharp.Views.Maui.Controls.Hosting;
-using Syncfusion.Maui.Core.Hosting;
+using Syncfusion.Maui.Toolkit.Hosting;
 using The49.Maui.BottomSheet;
 
 namespace Ifpa;
@@ -51,7 +48,7 @@ public static class MauiProgram
             .UseSkiaSharp()
             .UseBottomSheet()
             .UseNativeCalendar()
-            .ConfigureSyncfusionCore()
+            .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
