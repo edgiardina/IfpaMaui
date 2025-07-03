@@ -145,6 +145,15 @@ jobs:
           PROFILE_UUID=$(uuidgen)
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$PROFILE_UUID.mobileprovision
       
+      - name: Debug keychain identities
+        run: |
+          echo "Finding identities in keychain..."
+          security find-identity -v -p codesigning
+          echo "Finding identities in custom keychain..."
+          security find-identity -v -p codesigning $RUNNER_TEMP/app-signing.keychain-db
+          echo "Checking provisioning profiles..."
+          ls -l ~/Library/MobileDevice/Provisioning\ Profiles
+      
       - name: Pull Version from Tag
         uses: nowsprinting/check-version-format-action@v3
         id: version
