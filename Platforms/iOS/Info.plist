@@ -32,6 +32,8 @@
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app will use your location to show nearby tournaments</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app will use your location to show nearby tournaments</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>This app will allow you to add an IFPA sanctioned tournament from the app to your local device&apos;s calendar</string>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
