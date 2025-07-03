@@ -124,7 +124,7 @@ jobs:
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$HOME/Library/Keychains/app-signing.keychain-db
       
-          # Decode cert and profile
+          # Decode cert and provisioning profile
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
       
@@ -133,25 +133,35 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
       
-          # Import cert with tool access for codesign/security
+          # Import cert with access for codesign and security
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH -T /usr/bin/codesign -T /usr/bin/security
       
-          # Make sure keychain is globally visible to MSBuild/dotnet
+          # Set keychain search and default to make it visible to MSBuild
           security list-keychains -s $KEYCHAIN_PATH login.keychain-db
           security default-keychain -s $KEYCHAIN_PATH
       
-          # Explicitly allow signing tools to access the private key
+          # Grant signing tools access to the private key
           security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
       
-          # Place provisioning profile with correct extension
+          # ✅ OPTIONAL: Try to trust the certificate globally (might help dotnet/xcode build trust chain)
+          CERT_SHA=$(security find-certificate -c "Apple Distribution" -Z $KEYCHAIN_PATH | awk '/SHA-1/ { print $NF }')
+          if [[ -n "$CERT_SHA" ]]; then
+            CERT_PATH=$(security find-certificate -Z -a -p $KEYCHAIN_PATH | awk 'BEGIN {p=0} /BEGIN CERTIFICATE/ {p=1} {if(p)print} /END CERTIFICATE/ {p=0}' > temp_cert.cer && echo "temp_cert.cer")
+            sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "$CERT_PATH" || echo "⚠️ Could not trust cert — continuing anyway"
+          fi
+      
+          # ✅ Extract real UUID from provisioning profile and name it correctly
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          PROFILE_UUID=$(uuidgen)
+          PROFILE_UUID=$(grep -aA1 UUID $PP_PATH | grep -io "[-A-F0-9]\{36\}" | head -1)
+          if [[ -z "$PROFILE_UUID" ]]; then
+            echo "❌ Failed to extract UUID from provisioning profile"
+            exit 1
+          fi
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$PROFILE_UUID.mobileprovision
       
-          # Debug identity visibility
-          echo "🔍 Checking available identities:"
+          # Debug output to confirm identity is available
+          echo "🔍 Signing identities:"
           security find-identity -v -p codesigning $KEYCHAIN_PATH
-
       
       - name: Pull Version from Tag
         uses: nowsprinting/check-version-format-action@v3
