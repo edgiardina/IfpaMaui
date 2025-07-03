@@ -153,6 +153,8 @@ jobs:
           # ✅ Extract real UUID from provisioning profile and name it correctly
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           PROFILE_UUID=$(grep -aA1 UUID $PP_PATH | grep -io "[-A-F0-9]\{36\}" | head -1)
+          echo "PROVISIONING_UUID=$PROFILE_UUID" >> $GITHUB_ENV
+
           if [[ -z "$PROFILE_UUID" ]]; then
             echo "❌ Failed to extract UUID from provisioning profile"
             exit 1
@@ -208,11 +210,16 @@ jobs:
       - name: Restore nuget packages
         run:  dotnet restore IfpaMaui.csproj
         
-        # https://docs.microsoft.com/en-us/dotnet/maui/ios/deployment/overview
       - name : Publish iOS App
         shell: bash
         run: |
-          dotnet publish -f net9.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }}
+          dotnet publish -f net9.0-ios -c Release \
+            -p:ArchiveOnBuild=true \
+            -p:Version=${VERSION} \
+            -p:ApplicationDisplayVersion=${VERSION} \
+            -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} \
+            -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
+            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
 
       - uses: actions/upload-artifact@v4
         with:
