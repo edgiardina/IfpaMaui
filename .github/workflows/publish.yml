@@ -120,8 +120,8 @@ jobs:
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_PROVISION_PROFILE_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/certificate.p12
-          PP_PATH=$RUNNER_TEMP/profile.mobileprovision
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$HOME/Library/Keychains/app-signing.keychain-db
       
           # Decode cert and provisioning profile
@@ -129,39 +129,41 @@ jobs:
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
       
           # Create and unlock custom keychain
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
       
-          # Import cert and allow codesign
-          security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" -T /usr/bin/codesign -T /usr/bin/security
+          # Import cert with access for codesign and security
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH -T /usr/bin/codesign -T /usr/bin/security
       
-          # Make sure our keychain is available to msbuild
-          security list-keychains -s "$KEYCHAIN_PATH" login.keychain-db
-          security default-keychain -s "$KEYCHAIN_PATH"
+          # Set keychain search and default to make it visible to MSBuild
+          security list-keychains -s $KEYCHAIN_PATH login.keychain-db
+          security default-keychain -s $KEYCHAIN_PATH
       
-          # Give signing tools access to the private key
-          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          # Grant signing tools access to the private key
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
       
-          # Dynamically detect Apple Distribution signing identity
-          SIGNING_IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep "Apple Distribution" | head -n1 | sed -E 's/.*"(.+)"/\1/')
-          if [[ -z "$SIGNING_IDENTITY" ]]; then
-            echo "❌ Could not find a valid Apple Distribution identity in keychain"
-            exit 1
+          # ✅ OPTIONAL: Try to trust the certificate globally (might help dotnet/xcode build trust chain)
+          CERT_SHA=$(security find-certificate -c "Apple Distribution" -Z $KEYCHAIN_PATH | awk '/SHA-1/ { print $NF }')
+          if [[ -n "$CERT_SHA" ]]; then
+            CERT_PATH=$(security find-certificate -Z -a -p $KEYCHAIN_PATH | awk 'BEGIN {p=0} /BEGIN CERTIFICATE/ {p=1} {if(p)print} /END CERTIFICATE/ {p=0}' > temp_cert.cer && echo "temp_cert.cer")
+            sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "$CERT_PATH" || echo "⚠️ Could not trust cert — continuing anyway"
           fi
-          echo "CODESIGN_IDENTITY=$SIGNING_IDENTITY" >> $GITHUB_ENV
       
-          # Extract and install provisioning profile
-          PROFILE_UUID=$(grep -aA1 UUID "$PP_PATH" | grep -io "[-A-F0-9]\{36\}" | head -n1)
+          # ✅ Extract real UUID from provisioning profile and name it correctly
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          PROFILE_UUID=$(grep -aA1 UUID $PP_PATH | grep -io "[-A-F0-9]\{36\}" | head -1)
+          echo "PROVISIONING_UUID=$PROFILE_UUID" >> $GITHUB_ENV
+
           if [[ -z "$PROFILE_UUID" ]]; then
             echo "❌ Failed to extract UUID from provisioning profile"
             exit 1
           fi
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp "$PP_PATH" ~/Library/MobileDevice/Provisioning\ Profiles/"$PROFILE_UUID".mobileprovision
-          echo "PROVISIONING_UUID=$PROFILE_UUID" >> $GITHUB_ENV
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$PROFILE_UUID.mobileprovision
       
-          echo "✅ Codesign identity and provisioning profile installed successfully"
+          # Debug output to confirm identity is available
+          echo "🔍 Signing identities:"
+          security find-identity -v -p codesigning $KEYCHAIN_PATH
       
       - name: Pull Version from Tag
         uses: nowsprinting/check-version-format-action@v3
@@ -216,9 +218,8 @@ jobs:
             -p:Version=${VERSION} \
             -p:ApplicationDisplayVersion=${VERSION} \
             -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} \
-            -p:CodesignKey="${{ env.CODESIGN_IDENTITY }}" \
+            -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
-
 
       - uses: actions/upload-artifact@v4
         with:
