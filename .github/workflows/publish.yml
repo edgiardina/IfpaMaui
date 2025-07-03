@@ -124,33 +124,34 @@ jobs:
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
       
-          # Decode certificate and provisioning profile
+          # Decode cert and profile
           echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
       
-          # Create and unlock temporary keychain
+          # Create and unlock custom keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
       
-          # Import certificate with tool access (important for macOS/Xcode security model)
+          # Import cert with tool access for codesign/security
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH -T /usr/bin/codesign -T /usr/bin/security
       
-          # Set keychain as default and make sure it's searched
-          security list-keychain -d user -s $KEYCHAIN_PATH
+          # Make sure keychain is globally visible to MSBuild/dotnet
+          security list-keychains -s $KEYCHAIN_PATH login.keychain-db
           security default-keychain -s $KEYCHAIN_PATH
       
-          # Allow access to private key for signing tools (required on modern macOS)
+          # Explicitly allow signing tools to access the private key
           security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
       
-          # Save provisioning profile with valid extension
+          # Place provisioning profile with correct extension
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           PROFILE_UUID=$(uuidgen)
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$PROFILE_UUID.mobileprovision
       
-          # Debug identity visibility (optional but helpful)
+          # Debug identity visibility
           echo "🔍 Checking available identities:"
           security find-identity -v -p codesigning $KEYCHAIN_PATH
+
       
       - name: Pull Version from Tag
         uses: nowsprinting/check-version-format-action@v3
