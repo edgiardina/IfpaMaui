@@ -70,6 +70,8 @@
                 Value="{AppThemeBinding Light={StaticResource TabHeaderBackgroundColor}, Dark={StaticResource TabHeaderBackgroundColorDark}}" />
         <Setter Property="IndicatorBackground"
                 Value="{StaticResource IconAccentColor}" />
+        <Setter Property="IndicatorWidthMode"
+                Value="Stretch" />
     </Style>
     <Style TargetType="tabView:SfTabItem"
            ApplyToDerivedTypes="True">

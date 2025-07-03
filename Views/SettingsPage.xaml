@@ -45,6 +45,7 @@
                                                VerticalOptions="Fill"
                                                IsVisible="{OnPlatform Android=false}"
                                                IsActive="{Binding IsBusy}"
+                                               BackgroundColor="Transparent"
                                                WaveColor="{StaticResource IconAccentColor}"
                                                Fill="{StaticResource SecondaryTextColor}"
                                                Type="CirclePersona">
@@ -90,6 +91,7 @@
             <shimmer:SfShimmer VerticalOptions="Fill"
                                IsVisible="{OnPlatform false, Android=true}"
                                IsActive="{Binding IsBusy}"
+                               BackgroundColor="Transparent"
                                WaveColor="{StaticResource IconAccentColor}"
                                Fill="{StaticResource SecondaryTextColor}"
                                Type="CirclePersona">

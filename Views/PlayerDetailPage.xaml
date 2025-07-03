@@ -29,8 +29,6 @@
                         Value="50" />
                 <Setter Property="MinimumWidthRequest"
                         Value="100" />
-                <Setter Property="Shadow"
-                        Value="False" />
                 <Setter Property="Padding"
                         Value="5,5" />
                 <Setter Property="Margin"
