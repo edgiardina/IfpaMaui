@@ -24,14 +24,12 @@
                         Value="Bold" />
             </Style>
             <Style x:Key="FrameButton"
-                   TargetType="Frame">
+                   TargetType="Border">
                 <Setter Property="MinimumHeightRequest"
                         Value="50" />
-                <Setter Property="CornerRadius"
-                        Value="6.5" />
                 <Setter Property="MinimumWidthRequest"
                         Value="100" />
-                <Setter Property="HasShadow"
+                <Setter Property="Shadow"
                         Value="False" />
                 <Setter Property="Padding"
                         Value="5,5" />
@@ -196,40 +194,49 @@
                             </DataTrigger>
                         </Grid.Triggers>
 
-                        <Frame Style="{StaticResource FrameButton}"
+                        <Border Style="{StaticResource FrameButton}"
                                Grid.Column="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="6.5" />
+                            </Border.StrokeShape>
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"
                                    TextColor="{StaticResource ButtonTextColor}"/>
-                            <Frame.GestureRecognizers>
+                            <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
-                            </Frame.GestureRecognizers>
-                        </Frame>
+                            </Border.GestureRecognizers>
+                        </Border>
 
-                        <Frame Style="{StaticResource FrameButton}"
+                        <Border Style="{StaticResource FrameButton}"
                                Grid.Column="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="6.5" />
+                            </Border.StrokeShape>
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"
                                    TextColor="{StaticResource ButtonTextColor}" />
-                            <Frame.GestureRecognizers>
+                            <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerVsPlayerCommand}" />
-                            </Frame.GestureRecognizers>
-                        </Frame>
+                            </Border.GestureRecognizers>
+                        </Border>
 
-                        <Frame Style="{StaticResource FrameButton}"
+                        <Border Style="{StaticResource FrameButton}"
                                Grid.Column="2"
                                IsVisible="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
                                x:Name="ChampButton">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="6.5" />
+                            </Border.StrokeShape>
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"
                                    TextColor="{StaticResource ButtonTextColor}" />
-                            <Frame.GestureRecognizers>
+                            <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerChampionshipSeriesCommand}" />
-                            </Frame.GestureRecognizers>
-                        </Frame>
+                            </Border.GestureRecognizers>
+                        </Border>
 
                     </Grid>
                     <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerOverview}" />

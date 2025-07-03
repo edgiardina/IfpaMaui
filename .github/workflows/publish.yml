@@ -53,7 +53,6 @@ jobs:
         with:
           files: 'appsettings.json'
         env:
-          AppSettings.SyncFusionLicenseKey: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
       
       - name: Add Google Maps API Key to Android Manifest
@@ -71,10 +70,10 @@ jobs:
           echo "${{ secrets.IFPA_ANDROID_KEYSTORE }}" > ifpamaui.keystore.asc
           certutil -decode ifpamaui.keystore.asc ifpa-keystore.jks
 
-      - name: Setup .NET 8
+      - name: Setup .NET 9
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
           
       - name: Install MAUI Workload
         run: dotnet workload install maui android
@@ -83,21 +82,21 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f net8.0-android34.0 -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
+        run: dotnet publish IfpaMaui.csproj -c Release -f net9.0-android -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: ifpamaui-android-signed-build
-          path: bin/Release/net8.0-android34.0/publish/com.edgiardina.ifpa-Signed.aab
+          path: bin/Release/net9.0-android/publish/com.edgiardina.ifpa-Signed.aab
 
       - name: Deploy to Google Play (Production)
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.edgiardina.ifpa
-          releaseFiles: bin/Release/net8.0-android34.0/publish/com.edgiardina.ifpa-Signed.aab
+          releaseFiles: bin/Release/net9.0-android/publish/com.edgiardina.ifpa-Signed.aab
           releaseName: ${{ env.VERSION }}
           track: production
 
@@ -110,7 +109,7 @@ jobs:
       - name: Use Xcode Version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0'
+          xcode-version: '16.4'
 
       - uses: actions/checkout@v2
 
@@ -171,13 +170,12 @@ jobs:
         with:
           files: 'appsettings.json'
         env:
-          AppSettings.SyncFusionLicenseKey: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
       
-      - name: Setup .NET 8
+      - name: Setup .NET 9
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       # The following command is due to some sort of maui build bug and iOS won't accept the binary:
       # run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --version 8.0.401
@@ -192,18 +190,18 @@ jobs:
       - name : Publish iOS App
         shell: bash
         run: |
-          dotnet publish -f net8.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }}
+          dotnet publish -f net9.0-ios -c Release -p:ArchiveOnBuild=true -p:Version=${VERSION} -p:ApplicationDisplayVersion=${VERSION} -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: ifpamaui-ios-signed-build
           if-no-files-found: error
           path: |
-            bin/Release/net8.0-ios/**/*.ipa
+            bin/Release/net9.0-ios/**/*.ipa
 
       - name: Upload app to App Store Connect
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
         run: |
-          xcrun altool --upload-app -t ios -f "bin/Release/net8.0-ios/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+          xcrun altool --upload-app -t ios -f "bin/Release/net9.0-ios/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
