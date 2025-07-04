@@ -10,6 +10,7 @@ using Ifpa.Platforms.Services;
 using Ifpa.Services;
 using Ifpa.ViewModels;
 using Ifpa.Views;
+using LiveChartsCore.SkiaSharpView.Maui;
 using MauiIcons.Fluent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,7 @@ public static class MauiProgram
             .UseMauiMaps()
             .UseFluentMauiIcons()
             .UseShiny()
+            .UseLiveCharts()
             .UseSkiaSharp()
             .UseBottomSheet()
             .UseNativeCalendar()
