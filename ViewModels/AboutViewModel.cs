@@ -25,7 +25,7 @@ namespace Ifpa.ViewModels
 
         public string MinorVersion => VersionTracking.CurrentBuild;
 
-        public int CreatorIfpaNumber => 16927;
+        public long CreatorIfpaNumber => 16927;
 
         public AboutViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(logger)
         {
@@ -89,7 +89,7 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task ViewPlayer(int playerId)
+        public async Task ViewPlayer(long playerId)
         {
             await Shell.Current.GoToAsync($"player-details?playerId={playerId}");
         }
