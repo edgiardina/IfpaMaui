@@ -94,7 +94,7 @@ namespace Ifpa.Caching
                 // write‐through cache
                 await cache.PutAsync(ctx.OperationKey!,
                                      result,
-                                     new Ttl(30.Days()),
+                                     new Ttl(90.Days()),
                                      CancellationToken.None,
                                      continueOnCapturedContext: false);
 

@@ -1537,6 +1537,33 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cache Management.
+        /// </summary>
+        internal static string SettingsPage_CacheManagement {
+            get {
+                return ResourceManager.GetString("SettingsPage_CacheManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline Cache Size.
+        /// </summary>
+        internal static string SettingsPage_CacheSize {
+            get {
+                return ResourceManager.GetString("SettingsPage_CacheSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Cache.
+        /// </summary>
+        internal static string SettingsPage_ClearCache {
+            get {
+                return ResourceManager.GetString("SettingsPage_ClearCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IFPA Rank Change.
         /// </summary>
         internal static string SettingsPage_IFPARankChange {
