@@ -744,4 +744,13 @@
   <data name="Toast_Offline_NoCache" xml:space="preserve">
     <value>Offline — no cached data available.</value>
   </data>
+  <data name="SettingsPage_CacheManagement" xml:space="preserve">
+    <value>Cache Management</value>
+  </data>
+  <data name="SettingsPage_CacheSize" xml:space="preserve">
+    <value>Offline Cache Size</value>
+  </data>
+  <data name="SettingsPage_ClearCache" xml:space="preserve">
+    <value>Clear Cache</value>
+  </data>
 </root>

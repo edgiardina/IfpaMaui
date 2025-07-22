@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Ifpa.Caching;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
@@ -16,12 +18,61 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private string playerAvatar;
 
+        [ObservableProperty]
+        private string cacheSize;
+
         private readonly IPinballRankingApi PinballRankingApi;
 
         public SettingsViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(logger)
         {
             AppSettings = appSettings;
             PinballRankingApi = pinballRankingApi;
+            UpdateCacheSize();
+        }
+
+        private void UpdateCacheSize()
+        {
+            try
+            {
+                var fileInfo = new FileInfo(Settings.CacheDatabasePath);
+                if (fileInfo.Exists)
+                {
+                    var sizeInMb = fileInfo.Length / (1024.0 * 1024.0);
+                    CacheSize = $"{sizeInMb:F2} MB";
+                }
+                else
+                {
+                    CacheSize = "0 MB";
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error calculating cache size");
+                CacheSize = "Unknown";
+            }
+        }
+
+        [RelayCommand]
+        public async Task ClearCache()
+        {
+            try
+            {
+                IsBusy = true;
+
+                // Create a cache provider and clear it
+                await using var cache = new SQLiteCacheProvider<object>(Settings.CacheDatabasePath);
+                await cache.ClearCache();
+
+                UpdateCacheSize();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error clearing cache");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public async Task LoadPlayer()
