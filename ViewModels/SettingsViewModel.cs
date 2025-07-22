@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Ifpa.Caching;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Players;
-using SQLite;
 
 namespace Ifpa.ViewModels
 {
@@ -59,15 +59,9 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = true;
 
-                // Delete and recreate the cache database
-                if (File.Exists(Settings.CacheDatabasePath))
-                {
-                    File.Delete(Settings.CacheDatabasePath);
-                }
-
-                // Initialize new cache database
-                var db = new SQLiteAsyncConnection(Settings.CacheDatabasePath);
-                await db.CreateTableAsync<Ifpa.Caching.CacheItem>();
+                // Create a cache provider and clear it
+                await using var cache = new SQLiteCacheProvider<object>(Settings.CacheDatabasePath);
+                await cache.ClearCache();
 
                 UpdateCacheSize();
             }

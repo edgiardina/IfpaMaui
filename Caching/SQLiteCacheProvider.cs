@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Ifpa.Caching
 {
-    public class SQLiteCacheProvider<T> : IAsyncCacheProvider<T>
+    public class SQLiteCacheProvider<T> : IAsyncCacheProvider<T>, IAsyncDisposable
     {
         private readonly SQLiteAsyncConnection _db;
 
@@ -57,6 +57,18 @@ namespace Ifpa.Caching
             await CleanupExpiredItems(); // Enforce cleanup after insertion
         }
 
+        public async Task ClearCache()
+        {
+            // Delete all entries
+            await _db.DeleteAllAsync<CacheItem>();
+            // Run VACUUM to reclaim space and optimize the database
+            await _db.ExecuteAsync("VACUUM");
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _db.CloseAsync();
+        }
     }
 
     public class CacheItem
@@ -66,5 +78,4 @@ namespace Ifpa.Caching
         public string Value { get; set; }
         public DateTime Expiration { get; set; }
     }
-
 }
