@@ -17,6 +17,7 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
             await ViewModel.LoadPlayer();
+            ViewModel.UpdateCacheSize();
         }
 
         // TODO: this should live in the viewmodel and we should pass a IAlertService to the viewmodel

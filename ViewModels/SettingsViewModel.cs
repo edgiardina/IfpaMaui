@@ -30,7 +30,7 @@ namespace Ifpa.ViewModels
             UpdateCacheSize();
         }
 
-        private void UpdateCacheSize()
+        public void UpdateCacheSize()
         {
             try
             {
