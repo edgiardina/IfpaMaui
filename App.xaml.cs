@@ -2,16 +2,18 @@
 using Ifpa.Services;
 using Serilog;
 using Shiny.Notifications;
-using System.Web;
 
 namespace Ifpa;
 
 public partial class App : Application
 {
     protected INotificationManager NotificationManager { get; set; }
-    protected readonly NotificationService NotificationService;  
+    protected readonly NotificationService NotificationService;
+    protected readonly IDeepLinkService DeepLinkService;
 
-    public App(INotificationManager notificationManager, NotificationService notificationService)
+    public App(INotificationManager notificationManager, 
+              NotificationService notificationService,
+              IDeepLinkService deepLinkService)
     {
         // Try not to crash the app when an unexpected exception is thrown
         MauiExceptions.UnhandledException += (sender, e) =>
@@ -22,6 +24,7 @@ public partial class App : Application
 
         NotificationManager = notificationManager;
         NotificationService = notificationService;
+        DeepLinkService = deepLinkService;
 
         InitializeComponent();
 
@@ -56,53 +59,15 @@ public partial class App : Application
 
     public static async void HandleAppActions(AppAction appAction)
     {
-        var route = $"//{appAction.Id}";
-
-        Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
+        if (Current is App app)
         {
-            await Shell.Current.GoToAsync(route);
-        });
-        await Task.Delay(500);
-        ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
+            await app.DeepLinkService.HandleAppAction(appAction.Id);
+        }
     }
 
     protected override async void OnAppLinkRequestReceived(Uri uri)
     {
         base.OnAppLinkRequestReceived(uri);
-
-        //DeepLinks
-        if (uri.ToString().Contains("player.php"))
-        {
-            //extract player ID from querystring
-            var id = HttpUtility.ParseQueryString(uri.Query)["p"];
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                var route = $"//rankings/player-details?playerId={id}";
-
-                Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
-                {
-                    await Shell.Current.GoToAsync(route);                    
-                });
-                await Task.Delay(500);
-                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
-            }
-        }
-        //tournaments/view.php?t=46773
-        else if (uri.ToString().Contains("tournaments/view.php"))
-        {
-            var id = HttpUtility.ParseQueryString(uri.Query)["t"];
-            if (!string.IsNullOrEmpty(id))
-            {
-                var route = $"//rankings/tournament-results?tournamentId={id}";
-
-                Current.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(500), async () =>
-                {
-                    await Shell.Current.GoToAsync(route);
-                });
-                await Task.Delay(500);
-                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
-            }
-        }
+        await DeepLinkService.HandleDeepLink(uri);
     }
 }

@@ -129,6 +129,7 @@ public static class MauiProgram
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
+        s.AddSingleton<IDeepLinkService, DeepLinkService>();
         s.AddSingleton<IPinballRankingApi>(sp =>
         {
             var online = new PinballRankingApi(appSettings.IfpaApiKey);

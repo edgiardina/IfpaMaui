@@ -1,0 +1,94 @@
+using Microsoft.Extensions.Logging;
+using PinballApi.Interfaces;
+using System.Web;
+
+namespace Ifpa.Services
+{
+    public class DeepLinkService : IDeepLinkService
+    {
+        private readonly IDispatcher _dispatcher;
+        private readonly IPinballRankingApi _rankingApi;
+        private readonly ILogger _logger;
+
+        public DeepLinkService(IDispatcher dispatcher, IPinballRankingApi pinballRankingApi, ILogger<DeepLinkService> logger)
+        {
+            _dispatcher = dispatcher;
+            _rankingApi = pinballRankingApi;
+            _logger = logger;
+        }
+
+        public async Task HandleDeepLink(Uri uri)
+        {
+            if (uri == null)
+                return;
+
+            var route = await BuildRouteFromUri(uri);
+            if (!string.IsNullOrEmpty(route))
+            {
+                await NavigateToRoute(route);
+            }
+        }
+
+        public async Task HandleAppAction(string actionId)
+        {
+            if (string.IsNullOrEmpty(actionId))
+                return;
+
+            var route = $"//{actionId}";
+            await NavigateToRoute(route);
+        }
+
+        private async Task<string> BuildRouteFromUri(Uri uri)
+        {
+            var uriString = uri.ToString();
+
+            if (uriString.Contains("player.php"))
+            {
+                var id = HttpUtility.ParseQueryString(uri.Query)["p"];
+                if (!string.IsNullOrEmpty(id))
+                {
+                    return $"//rankings/player-details?playerId={id}";
+                }
+            }
+            else if (uriString.Contains("tournaments/view.php"))
+            {
+                var id = HttpUtility.ParseQueryString(uri.Query)["t"];
+                if (!string.IsNullOrEmpty(id))
+                {
+                    try
+                    {
+                        var tournamentId = int.Parse(id);
+                        var tournamentResults = await _rankingApi.GetTournamentResults(tournamentId);
+                        
+                        if (tournamentResults.Results != null && tournamentResults.Results.Any())
+                        {
+                            _logger.LogInformation("Tournament {id} has results, going to tournament results page", id);
+                            return $"//rankings/tournament-results?tournamentId={id}";
+                        }
+                        else
+                        {
+                            _logger.LogInformation("Tournament {id} has no results, going to calendar details page", id);
+                            return $"//calendar/calendar-detail?tournamentId={id}";
+                        }
+                    }
+                    catch
+                    {
+                        return $"//calendar/calendar-detail?tournamentId={id}";
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private async Task NavigateToRoute(string route)
+        {
+            await _dispatcher.DispatchAsync(async () =>
+            {
+                await Shell.Current.GoToAsync(route);
+                await Task.Delay(500); // Keep existing delay for tab selection
+                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
+            });
+        }
+    }
+}
