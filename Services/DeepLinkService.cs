@@ -85,9 +85,14 @@ namespace Ifpa.Services
         {
             await _dispatcher.DispatchAsync(async () =>
             {
+                var shell = (AppShell)Shell.Current;
+                shell.ConfirmSelectedTabIsCorrect(route);
+                await Task.Delay(100); // Reduced delay for tab selection
                 await Shell.Current.GoToAsync(route);
-                await Task.Delay(500); // Keep existing delay for tab selection
-                ((AppShell)Shell.Current).ConfirmSelectedTabIsCorrect(route);
+
+                // Double check tab selection after navigation
+                await Task.Delay(100);
+                shell.ConfirmSelectedTabIsCorrect(route);
             });
         }
     }
