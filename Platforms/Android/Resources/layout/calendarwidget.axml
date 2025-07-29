@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/rounded_edge"
+    android:padding="10dp">
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/ifpaAltText"
+        android:text="No upcoming tournaments found"
+        android:visibility="gone"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeTextType="uniform"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:id="@+id/noTournamentsNotification" />
+        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <ImageView
+            android:maxWidth="48dp"
+            android:maxHeight="48dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Calendar Icon"
+            android:src="@drawable/widgeticon"
+            android:id="@+id/calendarIcon" />
+            
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tournamentName"
+            android:textColor="@color/ifpaAltText"
+            android:text="Tournament Name"
+            android:autoSizeMinTextSize="12dp"
+            android:autoSizeMaxTextSize="24dp"
+            android:autoSizeTextType="uniform"
+            android:textAlignment="viewStart"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="48dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tournamentDate"
+            android:textAlignment="viewStart"
+            android:textColor="@color/ifpaAltText"
+            android:text="Date"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tournamentLocation"
+            android:textColor="@color/ifpaAltText"
+            android:textAlignment="viewEnd"
+            android:layout_weight="1"
+            android:text="Location" />
+    </LinearLayout>
+
+</LinearLayout>
