@@ -7,4 +7,4 @@
     android:resizeMode="none"
     android:updatePeriodMillis="3600000"
     android:initialLayout="@layout/rankwidget"
-    android:previewImage="@drawable/widgetpreview" />
+    android:previewLayout="@layout/rankwidget"/>
