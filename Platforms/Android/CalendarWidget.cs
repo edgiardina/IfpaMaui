@@ -112,7 +112,7 @@ namespace IfpaMaui.Platforms.Android
                     }
                     catch (Exception ex)
                     {
-                        logger?.LogError(ex, "Error fetching tournament data");
+                        logger?.LogError(ex, "Error fetching tournament data for Calendar Widget");
                     }
                 }
 
