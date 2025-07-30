@@ -98,7 +98,7 @@ namespace IfpaMaui.Platforms.Android
                             radius: Settings.LastCalendarDistance,
                             distanceType: DistanceType.Miles,
                             startDate: DateTime.Now,
-                            endDate: DateTime.Now.AddDays(30),
+                            endDate: DateTime.Now.AddYears(1),
                             tournamentType: tournamentType,
                             tournamentSearchSortMode: TournamentSearchSortMode.StartDate,
                             tournamentSearchSortOrder: TournamentSearchSortOrder.Ascending,
