@@ -105,7 +105,7 @@
             <_NativeExecutableFrameworks Remove="BrowserEngineKit" />
         </ItemGroup>
     </Target>
-    
+
     <!-- Compile Directives / File Compile Types -->
     <ItemGroup>
         <None Remove="appsettings.json" />

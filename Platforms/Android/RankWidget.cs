@@ -81,7 +81,6 @@ namespace Ifpa.Platforms.Android
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
 
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, GetPendingSelfIntent(context, BackgroundClick));
-
         }
 
         private PendingIntent GetPendingSelfIntent(Context context, string action)
