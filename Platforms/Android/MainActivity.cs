@@ -1,6 +1,8 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.OS;
+using Ifpa.Services;
 
 namespace Ifpa;
 
@@ -8,9 +10,12 @@ namespace Ifpa;
          MainLauncher = true, 
          LaunchMode = LaunchMode.SingleTop,
          ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+
+// App Actions (long press on Icon)
 [IntentFilter(new[] { Platform.Intent.ActionAppAction },
               Categories = new[] { Intent.CategoryDefault })]
 //https://github.com/dotnet/maui/issues/11684
+// Deep linking from Web Content
 [IntentFilter(new[] { Intent.ActionView },
           Categories = new[] {
               Intent.CategoryDefault,
@@ -20,18 +25,39 @@ namespace Ifpa;
           DataHost = "www.ifpapinball.com",
           DataPaths = new string[] { "/player.php", "/tournaments/view.php" },
           AutoVerify = true)]
+// Deep linking from Android Widgets
+[IntentFilter(new[] { Intent.ActionView },
+    Categories = new[] {
+        Intent.CategoryDefault,
+        Intent.CategoryBrowsable
+    },
+    DataScheme = "ifpa",
+    DataPathPrefix = "/tournaments/view.php")]
 public class MainActivity : MauiAppCompatActivity
 {
+    protected override void OnCreate(Bundle savedInstanceState)
+    {
+        base.OnCreate(savedInstanceState);
+
+        HandleIntent(Intent);
+    }
+
     protected override void OnNewIntent(Intent intent)
     {
         base.OnNewIntent(intent);
+        HandleIntent(intent);
+    }
 
-        string action = intent.Action;
-        string strLink = intent.DataString;
-        if (Intent.ActionView != action || string.IsNullOrWhiteSpace(strLink))
-            return;
-
-        var link = new Uri(strLink);
-        App.Current.SendOnAppLinkRequestReceived(link);
+    private void HandleIntent(Intent intent)
+    {
+        if (intent?.Data != null)
+        {
+            var uri = new Uri(intent.Data.ToString());
+            var deepLinkService = IPlatformApplication.Current.Services.GetService<IDeepLinkService>();
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await deepLinkService.HandleDeepLink(uri);
+            });
+        }
     }
 }
