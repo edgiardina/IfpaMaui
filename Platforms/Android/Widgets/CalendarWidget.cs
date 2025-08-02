@@ -1,4 +1,4 @@
-using Android.App;
+﻿using Android.App;
 using Android.Appwidget;
 using Android.Content;
 using Android.OS;
@@ -14,7 +14,7 @@ using System.Text;
 using static Android.Widget.RemoteViewsService;
 using Uri = Android.Net.Uri;
 
-namespace IfpaMaui.Platforms.Android
+namespace Ifpa.Platforms.Android.Widgets
 {
     [BroadcastReceiver(Label = "IFPA Calendar Widget", Exported = true)]
     [IntentFilter(new string[] { AppWidgetManager.ActionAppwidgetUpdate })]
@@ -25,27 +25,15 @@ namespace IfpaMaui.Platforms.Android
         private readonly IPinballRankingApi pinballApi;
         private readonly IGeocoding geocoding;
         private readonly ILogger<CalendarWidget> logger;
-        private static string TournamentClick = "TournamentClickTag";
+
+        public const string ACTION_TOURNAMENT_CLICKED = "IFPA.CALENDAR.TOURNAMENT_CLICKED";
 
         public CalendarWidget()
         {
             var services = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services;
-            this.pinballApi = services.GetService<IPinballRankingApi>();
-            this.geocoding = services.GetService<IGeocoding>();
-            this.logger = services.GetService<ILogger<CalendarWidget>>();
-        }
-
-        private void RegisterClicks(Context context, RemoteViews remoteViews, int[] appWidgetIds, long tournamentId)
-        {
-            // Create the deep link intent
-            var intent = new Intent(Intent.ActionView, Uri.Parse($"ifpa://tournaments/view.php?t={tournamentId}"));
-            intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
-
-            var pendingIntent = PendingIntent.GetActivity(
-                context, 0, intent,
-                PendingIntentFlags.UpdateCurrent | (OperatingSystem.IsAndroidVersionAtLeast(23) ? PendingIntentFlags.Immutable : 0));
-
-            remoteViews.SetOnClickPendingIntent(Ifpa.Resource.Id.widgetBackground, pendingIntent);
+            pinballApi = services.GetService<IPinballRankingApi>();
+            geocoding = services.GetService<IGeocoding>();
+            logger = services.GetService<ILogger<CalendarWidget>>();
         }
 
         public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
@@ -122,15 +110,14 @@ namespace IfpaMaui.Platforms.Android
                     var minHeight = options.GetInt(AppWidgetManager.OptionAppwidgetMinHeight);
                     var tournamentsToShow = Math.Min(MaxTournaments, Math.Max(1, minHeight / 60));
 
-                    var remoteViews = new RemoteViews(context.PackageName, Ifpa.Resource.Layout.calendarwidget);
+                    var remoteViews = new RemoteViews(context.PackageName, Resource.Layout.calendarwidget);
 
                     if (upcomingTournaments.Any())
                     {
-                        remoteViews.SetViewVisibility(Ifpa.Resource.Id.noTournamentsNotification, ViewStates.Gone);
-                        remoteViews.SetViewVisibility(Ifpa.Resource.Id.tournamentGrid, ViewStates.Visible);
+                        remoteViews.SetViewVisibility(Resource.Id.noTournamentsNotification, ViewStates.Gone);
+                        remoteViews.SetViewVisibility(Resource.Id.tournamentGrid, ViewStates.Visible);
 
                         var firstTournament = upcomingTournaments.First();
-                        RegisterClicks(context, remoteViews, appWidgetIds, firstTournament.TournamentId);
 
                         // Create adapter intent
                         var adapterIntent = new Intent(context, typeof(TournamentWidgetService));
@@ -143,20 +130,25 @@ namespace IfpaMaui.Platforms.Android
                             System.Text.Json.JsonSerializer.Serialize(upcomingTournaments.Take(tournamentsToShow)));
                         editor.Apply();
 
-                        remoteViews.SetRemoteAdapter(Ifpa.Resource.Id.tournamentGrid, adapterIntent);
+                        remoteViews.SetRemoteAdapter(Resource.Id.tournamentGrid, adapterIntent);
 
-                        // Set up pending intent template for collection items
-                        var templateIntent = new Intent(Intent.ActionView);
-                        templateIntent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
-                        var templatePendingIntent = PendingIntent.GetActivity(
-                            context, 0, templateIntent,
-                            PendingIntentFlags.UpdateCurrent | (OperatingSystem.IsAndroidVersionAtLeast(23) ? PendingIntentFlags.Immutable : 0));
-                        remoteViews.SetPendingIntentTemplate(Ifpa.Resource.Id.tournamentGrid, templatePendingIntent);
+                        remoteViews.SetEmptyView(Resource.Id.tournamentGrid, Resource.Id.noTournamentsNotification);
+
+                        var templateIntent = new Intent(context, typeof(CalendarWidget));
+                        templateIntent.SetAction(ACTION_TOURNAMENT_CLICKED);
+
+                        var pendingIntentTemplate = PendingIntent.GetBroadcast( // ← FIXED
+                            context,
+                            0,
+                            templateIntent,
+                            PendingIntentFlags.Mutable);
+
+                        remoteViews.SetPendingIntentTemplate(Resource.Id.tournamentGrid, pendingIntentTemplate);
                     }
                     else
                     {
-                        remoteViews.SetViewVisibility(Ifpa.Resource.Id.noTournamentsNotification, ViewStates.Visible);
-                        remoteViews.SetViewVisibility(Ifpa.Resource.Id.tournamentGrid, ViewStates.Gone);
+                        remoteViews.SetViewVisibility(Resource.Id.noTournamentsNotification, ViewStates.Visible);
+                        remoteViews.SetViewVisibility(Resource.Id.tournamentGrid, ViewStates.Gone);
                     }
 
                     appWidgetManager.UpdateAppWidget(widgetId, remoteViews);
@@ -177,6 +169,25 @@ namespace IfpaMaui.Platforms.Android
             context.SendBroadcast(updateIntent);
 
             base.OnAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        }
+
+        /// <summary>
+        /// This method is called when clicks are registered. Just launch the app for now
+        /// </summary>
+        public override void OnReceive(Context context, Intent intent)
+        {
+            base.OnReceive(context, intent);
+
+            if (intent?.Action == ACTION_TOURNAMENT_CLICKED)
+            {
+                var tournamentId = intent.GetLongExtra("TournamentId", -1);
+                if (tournamentId > 0)
+                {
+                    var launchIntent = new Intent(Intent.ActionView, Uri.Parse($"ifpa://tournaments/view.php?t={tournamentId}"));
+                    launchIntent.AddFlags(ActivityFlags.NewTask);
+                    context.StartActivity(launchIntent);
+                }
+            }
         }
     }
 
@@ -230,16 +241,16 @@ namespace IfpaMaui.Platforms.Android
                 return null;
 
             var tournament = tournaments[position];
-            var itemView = new RemoteViews(context.PackageName, Ifpa.Resource.Layout.tournament_item);
+            var itemView = new RemoteViews(context.PackageName, Resource.Layout.tournament_item);
 
-            itemView.SetTextViewText(Ifpa.Resource.Id.tournamentName, tournament.TournamentName);
+            itemView.SetTextViewText(Resource.Id.tournamentName, tournament.TournamentName);
 
             var dateText = tournament.EventStartDate.ToString("MMM d");
             if (tournament.EventStartDate != tournament.EventEndDate)
             {
                 dateText += " - " + tournament.EventEndDate.ToString("MMM d");
             }
-            itemView.SetTextViewText(Ifpa.Resource.Id.tournamentDate, dateText);
+            itemView.SetTextViewText(Resource.Id.tournamentDate, dateText);
 
             var location = new StringBuilder();
             if (!string.IsNullOrEmpty(tournament.City))
@@ -250,12 +261,16 @@ namespace IfpaMaui.Platforms.Android
                     location.Append(", ").Append(tournament.Stateprov);
                 }
             }
-            itemView.SetTextViewText(Ifpa.Resource.Id.tournamentLocation, location.ToString());
+            itemView.SetTextViewText(Resource.Id.tournamentLocation, location.ToString());
 
             // Set up the item click
             var fillInIntent = new Intent();
-            fillInIntent.SetData(Uri.Parse($"ifpa://tournaments/view.php?t={tournament.TournamentId}"));
-            itemView.SetOnClickFillInIntent(Ifpa.Resource.Id.widgetBackground, fillInIntent);
+            fillInIntent.SetAction(CalendarWidget.ACTION_TOURNAMENT_CLICKED);
+            fillInIntent.PutExtra("TournamentId", tournament.TournamentId);
+            itemView.SetOnClickFillInIntent(Resource.Id.tournamentItemRoot, fillInIntent);
+
+            System.Diagnostics.Debug.WriteLine($"Setting fill-in intent for tournament {tournament.TournamentId}");
+
 
             return itemView;
         }

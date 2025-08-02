@@ -7,11 +7,11 @@ using Android.Widget;
 using PinballApi.Extensions;
 using PinballApi.Interfaces;
 
-namespace Ifpa.Platforms.Android
+namespace Ifpa.Platforms.Android.Widgets
 {
     [BroadcastReceiver(Label = "IFPA Rank Widget", Exported = true)]
-    [IntentFilter(new string[] { "android.appwidget.action.APPWIDGET_UPDATE" })]
-    [MetaData("android.appwidget.provider", Resource = "@xml/appwidgetprovider")]
+    [IntentFilter(new string[] { AppWidgetManager.ActionAppwidgetUpdate })]
+    [MetaData("android.appwidget.provider", Resource = "@xml/rankwidgetprovider")]
     public class RankWidget : AppWidgetProvider
     {
         private readonly IPinballRankingApi PinballRankingApi;
@@ -20,7 +20,7 @@ namespace Ifpa.Platforms.Android
 
         public RankWidget()
         {
-            this.PinballRankingApi = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPinballRankingApi>();
+            PinballRankingApi = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPinballRankingApi>();
         }
 
         public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)

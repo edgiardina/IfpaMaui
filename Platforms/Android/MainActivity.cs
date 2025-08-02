@@ -10,9 +10,12 @@ namespace Ifpa;
          MainLauncher = true, 
          LaunchMode = LaunchMode.SingleTop,
          ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+
+// App Actions (long press on Icon)
 [IntentFilter(new[] { Platform.Intent.ActionAppAction },
               Categories = new[] { Intent.CategoryDefault })]
 //https://github.com/dotnet/maui/issues/11684
+// Deep linking from Web Content
 [IntentFilter(new[] { Intent.ActionView },
           Categories = new[] {
               Intent.CategoryDefault,
@@ -22,6 +25,14 @@ namespace Ifpa;
           DataHost = "www.ifpapinball.com",
           DataPaths = new string[] { "/player.php", "/tournaments/view.php" },
           AutoVerify = true)]
+// Deep linking from Android Widgets
+[IntentFilter(new[] { Intent.ActionView },
+    Categories = new[] {
+        Intent.CategoryDefault,
+        Intent.CategoryBrowsable
+    },
+    DataScheme = "ifpa",
+    DataPathPrefix = "/tournaments/view.php")]
 public class MainActivity : MauiAppCompatActivity
 {
     protected override void OnCreate(Bundle savedInstanceState)

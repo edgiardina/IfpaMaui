@@ -52,6 +52,7 @@
         android:id="@+id/tournamentGrid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:descendantFocusability="blocksDescendants"
         android:layout_weight="1"
         android:numColumns="1"
         android:verticalSpacing="8dp"
