@@ -156,7 +156,7 @@ namespace Ifpa.Platforms.Android.Widgets
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error updating calendar widget: {ex.Message}");
+                logger.LogError(ex, "Error updating calendar widget");
             }
         }
 
@@ -270,7 +270,6 @@ namespace Ifpa.Platforms.Android.Widgets
             itemView.SetOnClickFillInIntent(Resource.Id.tournamentItemRoot, fillInIntent);
 
             System.Diagnostics.Debug.WriteLine($"Setting fill-in intent for tournament {tournament.TournamentId}");
-
 
             return itemView;
         }
