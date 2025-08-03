@@ -1,9 +1,6 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2;
-using PinballApi.Models.WPPR.v2.Rankings;
-using System;
-using Microsoft.Maui;
-
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Rankings;
 
 namespace Ifpa.Views
 {
@@ -31,11 +28,12 @@ namespace Ifpa.Views
             viewModel.CountOfItemsToFetch = Preferences.Get("PlayerCount", viewModel.CountOfItemsToFetch);
             viewModel.StartingPosition = Preferences.Get("StartingRank", viewModel.StartingPosition);
             viewModel.CurrentRankingType = (RankingType)Enum.Parse(typeof(RankingType), Preferences.Get("RankingType", viewModel.CurrentRankingType.ToString()));
-            viewModel.CurrentTournamentType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("TournamentType", viewModel.CurrentTournamentType.ToString()));
+            viewModel.CurrentRankingSystem = (RankingSystem)Enum.Parse(typeof(RankingSystem), Preferences.Get("RankingSystem", viewModel.CurrentRankingSystem.ToString()));
+            viewModel.CurrentProRankingType = (TournamentType)Enum.Parse(typeof(TournamentType), Preferences.Get("ProRankingType", viewModel.CurrentProRankingType.ToString()));
 
-         
-            RankingTypePicker.SelectedItem = viewModel.CurrentRankingType.ToString();
-            TypePicker.SelectedItem = viewModel.CurrentTournamentType.ToString();
+            RankingTypePicker.SelectedItem = viewModel.CurrentRankingType;
+            TypePicker.SelectedItem = viewModel.CurrentRankingSystem;
+            ProTypeFilter.SelectedItem = viewModel.CurrentProRankingType;
         }
 
         private async void CancelButton_Clicked(object sender, EventArgs e)
@@ -74,6 +72,8 @@ namespace Ifpa.Views
                 CountryLabel.IsVisible = true;
                 TypeLabel.IsVisible = false;
                 TypePicker.IsVisible = false;
+                ProTypeFilter.IsVisible = false;
+                ProTypeLabel.IsVisible = false;
             }
             else if (selectedType == RankingType.Women)
             {
@@ -81,6 +81,17 @@ namespace Ifpa.Views
                 CountryLabel.IsVisible = false;
                 TypeLabel.IsVisible = true;
                 TypePicker.IsVisible = true;
+                ProTypeFilter.IsVisible = false;
+                ProTypeLabel.IsVisible = false;
+            }
+            else if (selectedType == RankingType.Pro)
+            {
+                CountryPicker.IsVisible = false;
+                CountryLabel.IsVisible = false;
+                TypeLabel.IsVisible = false;
+                TypePicker.IsVisible = false;
+                ProTypeFilter.IsVisible = true;
+                ProTypeLabel.IsVisible = true;
             }
             else
             {
@@ -88,27 +99,31 @@ namespace Ifpa.Views
                 CountryLabel.IsVisible = false;
                 TypeLabel.IsVisible = false;
                 TypePicker.IsVisible = false;
+
+                ProTypeFilter.IsVisible = false;
+                ProTypeLabel.IsVisible = false;
                 viewModel.CountryToShow = viewModel.DefaultCountry;
             }
 
-            viewModel.CurrentRankingType = selectedType;
-
-            Preferences.Set("RankingType", viewModel.CurrentRankingType.ToString());           
+            Preferences.Set("RankingType", viewModel.CurrentRankingType.ToString());
         }
 
         private void TypePicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            viewModel.CurrentTournamentType = (TournamentType)Enum.Parse(typeof(TournamentType), ((Picker)sender).SelectedItem as string);
-
-            Preferences.Set("TournamentType", viewModel.CurrentTournamentType.ToString());
+            Preferences.Set("RankingSystem", viewModel.CurrentRankingSystem.ToString());
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await Task.Run(() => viewModel.LoadItemsCommand.Execute(null));
+            viewModel.LoadItems();
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
+        }
+
+        private void ProTypeFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Preferences.Set("ProRankingType", viewModel.CurrentProRankingType.ToString());
         }
     }
 }

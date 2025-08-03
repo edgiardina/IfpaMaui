@@ -1,62 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.Logging;
 using PinballApi;
 
 namespace Ifpa.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public abstract partial class BaseViewModel : ObservableObject
     {
-        public PinballRankingApiV1 PinballRankingApi { get; private set; } 
-        public PinballRankingApiV2 PinballRankingApiV2 { get; private set; } 
+        protected readonly ILogger logger;
 
+        [ObservableProperty]
         bool isBusy = false;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
 
+        [ObservableProperty]
         string title = string.Empty;
-        public string Title
+
+        protected BaseViewModel(ILogger<BaseViewModel> logger)
         {
-            get { return title; }
-            set { SetProperty(ref title, value); }
+            this.logger = logger;
         }
-
-        public BaseViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2)
-        {         
-
-            PinballRankingApi = pinballRankingApiV1;
-            PinballRankingApiV2 = pinballRankingApiV2;
-        }
-
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 }

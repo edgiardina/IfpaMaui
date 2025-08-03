@@ -1,27 +1,36 @@
-﻿using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Tournaments;
-using Ifpa.Models;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Tournaments;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class TournamentResultsViewModel : BaseViewModel
+    public partial class TournamentResultsViewModel : BaseViewModel
     {
-        public ObservableCollectionRange<TournamentResult> Results { get; set; }
+        public ObservableCollection<TournamentResult> Results { get; set; }
 
         public Tournament TournamentDetails { get; set; }
-        public Command LoadItemsCommand { get; set; }
 
         public int TournamentId { get; set; }
 
-        public TournamentResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        [ObservableProperty]
+        private TournamentResult selectedPlayer;
+
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public TournamentResultsViewModel(IPinballRankingApi pinballRankingApi, ILogger<TournamentResultsViewModel> logger) : base(logger)
         {
             Title = "Tournament Results";
-            Results = new ObservableCollectionRange<TournamentResult>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Results = new ObservableCollection<TournamentResult>();
+            PinballRankingApi = pinballRankingApi;
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -31,24 +40,56 @@ namespace Ifpa.ViewModels
             try
             {
                 Results.Clear();
-                var tournamentResults = await PinballRankingApiV2.GetTournamentResults(TournamentId);
-                TournamentDetails = await PinballRankingApiV2.GetTournament(TournamentId);
+                var tournamentResults = await PinballRankingApi.GetTournamentResults(TournamentId);
+                TournamentDetails = await PinballRankingApi.GetTournament(TournamentId);
 
-                Results.AddRange(tournamentResults.Results);           
+                Results = tournamentResults.Results.ToObservableCollection();
 
                 Title = TournamentDetails.TournamentName;
                 OnPropertyChanged(nameof(TournamentDetails));
+                OnPropertyChanged(nameof(Results));
 
                 AddTournamentToAppLinks();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading tournament results id {0}", TournamentId);
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ShareTournament()
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Uri = $"https://www.ifpapinball.com/tournaments/view.php?t={TournamentId}",
+                Title = "Share Tournament Results"
+            });
+        }
+
+        [RelayCommand]
+        public async Task ViewTournamentInfo()
+        {
+            await Shell.Current.GoToAsync($"tournament-info?tournamentId={TournamentId}");
+        }
+
+        [RelayCommand]
+        public async Task ViewPlayerDetails()
+        {
+            if (SelectedPlayer == null)
+                return;
+
+            // Player may be suppressed and not have a player id
+            if (SelectedPlayer.PlayerId.HasValue)
+            {
+                await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId.Value}");
+            }
+
+            SelectedPlayer = null;
         }
 
         private void AddTournamentToAppLinks()
@@ -61,8 +102,7 @@ namespace Ifpa.ViewModels
                 Description = TournamentDetails.EventName,
                 AppLinkUri = new Uri(url, UriKind.RelativeOrAbsolute),
                 IsLinkActive = true
-                //TODO: show thumbnail?
-                //Thumbnail = ImageSource.FromUri(new Uri(TournamentDetails., UriKind.RelativeOrAbsolute))
+                //No thumbnail for Tournament Results
             };
 
             entry.KeyValues.Add("contentType", "Tournament Result");
@@ -71,9 +111,9 @@ namespace Ifpa.ViewModels
             {
                 Application.Current.AppLinks.RegisterLink(entry);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                //TODO: No IAppIndexingProvider
+                logger.LogError(ex, "Error registering app link {0}", entry);
             }
         }
     }

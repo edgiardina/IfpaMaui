@@ -1,59 +1,65 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ifpa.Views.PlayerSearchPage"             
-             xmlns:local="clr-namespace:Ifpa.Converters"
-             Title="{Binding Title}"
+             x:Class="Ifpa.Views.PlayerSearchPage"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
+             Title="{x:Static local:Strings.PlayerSearchPage_Title}"
              xmlns:controls="clr-namespace:Ifpa.Controls"
-             x:Name="FavoritesPage">
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:PlayerSearchViewModel"
+             xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <local:AddressFormatConverter x:Key="AddressFormatConverter" />
+            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />            
+            <converters:PlayerToRankConverter x:Key="playerToRankConverter" />
+            <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid RowDefinitions="60, *">
-            <SearchBar Grid.Row="0" x:Name="SearchBar" SearchCommand="{Binding SearchCommand}"
-                       IsSpellCheckEnabled="False" IsTextPredictionEnabled="False"
-                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
-                       PlaceholderColor="{StaticResource SecondaryTextColor}"   
-                       CancelButtonColor="{StaticResource SecondaryTextColor}"                        
+            <SearchBar Grid.Row="0"
+                       x:Name="SearchBar"
+                       SearchCommand="{Binding SearchCommand}"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
+                       PlaceholderColor="{StaticResource SecondaryTextColor}"
+                       CancelButtonColor="{StaticResource SecondaryTextColor}"
                        MaxLength="100"
                        HeightRequest="60"
-                       Keyboard="Text"   
+                       Keyboard="Text"
                        Placeholder="Type a player's name to search"
                        SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
-            <!--
-                TODO: emptyview and selectionmode cannot be used at the same time due to a maui bug
-                https://github.com/dotnet/maui/issues/8039
-                EmptyView="No players found."
-                -->
-            <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-            <CollectionView x:Name="PlayersListView"   
-                    ItemsSource="{Binding Players}"                    
-                    SelectionChanged="PlayersListView_SelectionChanged"
-                    IsVisible="{Binding IsLoaded}"
-                    Grid.Row="1"
-                    SelectionMode="Single">
+            <ActivityIndicator Grid.Row="1"
+                               IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}" />
+            <CollectionView x:Name="PlayersListView"
+                            ItemsSource="{Binding Players}"
+                            SelectedItem="{Binding SelectedPlayer}"
+                            SelectionChangedCommand="{Binding ViewPlayerCommand}"
+                            IsVisible="{Binding IsLoaded}"
+                            Grid.Row="1"
+                            SelectionMode="Single">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="ifpaplayers:Player">
                         <StackLayout Padding="10,0">
                             <StackLayout Orientation="Horizontal">
-                                <StackLayout Padding="10" Orientation="Vertical">
-                                    <Label LineBreakMode="NoWrap"  FontSize="16">
+                                <StackLayout Padding="10"
+                                             Orientation="Vertical">
+                                    <Label LineBreakMode="NoWrap"
+                                           FontSize="16">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
                                                     <Span Text="{Binding FirstName}" />
-                                                    <Span Text=" " />
+                                                    <Span Text="{x:Static local:Strings.SingleSpace}" />
                                                     <Span Text="{Binding LastName}" />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-
-                                    <Label>
+                                    <Label TextColor="{StaticResource SecondaryTextColor}">
                                         <Label.Text>
                                             <MultiBinding Converter="{StaticResource AddressFormatConverter}">
                                                 <Binding Path="City" />
@@ -63,17 +69,24 @@
                                         </Label.Text>
                                     </Label>
                                 </StackLayout>
-                                <Label VerticalTextAlignment="Center" HorizontalOptions="EndAndExpand" Text="{Binding WpprRank, Converter={StaticResource intToOrdinalString}}"                                    
-                                        LineBreakMode="NoWrap" FontSize="18" />
+                                <!-- TODO: PlayerStats don't come for free w/ a player search :( -->
+                                <!--
+                                <Label VerticalTextAlignment="Center"
+                                       HorizontalOptions="EndAndExpand"
+                                       Text="{Binding PlayerStats, Converter={StaticResource playerToRankConverter}}"
+                                       LineBreakMode="NoWrap"
+                                       FontSize="18" />
+                                -->
                             </StackLayout>
-
-                            <BoxView Style="{StaticResource BoxSeperator}"/>
+                            <BoxView Style="{StaticResource BoxSeperator}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
                     <ContentView>
-                        <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="No players found" />
+                        <Label HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               Text="{x:Static local:Strings.PlayerSearchPage_NoPlayersFound}" />
                     </ContentView>
                 </CollectionView.EmptyView>
             </CollectionView>

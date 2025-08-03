@@ -1,17 +1,30 @@
-﻿using Ifpa.ViewModels;
-using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
-using Ifpa.Views;
-using Syncfusion.Maui.Core.Hosting;
-using CommunityToolkit.Maui;
-using Ifpa.Services;
-using Ifpa.Interfaces;
-using MauiIcons.Fluent;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.ApplicationModel;
 using Ifpa.BackgroundJobs;
+using Ifpa.Caching;
 using Ifpa.Controls;
-using Shiny.Infrastructure;
+using Ifpa.Interfaces;
+using Ifpa.Models;
+using Ifpa.Platforms.Renderers;
+using Ifpa.Platforms.Services;
+using Ifpa.Services;
+using Ifpa.ViewModels;
+using Ifpa.Views;
+using LiveChartsCore.SkiaSharpView.Maui;
+using MauiIcons.Fluent;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
 using PinballApi;
-using Maui.FixesAndWorkarounds;
+using PinballApi.Interfaces;
+using Plugin.Maui.CalendarStore;
+using Plugin.Maui.NativeCalendar;
+using Serilog;
+using Shiny;
+using Shiny.Infrastructure;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using Syncfusion.Maui.Toolkit.Hosting;
+using The49.Maui.BottomSheet;
 
 namespace Ifpa;
 
@@ -26,11 +39,18 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
+            //TODO: Maui Compatibility is required for iOS App Links; remove when the below bug is resolved
+            //https://github.com/dotnet/maui/issues/12295
+            .UseMauiCompatibility()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
             .UseFluentMauiIcons()
             .UseShiny()
-            .ConfigureSyncfusionCore()
+            .UseLiveCharts()
+            .UseSkiaSharp()
+            .UseBottomSheet()
+            .UseNativeCalendar()
+            .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -39,22 +59,41 @@ public static class MauiProgram
             .ConfigureMauiHandlers((handlers) =>
             {
 #if IOS
-                handlers.AddHandler(typeof(InsetTableView), typeof(iOS.Renderers.InsetTableViewRenderer));
+                handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewRenderer));
 #endif
             })
+            .ConfigureLogging()
             .ConfigureEssentials(essentials =>
             {
                 //TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
                 essentials
-                    .AddAppAction("calendar", "Calendar", "IFPA Tournament Calendar", "calendar")
-                    .AddAppAction("my-stats", "My Stats", "Your IFPA player data", "mystats")
-                    .AddAppAction("rankings/player-search", "Player Search", "Search for other players in the IFPA database", "search")
+                    .AddAppAction("calendar", Strings.AppShell_Calendar, "IFPA Tournament Calendar", "calendar")
+                    .AddAppAction("my-stats", Strings.AppShell_MyStats, "Your IFPA player data", "mystats")
+                    .AddAppAction("rankings/player-search", Strings.PlayerSearchPage_Title, "Search for other players in the IFPA database", "search")
                     .OnAppAction(App.HandleAppActions);
 
                 essentials.UseVersionTracking();
             })
-            //It's a real bummer that we have to port fixes like this and then wait an entire year for .NET MAUI releases
-            .ConfigureShellWorkarounds()
+            // Show custom Tabbar Badges for iOS and Android
+            .ConfigureMauiHandlers(h =>
+            {
+                h.AddHandler<Shell, TabbarBadgeRenderer>();
+            })
+            /*
+            .ConfigureLifecycleEvents(events =>
+            {
+#if IOS
+                events.AddiOS(ios => ios
+                    .OpenUrl((app,url,opion) => LogEvent(app, url, opion)));
+
+                static bool LogEvent(UIKit.UIApplication application, Foundation.NSUrl url, Foundation.NSDictionary options)
+                {
+                    Microsoft.Maui.Controls.Application.Current.SendOnAppLinkRequestReceived(url);
+                    return true;
+                }
+#endif
+            })
+            */
             .RegisterShinyServices()
             .RegisterIfpaModels()
             .RegisterIfpaServices();
@@ -89,14 +128,18 @@ public static class MauiProgram
 
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
-        s.AddTransient<IReminderService, ReminderService>();
-
-        //TODO: PinballrankingsApi should support IOptions
-        var pinballRankingApiV1 = new PinballRankingApiV1(appSettings.IfpaApiKey);
-        s.AddSingleton(pinballRankingApiV1);
-
-        var pinballRankingApiV2 = new PinballRankingApiV2(appSettings.IfpaApiKey);
-        s.AddSingleton(pinballRankingApiV2);
+        s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
+        s.AddSingleton<IDeepLinkService, DeepLinkService>();
+        s.AddSingleton<IPinballRankingApi>(sp =>
+        {
+            var online = new PinballRankingApi(appSettings.IfpaApiKey);
+            var logger = sp.GetRequiredService<ILogger<CachingPinballRankingApi>>();
+            return new CachingPinballRankingApi(online, logger);
+        });
+        s.AddSingleton(Geocoding.Default);
+        s.AddSingleton(Badge.Default);
+        s.AddSingleton(CalendarStore.Default);
+        s.AddSingleton(Map.Default);
 
         return builder;
     }
@@ -108,10 +151,39 @@ public static class MauiProgram
         s.AddJobs();
         s.AddShinyCoreServices();
 
-        s.AddJob(typeof(NotificationJob));
+        s.AddJob(typeof(NotificationJob), requiredNetwork: Shiny.Jobs.InternetAccess.Any);
 
         // shiny.notifications
         s.AddNotifications(typeof(NotificationDelegate));
+
+        return builder;
+    }
+
+    static MauiAppBuilder ConfigureLogging(this MauiAppBuilder builder)
+    {
+        Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Debug()
+        .WriteTo.Console()
+#if ANDROID
+		.WriteTo.AndroidLog()
+        .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")
+#endif
+#if IOS
+        .WriteTo.NSLog()
+        .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")  
+#endif
+#if DEBUG
+        .WriteTo.Debug()
+#endif
+        .WriteTo.File(Settings.LogFilePath,
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: builder.Configuration.GetRequiredSection("AppSettings").Get<AppSettings>().LogRetentionDays)
+
+        .CreateLogger();
+
+        builder.Logging.AddSerilog(dispose: true);
+
+        Log.Logger.Debug("Logger attached to services");
 
         return builder;
     }

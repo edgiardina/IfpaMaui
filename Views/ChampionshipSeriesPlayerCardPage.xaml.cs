@@ -1,12 +1,8 @@
 ﻿using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v2.Nacs;
 using PinballApi.Models.WPPR.v2.Series;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
-
     [QueryProperty("SeriesCode", "seriesCode")]
     [QueryProperty("RegionCode", "regionCode")]
     [QueryProperty("Year", "year")]
@@ -30,29 +26,17 @@ namespace Ifpa.Views
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
+            base.OnAppearing();        
 
-            if (ViewModel.TournamentCardRecords.Count == 0)
+            if (ViewModel.TournamentCardRecords?.Count == 0)
             {
                 ViewModel.PlayerId = PlayerId;
                 ViewModel.RegionCode = RegionCode;
                 ViewModel.SeriesCode = SeriesCode;     
                 ViewModel.Year = Year;
 
-                ViewModel.LoadItemsCommand.Execute(null);
+                ViewModel.LoadItems();
             }
-        }
-
-        private async void MyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var tournamentCardRecord = e.CurrentSelection.FirstOrDefault() as PlayerCard;
-            if (tournamentCardRecord == null)
-                return;
-
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={tournamentCardRecord.TournamentId}");
-
-            ////Deselect Item
-            ((CollectionView)sender).SelectedItem = null;
         }
     }
 }

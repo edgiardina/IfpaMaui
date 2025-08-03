@@ -1,7 +1,11 @@
-﻿using Ifpa.Models;
+﻿using CommunityToolkit.Maui.ApplicationModel;
+using Ifpa.Models;
+using Ifpa.Models.Database;
+using Microsoft.Extensions.Logging;
 using PinballApi;
-using PinballApi.Extensions;
-using Microsoft.Extensions.Configuration;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR;
+using PinballApi.Models.WPPR.Universal;
 using Shiny.Notifications;
 
 namespace Ifpa.Services
@@ -11,33 +15,48 @@ namespace Ifpa.Services
         protected BlogPostService BlogPostService { get; set; }
 
         readonly INotificationManager notificationManager;
+        private readonly ILogger<NotificationService> logger;
+        private readonly IBadge badge;
 
-        public NotificationService(PinballRankingApiV1 pinballRankingApi, BlogPostService blogPostService, INotificationManager notificationManager)
+        private readonly IGeocoding Geocoding;
+
+        public NotificationService(IPinballRankingApi universalPinballRankingApi, IGeocoding geocoding, BlogPostService blogPostService, INotificationManager notificationManager, IBadge badge, ILogger<NotificationService> logger)
         {
-            PinballRankingApi = pinballRankingApi;
+            UniversalPinballRankingApi = universalPinballRankingApi;
+            Geocoding = geocoding;
 
             BlogPostService = blogPostService;
             this.notificationManager = notificationManager;
+            this.logger = logger;
+            this.badge = badge;
         }
-        private PinballRankingApiV1 PinballRankingApi { get; set; }
+        private IPinballRankingApi UniversalPinballRankingApi { get; set; }
 
-        public static string NewTournamentNotificationTitle = "New Tournament Result";
-        protected readonly string NewTournamentNotificationDescription = @"Tournament results for ""{0}"" have been posted to your IFPA profile";
+        public static string NewTournamentNotificationTitle = Strings.NotificationService_NewTournamentNotificationTitle;
+        protected readonly string NewTournamentNotificationDescription = Strings.NotificationService_NewTournamentNotificationDescription;
 
-        public static string NewRankNotificationTitle = "IFPA Rank Change";
-        protected readonly string NewRankNotificationDescription = "Your IFPA rank has changed from {0} to {1}";
+        public static string NewRankNotificationTitle = Strings.NotificationService_NewRankNotificationTitle;
+        protected readonly string NewRankNotificationDescription = Strings.NotificationService_NewRankNotificationDescription;
 
-        public static string NewBlogPostTitle = "New News Item";
-        protected readonly string NewBlogPostDescription = @"News item ""{0}"" has been published";
+        public static string NewBlogPostTitle = Strings.NotificationService_NewBlogPostTitle;
+        protected readonly string NewBlogPostDescription = Strings.NotificationService_NewBlogPostDescription;
+
+        public static string NewTournamentOnCalendarTitle = Strings.NotificationService_NewTournamentOnCalendarTitle;
+        protected readonly string NewTournamentOnCalendarDescription = Strings.NotificationService_NewTournamentOnCalendarDescription;
+
+        public event EventHandler<ActivityFeedNotificationChangedEventArgs> ActivityFeedNotificationChanged;
 
         public async Task NotifyIfUserHasNewlySubmittedTourneyResults()
         {
             if (Settings.HasConfiguredMyStats)
             {
+                logger.LogInformation("Checking for user's new tournament results");
+
                 try
                 {
-                    var results = await PinballRankingApi.GetPlayerResults(Settings.MyStatsPlayerId);
-                    
+
+                    var results = await UniversalPinballRankingApi.GetPlayerResults(Settings.MyStatsPlayerId);
+
                     var unseenTournaments = await Settings.FindUnseenTournaments(results.Results);
 
                     if (unseenTournaments.Any())
@@ -45,6 +64,9 @@ namespace Ifpa.Services
                         // Five here is a proxy for 
                         // "did we switch users and therefore are adding all historical events to activity log"
                         // We need historical data to know when a user should get alerted due to a new tournament
+
+                        // Note: this is deprecated as we pre-populate tournaments at the time of user selection. However, we'll leave 
+                        // it here in case somehow a user is added without tourney results
                         var isHistoricalEventPopulation = unseenTournaments.Count() >= 5;
 
                         foreach (var unseenTournament in unseenTournaments.OrderBy(n => n))
@@ -53,7 +75,7 @@ namespace Ifpa.Services
 
                             var record = new ActivityFeedItem
                             {
-                                CreatedDateTime = isHistoricalEventPopulation ? result.EventDate : DateTime.Now,
+                                CreatedDateTime = isHistoricalEventPopulation ? result.EventDate.ToDateTime(TimeOnly.MinValue) : DateTime.Now,
                                 HasBeenSeen = isHistoricalEventPopulation,
                                 RecordID = result.TournamentId,
                                 IntOne = result.Position,
@@ -62,18 +84,19 @@ namespace Ifpa.Services
                             };
 
                             await Settings.LocalDatabase.CreateActivityFeedRecord(record);
-                            
+
                             if (Settings.NotifyOnTournamentResult && !isHistoricalEventPopulation)
                             {
                                 await SendNotification(NewTournamentNotificationTitle, string.Format(NewTournamentNotificationDescription, result.TournamentName), $"///my-stats/tournament-results?tournamentId={result.TournamentId}");
-                                await UpdateBadgeIfNeeded();
+
+                                await RecalculateActivityFeedAndUpdateBadges(record);
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfUserHasNewlySubmittedTourneyResults");
                 }
             }
         }
@@ -82,58 +105,60 @@ namespace Ifpa.Services
         {
             if (Settings.HasConfiguredMyStats)
             {
+                logger.LogInformation("Checking for user's rank change");
+
                 try
                 {
-                    var results = await PinballRankingApi.GetPlayerRecord(Settings.MyStatsPlayerId);
+                    var results = await UniversalPinballRankingApi.GetPlayer(Settings.MyStatsPlayerId);
 
-                    var currentWpprRank = results.PlayerStats.CurrentWpprRank;
+                    var currentWpprRank = results.PlayerStats.Open.CurrentRank;
                     var lastRecordedWpprRank = Settings.MyStatsCurrentWpprRank;
 
                     if (currentWpprRank != lastRecordedWpprRank && lastRecordedWpprRank != 0)
                     {
-                        if (Settings.NotifyOnRankChange)
-                        {
-                            await SendNotification(NewRankNotificationTitle, string.Format(NewRankNotificationDescription, lastRecordedWpprRank.OrdinalSuffix(), currentWpprRank.OrdinalSuffix()), "///my-stats/activity-feed");
-                            await UpdateBadgeIfNeeded();
-                        }
-
                         var record = new ActivityFeedItem
                         {
                             CreatedDateTime = DateTime.Now,
                             HasBeenSeen = false,
-                            IntOne = currentWpprRank,
+                            IntOne = Convert.ToInt32(currentWpprRank),
                             IntTwo = lastRecordedWpprRank,
                             ActivityType = ActivityFeedType.RankChange
                         };
 
-                        Settings.MyStatsCurrentWpprRank = currentWpprRank;
+                        Settings.MyStatsCurrentWpprRank = Convert.ToInt32(currentWpprRank);
 
-                        await Settings.LocalDatabase.CreateActivityFeedRecord(record);                        
+                        await Settings.LocalDatabase.CreateActivityFeedRecord(record);
+
+                        if (Settings.NotifyOnRankChange)
+                        {
+                            await RecalculateActivityFeedAndUpdateBadges(record);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfUsersRankChanged");
                 }
             }
         }
 
         public async Task NotifyIfNewBlogItemPosted()
         {
-            if(Settings.NotifyOnNewBlogPost)
+            if (Settings.NotifyOnNewBlogPost)
             {
+                logger.LogInformation("Checking for new blog posts");
+
                 try
                 {
-
                     var latestPosts = await BlogPostService.GetBlogPosts();
 
-                    var latestGuidInPosts = latestPosts.Max(n => BlogPostService.ParseGuidFromInternalId(n.Id));
+                    var latestGuidInPosts = latestPosts.Max(n => BlogPostService.ParseBlogPostIdFromInternalIdUrl(n.Id));
 
                     var latestPost = latestPosts.Single(n => n.Id.EndsWith(latestGuidInPosts.ToString()));
 
                     if (latestGuidInPosts > Settings.LastBlogPostGuid)
                     {
-                        if(Settings.LastBlogPostGuid > 0)
+                        if (Settings.LastBlogPostGuid > 0)
                         {
                             await SendNotification(NewBlogPostTitle, string.Format(NewBlogPostDescription, latestPost.Title.Text), $"///more/news/news-detail?newsUri={latestPost.Links.FirstOrDefault().Uri}");
                         }
@@ -144,25 +169,116 @@ namespace Ifpa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    logger.LogError(ex, "Error in NotifyIfNewBlogItemPosted");
                 }
             }
         }
 
-        private async Task UpdateBadgeIfNeeded()
+        public async Task NotifyIfNewCalendarEntry()
         {
-            if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
+            if (Settings.NotifyOnNewCalendarEntry)
             {
-                var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
-                //TODO: restore badge
-                //CrossBadge.Current.SetBadge(unreads);
+                logger.LogInformation("Checking for new calendar entries");
+
+                try
+                {
+                    var geoLocation = await Geocoding.GetLocationsAsync(Settings.LastCalendarLocation);
+
+                    var longitude = geoLocation.FirstOrDefault()?.Longitude;
+                    var latitude = geoLocation.FirstOrDefault()?.Latitude;
+                    var tournamentType = (TournamentType?)(Settings.CalendarRankingSystem == "All" ? null : Enum.Parse(typeof(TournamentType), Settings.CalendarRankingSystem));
+
+                    var items = await UniversalPinballRankingApi.TournamentSearch(latitude,
+                                                                 longitude,
+                                                                 Settings.LastCalendarDistance,
+                                                                 DistanceType.Miles,
+                                                                 startDate: DateTime.Now,
+                                                                 endDate: DateTime.Now.AddYears(1),
+                                                                 tournamentType: tournamentType,
+                                                                 totalReturn: 500);
+
+                    var newestCalendarItemId = items.Tournaments.Max(n => n.TournamentId);
+
+                    if (newestCalendarItemId > Settings.LastCalendarIdSeen && Settings.LastCalendarIdSeen > 0)
+                    {
+                        foreach (var calendarItem in items.Tournaments.Where(n => n.TournamentId > Settings.LastCalendarIdSeen))
+                        {
+                            await SendNotification(NewTournamentOnCalendarTitle,
+                                                   string.Format(NewTournamentOnCalendarDescription, calendarItem.TournamentName, calendarItem.EventStartDate.DateTime.ToShortDateString()),
+                                                   $"///calendar/calendar-detail?tournamentId={calendarItem.TournamentId}");
+                        }
+
+                        //TODO: Add badge to calendar tab item
+                        //await UpdateBadgeIfNeeded();
+                    }
+
+                    Settings.LastCalendarIdSeen = newestCalendarItemId;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error in NotifyIfNewCalendarEntry");
+                }
             }
         }
 
-        public async Task SendNotification(string title, string description, string url)
+        public async Task ClearNotificationForActivityFeedItem(ActivityFeedItem item)
         {
-            var payload = new Dictionary<string, string>();
-            payload.Add("url", url);
+            item.HasBeenSeen = true;
+            await Settings.LocalDatabase.UpdateActivityFeedRecord(item);
+
+            await RecalculateActivityFeedAndUpdateBadges(item);
+        }
+
+        public async Task RecalculateActivityFeedAndUpdateBadges(ActivityFeedItem activityFeedItem)
+        {
+            var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
+
+            ActivityFeedNotificationChanged?.Invoke(this, new ActivityFeedNotificationChangedEventArgs
+            {
+                ActivityFeedItem = activityFeedItem,
+                UnreadCount = unreads
+            });
+
+            await UpdateBadgeIfNeeded();
+        }
+
+        public async Task TestingShim()
+        {
+            var newItem = new ActivityFeedItem
+            {
+                ActivityType = ActivityFeedType.TournamentResult,
+                RecordID = 28089,
+                CreatedDateTime = DateTime.Now,
+                HasBeenSeen = false
+            };
+
+            await Settings.LocalDatabase.CreateActivityFeedRecord(newItem);
+
+            await RecalculateActivityFeedAndUpdateBadges(newItem);
+        }
+
+        private async Task UpdateBadgeIfNeeded()
+        {
+            try
+            {
+                var unreads = await Settings.LocalDatabase.GetUnreadActivityCount();
+
+                badge.SetCount((uint)unreads);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error in UpdateBadgeIfNeeded");
+            }
+        }
+
+        private async Task SendNotification(string title, string description, string url)
+        {
+            logger.LogInformation("Sending notification: {0} - {1}", title, description);
+
+            var payload = new Dictionary<string, string>
+            {
+                { "url", url }
+            };
 
             var notification = new Notification
             {
@@ -171,11 +287,19 @@ namespace Ifpa.Services
                 Payload = payload
             };
 
+
             var result = await notificationManager.RequestRequiredAccess(notification);
-            if (result == AccessState.Available)
+            if (result == Shiny.AccessState.Available)
             {
                 await notificationManager.Send(notification);
             }
         }
     }
+
+    public class ActivityFeedNotificationChangedEventArgs : EventArgs
+    {
+        public ActivityFeedItem ActivityFeedItem { get; set; }
+        public int UnreadCount { get; set; }
+    }
+
 }

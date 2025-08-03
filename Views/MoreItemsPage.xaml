@@ -1,21 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Views"
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:views="clr-namespace:Ifpa.Views"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              x:Class="Ifpa.Views.MoreItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="More">
-    <CollectionView x:Name="MoreItemsCollection" x:FieldModifier="public" SelectionChanged="MoreItemsCollection_SelectionChanged" SelectionMode="Single" >
+             Title="{x:Static local:Strings.MoreItemsPage_More}"
+             x:DataType="views:MoreItemsMenuItem">
+    <CollectionView x:Name="MoreItemsCollection"
+                    x:FieldModifier="public"
+                    SelectionChanged="MoreItemsCollection_SelectionChanged"
+                    SelectionMode="Single">
         <CollectionView.ItemsSource>
-            <x:Array Type="{x:Type local:MoreItemsMenuItem}">
-                <local:MoreItemsMenuItem Title="Favorites" IconSource="favorite.png" Route="favorites" />
-                <local:MoreItemsMenuItem Title="Custom Rankings" IconSource="numbered_list.png" Route="custom-rankings" />
-                <local:MoreItemsMenuItem Title="News" IconSource="news.png" Route="news" />
-                <local:MoreItemsMenuItem Title="Rules" IconSource="rules.png" Route="rules" />
-                <local:MoreItemsMenuItem Title="Stats" IconSource="stats.png" Route="stats" />
-                <local:MoreItemsMenuItem Title="Directors" IconSource="directors.png" Route="directors" />
-                <local:MoreItemsMenuItem Title="Settings" IconSource="settings.png" Route="settings" />
-                <local:MoreItemsMenuItem Title="About" IconSource="about.png" Route="about" />
+            <x:Array Type="{x:Type views:MoreItemsMenuItem}">
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Favorites}"
+                                         IconSource="favorite.png"
+                                         Route="favorites" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.TournamentSearchPage_Title}"
+                                         IconSource="trophy.png"
+                                         Route="tournament-search" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_CustomRankings}"
+                                         IconSource="numbered_list.png"
+                                         Route="custom-rankings" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_News}"
+                                         IconSource="news.png"
+                                         Route="news" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Rules}"
+                                         IconSource="rules.png"
+                                         Route="rules" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Stats}"
+                                         IconSource="stats.png"
+                                         Route="stats" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Directors}"
+                                         IconSource="directors.png"
+                                         Route="directors" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Settings}"
+                                         IconSource="settings.png"
+                                         Route="settings" />
+                <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_About}"
+                                         IconSource="about.png"
+                                         Route="about" />
             </x:Array>
         </CollectionView.ItemsSource>
         <CollectionView.ItemTemplate>
@@ -23,18 +48,25 @@
                 <StackLayout>
                     <Grid Padding="0,10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="60" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="60" />
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding IconSource}" Margin="10,0,10,0">
+                        <Image Source="{Binding IconSource}"
+                               Margin="10,0,10,0">
                             <Image.Behaviors>
-                                <!-- TODO: replace explicit color declaration with style found in theme, required TintColor to be bindable -->
-                                <toolkit:IconTintColorBehavior TintColor="#4579FB" />
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
                             </Image.Behaviors>
                         </Image>
-                        <Label Grid.Column="1" Text="{Binding Title}" VerticalTextAlignment="Center" FontSize="18" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Title}"
+                               VerticalTextAlignment="Center"
+                               FontSize="18" />
+                        <Image Source="{mi:Fluent Icon=ChevronRight24, IconColor={StaticResource SecondaryTextColor}}"
+                               Grid.Column="2"
+                               HeightRequest="16"/>
                     </Grid>
-                    <BoxView Style="{StaticResource BoxSeperator}"/>
+                    <BoxView Style="{StaticResource BoxSeperator}" />
                 </StackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>

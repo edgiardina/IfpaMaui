@@ -1,6 +1,5 @@
-﻿using Microsoft.Maui;
-using Ifpa.ViewModels;
-using PinballApi.Models.WPPR.v1.Players;
+﻿using Ifpa.ViewModels;
+using PinballApi.Models.WPPR.v2.Players;
 
 namespace Ifpa.Views
 {
@@ -19,21 +18,6 @@ namespace Ifpa.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-        }
-
-        private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.CurrentSelection.FirstOrDefault() != null)
-            {
-                var player = e.CurrentSelection.FirstOrDefault() as Search;
-                if (player == null)
-                    return;
-
-                await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
-
-                // Manually deselect item.
-                PlayersListView.SelectedItem = null;
-            }
         }
     }
 }

@@ -1,42 +1,48 @@
-﻿using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Players;
-using PinballApi.Models.WPPR.v2;
-using Ifpa.Models;
-using PinballApi;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR;
+using PinballApi.Models.WPPR.Universal.Players;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerResultsViewModel : BaseViewModel
+    public partial class PlayerResultsViewModel : BaseViewModel
     {
-        public ObservableCollectionRange<PlayerResult> ActiveResults { get; set; }
-        public ObservableCollectionRange<PlayerResult> UnusedResults { get; set; }
-        public ObservableCollectionRange<PlayerResult> PastResults { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<PlayerResult> activeResults = new ObservableCollection<PlayerResult>();
+        
+        [ObservableProperty]
+        private ObservableCollection<PlayerResult> unusedResults = new ObservableCollection<PlayerResult>();
+        
+        [ObservableProperty]
+        private ObservableCollection<PlayerResult> pastResults = new ObservableCollection<PlayerResult>();
 
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<PlayerRankingSystem> rankingTypeOptions = new ObservableCollection<PlayerRankingSystem>();
+
+        [ObservableProperty]
+        private PlayerResult selectedResult;
 
         public ResultType State { get; set; }
-        public RankingType RankingType { get; set; }
-
-        public RankingType[] RankingTypeOptions => new[] { RankingType.Main, RankingType.Women, RankingType.Youth };
-     
-        public bool ShowRankingTypeChoice { get; set; }
+        public PlayerRankingSystem RankingType { get; set; }
 
         public int PlayerId { get; set; }
 
-        public PlayerResultsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
-        {
-            Title = "Results";
-            State = ResultType.Active;
-            RankingType = RankingType.Main;
-            ShowRankingTypeChoice = false;
-            ActiveResults = new ObservableCollectionRange<PlayerResult>();
-            UnusedResults = new ObservableCollectionRange<PlayerResult>();
-            PastResults = new ObservableCollectionRange<PlayerResult>();
+        private readonly IPinballRankingApi PinballRankingApi;
 
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+
+        public PlayerResultsViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerResultsViewModel> logger) : base(logger)
+        {
+            State = ResultType.Active;
+            RankingType = PlayerRankingSystem.Main;
+            PinballRankingApi = pinballRankingApi;
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -45,44 +51,54 @@ namespace Ifpa.ViewModels
 
             try
             {
-                var player = await PinballRankingApiV2.GetPlayer(PlayerId);
+                var player = await PinballRankingApi.GetPlayer(PlayerId);
+               
+                RankingTypeOptions = player.PlayerStats.System.Select(s => s.System).ToObservableCollection();
 
-                //TODO: it would be better to get a list of all categories a player is eligible for
-                if (player.Gender == Gender.Female || (player.Age.HasValue && player.Age.Value < 18))
-                {
-                    ShowRankingTypeChoice = true;
-                    OnPropertyChanged(nameof(ShowRankingTypeChoice));
-                }
-
-                ActiveResults.Clear();
-                UnusedResults.Clear();
-                PastResults.Clear();
-
-                var activeResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Active);
+                var activeResults = await PinballRankingApi.GetPlayerResults(PlayerId, RankingType, ResultType.Active);
                 if (activeResults.ResultsCount > 0)
                 {
-                    ActiveResults.AddRange(activeResults.Results);
+                    ActiveResults = activeResults.Results.ToObservableCollection();
                 }
-                
-                var unusedResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.NonActive);
+
+                var unusedResults = await PinballRankingApi.GetPlayerResults(PlayerId, RankingType, ResultType.NonActive);
                 if (unusedResults.ResultsCount > 0)
                 {
-                    UnusedResults.AddRange(unusedResults.Results);
+                    UnusedResults = unusedResults.Results.ToObservableCollection();
                 }
-                
-                var pastResults = await PinballRankingApiV2.GetPlayerResults(PlayerId, RankingType, ResultType.Inactive);
+
+                var pastResults = await PinballRankingApi.GetPlayerResults(PlayerId, RankingType, ResultType.Inactive);
                 if (pastResults.ResultsCount > 0)
                 {
-                    PastResults.AddRange(pastResults.Results);
+                    PastResults = pastResults.Results.ToObservableCollection();
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading player results id {0}", PlayerId);
             }
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        public async Task ViewTournamentResults()
+        {
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}");
+            SelectedResult = null;
+        }
+
+        [RelayCommand]
+        public async Task RankingProfileSelect()
+        {
+            string action = await Shell.Current.DisplayActionSheet(Strings.PlayerResultsPage_RankingProfile, Strings.Cancel, null, RankingTypeOptions.Select(a => a.ToString()).ToArray());
+
+            if (action != null && action != Strings.Cancel)
+            {
+                RankingType = (PlayerRankingSystem)Enum.Parse(typeof(PlayerRankingSystem), action);
+                LoadItems();
             }
         }
     }

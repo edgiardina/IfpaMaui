@@ -1,40 +1,30 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary 
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-
-    <Color x:Key="SecondaryBanner">#556E87</Color>
-    <Color x:Key="DetailPageBackground">#F1F1F1</Color>
-    <Color x:Key="WinningRecord">#04B45F</Color>
-    <Color x:Key="LosingRecord">#FE2E2E</Color>
-    <Color x:Key="TieRecord">#333333</Color>
-
-    <Color x:Key="BackgroundColor">#FFFFFF</Color>
-    <Color x:Key="BarBackgroundColor">#f6f6f6</Color>
-    <Color x:Key="BarTextColor">#556E87</Color>
-
-    <Color x:Key="ButtonBackgroundColor">#2F4E6E</Color>
-    <Color x:Key="ButtonTextColor">#FFFFFF</Color>
-    <Color x:Key="PrimaryTextColor">#000000</Color>
-    <Color x:Key="SecondaryTextColor">#999999</Color>
-    <Color x:Key="TabHeaderBackgroundColor">#FFFFFF</Color>
-    <Color x:Key="SecondaryBackgroundColor">#f6f6f6</Color>
-
-    <Color x:Key="LinkTextColor">#0000ff</Color>
-    <Color x:Key="BannerTextColor">#072C53</Color>
-    <Color x:Key="IconAccentColor">#4579FB</Color>
-
-    <!-- Dark Colors -->
-
-    <Color x:Key="TieRecordDark">#999999</Color>
-
-    <Color x:Key="BackgroundColorDark">#000000</Color>
-    <Color x:Key="BarBackgroundColorDark">#191919</Color>
-    <Color x:Key="BarTextColorDark">#B0FFFFFF</Color>
-
-    <Color x:Key="PrimaryTextColorDark">#FFFFFF</Color>
-    <Color x:Key="TabHeaderBackgroundColorDark">#212124</Color>
-    <Color x:Key="SecondaryBackgroundColorDark">#212124</Color>
-
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Ifpa">
+  <Color x:Key="SecondaryBanner">#556E87</Color>
+  <Color x:Key="DetailPageBackground">#F1F1F1</Color>
+  <Color x:Key="WinningRecord">#04B45F</Color>
+  <Color x:Key="LosingRecord">#FE2E2E</Color>
+  <Color x:Key="TieRecord">#999999</Color>
+  <Color x:Key="BackgroundColor">#FFFFFF</Color>
+  <Color x:Key="BarBackgroundColor">#f6f6f6</Color>
+  <Color x:Key="BarTextColor">#556E87</Color>
+  <Color x:Key="ButtonBackgroundColor">#2F4E6E</Color>
+  <Color x:Key="ButtonTextColor">#FFFFFF</Color>
+  <Color x:Key="PrimaryTextColor">#000000</Color>
+  <Color x:Key="SecondaryTextColor">#999999</Color>
+  <Color x:Key="TabHeaderBackgroundColor">#FFFFFF</Color>
+  <Color x:Key="SecondaryBackgroundColor">#f6f6f6</Color>
+  <Color x:Key="LinkTextColor">#0000ff</Color>
+  <Color x:Key="BannerTextColor">#072C53</Color>
+  <Color x:Key="IconAccentColor">#4579FB</Color>
+  <Color x:Key="DeleteBackgroundColor">#FE2E2E</Color>
+  <!-- Dark Colors -->
+  <Color x:Key="TieRecordDark">#999999</Color>
+  <Color x:Key="BackgroundColorDark">#000000</Color>
+  <Color x:Key="BarBackgroundColorDark">#191919</Color>
+  <Color x:Key="BarTextColorDark">#B0FFFFFF</Color>
+  <Color x:Key="PrimaryTextColorDark">#FFFFFF</Color>
+  <Color x:Key="TabHeaderBackgroundColorDark">#212124</Color>
+  <Color x:Key="SecondaryBackgroundColorDark">#212124</Color>
 </ResourceDictionary>

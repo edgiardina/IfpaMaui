@@ -1,32 +1,28 @@
-﻿using PinballApi.Models.WPPR.v2.Nacs;
-using PinballApi.Models.WPPR.v2.Series;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Microsoft.Extensions.Configuration;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
-    public class ChampionshipSeriesListViewModel : BaseViewModel
+    public partial class ChampionshipSeriesListViewModel : BaseViewModel
     {
-        public ObservableCollection<Series> ChampionshipSeries { get; set; }
-        public Command LoadItemsCommand { get; set; }
-        
-        public ChampionshipSeriesListViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        [ObservableProperty]
+        private List<Series> championshipSeries = new List<Series>();
+
+        [ObservableProperty]
+        private Series selectedChampionshipSeries;
+
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public ChampionshipSeriesListViewModel(IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesListViewModel> logger) : base(logger)
         {
-
-            ChampionshipSeries = new ObservableCollection<Series>();
-
-            Title = "Championship Series";
-
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            PinballRankingApi = pinballRankingApi;
         }
 
-
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -35,25 +31,23 @@ namespace Ifpa.ViewModels
 
             try
             {
-                ChampionshipSeries.Clear();
-                var series = await PinballRankingApiV2.GetSeries();
-
-                if (series != null)
-                {
-                    foreach (var item in series)
-                    {
-                        ChampionshipSeries.Add(item);
-                    }
-                }       
+                ChampionshipSeries = await PinballRankingApi.GetSeries();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading championship series");
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ViewChampionshipSeriesDetail(Series series)
+        {
+            await Shell.Current.GoToAsync($"champ-series?seriesCode={SelectedChampionshipSeries.Code}&year={SelectedChampionshipSeries.Years.Max()}");
+            SelectedChampionshipSeries = null;
         }
     }
 }

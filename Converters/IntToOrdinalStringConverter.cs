@@ -11,7 +11,7 @@ namespace Ifpa.Converters
         {
             if(object.Equals(value, null) || object.Equals(value, 0))
             {
-                return "Not Ranked";
+                return Strings.NotRanked;
             }
 
             return ((int)value).OrdinalSuffix();

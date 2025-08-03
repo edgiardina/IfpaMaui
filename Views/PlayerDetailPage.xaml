@@ -1,108 +1,243 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.PlayerDetailPage"
-             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
-             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
-             Title="{Binding Initials, Mode=OneWay}">
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:local="clr-namespace:Ifpa"
+             Title="{Binding PlayerRecord.Initials, Mode=OneWay}"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:PlayerDetailViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
-            <Style x:Key="playerHeader" TargetType="Label">
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="FontAttributes" Value="Bold" />
+            <toolkit:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
+            <Style x:Key="playerHeader"
+                   TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="White" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+            </Style>
+            <Style x:Key="FrameButton"
+                   TargetType="Border">
+                <Setter Property="MinimumHeightRequest"
+                        Value="50" />
+                <Setter Property="MinimumWidthRequest"
+                        Value="100" />
+                <Setter Property="Padding"
+                        Value="5,5" />
+                <Setter Property="Margin"
+                        Value="{OnPlatform Android=1}" />
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource ButtonBackgroundColor}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Activity Feed" x:Name="ActivityFeedButton" Clicked="ActivityFeedButton_Clicked" IconImageSource="{fluent:Icon Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Favorite" x:Name="FavoriteButton" Clicked="FavoriteButton_Clicked" IconImageSource="{fluent:Icon Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Set to My Stats" x:Name="StarButton" Clicked="StarButton_Clicked" IconImageSource="{fluent:Icon Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_ActivityFeed}"
+                     x:Name="ActivityFeedButton"
+                     Clicked="ActivityFeedButton_Clicked"
+                     IconImageSource="{mi:Fluent Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Favorite}"
+                     x:Name="FavoriteButton"
+                     Clicked="FavoriteButton_Clicked"
+                     IconImageSource="{mi:Fluent Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_SetToMyStats}"
+                     x:Name="StarButton"
+                     Clicked="StarButton_Clicked"
+                     IconImageSource="{mi:Fluent Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Share}"
+                     x:Name="ShareButton"
+                     Clicked="ShareButton_Clicked"
+                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <AbsoluteLayout x:Name="AvatarOverlay"
+                        IsVisible="False"
+                        ZIndex="2">
+
+            <!-- Enlarged Avatar -->
+            <toolkit:AvatarView x:Name="EnlargedPlayerAvatar"
+                                AbsoluteLayout.LayoutBounds="0.5,0.5,80,80"
+                                AbsoluteLayout.LayoutFlags="PositionProportional"
+                                ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
+                                Text="{Binding PlayerRecord.Initials, Mode=OneWay}"
+                                BackgroundColor="{StaticResource ButtonBackgroundColor}"
+                                BorderWidth="0"
+                                CornerRadius="8"
+                                WidthRequest="80"
+                                HeightRequest="80"
+                                TextColor="{StaticResource ButtonTextColor}">
+                <toolkit:AvatarView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAvatarTapped" />
+                </toolkit:AvatarView.GestureRecognizers>
+                <toolkit:AvatarView.Shadow>
+                    <Shadow Brush="Black"
+                            Opacity="0.8" />
+                </toolkit:AvatarView.Shadow>
+            </toolkit:AvatarView>
+        </AbsoluteLayout>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
         <ScrollView IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
             <StackLayout>
-                <Grid ColumnSpacing="10" BackgroundColor="{StaticResource SecondaryBanner}"                     
+                <Grid ColumnSpacing="10"
+                      MinimumHeightRequest="100"
+                      BackgroundColor="{StaticResource SecondaryBanner}"
                       ColumnDefinitions="3*,*">
-                    <Grid Grid.Column="0" RowDefinitions="*,*,*" Margin="10">
-
-                        <Label Grid.Row="0" Text="{Binding Name, Mode=OneWay}" Style="{StaticResource playerHeader}" FontSize="20"/>
-
-                        <StackLayout  Grid.Row="1" Orientation="Horizontal" VerticalOptions="Center">
-                            <Label LineBreakMode="NoWrap" HorizontalOptions="StartAndExpand" Style="{StaticResource playerHeader}" FontSize="16" >
+                    <Grid Grid.Column="0"
+                          RowDefinitions="*,*,*"
+                          Margin="10">
+                        <Label Grid.Row="0"
+                               Style="{StaticResource playerHeader}"
+                               FontSize="20">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="{Binding PlayerRecord.FirstName, Mode=OneWay}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding PlayerRecord.LastName, Mode=OneWay}" />
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <StackLayout Grid.Row="1"
+                                     Orientation="Horizontal"
+                                     VerticalOptions="Center">
+                            <Label LineBreakMode="NoWrap"
+                                   HorizontalOptions="StartAndExpand"
+                                   Style="{StaticResource playerHeader}"
+                                   FontSize="16">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
-                                            <Span Text="Player #: " />
-                                            <Span Text="{Binding PlayerId, Mode=OneWay}" />
+                                            <Span Text="{x:Static local:Strings.PlayerDetailPage_Player}" />
+                                            <Span Text="{Binding PlayerRecord.PlayerId, Mode=OneWay}" />
                                         </FormattedString.Spans>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Image Source="https://www.ifpapinball.com/images/confirmed.png" IsVisible="{Binding IsRegistered}" HeightRequest="16">
+                            <Image Source="https://www.ifpapinball.com/images/confirmed.png"
+                                   IsVisible="{Binding PlayerRecord.IfpaRegistered}"
+                                   HeightRequest="16">
                                 <Image.Shadow>
-                                    <Shadow Brush="Black"                             
-                                        Opacity="0.8" />
+                                    <Shadow Brush="Black"
+                                            Opacity="0.8" />
                                 </Image.Shadow>
                             </Image>
                         </StackLayout>
-                        <Grid HorizontalOptions="FillAndExpand"  Grid.Row="2">
+                        <Grid HorizontalOptions="FillAndExpand"
+                              Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Location, Mode=OneWay}" FontSize="16" Style="{StaticResource playerHeader}" VerticalTextAlignment="Center"  />
-
-                            <Image  Grid.Column="1" Source="{Binding CountryFlag, Mode=OneWay}" WidthRequest="30">
+                            <Label Grid.Column="0"
+                                   Text="{Binding Location, Mode=OneWay}"
+                                   FontSize="16"
+                                   Style="{StaticResource playerHeader}"
+                                   VerticalTextAlignment="Center" />
+                            <Image Grid.Column="1"
+                                   Source="{Binding CountryFlag, Mode=OneWay}"
+                                   WidthRequest="30">
                                 <Image.Shadow>
-                                    <Shadow Brush="Black"                             
-                                        Opacity="0.8" />
+                                    <Shadow Brush="Black"
+                                            Opacity="0.8" />
                                 </Image.Shadow>
                             </Image>
-
                         </Grid>
                     </Grid>
-
-                    <toolkit:AvatarView Grid.Column="1" ImageSource="{Binding PlayerAvatar, Mode=OneWay}" HorizontalOptions="Center" Margin="10" 
-                                        Text="{Binding Initials, Mode=OneWay}" 
+                    <toolkit:AvatarView Grid.Column="1"
+                                        ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
+                                        HorizontalOptions="End"
+                                        Margin="10"
+                                        Text="{Binding PlayerRecord.Initials, Mode=OneWay}"
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
-                                        BorderWidth="0" CornerRadius="8"
+                                        BorderWidth="0"
+                                        CornerRadius="8"
                                         WidthRequest="80"
                                         HeightRequest="80"
+                                        x:Name="PlayerAvatar"
+                                        ZIndex="2"
                                         TextColor="{StaticResource ButtonTextColor}">
                         <toolkit:AvatarView.Shadow>
-                            <Shadow Brush="Black"                                      
-                                        Opacity="0.8" />
+                            <Shadow Brush="Black"
+                                    Opacity="0.8" />
                         </toolkit:AvatarView.Shadow>
+                        <toolkit:AvatarView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnAvatarTapped" />
+                        </toolkit:AvatarView.GestureRecognizers>
                     </toolkit:AvatarView>
                 </Grid>
-
-                <StackLayout Spacing="10" Margin="10">
+                <StackLayout Spacing="10"
+                             Margin="10">
                     <Grid ColumnSpacing="10">
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
-                                Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}" Value="True">
-                                <Setter Property="ColumnDefinitions" Value="*,*,*" />
+                                         Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
+                                         Value="True">
+                                <Setter Property="ColumnDefinitions"
+                                        Value="*,*,*" />
                             </DataTrigger>
                             <DataTrigger TargetType="Grid"
-                                Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}" Value="False">
-                                <Setter Property="ColumnDefinitions" Value="*,*" />
+                                         Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
+                                         Value="False">
+                                <Setter Property="ColumnDefinitions"
+                                        Value="*,*" />
                             </DataTrigger>
                         </Grid.Triggers>
-                        <Button HeightRequest="50" Grid.Column="0" Text="Tournament Results" LineBreakMode="WordWrap" Clicked="TournamentResults_Button_Clicked" />
-                        <Button HeightRequest="50" Grid.Column="1" Text="Player vs Player" LineBreakMode="WordWrap" Clicked="Pvp_Button_Clicked" />
-                        <Button HeightRequest="50" Grid.Column="2" Text="Championship Series" LineBreakMode="WordWrap"  x:Name="ChampButton" Clicked="CS_Button_Clicked" 
-                            IsVisible="{Binding HasChampionshipSeriesData}" />
+
+                        <Border Style="{StaticResource FrameButton}"
+                               Grid.Column="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="6.5" />
+                            </Border.StrokeShape>
+                            <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}"/>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Border Style="{StaticResource FrameButton}"
+                               Grid.Column="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="6.5" />
+                            </Border.StrokeShape>
+                            <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerVsPlayer}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPlayerVsPlayerCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
+                        <Border Style="{StaticResource FrameButton}"
+                               Grid.Column="2"
+                               IsVisible="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
+                               x:Name="ChampButton">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="6.5" />
+                            </Border.StrokeShape>
+                            <Label Text="{x:Static local:Strings.PlayerDetailPage_ChampionshipSeries}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource ButtonTextColor}" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowPlayerChampionshipSeriesCommand}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+
                     </Grid>
-
-
-                    <Label Text="Player Overview" />
+                    <Label Text="{x:Static local:Strings.PlayerDetailPage_PlayerOverview}" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -114,21 +249,48 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rank" />
-                        <Label TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
-                               Grid.Column="1" Grid.Row="0" Text="{Binding Rank, Mode=OneWay, Converter={StaticResource intToOrdinalString}}" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="2" Grid.Row="0" Text="{Binding CurrentWpprValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
-
-                        <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Rating" />
-                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding Rating, Mode=OneWay}" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="2" Grid.Row="1" Text="{Binding RatingValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
-
-                        <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Eff percent" />
-                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding PlayerRecord.PlayerStats.EfficiencyRank, TargetNullValue='Not Ranked', Mode=OneWay}" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="2" Grid.Row="2" Text="{Binding EfficiencyValue, Mode=OneWay}" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="0"
+                               Grid.Row="0"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_Rank}" />
+                        <Label TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
+                               Grid.Column="1"
+                               Grid.Row="0"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].CurrentRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="2"
+                               Grid.Row="0"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].CurrentPoints, Mode=OneWay, StringFormat='{0:N2}'}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="0"
+                               Grid.Row="1"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_Rating}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="1"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].RatingsRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}, TargetNullValue='Not Rated'}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="2"
+                               Grid.Row="1"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].RatingsValue, Mode=OneWay}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="0"
+                               Grid.Row="2"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_EffPercent}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="2"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].EfficiencyRank, Converter={StaticResource longToOrdinalString}, TargetNullValue='Not Ranked', Mode=OneWay}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="2"
+                               Grid.Row="2"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].EfficiencyValue, Mode=OneWay, StringFormat='{0:N2}'}"
+                               HorizontalTextAlignment="Center" />
                     </Grid>
-
-                    <Label Text="Ranking Statistics" />
+                    <Label Text="{x:Static local:Strings.PlayerDetailPage_RankingStatistics}" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -140,33 +302,50 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-
-                        <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Highest Rank" />
-                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding HighestRank, Mode=OneWay}">
+                        <Label Grid.Column="0"
+                               Grid.Row="0"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_HighestRank}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="0">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span Text="{Binding HighestRank, Mode=OneWay}" />
-                                        <Span Text=" (" />
-                                        <Span Text="{Binding HighestRankDate, StringFormat='{0:MMMM, yyyy}'}" />
-                                        <Span Text=")" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].HighestRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
+                                        <Span Text="{x:Static local:Strings.PlayerDetailPage_}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].HighestRankDate, StringFormat='{0:MMMM, yyyy}'}" />
+                                        <Span Text="{x:Static local:Strings.RightParens}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-
-                        <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Last Month's Rank" />
-                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding LastMonthRank, Mode=OneWay}" />
-
-                        <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Last Year's Rank" />
-                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding LastYearRank, Mode=OneWay}" />
-
-                        <Label Grid.Column="0" Grid.Row="3" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total WPPRs" />
-                        <Label Grid.Column="1" Grid.Row="3" Text="{Binding TotalWpprs, Mode=OneWay}" />
+                        <Label Grid.Column="0"
+                               Grid.Row="1"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_LastMonthSRank}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="1"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].LastMonthRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
+                        <Label Grid.Column="0"
+                               Grid.Row="2"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_LastYearSRank}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="2"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].LastYearRank, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
+                        <Label Grid.Column="0"
+                               Grid.Row="3"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_TotalWpprs}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="3"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].AllTimePoints, Mode=OneWay, StringFormat='{0:N2}'}" />
                     </Grid>
-
-
-                    <Label Text="Tournament Statistics" />
+                    <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentStatistics}" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -180,86 +359,92 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-
-                        <Label Grid.Column="0" Grid.Row="0" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Best Finish" />
-                        <Label Grid.Column="1" Grid.Row="0" LineBreakMode="NoWrap">
+                        <Label Grid.Column="0"
+                               Grid.Row="0"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_BestFinish}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="0"
+                               LineBreakMode="NoWrap">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span Text="{Binding BestFinish, Mode=OneWay}" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].BestFinish, Mode=OneWay, Converter={StaticResource longToOrdinalString}}" />
                                         <Span Text=" (" />
-                                        <Span Text="{Binding BestFinishCount, Mode=OneWay}" />
-                                        <Span Text=" times)" />
+                                        <Span Text="{Binding PlayerRecord.PlayerStats.System[0].BestFinishCount, Mode=OneWay}" />
+                                        <Span Text="{x:Static local:Strings.PlayerDetailPage_Times}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <Label Grid.Column="0" Grid.Row="1" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Avg Finish" />
-                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding AvgFinish, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
-
-                        <Label Grid.Column="0" Grid.Row="2" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Avg Finish Last Year" />
-                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding AvgFinishLastYear, Converter={StaticResource intToOrdinalString}, Mode=OneWay}" />
-
-                        <Label Grid.Column="0" Grid.Row="3" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total Events" />
-                        <Label Grid.Column="1" Grid.Row="3" Text="{Binding TotalEvents, Mode=OneWay}" />
-
-                        <Label Grid.Column="0" Grid.Row="4" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Total Active Events" />
-                        <Label Grid.Column="1" Grid.Row="4" Text="{Binding TotalActiveEvents, Mode=OneWay}" />
-
-                        <Label Grid.Column="0" Grid.Row="5" LineBreakMode="NoWrap" TextColor="{StaticResource SecondaryTextColor}" Text="Events Outside Country" />
-                        <Label Grid.Column="1" Grid.Row="5" Text="{Binding EventsOutsideCountry, Mode=OneWay}" />
-
+                        <Label Grid.Column="0"
+                               Grid.Row="1"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_AvgFinish}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="1"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].AverageFinish, Converter={StaticResource longToOrdinalString}, Mode=OneWay}" />
+                        <Label Grid.Column="0"
+                               Grid.Row="2"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_AvgFinishLastYear}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="2"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].AverageFinishLastYear, Converter={StaticResource longToOrdinalString}, Mode=OneWay}" />
+                        <Label Grid.Column="0"
+                               Grid.Row="3"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_TotalEvents}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="3"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].TotalEventsAllTime, Mode=OneWay}" />
+                        <Label Grid.Column="0"
+                               Grid.Row="4"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_TotalActiveEvents}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="4"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].TotalActiveEvents, Mode=OneWay}" />
+                        <Label Grid.Column="0"
+                               Grid.Row="5"
+                               LineBreakMode="NoWrap"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               Text="{x:Static local:Strings.PlayerDetailPage_EventsOutsideCountry}" />
+                        <Label Grid.Column="1"
+                               Grid.Row="5"
+                               Text="{Binding PlayerRecord.PlayerStats.System[0].TotalEventsAway, Mode=OneWay}" />
                     </Grid>
-
-                    <StackLayout x:Name="ChartLayout">
-                        <chart:SfCartesianChart  x:Name="RankProgressChart" HeightRequest="250" Margin="0,20">
-                            <chart:SfCartesianChart.Title>
-                                <Label Text="Rank Progress" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                            </chart:SfCartesianChart.Title>
-                            <chart:SfCartesianChart.XAxes>
-                                <chart:DateTimeAxis>
-                                    <chart:DateTimeAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:DateTimeAxis.LabelStyle>
-                                </chart:DateTimeAxis>
-                            </chart:SfCartesianChart.XAxes>
-                            <chart:SfCartesianChart.YAxes>
-                                <chart:LogarithmicAxis IsInversed="True">
-                                    <chart:LogarithmicAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:LogarithmicAxis.LabelStyle>
-                                </chart:LogarithmicAxis>
-                                <!--
-                            TODO: When Syncfusion supports Logarithmic charts, implement
-                            <chart:LogarithmicAxis IsInversed="True" />
-                            -->
-                            </chart:SfCartesianChart.YAxes>
-                            <chart:LineSeries ItemsSource="{Binding PlayerRankHistory}" XBindingPath="RankDate" YBindingPath="RankPosition" />
-                        </chart:SfCartesianChart>
-                        <chart:SfCartesianChart x:Name="RatingProgressChart"  HeightRequest="250">
-                            <chart:SfCartesianChart.Title>
-                                <Label Text="Rating Progress" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="Center" FontSize="16"
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"/>
-                            </chart:SfCartesianChart.Title>
-                            <chart:SfCartesianChart.XAxes>
-                                <chart:DateTimeAxis>
-                                    <chart:DateTimeAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}"  />
-                                    </chart:DateTimeAxis.LabelStyle>
-                                </chart:DateTimeAxis>
-                            </chart:SfCartesianChart.XAxes>
-                            <chart:SfCartesianChart.YAxes>
-                                <chart:NumericalAxis>
-                                    <chart:NumericalAxis.LabelStyle>
-                                        <chart:ChartAxisLabelStyle TextColor="{StaticResource SecondaryTextColor}" />
-                                    </chart:NumericalAxis.LabelStyle>
-                                </chart:NumericalAxis>
-                            </chart:SfCartesianChart.YAxes>
-                            <chart:LineSeries ItemsSource="{Binding PlayerRatingHistory}" XBindingPath="RatingDate" YBindingPath="Rating"/>
-                        </chart:SfCartesianChart>
+                    <StackLayout x:Name="ChartLayout"
+                                 Margin="0,10,0,0">
+                        <Label Text="{x:Static local:Strings.PlayerDetailPage_RankHistory}"
+                               HorizontalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                        <lvc:CartesianChart HeightRequest="300"                                            
+                                            YAxes="{Binding RankAxis}"
+                                            LegendPosition="Hidden"
+                                            ZoomMode="None"
+                                            Series="{Binding PlayerRankHistoryLineSeries}"
+                                            XAxes="{Binding TimeAxis}">
+                        </lvc:CartesianChart>
+                        <Label Text="{x:Static local:Strings.PlayerDetailPage_RatingProgress}"
+                               HorizontalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                        <lvc:CartesianChart HeightRequest="300"
+                                            ZoomMode="None"
+                                            Series="{Binding PlayerRatingHistoryLineSeries}"
+                                            XAxes="{Binding TimeAxis}"
+                                            YAxes="{Binding RatingAxis}">
+                        </lvc:CartesianChart>
                     </StackLayout>
-
                 </StackLayout>
             </StackLayout>
         </ScrollView>

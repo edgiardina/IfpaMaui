@@ -8,7 +8,8 @@ namespace Ifpa.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RulesPage : ContentPage
-    { 
+    {
+        private const string rulesPdfPath = "https://www.ifpapinball.com/wp/wp-content/uploads/2024/02/PAPA_IFPA-Complete-Competition-Rules-2024.02.pdf";
 
         public RulesPage()
         {
@@ -19,7 +20,7 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-            RulesWebView.Source = "https://docs.google.com/viewer?embedded=true&url=https://www.ifpapinball.com/wp/wp-content/uploads/2021/04/PAPA_IFPA-Complete-Competition-Rules-2021.04.06.pdf";
+            RulesWebView.Source = $"https://docs.google.com/viewer?embedded=true&url={rulesPdfPath}";
         }
     }
 }

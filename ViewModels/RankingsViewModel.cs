@@ -1,20 +1,24 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Rankings;
-using PinballApi.Models.WPPR.v2;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Rankings;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class RankingsViewModel : BaseViewModel
+    public partial class RankingsViewModel : BaseViewModel
     {
-        public ObservableCollection<RankingResult> Players { get; set; }
+        public ObservableCollection<BaseRanking> Players { get; set; }
         public ObservableCollection<Country> Countries { get; set; }
 
-        public Country CountryToShow { get; set; } 
+        [ObservableProperty]
+        private BaseRanking selectedPlayer;
 
-        public ICommand LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private Country countryToShow;
 
         private int startingPosition;
         public int StartingPosition
@@ -30,48 +34,36 @@ namespace Ifpa.ViewModels
             set { SetProperty(ref countOfItemsToFetch, value); }
         }
 
-        private bool showOverallRank;
+        [ObservableProperty]
+        private RankingType currentRankingType;
 
-        public bool ShowOverallRank
+        [ObservableProperty]
+        private RankingSystem currentRankingSystem;
+
+        [ObservableProperty]
+        private TournamentType currentProRankingType;
+
+        public List<TournamentType> ProRankingTypes => new List<TournamentType> { TournamentType.Open, TournamentType.Women };
+        public List<RankingType> RankingTypes => new List<RankingType> { RankingType.Pro, RankingType.Wppr, RankingType.Women, RankingType.Youth, RankingType.Country };
+
+        public List<RankingSystem> RankingSystems => new List<RankingSystem> { RankingSystem.Open, RankingSystem.Restricted };
+
+        public readonly Country DefaultCountry = new Country { CountryName = "United States", CountryCode = "US" };
+
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public RankingsViewModel(IPinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(logger)
         {
-            get { return showOverallRank; }
-            set { SetProperty(ref showOverallRank, value); }
-        }
-
-        public RankingType CurrentRankingType { get; set; }
-        public List<string> RankingTypes
-        {
-            get
-            {
-                var types = Enum.GetNames(typeof(RankingType)).ToList();
-                types.Remove("WPPR");
-                types.Remove("Elite");
-                return types;
-            }
-        }
-
-        public List<string> TournamentTypes => Enum.GetNames(typeof(TournamentType)).ToList();   
-        
-        public TournamentType CurrentTournamentType { get; set; }
-
-        public readonly Country DefaultCountry = new Country { CountryName = "United States" };        
-
-        public RankingsViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
-        {
-            Title = "Rankings";
             CountOfItemsToFetch = 100;
             StartingPosition = 1;
-            Players = new ObservableCollection<RankingResult>();
-            Countries = new ObservableCollection<Country>();           
-            LoadItemsCommand = new Command(
-                execute: () => ExecuteLoadItemsCommand(), 
-                canExecute: () =>
-                {
-                    return !IsBusy;
-                });
+            Players = new ObservableCollection<BaseRanking>();
+            Countries = new ObservableCollection<Country>();
+
+            PinballRankingApi = pinballRankingApi;
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -82,28 +74,37 @@ namespace Ifpa.ViewModels
             {
                 if (Countries.Count == 0)
                 {
-                    var countries = await PinballRankingApiV2.GetRankingCountries();
+                    var countries = await PinballRankingApi.GetRankingCountries();
+
                     foreach (var stat in countries.Country.OrderBy(n => n.CountryName))
                     {
                         Countries.Add(stat);
                     }
-
-                    if(CountryToShow == null)
-                    {
-                        CountryToShow = DefaultCountry;
-                    }
-
-                    CountryToShow = Countries.Single(n => n.CountryName == CountryToShow.CountryName);
-                    OnPropertyChanged(nameof(CountryToShow));
                 }
+
+                if (CountryToShow == null)
+                {
+                    CountryToShow = DefaultCountry;
+                }
+
+                CountryToShow = Countries.Single(n => n.CountryName == CountryToShow.CountryName);
 
                 Players.Clear();
 
-                if (CurrentRankingType == RankingType.Main)
+                if (CurrentRankingType == RankingType.Pro)
                 {
-                    ShowOverallRank = false;
-
-                    var items = await PinballRankingApiV2.GetWpprRanking(StartingPosition, CountOfItemsToFetch);
+                    var proItems = await PinballRankingApi.ProRankingSearch(CurrentProRankingType);
+                    if (proItems.Rankings != null)
+                    {
+                        foreach (var item in proItems.Rankings)
+                        {
+                            Players.Add(item);
+                        }
+                    }
+                }
+                else
+                {
+                    var items = await PinballRankingApi.RankingSearch(CurrentRankingType, CurrentRankingSystem, CountOfItemsToFetch, StartingPosition, countryCode: CountryToShow.CountryCode);
                     if (items.Rankings != null)
                     {
                         foreach (var item in items.Rankings)
@@ -112,67 +113,34 @@ namespace Ifpa.ViewModels
                         }
                     }
                 }
-                else if(CurrentRankingType == RankingType.Women)
-                {
-                    //TODO: wish the api returned relative rank for the women's ranking
-                    ShowOverallRank = CurrentTournamentType == TournamentType.Open;
-
-                    var items = await PinballRankingApiV2.GetRankingForWomen(CurrentTournamentType, StartingPosition, CountOfItemsToFetch);
-                    if (items.Rankings != null)
-                    {
-                        foreach (var item in items.Rankings)
-                        {
-                            Players.Add(item);
-                        }
-                    }
-                }
-                else if (CurrentRankingType == RankingType.Youth)
-                {
-                    ShowOverallRank = true;
-
-                    var items = await PinballRankingApiV2.GetRankingForYouth(StartingPosition, CountOfItemsToFetch);
-                    if (items.Rankings != null)
-                    {
-                        foreach (var item in items.Rankings)
-                        {
-                            Players.Add(item);
-                        }
-                    }
-                }
-                else if (CurrentRankingType == RankingType.Country)
-                {
-                    ShowOverallRank = true;
-
-                    var items = await PinballRankingApiV2.GetRankingForCountry(CountryToShow.CountryName, StartingPosition, CountOfItemsToFetch);
-                    if (items.Rankings != null)
-                    {
-                        foreach (var item in items.Rankings)
-                        {
-                            //TODO: this is a hack because we can't seem to get DataTriggers to work right for enum value(s) of CurrentRankingType
-                            item.CurrentRank = item.CountryRank;
-                            Players.Add(item);
-                        }
-                    }
-                }
-                //else if (CurrentRankingType == RankingType.Elite)
-                //{
-                //    var items = await PinballRankingApiV2.GetEliteRanking(StartingPosition, CountOfItemsToFetch);
-                //    foreach (var item in items.Rankings)
-                //    {
-                //        Players.Add(new RankingWithFormattedLocation(item));
-                //    }
-                //}
-
-                OnPropertyChanged(nameof(CurrentRankingType));
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading rankings for {0}", CurrentRankingType);
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ShowRankingFilter()
+        {
+            await Shell.Current.GoToAsync("rankings-filter");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerSearch()
+        {
+            await Shell.Current.GoToAsync("player-search");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerDetail()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
+            SelectedPlayer = null;
         }
     }
 }

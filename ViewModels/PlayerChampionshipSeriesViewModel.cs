@@ -1,31 +1,33 @@
-﻿using PinballApi.Models.v2.WPPR;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Microsoft.Extensions.Configuration;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerChampionshipSeriesViewModel : BaseViewModel
+    public partial class PlayerChampionshipSeriesViewModel : BaseViewModel
     {
-        public ObservableCollection<ChampionshipSeries> ChampionshipSeries { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private List<SeriesRank> championshipSeries = new List<SeriesRank>();
+
+        [ObservableProperty]
+        private SeriesRank selectedChampionshipSeries;
+
+        [ObservableProperty]
+        private int year = DateTime.Now.Year;
 
         public int PlayerId { get; set; }
 
-        public PlayerChampionshipSeriesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
-        {
-            ChampionshipSeries = new ObservableCollection<ChampionshipSeries>();
+        private readonly IPinballRankingApi PinballRankingApi;
 
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+        public PlayerChampionshipSeriesViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerChampionshipSeriesViewModel> logger) : base(logger)
+        {
+            PinballRankingApi = pinballRankingApi;
         }
 
-
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -34,21 +36,42 @@ namespace Ifpa.ViewModels
 
             try
             {
-                ChampionshipSeries.Clear();
-                var player = await PinballRankingApiV2.GetPlayer(PlayerId);
+                var player = await PinballRankingApi.GetPlayer(PlayerId);
 
-                foreach (var item in player.ChampionshipSeries.Where(n => n.Year == DateTime.Now.Year))
-                {
-                    ChampionshipSeries.Add(item);
-                }
+                ChampionshipSeries = player.Series.Where(n => n.Year == Year).ToList();
+
+                Title = $"{Strings.PlayerChampionshipSeriesPage_ChampionshipSeries} - {Year}";
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading championship series for player {0}", PlayerId);
             }
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        public async Task ViewChampSeriesDetails()
+        {
+            await Shell.Current.GoToAsync($"champ-series-detail?seriesCode={SelectedChampionshipSeries.SeriesCode}&regionCode={SelectedChampionshipSeries.RegionCode}&year={SelectedChampionshipSeries.Year}");
+            SelectedChampionshipSeries = null;
+        }
+
+        [RelayCommand]
+        public async Task FilterChampSeries()
+        {
+            var player = await PinballRankingApi.GetPlayer(PlayerId);
+
+            var availableYears = player.Series.Select(n => n.Year).Distinct().ToList();
+
+            string action = await Shell.Current.DisplayActionSheet(Strings.PlayerChampionshipSeriesPage_YearPrompt, Strings.Cancel, null, availableYears.Select(n => n.ToString()).ToArray());
+
+            if (int.TryParse(action, out var yearValue))
+            {
+                Year = yearValue;
+                await LoadItems();
             }
         }
     }

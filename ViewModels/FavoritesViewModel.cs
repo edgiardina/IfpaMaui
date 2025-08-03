@@ -1,70 +1,86 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
-using PinballApi.Models.WPPR.v2.Players;
-using Microsoft.Extensions.Configuration;
-using PinballApi;
+using Microsoft.Extensions.Logging;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.ViewModels
 {
-    public class FavoritesViewModel : BaseViewModel
+    public partial class FavoritesViewModel : BaseViewModel
     {
-        public ObservableCollection<Player> Players { get; set; }
-        public bool IsPopulated => Players.Count > 0 || dataNotLoaded;
+        [ObservableProperty]
+        private List<Player> players = new List<Player>();
+
+        [ObservableProperty]
+        private bool isPopulated;
 
         private bool dataNotLoaded = true;
 
-        public FavoritesViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public FavoritesViewModel(IPinballRankingApi pinballRankingApi, ILogger<FavoritesViewModel> logger) : base(logger)
         {
-            Title = "Favorites";
-            Players = new ObservableCollection<Player>();
+            PinballRankingApi = pinballRankingApi;
         }
 
-        private Command _loadItemsCommand;
-        public Command LoadItemsCommand
+        [RelayCommand]
+        public async Task LoadItems()
         {
-            get
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            dataNotLoaded = false;
+
+            try
             {
-                return _loadItemsCommand ?? (_loadItemsCommand = new Command<string>(async (text) =>
+                var tempList = new List<Player>();
+                var favorites = await Settings.LocalDatabase.GetFavorites();
+                if (favorites.Any())
                 {
-                    if (IsBusy)
-                        return;
-
-                    IsBusy = true;
-
-                    dataNotLoaded = false;
-
-                    try
+                    //Chunk into 50 to solve https://github.com/edgiardina/Ifpa/issues/148
+                    foreach (var favoritesChunk in favorites.Chunk(50))
                     {
-                        Players.Clear();
+                        tempList.AddRange(await PinballRankingApi.GetPlayers(favoritesChunk.Select(n => n.PlayerID).ToList()));                        
+                    }
 
-                        var favorites = await Settings.LocalDatabase.GetFavorites();
-                        if (favorites.Any())
-                        {
-                            //Chunk into 50 to solve https://github.com/edgiardina/Ifpa/issues/148
-                            foreach (var favoritesChunk in favorites.Chunk(50))
-                            {
-                                var tempList = await PinballRankingApiV2.GetPlayers(favoritesChunk.Select(n => n.PlayerID).ToList());
+                    Players = tempList.OrderBy(i => i.PlayerStats.Open.CurrentRank).ToList();
+                }
 
-                                foreach (var player in tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank))
-                                {
-                                    Players.Add(player);
-                                }
-                            }
-                        }
-                        OnPropertyChanged("IsPopulated");
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex);
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                    }
-                }));
+                IsPopulated = Players.Count > 0 || dataNotLoaded;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error loading favorites");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
+        [RelayCommand]
+        public async Task DeletePlayer(long playerId)
+        {
+            try
+            {
+                await Settings.LocalDatabase.RemoveFavorite((int)playerId);
+
+                Players.Remove(Players.Single(n => n.PlayerId == playerId));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error deleting favorite");
+            }
+        }
+
+        [RelayCommand]
+        public async Task SelectPlayer(long playerId)
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={playerId}");
+
+        }
     }
 }

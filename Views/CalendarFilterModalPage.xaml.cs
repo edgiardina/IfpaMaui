@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-
+﻿using Ifpa.Models;
+using Serilog;
 
 namespace Ifpa.Views
 {
@@ -20,18 +14,16 @@ namespace Ifpa.Views
         {
             InitializeComponent();
 
-            var lastCalendarLocation = Preferences.Get("LastCalendarLocation", "Unset");
-            var lastCalendarDistance = Preferences.Get("LastCalendarDistance", 0);
-            if (lastCalendarLocation == "Unset" || lastCalendarDistance == 0)
-            {
-                PollAndUpdateUserLocation();
-            }
-            else
-            {
-                DistanceSlider.Value = lastCalendarDistance;
-                LocationEntry.Text = lastCalendarLocation;
-                DistanceText.Text = ((int)DistanceSlider.Value).ToString();
-            }
+            // TODO: bindings instead of explicit assignment
+            var lastCalendarLocation = Settings.LastCalendarLocation;
+            var lastCalendarDistance = Settings.LastCalendarDistance;
+            var lastCalendarRankingSystem = Settings.CalendarRankingSystem;
+
+            DistanceSlider.Value = lastCalendarDistance;
+            LocationEntry.Text = lastCalendarLocation;
+            DistanceText.Text = ((int)DistanceSlider.Value).ToString();
+            RankingTypePicker.SelectedItem = lastCalendarRankingSystem;
+            ShowLeaguesCheckBox.IsChecked = Settings.CalendarShowLeagues;
         }
 
         private void Slider_ValueChanged(object sender, ValueChangedEventArgs e)
@@ -55,7 +47,8 @@ namespace Ifpa.Views
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    //TODO: dependency inject this
+                    Log.Logger.Error(e, "Error loading calendar filter data");
                 }
 
                 IsBusy = false;
@@ -76,7 +69,7 @@ namespace Ifpa.Views
             }
             else
             {
-                await DisplayAlert("Permission Required", "IFPA Companion requires your permission before polling your location for Calendar Search", "OK");
+                await DisplayAlert(Strings.PermissionRequired, "IFPA Companion requires your permission before polling your location for Calendar Search", Strings.OK);
             }
         }
 
@@ -87,11 +80,14 @@ namespace Ifpa.Views
 
         private async void FindButton_Clicked(object sender, EventArgs e)
         {
-            Preferences.Set("LastCalendarLocation", LocationEntry.Text);
-            Preferences.Set("LastCalendarDistance", (int)DistanceSlider.Value);
+            Settings.LastCalendarLocation = LocationEntry.Text;
+            Settings.LastCalendarDistance = (int)DistanceSlider.Value;
+            Settings.CalendarRankingSystem = (string)RankingTypePicker.SelectedItem;
+            Settings.CalendarShowLeagues = ShowLeaguesCheckBox.IsChecked;
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
         }
+
     }
 }

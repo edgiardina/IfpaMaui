@@ -1,33 +1,34 @@
-﻿using PinballApi.Models.WPPR.v2.Nacs;
-using PinballApi.Models.WPPR.v2.Series;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Series;
 
 namespace Ifpa.ViewModels
 {
-    public class ChampionshipSeriesPlayerCardViewModel : BaseViewModel
+    public partial class ChampionshipSeriesPlayerCardViewModel : BaseViewModel
     {
-        public ObservableCollection<PlayerCard> TournamentCardRecords { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private List<PlayerCard> tournamentCardRecords = new List<PlayerCard>();
+
+        [ObservableProperty]
+        private PlayerCard selectedTournamentCard;
+
         public int Year { get; set; }
         public int PlayerId { get; set; }
         public string RegionCode { get; set; }
         public string SeriesCode { get; set; }
 
-        public ChampionshipSeriesPlayerCardViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
-        {
-            TournamentCardRecords = new ObservableCollection<PlayerCard>();
+        public IPinballRankingApi PinballRankingApi { get; set; }
 
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+        public ChampionshipSeriesPlayerCardViewModel(IPinballRankingApi pinballRankingApi, ILogger<ChampionshipSeriesPlayerCardViewModel> logger) : base(logger)
+        {
+            PinballRankingApi = pinballRankingApi;
         }
 
-
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             Title = $"{RegionCode} Championship Series";
 
@@ -38,24 +39,27 @@ namespace Ifpa.ViewModels
 
             try
             {
-                TournamentCardRecords.Clear();
-                var tournamentCard = await PinballRankingApiV2.GetSeriesPlayerCard(PlayerId, SeriesCode, RegionCode, Year);
+                var tournamentCard = await PinballRankingApi.GetSeriesPlayerCard(PlayerId, SeriesCode, RegionCode, Year);
 
-                foreach (var item in tournamentCard.PlayerCard)
-                {
-                    TournamentCardRecords.Add(item);
-                }
+                TournamentCardRecords = tournamentCard.PlayerCard;
 
                 Title = $"{RegionCode} {SeriesCode} ({Year}) - {tournamentCard.PlayerName}";
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading championship series player card {0} {1} {2} {3}", PlayerId, SeriesCode, RegionCode, Year);
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task SelectPlayerCard()
+        {
+            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournamentCard.TournamentId}");
+            SelectedTournamentCard = null;
         }
     }
 }

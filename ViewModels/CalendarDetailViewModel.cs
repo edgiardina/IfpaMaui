@@ -1,62 +1,51 @@
-﻿using System.Diagnostics;
-using Ifpa.Interfaces;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using PinballApi;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Tournaments;
+using Plugin.Maui.CalendarStore;
 
 namespace Ifpa.ViewModels
 {
-    public class CalendarDetailViewModel : BaseViewModel
+    [QueryProperty("TournamentId", "tournamentId")]
+    public partial class CalendarDetailViewModel : BaseViewModel
     {
-        public string PrivateFlag { get; set; }
+        private const string MATCHPLAY_TOURNAMENT_URL = "https://app.matchplay.events/tournaments/{0}";
 
-        public string Details { get; set; }
-
-        public double Longitude { get; set; }
-
-        public double Latitude { get; set; }
-
-        public string DirectorName { get; set; }
-
-        public DateTime EndDate { get; set; }
-
-        public DateTime StartDate { get; set; }
-
-        public string TournamentDuration => $"{StartDate.ToString("d")}" + (StartDate != EndDate ? $" - {EndDate.ToString("d")}" : string.Empty );
-        
-        public string Website { get; set; }
-
-        public string Zipcode { get; set; }
-
-        public string State { get; set; }
-
-        public string City { get; set; }
-
-        public string Address2 { get; set; }
-
-        public string Address1 { get; set; }
-
-        public string TournamentName { get; set; }
+        [ObservableProperty]
+        private Tournament tournament;
 
         public int TournamentId { get; set; }
-        
-        public string CountryName { get; set; }
 
-        public string Location => $"{Address1} {Address2} {City}{(!string.IsNullOrEmpty(City) && !string.IsNullOrEmpty(State) ? "," : string.Empty)} {State} {CountryName}".Trim().Replace("  ", " ");
+        private readonly ICalendarStore CalendarStore;
+        private readonly IMap Map;
 
-        public Location GeocodedLocation { get; set; } = new Location();
+        private readonly IPinballRankingApi UniversalPinballRankingApi;
 
-        public Command LoadItemsCommand { get; set; }
 
-        public int CalendarId { get; set; }
-
-        private readonly IReminderService ReminderService;
-
-        public CalendarDetailViewModel(IReminderService reminderService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, IPinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(logger)
         {
-            ReminderService = reminderService;
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            UniversalPinballRankingApi = pinballRankingApi;
+            CalendarStore = calendarStore;
+            Map = map;
         }
 
-        public async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadWebsite()
+        {
+            await Browser.OpenAsync(Tournament.Website, BrowserLaunchMode.SystemPreferred);
+        }
+
+        [RelayCommand]
+        public async Task LoadMatchPlay()
+        {
+            await Browser.OpenAsync(string.Format(MATCHPLAY_TOURNAMENT_URL, Tournament.MatchplayId), BrowserLaunchMode.SystemPreferred);
+        }
+
+        [RelayCommand]
+        public async Task ExecuteLoadItems()
         {
             if (IsBusy)
                 return;
@@ -64,34 +53,14 @@ namespace Ifpa.ViewModels
             IsBusy = true;
 
             try
-            {                
-                var items = await PinballRankingApi.GetCalendarById(CalendarId);
+            {
+                Tournament = await UniversalPinballRankingApi.GetTournament(TournamentId);
 
-                var calendarEntry = items.Calendar.FirstOrDefault();
-                Title = calendarEntry.TournamentName;
-                Website = calendarEntry.Website;
-                City = calendarEntry.City;
-                DirectorName = calendarEntry.DirectorName;
-                TournamentName = calendarEntry.TournamentName;
-                Address1 = calendarEntry.Address1;
-                Address2 = calendarEntry.Address2;
-                City = calendarEntry.City;
-                State = calendarEntry.State;
-                CountryName = calendarEntry.CountryName;
-                Details = calendarEntry.Details;
-                StartDate = calendarEntry.StartDate;
-                EndDate = calendarEntry.EndDate;
-                TournamentId = calendarEntry.TournamentId;
-
-                GeocodedLocation = new Location(calendarEntry.Latitude, calendarEntry.Longitude);
-                Latitude = GeocodedLocation.Latitude;
-                Longitude = GeocodedLocation.Longitude;
-
-                OnPropertyChanged(null);
+                logger.LogDebug("loaded calendar item {0}", TournamentId);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading Calendar Item {0}", TournamentId);
             }
             finally
             {
@@ -99,6 +68,32 @@ namespace Ifpa.ViewModels
             }
         }
 
+        [RelayCommand]
+        public async Task ShareTournament()
+        {
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Uri = $"https://www.ifpapinball.com/tournaments/view.php?t={TournamentId}",
+                Title = Strings.CalendarDetailPage_SharePrompt
+            });
+        }
+
+        [RelayCommand]
+        public async Task OpenMap()
+        {
+            var placemark = new Placemark
+            {
+                CountryName = Tournament.CountryName,
+                AdminArea = Tournament.Stateprov,
+                Thoroughfare = Tournament.Address1,
+                Locality = Tournament.City
+            };
+            var options = new MapLaunchOptions { Name = Tournament.TournamentName };
+
+            await Map.OpenAsync(placemark, options);
+        }
+
+        [RelayCommand]
         public async Task AddToCalendar()
         {
             var status = await Permissions.CheckStatusAsync<Permissions.CalendarRead>();
@@ -111,30 +106,43 @@ namespace Ifpa.ViewModels
             {
                 string selectedCalendar = null;
 
-                //iOS Supports multiple calendars. no idea how to do this in Android yet. 
-                if (DeviceInfo.Current.Platform == DevicePlatform.iOS)
-                {
-                    var calendars = await ReminderService.GetCalendarList();
-                    selectedCalendar = await Shell.Current.DisplayActionSheet("This event will be added to your phone's calendar", "Cancel", null, calendars.ToArray());
-                }
+                var calendars = await CalendarStore.GetCalendars();
+                selectedCalendar = await Shell.Current.DisplayActionSheet(Strings.CalendarDetailPage_SelectCalendarPrompt, 
+                                                                          Strings.Cancel, 
+                                                                          null, 
+                                                                          calendars.Where(m => m.IsReadOnly == false)
+                                                                                   .Select(n => n.Name)
+                                                                                   .ToArray());
 
-                if (selectedCalendar != "Cancel")
+                if (selectedCalendar != Strings.Cancel)
                 {
-                    var result = await ReminderService.CreateReminder(this, selectedCalendar);
+                    var selectedCalendarId = calendars.First(n => n.Name == selectedCalendar).Id;
+                    string newEventId = null;
 
-                    if (result)
+                    // TODO: what if the tournament is already in the calendar?
+
+                    newEventId = await CalendarStore.CreateEvent(selectedCalendarId,
+                                                    Tournament.TournamentName,
+                                                    Tournament.Details,
+                                                    $"{Tournament.Address1}, {Tournament.City}, {Tournament.Stateprov}, {Tournament.CountryName}",
+                                                    new DateTimeOffset(Tournament.EventStartDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local)),
+                                                    new DateTimeOffset(Tournament.EventEndDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local)),
+                                                    true);
+
+                    if (string.IsNullOrWhiteSpace(newEventId) == false)
                     {
-                        await Shell.Current.DisplayAlert("Success", "Tournament added to your Calendar", "OK");
+                        // TODO: it would be better if Toast was an interface so we could unit test this
+                        await Toast.Make(Strings.CalendarDetailPage_TournamentAdded).Show();
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("Error", "Unable to add Tournament to your Calendar", "OK");
+                        await Shell.Current.DisplayAlert(Strings.Error, Strings.CalendarDetailPage_TournamentNotAdded, Strings.OK);
                     }
                 }
             }
             else
             {
-                await Shell.Current.DisplayAlert("Permission Required", "IFPA Companion requires your permission before adding items to your Calendar", "OK");
+                await Shell.Current.DisplayAlert(Strings.PermissionRequired, Strings.CalendarDetailPage_AddCalendarPermissionRequest, Strings.OK);
             }
         }
     }

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<shape
+xmlns:android="http://schemas.android.com/apk/res/android">
+	<solid
+        android:color="@color/ifpaBackground">
+	</solid>
+	<stroke
+         android:width="0dp"
+         android:color="#424242">
+	</stroke>
+	<corners
+         android:topLeftRadius="10dip"
+         android:topRightRadius="10dip"
+         android:bottomLeftRadius="10dip"
+         android:bottomRightRadius="10dip">
+	</corners>
+</shape>

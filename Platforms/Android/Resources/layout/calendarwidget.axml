@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widgetBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/rounded_edge"
+    android:padding="10dp">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp">
+        
+        <ImageView
+            android:id="@+id/widgetIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/appicon"
+            android:layout_marginEnd="8dp" />
+            
+        <TextView
+            android:id="@+id/widgetTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Upcoming Pinball Tournaments"
+            android:textColor="@color/ifpaAltText"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="center" />
+    </LinearLayout>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/ifpaAltText"
+        android:text="No upcoming tournaments found"
+        android:visibility="gone"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeMaxTextSize="30dp"
+        android:autoSizeTextType="uniform"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:id="@+id/noTournamentsNotification" />
+
+    <GridView
+        android:id="@+id/tournamentGrid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_weight="1"
+        android:numColumns="1"
+        android:verticalSpacing="8dp"
+        android:stretchMode="columnWidth" />
+
+</LinearLayout>

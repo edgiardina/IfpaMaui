@@ -1,51 +1,59 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Ifpa.Views.PlayerVersusPlayerPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:local="clr-namespace:Ifpa"
              ios:Page.LargeTitleDisplay="Never"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels">
+    <!-- TODO: use x:DataType for this page -->
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:PlayerVersusRecordStringConverter x:Key="pvpString" />
+            <converters:PlayerVersusRecordStringConverter x:Key="pvpString" />
             <toolkit:InvertedBoolConverter x:Key="BoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filter" x:Name="InfoButton" Clicked="InfoButton_Clicked"  IconImageSource="{fluent:Icon Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.PlayerVersusPlayerPage_Filter}"
+                     x:Name="InfoButton"
+                     Clicked="InfoButton_Clicked"
+                     IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" 
-                IsVisible="{Binding HasNoPvpData}"
-                VerticalTextAlignment="Center"
-                HorizontalTextAlignment="Center"
-                FontAttributes="Italic"
-                Text="Player has not played against competitors yet." />
-
+        <Label Grid.Row="0"
+               IsVisible="{Binding HasNoPvpData}"
+               VerticalTextAlignment="Center"
+               HorizontalTextAlignment="Center"
+               FontAttributes="Italic"
+               Text="{x:Static local:Strings.PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet}" />
         <ListView x:Name="MyListView"
-            Grid.Row="0" 
-            IsVisible="{Binding HasNoPvpData, Converter={StaticResource BoolConverter}}"
-            ItemsSource="{Binding AllResults}"
-            RefreshCommand="{Binding LoadItemsCommand}"              
-            IsPullToRefreshEnabled="true"
-            IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement"
-            HasUnevenRows="true"
-            IsGroupingEnabled="True"              
-            GroupDisplayBinding="{Binding Key}"
-            GroupShortNameBinding="{Binding Key}">
+                  Grid.Row="0"
+                  IsVisible="{Binding HasNoPvpData, Converter={StaticResource BoolConverter}}"
+                  ItemsSource="{Binding AllResults}"
+                  RefreshCommand="{Binding LoadAllItemsCommand}"
+                  IsPullToRefreshEnabled="true"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  ItemTapped="Handle_ItemTapped"
+                  CachingStrategy="RecycleElement"
+                  HasUnevenRows="true"
+                  IsGroupingEnabled="True"
+                  GroupDisplayBinding="{Binding Key}"
+                  GroupShortNameBinding="{Binding Key}">
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Vertical" BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                            <Label Text="{Binding Key}" Padding="15,10,0,10" VerticalOptions="CenterAndExpand" />
+                        <StackLayout Orientation="Vertical"
+                                     BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                            <Label Text="{Binding Key}"
+                                   Padding="15,10,0,10"
+                                   VerticalOptions="CenterAndExpand" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
@@ -53,20 +61,26 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal" Margin="10">
-                            <Label LineBreakMode="NoWrap"  FontSize="16" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start">
+                        <StackLayout Orientation="Horizontal"
+                                     Margin="10">
+                            <Label LineBreakMode="NoWrap"
+                                   FontSize="16"
+                                   HorizontalOptions="StartAndExpand"
+                                   HorizontalTextAlignment="Start">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>
                                             <Span Text="{Binding FirstName}" />
-                                            <Span Text=" " />
+                                            <Span Text="{x:Static local:Strings.SingleSpace}" />
                                             <Span Text="{Binding LastName}" />
                                         </FormattedString.Spans>
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label LineBreakMode="NoWrap" FontSize="16" HorizontalTextAlignment="Center"                               
-                               TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
+                            <Label LineBreakMode="NoWrap"
+                                   FontSize="16"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <FormattedString.Spans>

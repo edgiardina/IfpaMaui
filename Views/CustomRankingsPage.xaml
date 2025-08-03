@@ -1,11 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Ifpa.Views.CustomRankingsPage"             
-             xmlns:local="clr-namespace:Ifpa.Converters"             
+             x:Class="Ifpa.Views.CustomRankingsPage"
+             xmlns:local="clr-namespace:Ifpa.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{Binding Title}"
-             x:Name="SearchPlayersPage">
+             x:Name="SearchPlayersPage"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:CustomRankingsViewModel"
+             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings.Custom;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -14,21 +17,26 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
-            <CollectionView x:Name="RankingsListView" 
-                    IsVisible="{Binding IsPopulated}"
-                    ItemsSource="{Binding CustomRankings}"
-                    VerticalOptions="FillAndExpand"   
-                    SelectionMode="Single"
-                    SelectionChanged="OnItemSelected">
+            <CollectionView x:Name="RankingsListView"
+                            IsVisible="{Binding IsPopulated}"
+                            ItemsSource="{Binding CustomRankings}"
+                            VerticalOptions="FillAndExpand"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedCustomRanking, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ViewCustomRankingDetailCommand}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="ifparankings:CustomRankingView">
                         <StackLayout>
-                            <StackLayout Padding="10" Orientation="Vertical">
-                                <Label LineBreakMode="NoWrap"  FontSize="16" Text="{Binding Title}" />
-                                <Label FontSize="12" TextColor="{DynamicResource SecondaryTextColor}" Text="{Binding Description}" />
+                            <StackLayout Padding="10"
+                                         Orientation="Vertical">
+                                <Label LineBreakMode="NoWrap"
+                                       FontSize="16"
+                                       Text="{Binding Title}" />
+                                <Label FontSize="12"
+                                       TextColor="{DynamicResource SecondaryTextColor}"
+                                       Text="{Binding Description}" />
                             </StackLayout>
-                            
-                            <BoxView Style="{StaticResource BoxSeperator}"/>
+                            <BoxView Style="{StaticResource BoxSeperator}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

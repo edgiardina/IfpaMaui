@@ -1,30 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Ifpa.Converters"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.TournamentResultsPage"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="{Binding Title}">
+             xmlns:local="clr-namespace:Ifpa"
+             Title="{Binding Title}"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:TournamentResultsViewModel"
+             xmlns:ifpatournaments="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
-        <DataTemplate x:Name="BottomSheetTemplate" x:Key="BottomSheetTemplate">            
-            <Grid Padding="10,10,10,10" VerticalOptions="Center" RowSpacing="5">
+        <DataTemplate x:Name="BottomSheetTemplate"
+                      x:Key="BottomSheetTemplate">
+            <Grid Padding="10,10,10,10"
+                  VerticalOptions="Center"
+                  RowSpacing="5">
                 <Grid.Resources>
                     <ResourceDictionary>
-                        <Style x:Key="labelStyle" TargetType="Label">
-                            <Setter Property="LineBreakMode" Value="NoWrap" />
-                            <Setter Property="FontSize" Value="16" />
-                            <Setter Property="HorizontalTextAlignment" Value="End" />
+                        <Style x:Key="labelStyle"
+                               TargetType="Label">
+                            <Setter Property="LineBreakMode"
+                                    Value="NoWrap" />
+                            <Setter Property="FontSize"
+                                    Value="16" />
+                            <Setter Property="HorizontalTextAlignment"
+                                    Value="End" />
                         </Style>
-                        <Style x:Key="valueStyle" TargetType="Label">
-                            <Setter Property="LineBreakMode" Value="WordWrap" />
-                            <Setter Property="FontSize" Value="16" />
-                            <Setter Property="HorizontalTextAlignment" Value="Start" />
-                            <Setter Property="Margin" Value="10,0,0,0" />
+                        <Style x:Key="valueStyle"
+                               TargetType="Label">
+                            <Setter Property="LineBreakMode"
+                                    Value="WordWrap" />
+                            <Setter Property="FontSize"
+                                    Value="16" />
+                            <Setter Property="HorizontalTextAlignment"
+                                    Value="Start" />
+                            <Setter Property="Margin"
+                                    Value="10,0,0,0" />
                         </Style>
                     </ResourceDictionary>
                 </Grid.Resources>
@@ -46,87 +62,156 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-
-                <Label Grid.Column="0" Grid.Row="0" Style="{DynamicResource labelStyle}" Text="Date: " />
-                <Label Grid.Column="1" Grid.Row="0" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.EventEndDate, Mode=OneWay, StringFormat='{0:d}'}" />
-
-                <Label Grid.Column="0" Grid.Row="1" Style="{DynamicResource labelStyle}" Text="Event Name: " />
-                <Label Grid.Column="1" Grid.Row="1" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.TournamentName, Mode=OneWay}" />
-
-                <Label Grid.Column="0" Grid.Row="2" Style="{DynamicResource labelStyle}" Text="Event Type: " />
-                <Label Grid.Column="1" Grid.Row="2" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.EventName, Mode=OneWay}" />
-
-                <Label Grid.Column="0" Grid.Row="3" Style="{DynamicResource labelStyle}" Text="Player Count: " />
-                <Label Grid.Column="1" Grid.Row="3" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.PlayerCount, Mode=OneWay}" />
-
-                <Label Grid.Column="0" Grid.Row="4" Style="{DynamicResource labelStyle}" Text="Rated Player Count: " />
-                <Label Grid.Column="1" Grid.Row="4" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.EligiblePlayerCount, Mode=OneWay}" />
-
-                <Label Grid.Column="0" Grid.Row="5" Style="{DynamicResource labelStyle}" Text="Ranking System: " />
-                <Label Grid.Column="1" Grid.Row="5" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.RankingType, Mode=OneWay}" />
-
-                <Label Grid.Column="0" Grid.Row="6" Style="{DynamicResource labelStyle}" Text="Ranking Strength: " />
-                <Label Grid.Column="1" Grid.Row="6" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.RankingsStrength, Mode=OneWay, StringFormat='{0:0.00}'}" />
-
-                <Label Grid.Column="0" Grid.Row="7" Style="{DynamicResource labelStyle}" Text="Rating Strength: " />
-                <Label Grid.Column="1" Grid.Row="7" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.RatingsStrength, Mode=OneWay, StringFormat='{0:0.00}'}" />
-
-                <Label Grid.Column="0" Grid.Row="8" Style="{DynamicResource labelStyle}" Text="Base Value: " />
-                <Label Grid.Column="1" Grid.Row="8" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.BaseValue, Mode=OneWay}" />
-
-                <Label Grid.Column="0" Grid.Row="9" Style="{DynamicResource labelStyle}" Text="TGP: " />
-                <Label Grid.Column="1" Grid.Row="9" Style="{DynamicResource valueStyle}" >
+                <Label Grid.Column="0"
+                       Grid.Row="0"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_Date}" />
+                <Label Grid.Column="1"
+                       Grid.Row="0"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.EventEndDate, Mode=OneWay, StringFormat='{0:d}'}" />
+                <Label Grid.Column="0"
+                       Grid.Row="1"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_EventName}" />
+                <Label Grid.Column="1"
+                       Grid.Row="1"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.TournamentName, Mode=OneWay}" />
+                <Label Grid.Column="0"
+                       Grid.Row="2"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_EventType}" />
+                <Label Grid.Column="1"
+                       Grid.Row="2"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.EventName, Mode=OneWay}" />
+                <Label Grid.Column="0"
+                       Grid.Row="3"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_PlayerCount}" />
+                <Label Grid.Column="1"
+                       Grid.Row="3"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.PlayerCount, Mode=OneWay}" />
+                <Label Grid.Column="0"
+                       Grid.Row="4"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_RatedPlayerCount}" />
+                <Label Grid.Column="1"
+                       Grid.Row="4"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.EligiblePlayerCount, Mode=OneWay}" />
+                <Label Grid.Column="0"
+                       Grid.Row="5"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_RankingSystem}" />
+                <Label Grid.Column="1"
+                       Grid.Row="5"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.RankingSystem, Mode=OneWay}" />
+                <Label Grid.Column="0"
+                       Grid.Row="6"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_RankingStrength}" />
+                <Label Grid.Column="1"
+                       Grid.Row="6"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.RankingsStrength, Mode=OneWay, StringFormat='{0:0.00}'}" />
+                <Label Grid.Column="0"
+                       Grid.Row="7"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_RatingStrength}" />
+                <Label Grid.Column="1"
+                       Grid.Row="7"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.RatingsStrength, Mode=OneWay, StringFormat='{0:0.00}'}" />
+                <Label Grid.Column="0"
+                       Grid.Row="8"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_BaseValue}" />
+                <Label Grid.Column="1"
+                       Grid.Row="8"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.BaseValue, Mode=OneWay}" />
+                <Label Grid.Column="0"
+                       Grid.Row="9"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_TGP}" />
+                <Label Grid.Column="1"
+                       Grid.Row="9"
+                       Style="{DynamicResource valueStyle}">
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
                                 <Span Text="{Binding TournamentDetails.TournamentPercentageGrade, Mode=OneWay}" />
-                                <Span Text="%" />
+                                <Span Text="{x:Static local:Strings.SingleSpace}" />
                             </FormattedString.Spans>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-
-                <Label Grid.Column="0" Grid.Row="10" Style="{DynamicResource labelStyle}" Text="Event Booster: " />
-                <Label Grid.Column="1" Grid.Row="10" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.EventWeight, Mode=OneWay, StringFormat='{0:P0}'}" />
-
-                <Label Grid.Column="0" Grid.Row="11" Style="{DynamicResource labelStyle}" Text="Tournament Value: " />
-                <Label Grid.Column="1" Grid.Row="11" Style="{DynamicResource valueStyle}" Text="{Binding TournamentDetails.TournamentValue, Mode=OneWay}" />
+                <Label Grid.Column="0"
+                       Grid.Row="10"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_EventBooster}" />
+                <Label Grid.Column="1"
+                       Grid.Row="10"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.EventWeight, Mode=OneWay, StringFormat='{0:P0}'}" />
+                <Label Grid.Column="0"
+                       Grid.Row="11"
+                       Style="{DynamicResource labelStyle}"
+                       Text="{x:Static local:Strings.TournamentResultsPage_TournamentValue}" />
+                <Label Grid.Column="1"
+                       Grid.Row="11"
+                       Style="{DynamicResource valueStyle}"
+                       Text="{Binding TournamentDetails.TournamentValue, Mode=OneWay}" />
             </Grid>
         </DataTemplate>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Share" x:Name="ShareButton" Clicked="ShareButton_Clicked" IconImageSource="{fluent:Icon Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
-        <ToolbarItem Text="Info" x:Name="InfoButton" Clicked="InfoButton_Clicked" IconImageSource="{fluent:Icon Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
+                     x:Name="ShareButton"
+                     Command="{Binding ShareTournamentCommand}"
+                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Info}"
+                     x:Name="InfoButton"
+                     Command="{Binding ViewTournamentInfoCommand}"
+                     IconImageSource="{mi:Fluent Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
         <CollectionView x:Name="MyListView"
-            ItemsSource="{Binding Results}"
-            SelectionChanged="MyListView_SelectionChanged"                        
-            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"  
-            SelectionMode="Single">
+                        ItemsSource="{Binding Results}"
+                        SelectedItem="{Binding SelectedPlayer}"
+                        SelectionChangedCommand="{Binding ViewPlayerDetailsCommand}"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                        SelectionMode="Single">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifpatournaments:TournamentResult">
                     <VerticalStackLayout Spacing="0">
-                        <Grid ColumnDefinitions="*, 80" Margin="10,5">
-                            <Label Grid.Column="0" LineBreakMode="NoWrap"  FontSize="16" VerticalTextAlignment="Center">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="{Binding FirstName}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding LastName}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <StackLayout HorizontalOptions="EndAndExpand" Grid.Column="1">
-                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End" Text="{Binding Position, Converter={StaticResource intToOrdinalString}}" FontSize="24"  />
-                                <Label LineBreakMode="NoWrap" HorizontalTextAlignment="End"  FontSize="12" Text="{Binding Points, StringFormat='{0:0.00}'}" TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Grid ColumnDefinitions="*, 80"
+                              Margin="10,5">
+                            <Label Grid.Column="0"
+                                   LineBreakMode="NoWrap"
+                                   FontSize="16"
+                                   VerticalTextAlignment="Center"
+                                   Text="{Binding Name}" />
+                            <StackLayout HorizontalOptions="EndAndExpand"
+                                         Grid.Column="1">
+                                <Label LineBreakMode="NoWrap"
+                                       HorizontalTextAlignment="End"
+                                       Text="{Binding Position, Converter={StaticResource intToOrdinalString}}"
+                                       FontSize="24" />
+                                <Label LineBreakMode="NoWrap"
+                                       HorizontalTextAlignment="End"
+                                       FontSize="12"
+                                       Text="{Binding Points, StringFormat='{0:0.00}'}"
+                                       TextColor="{DynamicResource SecondaryTextColor}" />
                             </StackLayout>
                         </Grid>
-
-                        <BoxView Style="{StaticResource BoxSeperator}"/>
+                        <BoxView Style="{StaticResource BoxSeperator}" />
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

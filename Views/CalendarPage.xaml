@@ -1,100 +1,190 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"               
-             xmlns:controls="clr-namespace:Ifpa.Views.Controls"
+             xmlns:calendar="clr-namespace:Plugin.Maui.NativeCalendar;assembly=Plugin.Maui.NativeCalendar"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.CalendarPage"
-             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"    
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             Title="Calendar">
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             xmlns:views="clr-namespace:Ifpa.Views"
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:models="clr-namespace:Ifpa.Models"
+             xmlns:ifpatournamentsearch="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi"
+             x:DataType="vm:CalendarViewModel"
+             Title="{x:Static local:Strings.CalendarPage_Calendar}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style TargetType="scheduler:SchedulerTextStyle" x:Key="CalendarHeaderStyle">
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                <Setter Property="FontSize" Value="200"/>
-            </Style>
+            <toolkit:IsEqualConverter x:Key="IsEqualConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <converters:CalendarTypeToIconConverter x:Key="CalendarTypeToIconConverter" />
+            <DataTemplate x:Key="PinDataTemplate"
+                          x:Name="PinDataTemplate">
+                <maps:Pin MarkerClicked="Pin_MarkerClicked"
+                          x:DataType="maps:Pin"
+                          InfoWindowClicked="Pin_InfoWindowClicked"
+                          MarkerId="{Binding MarkerId}"
+                          Location="{Binding Location}"
+                          Address="{Binding Address}"
+                          Label="{Binding Label}" />
+            </DataTemplate>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="My Location" Clicked="MyLocation_Clicked" IconImageSource="{fluent:Icon Icon=Location48, IconColor={StaticResource IconAccentColor}}"  />
-        <ToolbarItem Text="Toggle View" Clicked="ToggleView_Clicked" IconImageSource="{fluent:Icon Icon=CalendarLtr28, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.CalendarPage_MyLocation}"
+                     Clicked="MyLocation_Clicked"
+                     IconImageSource="{mi:Fluent Icon=Location48, IconColor={StaticResource IconAccentColor}}" />
+        <ToolbarItem Text="{x:Static local:Strings.CalendarPage_ToggleView}"
+                     Command="{Binding ChangeCalendarDisplayCommand}"
+                     IconImageSource="{Binding CurrentType, Converter={StaticResource CalendarTypeToIconConverter}}" />
     </ContentPage.ToolbarItems>
-    <!--<Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />-->
-    <!-- IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" -->
-    <Grid >
-        <Grid x:Name="MapLayout" RowDefinitions="*,*" >
 
-            <Map x:Name="calendarMap" MapType="Street" Grid.Row="0"
-                     ItemsSource="{Binding Pins}">
-                <Map.ItemTemplate>
-                    <DataTemplate>
-                        <Pin MarkerClicked="Pin_MarkerClicked" InfoWindowClicked="Pin_InfoWindowClicked"
-                              MarkerId="{Binding MarkerId}"
-                              Location="{Binding Location}"
-                              Address="{Binding Address}"
-                              Label="{Binding Label}" />
-                    </DataTemplate>
-                </Map.ItemTemplate>
-            </Map>
-
-            <CollectionView x:Name="TournamentListView" 
-                                 Grid.Row="1"
-                    ItemsSource="{Binding CalendarDetails}"         
-                    SelectionMode="Single"
-                    SelectionChanged="TournamentListView_SelectionChanged">
+    <Grid>
+        <Grid x:Name="MapLayout"
+              IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.MapAndList}}"
+              RowDefinitions="*,*"
+              RowSpacing="5">
+            <Grid Grid.Row="0"
+                  x:Name="mapShim">
+                <!--
+                    We load the map from the code behind because there's not a good way to pass the dynamic first location to the constrcutor otherwise
+                    https://github.com/edgiardina/IfpaMaui/issues/97
+                -->
+            </Grid>
+            <CollectionView x:Name="TournamentListView"
+                            Grid.Row="1"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                            ItemsSource="{Binding Tournaments}"
+                            SelectedItem="{Binding SelectedCalendarItem, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ShowCalendarDetailCommand}"
+                            SelectionMode="Single">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="ifpatournamentsearch:Tournament">
                         <VerticalStackLayout>
-                            <Grid Margin="10" ColumnSpacing="10" ColumnDefinitions="*,90">
-                                <Label Grid.Column="0" Text="{Binding TournamentName}" />
-                                <Label Grid.Column="1" MinimumWidthRequest="90" FontSize="Small" VerticalTextAlignment="Center" HorizontalTextAlignment="End" TextColor="{DynamicResource SecondaryTextColor}" 
-                                       Text="{Binding EndDate, StringFormat='{0:d}'}" LineBreakMode="NoWrap" />
-                            </Grid>
+                            <Grid ColumnDefinitions="2*,*,*"
+                                  RowDefinitions="*,*"
+                                  Margin="10,5"
+                                  HeightRequest="50">
+                                <Label Text="{Binding TournamentName}"
+                                       Grid.ColumnSpan="3"
+                                       FontAttributes="Bold" />
 
-                            <BoxView Style="{StaticResource BoxSeperator}"/>
+                                <Label FontSize="Small"
+                                       Grid.Row="1"
+                                       VerticalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding City}" />
+                                            <Span Text=", " />
+                                            <Span Text="{Binding Stateprov}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label Grid.Column="1"
+                                       Grid.Row="1"
+                                       MinimumWidthRequest="90"
+                                       FontSize="Small"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{DynamicResource SecondaryTextColor}"
+                                       Text="{Binding EventStartDate, StringFormat='{0:d}'}"
+                                       LineBreakMode="NoWrap" />
+
+                                <controls:Chip Text="{Binding RankingSystem}"
+                                               Grid.Column="2"
+                                               Grid.Row="1"
+                                               HeightRequest="28"
+                                               FontSize="10"
+                                               HorizontalOptions="End" />
+                            </Grid>
+                            <BoxView Style="{StaticResource BoxSeperator}" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <ActivityIndicator Grid.Row="2"
+                               IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}" />
+        </Grid>
+        <Grid IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.Calendar}}"
+              RowDefinitions="Auto,2,*">
+            <calendar:NativeCalendarView x:Name="nativeCalendar"
+                                         Grid.Row="0"
+                                         HeightRequest="{OnPlatform iOS=456, Android=340}"
+                                         HorizontalOptions="{OnPlatform Android=Center}"
+                                         MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
+                                         SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
+                                         Events="{Binding TournamentCalendarItems}"
+                                         TintColor="{StaticResource IconAccentColor}"
+                                         DateChangedCommand="{Binding SelectedDateChangedCommand}"
+                                         EventIndicatorColor="{StaticResource IconAccentColor}" />
+            <BoxView Style="{StaticResource BoxSeperator}"
+                     Grid.Row="1" />
+            <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}"
+                            Grid.Row="2"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedCalendarItem, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ShowCalendarDetailCommand}"
+                            EmptyView="{x:Static local:Strings.CalendarPage_CalendarEmptyText}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TournamentWithDistance">
+                        <VerticalStackLayout>
+
+                            <Grid ColumnDefinitions="2*,*,*"
+                                  RowDefinitions="*,*"
+                                  RowSpacing="5"
+                                  Margin="10,5">
+                                <Label Text="{Binding TournamentName}"
+                                       Grid.ColumnSpan="3"
+                                       FontAttributes="Bold" />
+
+                                <Label FontSize="Small"
+                                       Grid.Row="1"
+                                       TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding City}" />
+                                            <Span Text=", " />
+                                            <Span Text="{Binding Stateprov}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label FontSize="Small"
+                                       Grid.Column="1"
+                                       Grid.Row="1"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                       LineBreakMode="WordWrap">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Distance}" />
+                                            <Span Text=" " />
+                                            <Span Text="{x:Static local:Strings.Miles_Abbreviation}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <controls:Chip Grid.Row="1"
+                                               Text="{Binding RankingSystem}"
+                                               Grid.Column="2"
+                                               HorizontalOptions="End"
+                                               FontSize="10" />
+
+                            </Grid>
+                            <BoxView Style="{StaticResource BoxSeperator}" />
                         </VerticalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
         </Grid>
-        <scheduler:SfScheduler x:Name="calendar" IsVisible="False" VerticalOptions="FillAndExpand"                                   
-                                MinimumDateTime="{Binding Source={x:Static sys:DateTime.Now}}"
-                                View="Month"                                                               
-                                AppointmentsSource="{Binding TournamentCalenderItems, Mode=OneWay}" 
-                                Tapped="calendar_Tapped"
-                                BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}">
-            <scheduler:SfScheduler.HeaderView>
-                <scheduler:SchedulerHeaderView >
-                    <scheduler:SchedulerHeaderView.TextStyle>
-                        <scheduler:SchedulerTextStyle FontSize="18" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"  />
-                    </scheduler:SchedulerHeaderView.TextStyle>
-                </scheduler:SchedulerHeaderView>
-            </scheduler:SfScheduler.HeaderView>
-            <scheduler:SfScheduler.MonthView>
-                <scheduler:SchedulerMonthView>
-                    <scheduler:SchedulerMonthView.ViewHeaderTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Label x:Name="label" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding StringFormat='{0:ddd}'}" 
-                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" 
-                                       FontSize="Subtitle" FontFamily="Bold" />
-                            </Grid>
-                        </DataTemplate>
-                    </scheduler:SchedulerMonthView.ViewHeaderTemplate>
-                    <scheduler:SchedulerMonthView.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Label HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" Text="{Binding DateTime.Day}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </scheduler:SchedulerMonthView.CellTemplate>
-                </scheduler:SchedulerMonthView>
-            </scheduler:SfScheduler.MonthView>
-        </scheduler:SfScheduler>
     </Grid>
-    <!--</Grid>-->
 </ContentPage>

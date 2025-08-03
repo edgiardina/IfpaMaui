@@ -1,64 +1,66 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using Ifpa.Models;
-using Newtonsoft.Json;
-using PinballApi;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerSearchViewModel : BaseViewModel
+    public partial class PlayerSearchViewModel : BaseViewModel
     {
-        public ObservableCollection<PlayerSearchResult> Players { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<Player> players = new ObservableCollection<Player>();
 
-        public bool IsLoaded { get; set; } = false;
+        [ObservableProperty]
+        private bool isLoaded = false;
 
-        public PlayerSearchViewModel(PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        [ObservableProperty]
+        private Player selectedPlayer;
+
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public PlayerSearchViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerSearchViewModel> logger) : base(logger)
         {
-            Title = "Player Search";
-            Players = new ObservableCollection<PlayerSearchResult>();
+            PinballRankingApi = pinballRankingApi;
         }
 
-        private Command _searchCommand;
-        public Command SearchCommand
+        [RelayCommand]
+        public async Task Search(string text)
         {
-            get
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
             {
-                return _searchCommand ?? (_searchCommand = new Command<string>(async (text) =>
+                Players.Clear();
+
+                if (text.Trim().Length > 0)
                 {
-                    if (IsBusy)
-                        return;
+                    var items = await PinballRankingApi.PlayerSearch(name: text.Trim());
 
-                    IsBusy = true;
-
-                    try
-                    {
-                        Players.Clear();
-
-                        if (text.Trim().Length > 0)
-                        {
-                            var items = await PinballRankingApi.SearchForPlayerByName(text.Trim());
-                            foreach (var item in items.Search)
-                            {
-                                var serializedParent = JsonConvert.SerializeObject(item);
-                                var c = JsonConvert.DeserializeObject<PlayerSearchResult>(serializedParent);
-
-                                Players.Add(c);
-                            }
-                        }
-                        IsLoaded = true;
-                        OnPropertyChanged("IsLoaded");
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex);
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                    }
-                }));
+                    Players = items.Results?.ToObservableCollection();
+                }
+                IsLoaded = true;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error searching for player {text}", text);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
+        [RelayCommand]
+        public async Task ViewPlayer()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
+            SelectedPlayer = null;
+        }
     }
 }

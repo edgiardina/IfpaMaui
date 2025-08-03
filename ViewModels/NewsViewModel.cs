@@ -5,6 +5,7 @@ using System.ServiceModel.Syndication;
 using System.Web;
 using Microsoft.Extensions.Configuration;
 using PinballApi;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
@@ -15,7 +16,7 @@ namespace Ifpa.ViewModels
 
         private BlogPostService BlogPostService { get; set; }
 
-        public NewsViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public NewsViewModel(BlogPostService blogPostService, ILogger<NewsViewModel> logger) : base(logger)
         {
             BlogPostService = blogPostService;
 
@@ -44,7 +45,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading news");
             }
             finally
             {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ifpa.Models
+﻿namespace Ifpa.Models.Database
 {
     public enum ActivityFeedType
     {

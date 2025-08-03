@@ -1,37 +1,42 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.ServiceModel.Syndication;
 using Ifpa.Services;
 using System.Xml;
-using Microsoft.Extensions.Configuration;
 using PinballApi;
+using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Ifpa.ViewModels
 {
-    public class NewsDetailViewModel : BaseViewModel
+    public partial class NewsDetailViewModel : BaseViewModel
     {
-        public SyndicationItem NewsItem { get; set; }
-        public ObservableCollection<SyndicationItem> Comments { get; set; }
+        [ObservableProperty]
+        private SyndicationItem newsItem;
 
-        public int CommentCounts => Comments.Count;
-        public Command LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<SyndicationItem> comments = new ObservableCollection<SyndicationItem>();
+
+        [ObservableProperty]
+        private int commentCounts;
 
         public Uri NewsItemUrl { get; set; }
-        public HtmlWebViewSource NewsItemContent { get; set; }
+
+        [ObservableProperty]
+        private HtmlWebViewSource newsItemContent;
 
         private BlogPostService BlogPostService { get; set; }
 
         //TODO: convert IConfiguration to IOptions?
-        public NewsDetailViewModel(BlogPostService blogPostService, PinballRankingApiV1 pinballRankingApiV1, PinballRankingApiV2 pinballRankingApiV2) : base(pinballRankingApiV1, pinballRankingApiV2)
+        public NewsDetailViewModel(BlogPostService blogPostService, ILogger<NewsDetailViewModel> logger) : base(logger)
         {
             Title = "News";
             BlogPostService = blogPostService;
-
-            Comments = new ObservableCollection<SyndicationItem>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -44,28 +49,41 @@ namespace Ifpa.ViewModels
                 var newsItemDetails = await BlogPostService.GetBlogPosts();
 
                 NewsItem = newsItemDetails.Single(n => n.Links.Any(m => m.Uri == NewsItemUrl));
-                OnPropertyChanged(nameof(NewsItem));
+
                 Title = NewsItem.Title.Text;
-                NewsItemContent = new HtmlWebViewSource();
                 //TODO: make this HTML and CSS in discrete files 
                 var articleContent = NewsItem.ElementExtensions
                       .FirstOrDefault(ext => ext.OuterName == "encoded")
                       .GetObject<XmlElement>().InnerText;
 
-                NewsItemContent.Html = "<html><head><style>img {display:block; clear:both;  margin: auto; margin-botton:10px !important;}</style></head><body style='font-family:sans-serif;'>" + articleContent + "</body></html>";
-                OnPropertyChanged(nameof(NewsItemContent));
+                string webviewTheme = (Application.Current.RequestedTheme == AppTheme.Dark) ? "dark-theme" : "light-theme";
 
-                var comments = await BlogPostService.GetCommentsForBlogPost(NewsItem.Id);
-
-                foreach (var item in comments)
+                await MainThread.InvokeOnMainThreadAsync(() =>
                 {
-                    Comments.Add(item);                    
-                }
-                OnPropertyChanged(nameof(CommentCounts));
+                    NewsItemContent = new HtmlWebViewSource();
+                    NewsItemContent.Html = @$"<html>
+                                               <head>
+                                                  <style>img {{display:block; clear:both;  margin: auto; margin-botton:10px !important;}}</style>
+                                                  <style>
+                                                    body.light-theme{{background-color: #fcfffc; color: #343434;}}
+                                                    body.dark-theme {{background-color: #333333; color: #fcfffc;}}
+                                                  </style>
+                                               </head>
+                                               <body style='font-family:sans-serif;'> 
+                                                    {articleContent} 
+                                                    <script type=""text/javascript"">
+                                                    document.body.classList.add(""{webviewTheme}"");
+                                                    </script>
+                                               </body>
+                                            </html>";
+                });
+
+                Comments = (await BlogPostService.GetCommentsForBlogPost(NewsItem.Id)).ToObservableCollection();
+                CommentCounts = Comments.Count;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                logger.LogError(ex, "Error loading news item {0}", NewsItemUrl);
             }
             finally
             {

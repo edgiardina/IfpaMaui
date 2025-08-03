@@ -28,11 +28,11 @@ namespace Ifpa.Services
             return await Parse(link + "/feed");
         }
 
-        public int ParseGuidFromInternalId(string internalId)
+        public int ParseBlogPostIdFromInternalIdUrl(string internalIdUrl)
         {
             //parse url and return integer p value from the following url style
             //https://www.ifpapinball.com/?p=12345
-            return int.Parse(internalId.Split('=')[1]);
+            return int.Parse(internalIdUrl.Split('=')[1]);
         }
 
         private async Task<IEnumerable<SyndicationItem>> Parse(string url)

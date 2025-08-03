@@ -5,12 +5,9 @@ using Microsoft.Maui.Maps;
 namespace Ifpa.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    [QueryProperty("CalendarId", "calendarId")]
     public partial class CalendarDetailPage : ContentPage
     {
         CalendarDetailViewModel ViewModel;
-
-        public int CalendarId { get; set; }
 
         public CalendarDetailPage(CalendarDetailViewModel viewModel)
         {
@@ -23,35 +20,41 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            sheet.ShowAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
             try
-            {
-                var location = Preferences.Get("LastCalendarLocation", "Chicago, Il");
-                var distance = Preferences.Get("LastCalendarDistance", 150);
+            {               
+                await ViewModel.ExecuteLoadItems();
 
-                Preferences.Set("LastCalendarLocation", location);
-                Preferences.Set("LastCalendarDistance", distance);
+                double latitudeOffset = .007;
 
-                var geoLocation = await Geocoding.GetLocationsAsync(location);
-                calendarMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(geoLocation.First().Latitude, geoLocation.First().Longitude),
-                                                                        Microsoft.Maui.Maps.Distance.FromMiles(distance)));
+                var mapLocation = new Location(ViewModel.Tournament.Latitude - latitudeOffset, ViewModel.Tournament.Longitude);
 
-                ViewModel.CalendarId = CalendarId;
-                await ViewModel.ExecuteLoadItemsCommand();
-
-                MapSpan mapSpan = MapSpan.FromCenterAndRadius(ViewModel.GeocodedLocation, Microsoft.Maui.Maps.Distance.FromKilometers(1));
-                calendarMap.MoveToRegion(mapSpan);
+                MapSpan mapSpan = MapSpan.FromCenterAndRadius(mapLocation, Distance.FromKilometers(1));
+                var calendarMap = new Microsoft.Maui.Controls.Maps.Map(mapSpan)
+                {
+                    IsZoomEnabled = false,
+                    IsScrollEnabled = false,
+                    MapType = MapType.Street,
+                    IsTrafficEnabled = false                    
+                };
                 var pin = new Pin
                 {
-                    Label = ViewModel.TournamentName,
-                    Location = ViewModel.GeocodedLocation,
-                    Address = ViewModel.Location,
+                    Label = ViewModel.Tournament.TournamentName,
+                    Location = new Location(ViewModel.Tournament.Latitude, ViewModel.Tournament.Longitude),
+                    Address = ViewModel.Tournament.RawAddress,
                     Type = PinType.Generic
                 };
 
-                pin.InfoWindowClicked += Pin_Clicked;
-                pin.MarkerClicked += Pin_Clicked;
+                pin.InfoWindowClicked += async (sender, e) => await ViewModel.OpenMap();
+                pin.MarkerClicked += async (sender, e) => await ViewModel.OpenMap();
 
                 calendarMap.Pins.Add(pin);
+
+                mapShim.Children.Add(calendarMap);
+                calendarMap.HeightRequest = DeviceDisplay.MainDisplayInfo.Height;
             }
             //unable to geocode position on the map, ignore. 
             catch (Exception)
@@ -59,48 +62,10 @@ namespace Ifpa.Views
             }
         }
 
-
-        protected override void OnNavigatedTo(NavigatedToEventArgs args)
+        protected override void OnDisappearing()
         {
-            base.OnNavigatedTo(args);
-        }
-
-        private void Pin_Clicked(object sender, PinClickedEventArgs e)
-        {
-            Address_Tapped(sender, e);
-        }
-
-        private async void WebsiteLabel_Tapped(object sender, EventArgs e)
-        {
-            await Browser.OpenAsync(ViewModel.Website, BrowserLaunchMode.SystemPreferred);
-        }
-
-        private async void Address_Tapped(object sender, EventArgs e)
-        {
-            var placemark = new Placemark
-            {
-                CountryName = ViewModel.CountryName,
-                AdminArea = ViewModel.State,
-                Thoroughfare = ViewModel.Address1,
-                Locality = ViewModel.City
-            };
-            var options = new MapLaunchOptions { Name = ViewModel.TournamentName };
-
-            await Microsoft.Maui.ApplicationModel.Map.OpenAsync(placemark, options);
-        }
-
-        private async void AddToCalendarButton_Clicked(object sender, EventArgs e)
-        {
-            await ViewModel.AddToCalendar();
-        }
-
-        private async void ShareButton_Clicked(object sender, EventArgs e)
-        {
-            await Share.RequestAsync(new ShareTextRequest
-            {
-                Uri = $"https://www.ifpapinball.com/tournaments/view.php?t={ViewModel.TournamentId}",
-                Title = "Share Upcoming Tournament"
-            });
+            base.OnDisappearing();
+            sheet.DismissAsync();
         }
     }
 }
