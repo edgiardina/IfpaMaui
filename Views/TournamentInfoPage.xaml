@@ -6,6 +6,7 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.ModalPresentationStyle="PageSheet"
+             Shell.PresentationMode="Modal"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:TournamentResultsViewModel">
@@ -102,7 +103,7 @@
             <Label Grid.Column="1"
                    Grid.Row="5"
                    Style="{DynamicResource valueStyle}"
-                   Text="{Binding TournamentDetails.RankingType, Mode=OneWay}" />
+                   Text="{Binding TournamentDetails.RankingSystem, Mode=OneWay}" />
             <Label Grid.Column="0"
                    Grid.Row="6"
                    Style="{DynamicResource labelStyle}"

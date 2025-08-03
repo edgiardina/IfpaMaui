@@ -3,7 +3,7 @@
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:local="clr-namespace:Ifpa.Converters"
               x:Class="Ifpa.Views.DataTemplates.PlayerResultDataTemplate"
-              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi"
+              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
               x:DataType="ifpaplayer:PlayerResult">
     <VerticalStackLayout>
         <VerticalStackLayout Padding="15,10">

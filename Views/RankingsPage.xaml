@@ -15,8 +15,8 @@
              xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Filter"
-                     x:Name="FilterButton"
-                     Clicked="FilterButton_Clicked"
+                     x:Name="InfoButton"
+                     Command="{Binding ShowRankingFilterCommand}"
                      IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
@@ -88,7 +88,8 @@
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         SelectionMode="Single"
                         EmptyView="{x:Static local:Strings.RankingsPage_EmptyView}"
-                        SelectionChanged="PlayersListView_SelectionChanged"
+                        SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding ShowPlayerDetailCommand}"
                         ItemTemplate="{StaticResource RankingResultDataTemplateSelector}" />
     </Grid>
 </ContentPage>

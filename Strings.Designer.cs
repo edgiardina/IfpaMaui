@@ -79,6 +79,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error sending the log files. Please try again later..
+        /// </summary>
+        internal static string AboutPage_ErrorMessage {
+            get {
+                return ResourceManager.GetString("AboutPage_ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string AboutPage_ErrorTitle {
+            get {
+                return ResourceManager.GetString("AboutPage_ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Flagpedia.
         /// </summary>
         internal static string AboutPage_Flagpedia {
@@ -124,11 +142,56 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attached are the log files from the IFPA app..
+        /// </summary>
+        internal static string AboutPage_LogsEmailBody {
+            get {
+                return ResourceManager.GetString("AboutPage_LogsEmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IFPA App Logs - {0}.
+        /// </summary>
+        internal static string AboutPage_LogsEmailSubject {
+            get {
+                return ResourceManager.GetString("AboutPage_LogsEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .NET MAUI.
         /// </summary>
         internal static string AboutPage_NETMAUI {
             get {
                 return ResourceManager.GetString("AboutPage_NETMAUI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No log files were found to send..
+        /// </summary>
+        internal static string AboutPage_NoLogsMessage {
+            get {
+                return ResourceManager.GetString("AboutPage_NoLogsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Logs.
+        /// </summary>
+        internal static string AboutPage_NoLogsTitle {
+            get {
+                return ResourceManager.GetString("AboutPage_NoLogsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Logs.
+        /// </summary>
+        internal static string AboutPage_SendLogs {
+            get {
+                return ResourceManager.GetString("AboutPage_SendLogs", resourceCulture);
             }
         }
         
@@ -286,6 +349,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IFPA Companion requires your permission before adding items to your Calendar.
+        /// </summary>
+        internal static string CalendarDetailPage_AddCalendarPermissionRequest {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_AddCalendarPermissionRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add To Calendar.
         /// </summary>
         internal static string CalendarDetailPage_AddToCalendar {
@@ -367,6 +439,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select which calendar to add this tournament to.
+        /// </summary>
+        internal static string CalendarDetailPage_SelectCalendarPrompt {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_SelectCalendarPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Share.
         /// </summary>
         internal static string CalendarDetailPage_Share {
@@ -381,6 +462,24 @@ namespace Ifpa {
         internal static string CalendarDetailPage_SharePrompt {
             get {
                 return ResourceManager.GetString("CalendarDetailPage_SharePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament added to your Calendar.
+        /// </summary>
+        internal static string CalendarDetailPage_TournamentAdded {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_TournamentAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to add Tournament to your Calendar.
+        /// </summary>
+        internal static string CalendarDetailPage_TournamentNotAdded {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_TournamentNotAdded", resourceCulture);
             }
         }
         
@@ -610,6 +709,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Favorites.
+        /// </summary>
+        internal static string FavoritesPage_Title {
+            get {
+                return ResourceManager.GetString("FavoritesPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to - .
         /// </summary>
         internal static string Hyphen {
@@ -790,6 +898,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Ranked.
+        /// </summary>
+        internal static string NotRanked {
+            get {
+                return ResourceManager.GetString("NotRanked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         internal static string OK {
@@ -808,11 +925,101 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Permission Required.
+        /// </summary>
+        internal static string PermissionRequired {
+            get {
+                return ResourceManager.GetString("PermissionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Championship Series.
         /// </summary>
         internal static string PlayerChampionshipSeriesPage_ChampionshipSeries {
             get {
                 return ResourceManager.GetString("PlayerChampionshipSeriesPage_ChampionshipSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No championship data for the selected year.
+        /// </summary>
+        internal static string PlayerChampionshipSeriesPage_EmptyText {
+            get {
+                return ResourceManager.GetString("PlayerChampionshipSeriesPage_EmptyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Championship Series Year.
+        /// </summary>
+        internal static string PlayerChampionshipSeriesPage_YearPrompt {
+            get {
+                return ResourceManager.GetString("PlayerChampionshipSeriesPage_YearPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for My Player Record.
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_Search {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Star Icon on the Player Details view to select that player as you..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepFour {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepFour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Search Icon on the Rankings Page to navigate to the player search..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepOne {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the player you wish to use from the list..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepThree {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepThree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type a partial or full name into the search bar and press &quot;Search&quot;..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_StepTwo {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_StepTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow these steps to add your IFPA player record to your &apos;My Stats&apos; for tracking your progress.
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_Subheader {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_Subheader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You haven&apos;t selected a &apos;My Stats&apos; Player..
+        /// </summary>
+        internal static string PlayerDetailNoPlayerSelectedPage_Title {
+            get {
+                return ResourceManager.GetString("PlayerDetailNoPlayerSelectedPage_Title", resourceCulture);
             }
         }
         
@@ -957,15 +1164,6 @@ namespace Ifpa {
         internal static string PlayerDetailPage_Favorite {
             get {
                 return ResourceManager.GetString("PlayerDetailPage_Favorite", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Looks like you haven&apos;t configured your &apos;My Stats&apos; page. Use the Player Search to find your Player, and press the Star to configure your Stats.
-        /// </summary>
-        internal static string PlayerDetailPage_HaventConfiguredMyStats {
-            get {
-                return ResourceManager.GetString("PlayerDetailPage_HaventConfiguredMyStats", resourceCulture);
             }
         }
         
@@ -1168,11 +1366,29 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Results.
+        /// </summary>
+        internal static string PlayerResultsPage_Title {
+            get {
+                return ResourceManager.GetString("PlayerResultsPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No players found.
         /// </summary>
         internal static string PlayerSearchPage_NoPlayersFound {
             get {
                 return ResourceManager.GetString("PlayerSearchPage_NoPlayersFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Search.
+        /// </summary>
+        internal static string PlayerSearchPage_Title {
+            get {
+                return ResourceManager.GetString("PlayerSearchPage_Title", resourceCulture);
             }
         }
         
@@ -1321,6 +1537,33 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cache Management.
+        /// </summary>
+        internal static string SettingsPage_CacheManagement {
+            get {
+                return ResourceManager.GetString("SettingsPage_CacheManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline Cache Size.
+        /// </summary>
+        internal static string SettingsPage_CacheSize {
+            get {
+                return ResourceManager.GetString("SettingsPage_CacheSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Cache.
+        /// </summary>
+        internal static string SettingsPage_ClearCache {
+            get {
+                return ResourceManager.GetString("SettingsPage_ClearCache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IFPA Rank Change.
         /// </summary>
         internal static string SettingsPage_IFPARankChange {
@@ -1353,6 +1596,15 @@ namespace Ifpa {
         internal static string SettingsPage_NewTournamentOnCalendar {
             get {
                 return ResourceManager.GetString("SettingsPage_NewTournamentOnCalendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Player Selected.
+        /// </summary>
+        internal static string SettingsPage_NoPlayerSelected {
+            get {
+                return ResourceManager.GetString("SettingsPage_NoPlayerSelected", resourceCulture);
             }
         }
         
@@ -1425,6 +1677,24 @@ namespace Ifpa {
         internal static string StatsPage_Stats {
             get {
                 return ResourceManager.GetString("StatsPage_Stats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline — using cached data..
+        /// </summary>
+        internal static string Toast_Offline_Cache {
+            get {
+                return ResourceManager.GetString("Toast_Offline_Cache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline — no cached data available..
+        /// </summary>
+        internal static string Toast_Offline_NoCache {
+            get {
+                return ResourceManager.GetString("Toast_Offline_NoCache", resourceCulture);
             }
         }
         

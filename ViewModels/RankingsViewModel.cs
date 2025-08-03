@@ -1,21 +1,24 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi.Models.WPPR.Universal.Rankings;
+using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal;
-using Ifpa.Models;
+using PinballApi.Models.WPPR.Universal.Rankings;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class RankingsViewModel : BaseViewModel
+    public partial class RankingsViewModel : BaseViewModel
     {
         public ObservableCollection<BaseRanking> Players { get; set; }
         public ObservableCollection<Country> Countries { get; set; }
 
-        public Country CountryToShow { get; set; }
+        [ObservableProperty]
+        private BaseRanking selectedPlayer;
 
-        public ICommand LoadItemsCommand { get; set; }
+        [ObservableProperty]
+        private Country countryToShow;
 
         private int startingPosition;
         public int StartingPosition
@@ -31,39 +34,36 @@ namespace Ifpa.ViewModels
             set { SetProperty(ref countOfItemsToFetch, value); }
         }
 
-        public RankingType CurrentRankingType { get; set; }
-        public RankingSystem CurrentRankingSystem { get; set; }
+        [ObservableProperty]
+        private RankingType currentRankingType;
 
-        public TournamentType CurrentProRankingType { get; set; }
+        [ObservableProperty]
+        private RankingSystem currentRankingSystem;
 
-        public List<string> ProRankingTypes => Enum.GetNames(typeof(TournamentType))
-                                                   .Except(new List<string> { TournamentType.Main.ToString(), TournamentType.Youth.ToString() })
-                                                   .ToList();
-        public List<string> RankingTypes => Enum.GetNames(typeof(RankingType)).ToList();
+        [ObservableProperty]
+        private TournamentType currentProRankingType;
 
-        public List<string> RankingSystems => Enum.GetNames(typeof(RankingSystem)).ToList();
+        public List<TournamentType> ProRankingTypes => new List<TournamentType> { TournamentType.Open, TournamentType.Women };
+        public List<RankingType> RankingTypes => new List<RankingType> { RankingType.Pro, RankingType.Wppr, RankingType.Women, RankingType.Youth, RankingType.Country };
+
+        public List<RankingSystem> RankingSystems => new List<RankingSystem> { RankingSystem.Open, RankingSystem.Restricted };
 
         public readonly Country DefaultCountry = new Country { CountryName = "United States", CountryCode = "US" };
 
-        private readonly PinballRankingApi PinballRankingApi;
+        private readonly IPinballRankingApi PinballRankingApi;
 
-        public RankingsViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        public RankingsViewModel(IPinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(logger)
         {
             CountOfItemsToFetch = 100;
             StartingPosition = 1;
             Players = new ObservableCollection<BaseRanking>();
             Countries = new ObservableCollection<Country>();
-            LoadItemsCommand = new Command(
-                execute: () => ExecuteLoadItemsCommand(),
-                canExecute: () =>
-                {
-                    return !IsBusy;
-                });
 
             PinballRankingApi = pinballRankingApi;
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task LoadItems()
         {
             if (IsBusy)
                 return;
@@ -88,7 +88,6 @@ namespace Ifpa.ViewModels
                 }
 
                 CountryToShow = Countries.Single(n => n.CountryName == CountryToShow.CountryName);
-                OnPropertyChanged(nameof(CountryToShow));
 
                 Players.Clear();
 
@@ -114,10 +113,6 @@ namespace Ifpa.ViewModels
                         }
                     }
                 }
-
-                OnPropertyChanged(nameof(CurrentProRankingType));
-                OnPropertyChanged(nameof(CurrentRankingType));
-                OnPropertyChanged(nameof(CurrentRankingSystem));
             }
             catch (Exception ex)
             {
@@ -127,6 +122,25 @@ namespace Ifpa.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        public async Task ShowRankingFilter()
+        {
+            await Shell.Current.GoToAsync("rankings-filter");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerSearch()
+        {
+            await Shell.Current.GoToAsync("player-search");
+        }
+
+        [RelayCommand]
+        public async Task ShowPlayerDetail()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
+            SelectedPlayer = null;
         }
     }
 }

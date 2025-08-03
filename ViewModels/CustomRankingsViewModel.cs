@@ -1,63 +1,64 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using PinballApi.Models.WPPR.v2.Rankings;
-using Microsoft.Extensions.Configuration;
-using PinballApi;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Rankings.Custom;
 
 namespace Ifpa.ViewModels
 {
-    public class CustomRankingsViewModel : BaseViewModel
+    public partial class CustomRankingsViewModel : BaseViewModel
     {
-        public ObservableCollection<CustomRankingView> CustomRankings { get; set; }
-        public bool IsPopulated => CustomRankings.Count > 0 || dataNotLoaded;
+        [ObservableProperty]
+        private List<CustomRankingView> customRankings = new List<CustomRankingView>();
+
+        [ObservableProperty]
+        private bool isPopulated;
+
+        [ObservableProperty]
+        private CustomRankingView selectedCustomRanking;
 
         private bool dataNotLoaded = true;
 
-        public CustomRankingsViewModel(PinballRankingApiV2 pinballRankingApiV2, ILogger<CustomRankingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public CustomRankingsViewModel(IPinballRankingApi pinballRankingApi, ILogger<CustomRankingsViewModel> logger) : base(logger)
         {
             Title = "Custom Rankings";
-            CustomRankings = new ObservableCollection<CustomRankingView>();
+            PinballRankingApi = pinballRankingApi;
         }
 
-        private Command _loadItemsCommand;
-        public Command LoadItemsCommand
+        [RelayCommand]
+        public async Task LoadItems()
         {
-            get
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            dataNotLoaded = false;
+
+            try
             {
-                return _loadItemsCommand ?? (_loadItemsCommand = new Command<string>(async (text) =>
-                {
-                    if (IsBusy)
-                        return;
+                CustomRankings = await PinballRankingApi.GetCustomRankings();
 
-                    IsBusy = true;
-
-                    dataNotLoaded = false;
-
-                    try
-                    {
-                        CustomRankings.Clear();                 
-
-                        var tempList = await PinballRankingApiV2.GetRankingCustomViewList();
-                   
-                        foreach (var customRankingView in tempList.CustomRankingView)
-                        {
-                            CustomRankings.Add(customRankingView);
-                        }
-
-                        OnPropertyChanged("IsPopulated");
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error loading custom rankings");
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                    }
-                }));
+                IsPopulated = CustomRankings.Count > 0 || dataNotLoaded;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error loading custom rankings");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
+        [RelayCommand]
+        public async Task ViewCustomRankingDetail()
+        {
+            await Shell.Current.GoToAsync($"custom-ranking-details?viewId={SelectedCustomRanking.ViewId}");
+            SelectedCustomRanking = null;
+        }
     }
+
 }

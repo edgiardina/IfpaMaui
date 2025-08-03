@@ -5,7 +5,6 @@ using Microsoft.Maui.Controls.Maps;
 using MauiIcons.Fluent;
 using MauiIcons.Core;
 using Microsoft.Extensions.Logging;
-using TournamentSearch = PinballApi.Models.WPPR.Universal.Tournaments.Search.Tournament;
 
 namespace Ifpa.Views
 {
@@ -27,14 +26,10 @@ namespace Ifpa.Views
             viewModel.IsBusy = true;
         }
 
-        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+        protected override void OnAppearing()
         {
-            base.OnNavigatedTo(args);
-
-            if (ViewModel.Tournaments.Count == 0)
-            {
-                await UpdateCalendarData();
-            }
+            base.OnAppearing();
+            UpdateCalendarData();
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)
@@ -52,7 +47,12 @@ namespace Ifpa.Views
             {
                 mapShim.Children.Clear();
 
-                Location geoLocation;
+                Location geoLocation = null;
+
+                // Default to Chicago if we can't get a location
+                var defaultLocation = new Location(41.8781, -87.6298);
+
+                var locationPermission = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
 
                 try
                 {
@@ -62,7 +62,16 @@ namespace Ifpa.Views
                 {
                     logger.LogWarning(e, "Error geolocating");
 
-                    geoLocation = await Geolocation.GetLastKnownLocationAsync();
+                    if (locationPermission == PermissionStatus.Granted)
+                    {
+                        geoLocation = await Geolocation.GetLastKnownLocationAsync();
+
+                    }
+
+                    if (geoLocation == null)
+                    {
+                        geoLocation = defaultLocation;
+                    }
                 }
 
                 var mapSpan = MapSpan.FromCenterAndRadius(new Location(geoLocation.Latitude, geoLocation.Longitude),
@@ -71,11 +80,11 @@ namespace Ifpa.Views
                 var map = new Microsoft.Maui.Controls.Maps.Map(mapSpan);
 
                 map.ItemTemplate = PinDataTemplate;
-                map.ItemsSource = ViewModel.Pins;
+                map.SetBinding(Microsoft.Maui.Controls.Maps.Map.ItemsSourceProperty, new Binding(nameof(ViewModel.Pins), source: ViewModel));
 
                 mapShim.Children.Add(map);
 
-                await ViewModel.ExecuteLoadItemsCommand(geoLocation, Settings.LastCalendarDistance);                
+                await ViewModel.LoadItems(geoLocation, Settings.LastCalendarDistance);
 
                 // For whatever reason Android on re-load via modal doesn't re-center the map.
                 map.MoveToRegion(mapSpan);
@@ -87,35 +96,7 @@ namespace Ifpa.Views
             }
         }
 
-        // TODO: This should be in a trigger in the XAML but toolbaritems don't support triggers yet
-        private void ToggleView_Clicked(object sender, EventArgs e)
-        {
-            var colorDictionary = Application.Current.Resources.MergedDictionaries.First();
-            var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
-            var vm = (CalendarViewModel) BindingContext;
-
-            if (vm.CurrentType == CalendarType.MapAndList)
-            {
-                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.CalendarLtr28, IconColor = toolbarIconColor };
-            }
-            else
-            {
-                ToolbarItems.SingleOrDefault(n => n.Text == Strings.CalendarPage_ToggleView).IconImageSource = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Map24, IconColor = toolbarIconColor };
-            }
-        }
-
-        private async void TournamentListView_SelectionChanged(object sender, Microsoft.Maui.Controls.SelectionChangedEventArgs e)
-        {
-            var tournament = e.CurrentSelection.FirstOrDefault() as TournamentSearch;
-            if (tournament == null)
-                return;
-
-            await Shell.Current.GoToAsync($"calendar-detail?tournamentId={tournament.TournamentId}");
-
-            // Manually deselect item.
-            TournamentListView.SelectedItem = null;
-        }
-
+        // TODO: Pin Markers and Info Windows don't currently support commanding
         private void Pin_MarkerClicked(object sender, PinClickedEventArgs e)
         {
             var pin = (Pin)sender;

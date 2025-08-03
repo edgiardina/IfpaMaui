@@ -6,7 +6,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:shimmer="clr-namespace:Syncfusion.Maui.Shimmer;assembly=Syncfusion.Maui.Core"
+             xmlns:shimmer="clr-namespace:Syncfusion.Maui.Toolkit.Shimmer;assembly=Syncfusion.Maui.Toolkit"
              Title="{x:Static local:Strings.SettingsPage_Settings}"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
@@ -14,6 +14,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsNotNullConverter x:Key="notNullConverter" />
+            <toolkit:IsNullConverter x:Key="nullConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -41,9 +42,9 @@
                                   TextColor="{StaticResource SecondaryTextColor}">
                         <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
                             <shimmer:SfShimmer x:Name="Shimmer"
-                                               VerticalOptions="Fill"
-                                               IsVisible="{OnPlatform Android=false}"
+                                               VerticalOptions="Fill"                                          
                                                IsActive="{Binding IsBusy}"
+                                               BackgroundColor="Transparent"
                                                WaveColor="{StaticResource IconAccentColor}"
                                                Fill="{StaticResource SecondaryTextColor}"
                                                Type="CirclePersona">
@@ -57,10 +58,24 @@
                                                         TextColor="{StaticResource ButtonTextColor}" />
                                     <Label Margin="15"
                                            FontSize="18"
-                                           Text="{Binding Name, TargetNullValue='No player selected'}"
                                            HorizontalOptions="StartAndExpand"
-                                           VerticalOptions="Center" />
-                                    <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}"
+                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
+                                           VerticalOptions="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding PlayerRecord.FirstName}" />
+                                                <Span Text="{x:Static local:Strings.SingleSpace}" />
+                                                <Span Text="{Binding PlayerRecord.LastName}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"
+                                           Margin="15"
+                                           FontSize="18"
+                                           HorizontalOptions="StartAndExpand"
+                                           VerticalOptions="Center"
+                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource nullConverter}}" />
+                                    <ImageButton IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
                                                  Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}"
                                                  Margin="0,0,10,0"
                                                  HorizontalOptions="End"
@@ -69,35 +84,30 @@
                             </shimmer:SfShimmer>
                         </ViewCell>
                     </TableSection>
-                </TableRoot>
-            </controls:InsetTableView>
-            <!-- TODO: there's a bug in Android where our custom viewcell won't display. so just render below -->
-            <shimmer:SfShimmer VerticalOptions="Fill"
-                               IsVisible="{OnPlatform false, Android=true}"
-                               IsActive="{Binding IsBusy}"
-                               WaveColor="{StaticResource IconAccentColor}"
-                               Fill="{StaticResource SecondaryTextColor}"
-                               Type="CirclePersona">
-                <StackLayout Orientation="Horizontal"
-                             Margin="10">
-                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
-                                        HorizontalOptions="Center"
+                    <TableSection Title="{x:Static local:Strings.SettingsPage_CacheManagement}"
+                                  TextColor="{StaticResource SecondaryTextColor}">
+                        <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                            <Grid Padding="15" ColumnDefinitions="*,Auto">
+                                <StackLayout Grid.Column="0">
+                                    <Label Text="{x:Static local:Strings.SettingsPage_CacheSize}" 
+                                           FontSize="16"/>
+                                    <Label Text="{Binding CacheSize}" 
+                                           TextColor="{StaticResource SecondaryTextColor}"
+                                           FontSize="14"/>
+                                </StackLayout>
+                                <Button Grid.Column="1"
+                                        Text="{x:Static local:Strings.SettingsPage_ClearCache}"
+                                        Command="{Binding ClearCacheCommand}"
                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
-                                        BorderWidth="0"
-                                        CornerRadius="8"
-                                        TextColor="{StaticResource ButtonTextColor}" />
-                    <Label Margin="15"
-                           FontSize="18"
-                           Text="{Binding Name, TargetNullValue='No player selected'}"
-                           HorizontalOptions="StartAndExpand"
-                           VerticalOptions="Center" />
-                    <ImageButton IsVisible="{Binding Name, Converter={StaticResource notNullConverter}}"
-                                 Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}"
-                                 Margin="0,0,10,0"
-                                 HorizontalOptions="End"
-                                 Clicked="Button_Clicked" />
-                </StackLayout>
-            </shimmer:SfShimmer>
+                                        TextColor="{StaticResource ButtonTextColor}"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                        IsEnabled="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" />
+                            </Grid>
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </controls:InsetTableView>          
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

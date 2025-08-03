@@ -8,7 +8,7 @@
              x:Name="SearchPlayersPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:CustomRankingsViewModel"
-             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
+             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings.Custom;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -22,7 +22,8 @@
                             ItemsSource="{Binding CustomRankings}"
                             VerticalOptions="FillAndExpand"
                             SelectionMode="Single"
-                            SelectionChanged="OnItemSelected">
+                            SelectedItem="{Binding SelectedCustomRanking, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ViewCustomRankingDetailCommand}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="ifparankings:CustomRankingView">
                         <StackLayout>

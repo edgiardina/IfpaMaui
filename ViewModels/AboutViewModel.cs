@@ -1,26 +1,39 @@
-﻿using Ifpa.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.WPPR.v2.Players;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
+using System;
+using Microsoft.Maui.Controls;
 
 namespace Ifpa.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public partial class AboutViewModel : BaseViewModel
     {
-        AppSettings AppSettings { get; set; }
+        private AppSettings AppSettings { get; set; }
 
-        public ObservableCollection<Player> Sponsors { get; set; }
+        private IPinballRankingApi PinballRankingApi { get; set; }
 
-        public int CreatorIfpaNumber => 16927;
+        [ObservableProperty]
+        private List<Player> sponsors = new List<Player>();
 
-        public AboutViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(pinballRankingApiV2, logger)
+        public string CurrentVersion => VersionTracking.CurrentVersion;
+
+        public string MinorVersion => VersionTracking.CurrentBuild;
+
+        public long CreatorIfpaNumber => 16927;
+
+        public AboutViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<AboutViewModel> logger) : base(logger)
         {
             AppSettings = appSettings;
-            Sponsors = new ObservableCollection<Player>();
+            this.PinballRankingApi = pinballRankingApi;
         }
 
+        [RelayCommand]
         public async Task LoadSponsors()
         {
             if (IsBusy)
@@ -32,14 +45,10 @@ namespace Ifpa.ViewModels
             {
                 Sponsors.Clear();
 
-                var tempList = await PinballRankingApiV2.GetPlayers(AppSettings.Sponsors);
+                var tempList = await PinballRankingApi.GetPlayers(AppSettings.Sponsors);
 
-                foreach (var player in tempList.OrderBy(i => i.PlayerStats.CurrentWpprRank))
-                {
-                    Sponsors.Add(player);
-                }
+                Sponsors = tempList.OrderBy(i => i.PlayerStats.Open?.CurrentRank).ToList();
 
-                OnPropertyChanged("Sponsors");
                 logger.LogDebug("Loaded {0} sponsors", Sponsors.Count);
             }
             catch (Exception ex)
@@ -53,6 +62,7 @@ namespace Ifpa.ViewModels
         }
 
         //TODO: when it's ported to MAUI, use store review plugin
+        [RelayCommand]
         public async Task OpenReview()
         {
             var url = string.Empty;
@@ -72,8 +82,73 @@ namespace Ifpa.ViewModels
             await Browser.OpenAsync(url, BrowserLaunchMode.External);
         }
 
-        public string CurrentVersion => VersionTracking.CurrentVersion;
+        [RelayCommand]
+        public async Task LearnMore()
+        {
+            await Browser.OpenAsync("http://tiltforums.com/t/ifpa-app-now-available-on-the-app-store/4543", BrowserLaunchMode.External);
+        }
 
-        public string MinorVersion => VersionTracking.CurrentBuild;
+        [RelayCommand]
+        public async Task ViewPlayer(long playerId)
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={playerId}");
+        }
+
+        [RelayCommand]
+        public async Task Flagpedia()
+        {
+            await Browser.OpenAsync("https://flagpedia.net/", BrowserLaunchMode.External);
+        }
+
+        [RelayCommand]
+        public async Task SendLogs()
+        {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                var logPath = Path.GetDirectoryName(Settings.LogFilePath);
+                var logFiles = Directory.GetFiles(logPath, "log-*.txt");
+
+                if (!logFiles.Any())
+                {
+                    await Shell.Current.DisplayAlert(
+                        Strings.AboutPage_NoLogsTitle,
+                        Strings.AboutPage_NoLogsMessage,
+                        Strings.OK);
+                    return;
+                }
+
+                var emailMessage = new EmailMessage
+                {
+                    Subject = string.Format(Strings.AboutPage_LogsEmailSubject, DateTime.Now.ToString("yyyy-MM-dd")),
+                    Body = Strings.AboutPage_LogsEmailBody,
+                    To = new List<string> { "ed@edgiardina.com" } 
+                };
+
+                foreach (var logFile in logFiles)
+                {
+                    emailMessage.Attachments.Add(new EmailAttachment(logFile));
+                }
+
+                await Email.ComposeAsync(emailMessage);
+                logger.LogInformation("Log files sent successfully");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error sending log files");
+                await Shell.Current.DisplayAlert(
+                    Strings.AboutPage_ErrorTitle,
+                    Strings.AboutPage_ErrorMessage,
+                    Strings.OK);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
     }
 }

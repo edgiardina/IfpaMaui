@@ -7,16 +7,22 @@
              ios:Page.LargeTitleDisplay="Never"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
-             Title="{x:Static local:Strings.PlayerChampionshipSeriesPage_ChampionshipSeries}"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             Title="{Binding Title}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerChampionshipSeriesViewModel"
-             xmlns:ifpawppr="clr-namespace:PinballApi.Models.v2.WPPR;assembly=PinballApi">
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{x:Static local:Strings.ChampionshipSeriesPage_Filter}"
+                     Command="{Binding FilterChampSeriesCommand}"
+                     IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
+    </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
@@ -24,9 +30,11 @@
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding ChampionshipSeries}"
                         SelectionMode="Single"
-                        SelectionChanged="MyListView_SelectionChanged">
+                        SelectionChangedCommand="{Binding ViewChampSeriesDetailsCommand}"
+                        SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}"
+                        EmptyView="{x:Static local:Strings.PlayerChampionshipSeriesPage_EmptyText}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="ifpawppr:ChampionshipSeries">
+                <DataTemplate x:DataType="ifpawppr:SeriesRank">
                     <VerticalStackLayout>
                         <StackLayout Orientation="Horizontal"
                                      Margin="10">
@@ -42,7 +50,7 @@
                                          VerticalOptions="Center">
                                 <Label LineBreakMode="NoWrap"
                                        HorizontalTextAlignment="End"
-                                       Text="{Binding Rank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding Rank, Converter={StaticResource longToOrdinalString}}"
                                        FontSize="24" />
                             </StackLayout>
                         </StackLayout>

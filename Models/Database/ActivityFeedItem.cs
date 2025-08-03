@@ -1,7 +1,6 @@
 ﻿using SQLite;
-using System;
 
-namespace Ifpa.Models
+namespace Ifpa.Models.Database
 {
     public class ActivityFeedItem
     {

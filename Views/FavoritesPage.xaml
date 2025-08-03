@@ -8,15 +8,15 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
-             Title="{Binding Title}"
+             Title="{x:Static local:Strings.FavoritesPage_Title}"
              xmlns:local="clr-namespace:Ifpa"
              x:Name="SearchPlayersPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:FavoritesViewModel"
-             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
             <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <toolkit:IsStringNullOrEmptyConverter x:Key="nullOrEmptyConverter" />
@@ -52,7 +52,7 @@
                             <StackLayout Padding="15,10"
                                          Orientation="Horizontal">
                                 <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.SelectPlayer}"
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.SelectPlayerCommand}"
                                                           CommandParameter="{Binding PlayerId}" />
                                 </StackLayout.GestureRecognizers>
                                 <StackLayout Orientation="Vertical">
@@ -80,7 +80,7 @@
                                 </StackLayout>
                                 <Label HorizontalOptions="EndAndExpand"
                                        VerticalTextAlignment="Center"
-                                       Text="{Binding PlayerStats.CurrentWpprRank, Converter={StaticResource intToOrdinalString}}"
+                                       Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource longToOrdinalString}}"
                                        LineBreakMode="NoWrap"
                                        FontSize="18" />
                             </StackLayout>

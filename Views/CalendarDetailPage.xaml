@@ -225,11 +225,11 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
                      x:Name="ShareButton"
-                     Clicked="ShareButton_Clicked"
+                     Command="{Binding ShareTournamentCommand}"
                      IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_AddToCalendar}"
                      x:Name="AddToCalendarButton"
-                     Clicked="AddToCalendarButton_Clicked"
+                     Command="{Binding AddToCalendarCommand}"
                      IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid RowDefinitions="*">

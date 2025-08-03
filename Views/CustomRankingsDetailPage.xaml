@@ -4,7 +4,7 @@
              x:Class="Ifpa.Views.CustomRankingsDetailPage"
              xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              xmlns:controls="clr-namespace:Ifpa.Controls"
@@ -13,7 +13,7 @@
              x:Name="SearchPlayersPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:CustomRankingsDetailViewModel"
-             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.v2.Rankings;assembly=PinballApi">
+             xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings.Custom;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -33,9 +33,10 @@
                                         IsVisible="{Binding IsPopulated}"
                                         ItemsSource="{Binding ViewResults}"
                                         SelectionMode="Single"
-                                        SelectionChanged="RankingsListView_SelectionChanged">
+                                        SelectionChangedCommand="{Binding SelectPlayerDetailsCommand}"
+                                        SelectedItem="{Binding SelectedViewResult}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ifparankings:CustomRankingViewResult">
+                                <DataTemplate x:DataType="ifparankings:ViewResult">
                                     <VerticalStackLayout>
                                         <StackLayout Margin="15,10"
                                                      Orientation="Horizontal">
@@ -43,17 +44,8 @@
                                                          VerticalOptions="Center"
                                                          HorizontalOptions="StartAndExpand">
                                                 <Label LineBreakMode="NoWrap"
-                                                       FontSize="16">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <FormattedString.Spans>
-                                                                <Span Text="{Binding FirstName}" />
-                                                                <Span Text="{x:Static local:Strings.SingleSpace}" />
-                                                                <Span Text="{Binding LastName}" />
-                                                            </FormattedString.Spans>
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
+                                                       FontSize="16"
+                                                       Text="{Binding Name}" />
                                                 <Label TextColor="{DynamicResource SecondaryTextColor}">
                                                     <Label.Text>
                                                         <MultiBinding Converter="{StaticResource AddressFormatConverter}">
@@ -123,7 +115,7 @@
                                         ItemsSource="{Binding ViewFilters}"
                                         SelectionMode="None">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ifparankings:CustomRankingViewFilter">
+                                <DataTemplate x:DataType="ifparankings:ViewFilter">
                                     <VerticalStackLayout>
                                         <StackLayout Margin="15"
                                                      Orientation="Horizontal">
@@ -147,9 +139,10 @@
                                         ItemsSource="{Binding Tournaments}"
                                         VerticalOptions="FillAndExpand"
                                         SelectionMode="Single"
-                                        SelectionChanged="TournamentListView_SelectionChanged">
+                                        SelectedItem="{Binding SelectedTournament}"
+                                        SelectionChangedCommand="{Binding SelectTournamentCommand}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ifparankings:Tournament">
+                                <DataTemplate x:DataType="ifparankings:CustomViewTournament">
                                     <VerticalStackLayout>
                                         <VerticalStackLayout Spacing="10"
                                                              Padding="10">

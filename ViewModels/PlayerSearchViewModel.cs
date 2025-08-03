@@ -1,80 +1,66 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Maui.Core.Extensions;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
+using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Players;
-using PlayerSearch = PinballApi.Models.WPPR.Universal.Players.Search.PlayerSearch;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
-    public class PlayerSearchViewModel : BaseViewModel
+    public partial class PlayerSearchViewModel : BaseViewModel
     {
-        public ObservableCollection<Player> Players { get; set; }
+        [ObservableProperty]
+        private ObservableCollection<Player> players = new ObservableCollection<Player>();
 
-        public bool IsLoaded { get; set; } = false;
+        [ObservableProperty]
+        private bool isLoaded = false;
 
-        private readonly PinballRankingApi rankingApi;
+        [ObservableProperty]
+        private Player selectedPlayer;
 
-        public PlayerSearchViewModel(PinballRankingApiV2 pinballRankingApiV2, PinballRankingApi pinballRankingApi, ILogger<PlayerSearchViewModel> logger) : base(pinballRankingApiV2, logger)
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public PlayerSearchViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerSearchViewModel> logger) : base(logger)
         {
-            Title = "Player Search";
-            Players = new ObservableCollection<Player>();
-            rankingApi = pinballRankingApi;
+            PinballRankingApi = pinballRankingApi;
         }
 
-        private Command _searchCommand;
-        public Command SearchCommand
+        [RelayCommand]
+        public async Task Search(string text)
         {
-            get
-            {
-                return _searchCommand ?? (_searchCommand = new Command<string>(async (text) =>
-                {
-                    if (IsBusy)
-                        return;
+            if (IsBusy)
+                return;
 
-                    IsBusy = true;
-
-                    try
-                    {
-                        Players.Clear();
-
-                        if (text.Trim().Length >= 4)
-                        {
-                            var items = await rankingApi.PlayerSearch(text.Trim());
-
-                            Players = items.Results?.ToObservableCollection();
-                            OnPropertyChanged("Players");
-                        }
-                        IsLoaded = true;
-                        OnPropertyChanged("IsLoaded");
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error searching for player {player}", text);
-                    }
-                    finally
-                    {
-                        IsBusy = false;
-                    }
-                }));
-            }
-        }
-
-        public async Task<PlayerSearch> SearchForPlayer(string name)
-        {
-            if(string.IsNullOrWhiteSpace(name) || name.Length <= 3)
-                return new PlayerSearch();
+            IsBusy = true;
 
             try
             {
-                return await rankingApi.PlayerSearch(name);
+                Players.Clear();
+
+                if (text.Trim().Length > 0)
+                {
+                    var items = await PinballRankingApi.PlayerSearch(name: text.Trim());
+
+                    Players = items.Results?.ToObservableCollection();
+                }
+                IsLoaded = true;
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error searching for player {player}", name);
-                return new PlayerSearch(); 
+                logger.LogError(ex, "Error searching for player {text}", text);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
+        [RelayCommand]
+        public async Task ViewPlayer()
+        {
+            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
+            SelectedPlayer = null;
+        }
     }
 }

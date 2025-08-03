@@ -25,7 +25,7 @@
                Margin="5" />
         <WebView Grid.Row="1"
                  Source="{Binding NewsItemContent}"
-                 VerticalOptions="Fill"
+                 VerticalOptions="Fill"                 
                  Navigating="WebView_Navigating" />
         <StackLayout Grid.Row="2"
                      Orientation="Horizontal"

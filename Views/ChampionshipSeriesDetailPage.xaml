@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Ifpa.Converters"
-             xmlns:tabView="clr-namespace:Syncfusion.Maui.TabView;assembly=Syncfusion.Maui.TabView"
+             xmlns:tabView="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
              x:Class="Ifpa.Views.ChampionshipSeriesDetailPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
@@ -11,7 +11,7 @@
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:ChampionshipSeriesDetailViewModel"
              Title="{Binding Title}"
-             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.v2.Series;assembly=PinballApi">
+             xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -28,7 +28,8 @@
                     <tabView:SfTabItem.Content>
                         <CollectionView ItemsSource="{Binding RegionStandings.Standings}"
                                         SelectionMode="Single"
-                                        SelectionChanged="StandingsCollectionView_SelectionChanged">
+                                        SelectionChangedCommand="{Binding SelectRegionStandingsCommand}"
+                                        SelectedItem="{Binding SelectedRegionStandings, Mode=TwoWay}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="ifpawppr:RegionStanding">
                                     <!-- TODO: Revert Fixed Height Request and line break mode when this bug is fixed
@@ -108,8 +109,9 @@
                 </tabView:SfTabItem>
                 <tabView:SfTabItem Header="Tournaments">
                     <tabView:SfTabItem.Content>
-                        <CollectionView SelectionChanged="TournamentResultsCollectionView_SelectionChanged"
-                                        SelectionMode="Single"
+                        <CollectionView SelectionMode="Single"
+                                        SelectionChangedCommand="{Binding SelectTournamentCommand}"
+                                        SelectedItem="{Binding SelectedTournament, Mode=TwoWay}"
                                         ItemsSource="{Binding SeriesTournaments.SubmittedTournaments}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="ifpawppr:SubmittedTournament">

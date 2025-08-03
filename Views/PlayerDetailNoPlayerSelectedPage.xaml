@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ifpa.Views.PlayerDetailNoPlayerSelectedPage"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:local="clr-namespace:Ifpa"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:PlayerDetailNoPlayerSelectedViewModel">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False"
+                            IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+    <VerticalStackLayout Padding="15,80,15,15"
+                         Spacing="20">
+        <Label Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_Title}"
+               FontSize="16"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20" />
+
+        <Label TextColor="{StaticResource SecondaryTextColor}"
+               Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_Subheader}" />
+
+        <Label TextColor="{StaticResource SecondaryTextColor}">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_StepOne}" />
+                    <Span Text="{x:Static local:Strings.SingleSpace}" />
+                    <Span Text="{mi:Fluent Icon=Search24, IconColor={StaticResource IconAccentColor}}"
+                          FontSize="16" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <Label Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_StepTwo}"
+               TextColor="{StaticResource SecondaryTextColor}" />
+
+        <Label Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_StepThree}"
+               TextColor="{StaticResource SecondaryTextColor}" />
+
+        <Label TextColor="{StaticResource SecondaryTextColor}">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_StepFour}" />
+                    <Span Text="{x:Static local:Strings.SingleSpace}" />
+                    <Span Text="{mi:Fluent Icon=Star24, IconColor={StaticResource IconAccentColor}}"
+                          FontSize="16" />
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+        <Button Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_Search}"
+                Command="{Binding NavigateToSearchCommand}" />
+
+    </VerticalStackLayout>
+</ContentPage>

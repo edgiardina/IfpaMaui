@@ -23,7 +23,9 @@ namespace Ifpa.Controls
             }
             else
             {
-                ItemsSource = (await viewModel.SearchForPlayer(newValue)).Results;
+                await viewModel.Search(newValue);          
+
+                ItemsSource = viewModel.Players;
             }
         }
 

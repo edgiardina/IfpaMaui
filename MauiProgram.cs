@@ -1,25 +1,30 @@
-﻿using Ifpa.ViewModels;
-using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
-using Ifpa.Views;
-using Syncfusion.Maui.Core.Hosting;
-using CommunityToolkit.Maui;
-using Ifpa.Services;
-using Ifpa.Interfaces;
-using MauiIcons.Fluent;
-using Ifpa.BackgroundJobs;
-using Shiny.Infrastructure;
-using PinballApi;
-using Microsoft.Maui.Controls.Compatibility.Hosting;
-using SkiaSharp.Views.Maui.Controls.Hosting;
-using Serilog;
-using Shiny;
+﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.ApplicationModel;
-using The49.Maui.BottomSheet;
+using Ifpa.BackgroundJobs;
+using Ifpa.Caching;
+using Ifpa.Controls;
+using Ifpa.Interfaces;
+using Ifpa.Models;
 using Ifpa.Platforms.Renderers;
 using Ifpa.Platforms.Services;
-using Ifpa.Controls;
+using Ifpa.Services;
+using Ifpa.ViewModels;
+using Ifpa.Views;
+using LiveChartsCore.SkiaSharpView.Maui;
+using MauiIcons.Fluent;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
+using PinballApi;
+using PinballApi.Interfaces;
+using Plugin.Maui.CalendarStore;
 using Plugin.Maui.NativeCalendar;
+using Serilog;
+using Shiny;
+using Shiny.Infrastructure;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using Syncfusion.Maui.Toolkit.Hosting;
+using The49.Maui.BottomSheet;
 
 namespace Ifpa;
 
@@ -41,10 +46,11 @@ public static class MauiProgram
             .UseMauiMaps()
             .UseFluentMauiIcons()
             .UseShiny()
-            .UseSkiaSharp(true)
+            .UseLiveCharts()
+            .UseSkiaSharp()
             .UseBottomSheet()
             .UseNativeCalendar()
-            .ConfigureSyncfusionCore()
+            .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -61,9 +67,9 @@ public static class MauiProgram
             {
                 //TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
                 essentials
-                    .AddAppAction("calendar", "Calendar", "IFPA Tournament Calendar", "calendar")
-                    .AddAppAction("my-stats", "My Stats", "Your IFPA player data", "mystats")
-                    .AddAppAction("rankings/player-search", "Player Search", "Search for other players in the IFPA database", "search")
+                    .AddAppAction("calendar", Strings.AppShell_Calendar, "IFPA Tournament Calendar", "calendar")
+                    .AddAppAction("my-stats", Strings.AppShell_MyStats, "Your IFPA player data", "mystats")
+                    .AddAppAction("rankings/player-search", Strings.PlayerSearchPage_Title, "Search for other players in the IFPA database", "search")
                     .OnAppAction(App.HandleAppActions);
 
                 essentials.UseVersionTracking();
@@ -122,13 +128,18 @@ public static class MauiProgram
 
         s.AddSingleton<BlogPostService>();
         s.AddSingleton<NotificationService>();
-        s.AddTransient<IReminderService, ReminderService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
-
-        s.AddSingleton(x => new PinballRankingApiV2(appSettings.IfpaApiKey));
-        s.AddSingleton(x => new PinballRankingApi(appSettings.IfpaApiKey));
-        s.AddSingleton<IGeocoding>(Geocoding.Default);
-        s.AddSingleton<IBadge>(Badge.Default);
+        s.AddSingleton<IDeepLinkService, DeepLinkService>();
+        s.AddSingleton<IPinballRankingApi>(sp =>
+        {
+            var online = new PinballRankingApi(appSettings.IfpaApiKey);
+            var logger = sp.GetRequiredService<ILogger<CachingPinballRankingApi>>();
+            return new CachingPinballRankingApi(online, logger);
+        });
+        s.AddSingleton(Geocoding.Default);
+        s.AddSingleton(Badge.Default);
+        s.AddSingleton(CalendarStore.Default);
+        s.AddSingleton(Map.Default);
 
         return builder;
     }
@@ -164,6 +175,10 @@ public static class MauiProgram
 #if DEBUG
         .WriteTo.Debug()
 #endif
+        .WriteTo.File(Settings.LogFilePath,
+            rollingInterval: RollingInterval.Day,
+            retainedFileCountLimit: builder.Configuration.GetRequiredSection("AppSettings").Get<AppSettings>().LogRetentionDays)
+
         .CreateLogger();
 
         builder.Logging.AddSerilog(dispose: true);

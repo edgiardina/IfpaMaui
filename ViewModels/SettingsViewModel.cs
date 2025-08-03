@@ -1,32 +1,78 @@
-﻿using Ifpa.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Ifpa.Caching;
+using Ifpa.Models;
 using Microsoft.Extensions.Logging;
-using PinballApi;
-using PinballApi.Models.v2.WPPR;
-using PinballApi.Models.WPPR.v2.Players;
-using System.Diagnostics;
+using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.ViewModels
 {
-    public class SettingsViewModel : BaseViewModel
+    public partial class SettingsViewModel : BaseViewModel
     {
         AppSettings AppSettings;
-        
-        private Player playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
 
-        public string PlayerAvatar
+        [ObservableProperty]
+        private Player playerRecord;
+
+        [ObservableProperty]
+        private string playerAvatar;
+
+        [ObservableProperty]
+        private string cacheSize;
+
+        private readonly IPinballRankingApi PinballRankingApi;
+
+        public SettingsViewModel(IPinballRankingApi pinballRankingApi, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(logger)
         {
-            get
+            AppSettings = appSettings;
+            PinballRankingApi = pinballRankingApi;
+            UpdateCacheSize();
+        }
+
+        public void UpdateCacheSize()
+        {
+            try
             {
-                if (PlayerRecord.ProfilePhoto != null)
-                    return PlayerRecord.ProfilePhoto?.ToString();
+                var fileInfo = new FileInfo(Settings.CacheDatabasePath);
+                if (fileInfo.Exists)
+                {
+                    var sizeInMb = fileInfo.Length / (1024.0 * 1024.0);
+                    CacheSize = $"{sizeInMb:F2} MB";
+                }
                 else
-                    return AppSettings.IfpaPlayerNoProfilePicUrl;
+                {
+                    CacheSize = "0 MB";
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error calculating cache size");
+                CacheSize = "Unknown";
             }
         }
 
-        public SettingsViewModel(PinballRankingApiV2 pinballRankingApiV2, AppSettings appSettings, ILogger<SettingsViewModel> logger) : base(pinballRankingApiV2, logger)
+        [RelayCommand]
+        public async Task ClearCache()
         {
-            AppSettings = appSettings;
+            try
+            {
+                IsBusy = true;
+
+                // Create a cache provider and clear it
+                await using var cache = new SQLiteCacheProvider<object>(Settings.CacheDatabasePath);
+                await cache.ClearCache();
+
+                UpdateCacheSize();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error clearing cache");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public async Task LoadPlayer()
@@ -36,14 +82,15 @@ namespace Ifpa.ViewModels
                 if (Settings.MyStatsPlayerId > 0)
                 {
                     IsBusy = true;
-                    var playerData = await PinballRankingApiV2.GetPlayer(Settings.MyStatsPlayerId);              
+                    var playerData = await PinballRankingApi.GetPlayer(Settings.MyStatsPlayerId);
 
-                    PlayerRecord = playerData;               
+                    PlayerRecord = playerData;
+                    PlayerAvatar = PlayerRecord.ProfilePhoto != null ? PlayerRecord.ProfilePhoto?.ToString() : AppSettings.IfpaPlayerNoProfilePicUrl;
                 }
                 else
                 {
-                    playerRecord = new Player { PlayerStats = new PlayerStats { }, ChampionshipSeries = new List<ChampionshipSeries> { } };
-                    OnPropertyChanged(null);
+                    PlayerRecord = null;
+                    PlayerAvatar = AppSettings.IfpaPlayerNoProfilePicUrl;
                 }
             }
             catch (Exception ex)
@@ -55,18 +102,6 @@ namespace Ifpa.ViewModels
                 IsBusy = false;
             }
         }
-
-        public Player PlayerRecord
-        {
-            get { return playerRecord; }
-            set
-            {
-                playerRecord = value;
-                OnPropertyChanged(null);
-            }
-        }
-
-        public string Name => PlayerRecord.FirstName != null || PlayerRecord.LastName != null ? PlayerRecord.FirstName + " " + PlayerRecord.LastName : null;
 
         public bool NotifyOnRankChange
         {

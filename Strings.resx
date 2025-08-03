@@ -255,6 +255,9 @@
   <data name="PlayerResultsPage_RankingProfile" xml:space="preserve">
     <value>Ranking Profile</value>
   </data>
+  <data name="PlayerResultsPage_Title" xml:space="preserve">
+    <value>Results</value>
+  </data>
   <data name="PlayerDetailPage_Player" xml:space="preserve">
     <value>Player #: </value>
   </data>
@@ -339,6 +342,9 @@
   <data name="PlayerSearchPage_NoPlayersFound" xml:space="preserve">
     <value>No players found</value>
   </data>
+  <data name="PlayerSearchPage_Title" xml:space="preserve">
+    <value>Player Search</value>
+  </data>
   <data name="SettingsPage_IFPARankChange" xml:space="preserve">
     <value>IFPA Rank Change</value>
   </data>
@@ -411,6 +417,9 @@
   <data name="SettingsPage_Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="SettingsPage_NoPlayerSelected" xml:space="preserve">
+    <value>No Player Selected</value>
+  </data>
   <data name="PlayerDetailPage_TournamentStatistics" xml:space="preserve">
     <value>Tournament Statistics</value>
   </data>
@@ -464,6 +473,9 @@
   </data>
   <data name="FavoritesPage_Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="FavoritesPage_Title" xml:space="preserve">
+    <value>Favorites</value>
   </data>
   <data name="PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet" xml:space="preserve">
     <value>Player has not played against competitors yet.</value>
@@ -606,9 +618,6 @@
   <data name="PlayerDetailPage_ErrorMyStats" xml:space="preserve">
     <value>There was an error trying to select this player as your 'My Stats' player.</value>
   </data>
-  <data name="PlayerDetailPage_HaventConfiguredMyStats" xml:space="preserve">
-    <value>Looks like you haven't configured your 'My Stats' page. Use the Player Search to find your Player, and press the Star to configure your Stats</value>
-  </data>
   <data name="PlayerDetailPage_RemoveFavorite" xml:space="preserve">
     <value>This player has been removed from your favorites</value>
   </data>
@@ -629,6 +638,18 @@
   </data>
   <data name="CalendarDetailPage_SharePrompt" xml:space="preserve">
     <value>Share Upcoming Tournament</value>
+  </data>
+  <data name="CalendarDetailPage_SelectCalendarPrompt" xml:space="preserve">
+    <value>Select which calendar to add this tournament to</value>
+  </data>
+  <data name="CalendarDetailPage_TournamentAdded" xml:space="preserve">
+    <value>Tournament added to your Calendar</value>
+  </data>
+  <data name="CalendarDetailPage_TournamentNotAdded" xml:space="preserve">
+    <value>Unable to add Tournament to your Calendar</value>
+  </data>
+  <data name="CalendarDetailPage_AddCalendarPermissionRequest" xml:space="preserve">
+    <value>IFPA Companion requires your permission before adding items to your Calendar</value>
   </data>
   <data name="CalendarDetailPage_FinalsFormat" xml:space="preserve">
     <value>Finals Format</value>
@@ -662,5 +683,74 @@
   </data>
   <data name="TournamentSearchPage_Placeholder" xml:space="preserve">
     <value>Search for tournaments by name</value>
+  </data>
+  <data name="PermissionRequired" xml:space="preserve">
+    <value>Permission Required</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_Subheader" xml:space="preserve">
+    <value>Follow these steps to add your IFPA player record to your 'My Stats' for tracking your progress</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepOne" xml:space="preserve">
+    <value>Use the Search Icon on the Rankings Page to navigate to the player search.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepTwo" xml:space="preserve">
+    <value>Type a partial or full name into the search bar and press "Search".</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepThree" xml:space="preserve">
+    <value>Select the player you wish to use from the list.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_StepFour" xml:space="preserve">
+    <value>Use the Star Icon on the Player Details view to select that player as you.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_Title" xml:space="preserve">
+    <value>You haven't selected a 'My Stats' Player.</value>
+  </data>
+  <data name="PlayerDetailNoPlayerSelectedPage_Search" xml:space="preserve">
+    <value>Search for My Player Record</value>
+  </data>
+  <data name="PlayerChampionshipSeriesPage_EmptyText" xml:space="preserve">
+    <value>No championship data for the selected year</value>
+  </data>
+  <data name="PlayerChampionshipSeriesPage_YearPrompt" xml:space="preserve">
+    <value>Championship Series Year</value>
+  </data>
+  <data name="NotRanked" xml:space="preserve">
+    <value>Not Ranked</value>
+  </data>
+  <data name="AboutPage_SendLogs" xml:space="preserve">
+    <value>Send Logs</value>
+  </data>
+  <data name="AboutPage_NoLogsTitle" xml:space="preserve">
+    <value>No Logs</value>
+  </data>
+  <data name="AboutPage_NoLogsMessage" xml:space="preserve">
+    <value>No log files were found to send.</value>
+  </data>
+  <data name="AboutPage_LogsEmailSubject" xml:space="preserve">
+    <value>IFPA App Logs - {0}</value>
+  </data>
+  <data name="AboutPage_LogsEmailBody" xml:space="preserve">
+    <value>Attached are the log files from the IFPA app.</value>
+  </data>
+  <data name="AboutPage_ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="AboutPage_ErrorMessage" xml:space="preserve">
+    <value>There was an error sending the log files. Please try again later.</value>
+  </data>
+  <data name="Toast_Offline_Cache" xml:space="preserve">
+    <value>Offline — using cached data.</value>
+  </data>
+  <data name="Toast_Offline_NoCache" xml:space="preserve">
+    <value>Offline — no cached data available.</value>
+  </data>
+  <data name="SettingsPage_CacheManagement" xml:space="preserve">
+    <value>Cache Management</value>
+  </data>
+  <data name="SettingsPage_CacheSize" xml:space="preserve">
+    <value>Offline Cache Size</value>
+  </data>
+  <data name="SettingsPage_ClearCache" xml:space="preserve">
+    <value>Clear Cache</value>
   </data>
 </root>

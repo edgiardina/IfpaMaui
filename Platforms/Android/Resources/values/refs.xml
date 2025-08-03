@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <item name="the49_maui_bottom_sheet_design" type="layout" tools:override="true">@layout/the49_maui_bottom_sheet_design</item>
+</resources>

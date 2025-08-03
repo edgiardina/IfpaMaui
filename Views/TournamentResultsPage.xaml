@@ -9,7 +9,7 @@
              Title="{Binding Title}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:TournamentResultsViewModel"
-             xmlns:ifpatournaments="clr-namespace:PinballApi.Models.WPPR.v2.Tournaments;assembly=PinballApi">
+             xmlns:ifpatournaments="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
@@ -109,7 +109,7 @@
                 <Label Grid.Column="1"
                        Grid.Row="5"
                        Style="{DynamicResource valueStyle}"
-                       Text="{Binding TournamentDetails.RankingType, Mode=OneWay}" />
+                       Text="{Binding TournamentDetails.RankingSystem, Mode=OneWay}" />
                 <Label Grid.Column="0"
                        Grid.Row="6"
                        Style="{DynamicResource labelStyle}"
@@ -172,11 +172,11 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
                      x:Name="ShareButton"
-                     Clicked="ShareButton_Clicked"
+                     Command="{Binding ShareTournamentCommand}"
                      IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Info}"
                      x:Name="InfoButton"
-                     Clicked="InfoButton_Clicked"
+                     Command="{Binding ViewTournamentInfoCommand}"
                      IconImageSource="{mi:Fluent Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
     </ContentPage.ToolbarItems>
     <Grid>
@@ -184,7 +184,8 @@
                            IsRunning="{Binding IsBusy}" />
         <CollectionView x:Name="MyListView"
                         ItemsSource="{Binding Results}"
-                        SelectionChanged="MyListView_SelectionChanged"
+                        SelectedItem="{Binding SelectedPlayer}"
+                        SelectionChangedCommand="{Binding ViewPlayerDetailsCommand}"
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         SelectionMode="Single">
             <CollectionView.ItemTemplate>
@@ -195,17 +196,8 @@
                             <Label Grid.Column="0"
                                    LineBreakMode="NoWrap"
                                    FontSize="16"
-                                   VerticalTextAlignment="Center">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="{Binding FirstName}" />
-                                            <Span Text=" " />
-                                            <Span Text="{Binding LastName}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                                   VerticalTextAlignment="Center"
+                                   Text="{Binding Name}" />
                             <StackLayout HorizontalOptions="EndAndExpand"
                                          Grid.Column="1">
                                 <Label LineBreakMode="NoWrap"

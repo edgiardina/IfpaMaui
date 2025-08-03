@@ -1,12 +1,12 @@
 ﻿using Ifpa.ViewModels;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
+    [QueryProperty("TournamentId", "tournamentId")]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TournamentInfoPage : ContentPage
     {
+        public int TournamentId { get; set; }
 
         TournamentResultsViewModel viewModel;
         public TournamentInfoPage(TournamentResultsViewModel viewModel)
@@ -20,14 +20,13 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Results.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            viewModel.TournamentId = TournamentId;
+            viewModel.LoadItems();
         }
 
         private async void CloseButton_Clicked(object sender, System.EventArgs e)
         {
-            //TODO: Remove all PopModals in favor of Shell.Current.GoToAsync("..");
-            await Navigation.PopModalAsync();
+            await Shell.Current.GoToAsync("..");
         }
     }
 }

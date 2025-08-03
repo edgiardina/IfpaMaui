@@ -4,30 +4,23 @@ using Android.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using PinballApi;
 using PinballApi.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PinballApi.Interfaces;
 
-namespace Ifpa.Platforms.Android
+namespace Ifpa.Platforms.Android.Widgets
 {
     [BroadcastReceiver(Label = "IFPA Rank Widget", Exported = true)]
-    [IntentFilter(new string[] { "android.appwidget.action.APPWIDGET_UPDATE" })]
-    [MetaData("android.appwidget.provider", Resource = "@xml/appwidgetprovider")]
+    [IntentFilter(new string[] { AppWidgetManager.ActionAppwidgetUpdate })]
+    [MetaData("android.appwidget.provider", Resource = "@xml/rankwidgetprovider")]
     public class RankWidget : AppWidgetProvider
     {
-        PinballRankingApiV2 pinballRankingApiV2 { get; set; }
+        private readonly IPinballRankingApi PinballRankingApi;
 
         private static string BackgroundClick = "BackgroundClickTag";
 
         public RankWidget()
         {
-            //TODO: can we dependency inject this PinballRankingApiV2?
-            var settings = App.GetAppSettings();
-            pinballRankingApiV2 = new PinballRankingApiV2(settings.IfpaApiKey);
+            PinballRankingApi = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPinballRankingApi>();
         }
 
         public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
@@ -56,12 +49,14 @@ namespace Ifpa.Platforms.Android
                 {
                     widgetView.SetViewVisibility(Resource.Id.selectPlayerNotification, ViewStates.Gone);
 
-                    var player = await pinballRankingApiV2.GetPlayer(playerId);
+                    var player = await PinballRankingApi.GetPlayer(playerId);
+
+                    var playerStats = player.PlayerStats.Open;
 
                     widgetView.SetTextViewText(Resource.Id.widgetName, $"{player.FirstName} {player.LastName}");
-                    widgetView.SetTextViewText(Resource.Id.widgetRank, player.PlayerStats.CurrentWpprRank.OrdinalSuffix());
+                    widgetView.SetTextViewText(Resource.Id.widgetRank, playerStats.CurrentRank.OrdinalSuffix());
                     widgetView.SetTextViewText(Resource.Id.widgetIfpaNumber, $"# {player.PlayerId}");
-                    widgetView.SetTextViewText(Resource.Id.widgetPoints, $"{player.PlayerStats.CurrentWpprValue}");
+                    widgetView.SetTextViewText(Resource.Id.widgetPoints, $"{playerStats.CurrentPoints}");
                 }
                 catch (Exception ex)
                 {
@@ -86,7 +81,6 @@ namespace Ifpa.Platforms.Android
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
 
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, GetPendingSelfIntent(context, BackgroundClick));
-
         }
 
         private PendingIntent GetPendingSelfIntent(Context context, string action)

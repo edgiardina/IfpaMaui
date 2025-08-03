@@ -12,6 +12,7 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
         Routing.RegisterRoute("player-details", typeof(PlayerDetailPage));
+        Routing.RegisterRoute("player-details-no-player-selected", typeof(PlayerDetailNoPlayerSelectedPage));
         Routing.RegisterRoute("player-results", typeof(PlayerResultsPage));
         Routing.RegisterRoute("activity-feed", typeof(ActivityFeedPage));
         Routing.RegisterRoute("pvp", typeof(PlayerVersusPlayerPage));
@@ -25,7 +26,7 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute("calendar-detail", typeof(CalendarDetailPage));
 
-        //more menu
+        // more menu
         Routing.RegisterRoute("favorites", typeof(FavoritesPage));
         Routing.RegisterRoute("custom-rankings", typeof(CustomRankingsPage));
         Routing.RegisterRoute("custom-ranking-details", typeof(CustomRankingsDetailPage));
@@ -37,6 +38,9 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("settings", typeof(SettingsPage));
         Routing.RegisterRoute("about", typeof(AboutPage));
         Routing.RegisterRoute("tournament-search", typeof(TournamentSearchPage));
+
+        // modals
+        Routing.RegisterRoute("tournament-info", typeof(TournamentInfoPage));
     }
 
     protected override async void OnNavigating(ShellNavigatingEventArgs args)
@@ -45,16 +49,15 @@ public partial class AppShell : Shell
 
         ShellNavigatingDeferral token = args.GetDeferral();
 
-        //If a user hasn't set up my stats, redirect to player search
-
+        // Prevent user from re-navigating to empty My Stats page
         try
         {
             if (!Settings.HasConfiguredMyStats
                 && args.Target.Location.ToString().Contains("my-stats")
+                && args.Current.Location.ToString().Contains("player-details-no-player-selected")
             )
             {
-                await DisplayAlert("Configure your Stats", "Looks like you haven't configured your 'My Stats' page. Use the Player Search under 'Rankings' to find your Player, and press the Star to configure your Stats", "OK");
-                args.Cancel();
+                 args.Cancel();
             }
 
         }

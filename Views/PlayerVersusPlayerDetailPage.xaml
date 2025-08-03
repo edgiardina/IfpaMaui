@@ -10,41 +10,41 @@
              x:Name="PVPDetailPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerVersusPlayerDetailViewModel"
-             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
-        <ListView x:Name="MyListView"
-                  ItemsSource="{Binding PlayerVersusPlayer}"
-                  RefreshCommand="{Binding LoadItemsCommand}"
-                  IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  ItemTapped="Handle_ItemTapped"
-                  CachingStrategy="RecycleElement"
-                  HasUnevenRows="true">
-            <ListView.ItemTemplate>
+        <CollectionView x:Name="MyListView"
+                        ItemsSource="{Binding PlayerVersusPlayer}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPlayerVersusPlayer}"
+                        SelectionChangedCommand="{Binding ViewTournamentResultsCommand}">
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:PlayerVersusPlayerComparisonRecord">
-                    <ViewCell>
+                    <VerticalStackLayout>
                         <Grid Margin="10"
                               ColumnDefinitions="*, 80"
                               ColumnSpacing="10">
                             <StackLayout Grid.Column="0">
                                 <Label Text="{Binding TournamentName}"
                                        FontSize="16" />
-                                <StackLayout Orientation="Horizontal">
+                                <Grid ColumnDefinitions="*,*">
                                     <Label LineBreakMode="NoWrap"
                                            FontSize="12"
                                            Text="{Binding EventName}"
                                            TextColor="{DynamicResource SecondaryTextColor}" />
                                     <Label Text="{Binding EventDate, StringFormat='{0:d}'}"
                                            FontSize="12"
+                                           Grid.Column="1"
+                                           HorizontalTextAlignment="Start"
+                                           HorizontalOptions="Center"
                                            TextColor="{DynamicResource SecondaryTextColor}" />
-                                </StackLayout>
+                                </Grid>
                             </StackLayout>
-                            <StackLayout Grid.Column="1">
+                            <StackLayout Grid.Column="1" VerticalOptions="Center">
                                 <Label LineBreakMode="NoWrap"
                                        HorizontalTextAlignment="Start"
                                        FontSize="16">
@@ -77,9 +77,11 @@
                                 </Label>
                             </StackLayout>
                         </Grid>
-                    </ViewCell>
+
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </VerticalStackLayout>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

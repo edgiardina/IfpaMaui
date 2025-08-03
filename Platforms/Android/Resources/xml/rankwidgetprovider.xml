@@ -2,9 +2,9 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="288dip"
     android:minHeight="40dip"
-        android:targetCellWidth="3"
+    android:targetCellWidth="3"
     android:targetCellHeight="1"
     android:resizeMode="none"
     android:updatePeriodMillis="3600000"
     android:initialLayout="@layout/rankwidget"
-    android:previewImage="@drawable/widgetpreview" />
+    android:previewLayout="@layout/rankwidget"/>

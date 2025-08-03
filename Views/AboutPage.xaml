@@ -7,7 +7,8 @@
              Title="{x:Static local:Strings.AboutPage_About}"
              x:DataType="vm:AboutViewModel"
              xmlns:local="clr-namespace:Ifpa"
-             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.v2.Players;assembly=PinballApi">
+             xmlns:views="clr-namespace:Ifpa.Views"
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsListNotNullOrEmptyConverter x:Key="isListNotNullOrEmptyConverter" />
@@ -24,7 +25,13 @@
                          BackgroundColor="{StaticResource BannerTextColor}">
                 <Image Source="https://www.ifpapinball.com/images/ifpa_logo.jpg"
                        VerticalOptions="Center"
-                       HeightRequest="100" />
+                       HeightRequest="100">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer 
+                            Command="{Binding SendLogsCommand}"
+                            NumberOfTapsRequired="2" />
+                    </Image.GestureRecognizers>
+                </Image>
             </StackLayout>
             <ScrollView Grid.Row="1">
                 <StackLayout Orientation="Vertical"
@@ -67,7 +74,7 @@
                     </Label>
                     <Label>
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped"
+                            <TapGestureRecognizer Command="{Binding ViewPlayerCommand}"
                                                   CommandParameter="{Binding CreatorIfpaNumber}" />
                         </Label.GestureRecognizers>
                         <Label.FormattedText>
@@ -83,7 +90,7 @@
                     <!-- https://flagpedia.net -->
                     <Label>
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="Flagpedia_Tapped" />
+                            <TapGestureRecognizer Command="{Binding FlagpediaCommand}" />
                         </Label.GestureRecognizers>
                         <Label.FormattedText>
                             <FormattedString>
@@ -96,8 +103,7 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Grid HorizontalOptions="FillAndExpand"
-                          Margin="0, 20">
+                    <Grid Margin="0, 20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -105,18 +111,16 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0"
+                        <Button Grid.Row="0" Grid.Column="0"
                                 WidthRequest="160"
                                 Padding="10,0,10,0"
-                                HorizontalOptions="CenterAndExpand"
                                 Text="{x:Static local:Strings.AboutPage_LearnMore}"
-                                Clicked="LearnMore_Clicked" />
-                        <Button Grid.Column="1"
+                                Command="{Binding LearnMoreCommand}" />
+                        <Button Grid.Row="0" Grid.Column="1"
                                 WidthRequest="160"
                                 Padding="10,0,10,0"
-                                HorizontalOptions="CenterAndExpand"
                                 Text="{x:Static local:Strings.AboutPage_LeaveAReview}"
-                                Clicked="ReviewButton_Clicked" />
+                                Command="{Binding OpenReviewCommand}" />
                     </Grid>
                     <!-- TODO:  IsVisible="{Binding Sponsors, Converter={StaticResource isListNotNullOrEmptyConverter}}" 
                                 hide the stacklayout if we have no sponsors. This crashes in iOS -->
@@ -128,7 +132,7 @@
                                 <DataTemplate x:DataType="ifpaplayer:Player">
                                     <Label TextColor="{StaticResource LinkTextColor}">
                                         <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="PlayerLabel_Tapped"
+                                            <TapGestureRecognizer Command="{Binding BindingContext.ViewPlayerCommand, Source={RelativeSource AncestorType={x:Type views:AboutPage}}}"
                                                                   CommandParameter="{Binding PlayerId}" />
                                         </Label.GestureRecognizers>
                                         <Label.FormattedText>

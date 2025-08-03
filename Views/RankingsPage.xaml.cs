@@ -35,26 +35,9 @@ namespace Ifpa.Views
 
                 ViewModel.CountryToShow = new Country { CountryName = Preferences.Get("CountryName", ViewModel.DefaultCountry.CountryName) };
 
-                ViewModel.LoadItemsCommand.Execute(null);
+                ViewModel.LoadItems();
             }
             base.OnAppearing();
-        }
-
-        private async void FilterButton_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("rankings-filter");
-        }
-
-        private async void PlayersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var player = e.CurrentSelection.FirstOrDefault() as BaseRanking;
-            if (player == null)
-                return;
-
-            await Shell.Current.GoToAsync($"player-details?playerId={player.PlayerId}");
-
-            // Manually deselect item.
-            PlayersListView.SelectedItem = null;
         }
     }
 }
