@@ -24,7 +24,7 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
         <UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Release'">
+    <PropertyGroup Condition="'$(TargetFramework)'=='net9.0-ios' and '$(Configuration)' == 'Release'">
         <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
         <CodesignKey>iPhone Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
         <CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
@@ -32,22 +32,30 @@
         <MtouchLink>None</MtouchLink>
         <UseInterpreter>true</UseInterpreter>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Debug'">
+    <PropertyGroup Condition="'$(TargetFramework)'=='net9.0-ios' and '$(Configuration)' == 'Debug'">
         <CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
         <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
     </PropertyGroup>
 
-	<PropertyGroup>
-		<ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
-	</PropertyGroup>
-	<!-- WidgetKit extension support -->
-	<ItemGroup>
-		<AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/../NativeIFPA">
-			<Name>RankWidgetExtension</Name>
-			<BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/IFPA/Build/Products/Debug-iphoneos</BuildOutput>
-			<BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/IFPA/Build/Products/Debug-iphonesimulator</BuildOutput>
-		</AdditionalAppExtensions>
-	</ItemGroup>
+    <PropertyGroup>
+        <ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
+    </PropertyGroup>
+    <!-- WidgetKit extension support -->
+    <ItemGroup>
+        <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/NativeIFPA">
+            <Name>RankWidgetExtension</Name>
+            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/Build/Products/Debug-iphoneos</BuildOutput>
+            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/Build/Products/Debug-iphonesimulator</BuildOutput>
+        </AdditionalAppExtensions>
+    </ItemGroup>
+
+    <!-- Pre-build: Run xcodebuild for RankWidgetExtension if net9.0-ios -->
+    <Target Name="RunXcodeWidgetBuildBeforeMaui" BeforeTargets="PreBuildEvent" Condition="'$(TargetPlatformIdentifier)' == 'ios' Or '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+        <Message Text="Running xcodebuild for RankWidgetExtension..." Importance="high" />
+        <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -workspace $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj/project.xcworkspace -scheme RankWidgetExtension -configuration Debug -sdk iphonesimulator -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData" />
+        <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -workspace $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj/project.xcworkspace -scheme RankWidgetExtension -configuration Debug -sdk iphoneos -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData" />
+    </Target>
+
     <PropertyGroup>
         <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
     </PropertyGroup>
@@ -108,9 +116,9 @@
     </ItemGroup>
 
     <!--
-		Solves ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 	
-		https://github.com/xamarin/xamarin-macios/issues/21324#issuecomment-2382226489 
-	-->
+        Solves ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 	
+        https://github.com/xamarin/xamarin-macios/issues/21324#issuecomment-2382226489 
+    -->
     <Target Name="DoNotLinkWithBrowserEngineKit" AfterTargets="_ComputeLinkNativeExecutableInputs">
         <ItemGroup>
             <_NativeExecutableFrameworks Remove="BrowserEngineKit" />
