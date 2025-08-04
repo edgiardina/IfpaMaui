@@ -105,6 +105,15 @@ jobs:
     environment: Release
     name: iOS Build
     steps:
+      - name: Debug: List NativeIFPA directory structure
+        run: |
+          echo "Listing NativeIFPA directory recursively..."
+          ls -R NativeIFPA || echo "NativeIFPA directory not found"
+
+      - name: Debug: List Xcode schemes in workspace
+        run: |
+          echo "Listing Xcode schemes in workspace..."
+          xcodebuild -workspace NativeIFPA/IFPA.xcodeproj/project.xcworkspace -list || echo "Workspace or schemes not found"
 
       - name: Use Xcode Version
         uses: maxim-lobanov/setup-xcode@v1
