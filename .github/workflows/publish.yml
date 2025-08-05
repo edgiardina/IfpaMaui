@@ -206,21 +206,6 @@ jobs:
           files: 'appsettings.json'
         env:
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
-    
-      - name: Build RankWidgetExtension
-        run: |
-            xcodebuild \
-              -project NativeIFPA/IFPA.xcodeproj \
-              -scheme RankWidgetExtension \
-              -configuration Release \
-              -sdk iphoneos \
-              -derivedDataPath NativeIFPA/DerivedData \
-              CODE_SIGN_STYLE=Manual \
-              CODE_SIGN_IDENTITY="Apple Distribution: Ed Giardina (KH5JKUPW2Q)" \
-              DEVELOPMENT_TEAM=KH5JKUPW2Q \
-              CODE_SIGN_ENTITLEMENTS="RankWidgetExtension.entitlements" \
-              PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
-
 
       - name: 🔍 Debug certificate vs provisioning profile match
         run: |
@@ -256,7 +241,20 @@ jobs:
                 echo "❌ No matching certificate fingerprint found in provisioning profile!"
                 exit 1
             fi
-
+    
+      - name: Build RankWidgetExtension
+        run: |
+            xcodebuild \
+              -project NativeIFPA/IFPA.xcodeproj \
+              -scheme RankWidgetExtension \
+              -configuration Release \
+              -sdk iphoneos \
+              -derivedDataPath NativeIFPA/DerivedData \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="Apple Distribution: Ed Giardina (KH5JKUPW2Q)" \
+              DEVELOPMENT_TEAM=KH5JKUPW2Q \
+              CODE_SIGN_ENTITLEMENTS="RankWidgetExtension.entitlements" \
+              PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
 
       - name: Setup .NET 9
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
