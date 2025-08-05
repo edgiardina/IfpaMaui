@@ -44,8 +44,8 @@
     <ItemGroup>
         <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/NativeIFPA">
             <Name>RankWidgetExtension</Name>
-            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/Build/Products/Debug-iphoneos</BuildOutput>
-            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/Build/Products/Debug-iphonesimulator</BuildOutput>
+            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/Build/Products/$(Configuration)-iphoneos</BuildOutput>
+            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/Build/Products/$(Configuration)-iphonesimulator</BuildOutput>
         </AdditionalAppExtensions>
     </ItemGroup>
 
