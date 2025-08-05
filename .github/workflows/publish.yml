@@ -211,7 +211,7 @@ jobs:
         run: |
             xcodebuild \
               -project NativeIFPA/IFPA.xcodeproj \
-              -scheme RankWidgetExtension \
+              -target RankWidgetExtension \
               -configuration Release \
               -sdk iphoneos \
               -derivedDataPath NativeIFPA/DerivedData \
