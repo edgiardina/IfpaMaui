@@ -245,6 +245,28 @@ jobs:
             -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
 
+      - name: 🔍 Dump entitlements from signed IPA
+        shell: bash
+        run: |
+            IPA_PATH="bin/Release/net9.0-ios/ios-arm64/publish/IfpaMaui.ipa"
+            TMP_DIR=$(mktemp -d)
+
+            echo "📦 Unzipping IPA to temp directory..."
+            unzip -q "$IPA_PATH" -d "$TMP_DIR"
+
+            APP_PATH=$(find "$TMP_DIR" -name "*.app" -type d | head -n 1)
+            if [[ -z "$APP_PATH" ]]; then
+                echo "❌ Could not locate .app inside IPA"
+                exit 1
+            fi
+
+            echo "📜 Dumping entitlements from binary..."
+            codesign -d --entitlements :- "$APP_PATH/IfpaMaui" || echo "❌ Failed to dump entitlements"
+
+            echo "📁 Contents of .app bundle:"
+            ls -la "$APP_PATH"
+
+
       - uses: actions/upload-artifact@v4
         with:
           name: ifpamaui-ios-signed-build
