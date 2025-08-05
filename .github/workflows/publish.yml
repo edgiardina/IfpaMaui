@@ -218,7 +218,6 @@ jobs:
               CODE_SIGN_STYLE=Manual \
               CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
               DEVELOPMENT_TEAM=KH5JKUPW2Q \
-              CODE_SIGN_ENTITLEMENTS="RankWidgetExtension.entitlements" \
               PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
 
       - name: Setup .NET 9
