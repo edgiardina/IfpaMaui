@@ -217,6 +217,7 @@ jobs:
               -derivedDataPath NativeIFPA/DerivedData \
               CODE_SIGN_STYLE=Manual \
               CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
+              CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
               DEVELOPMENT_TEAM=KH5JKUPW2Q \
               PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
 
