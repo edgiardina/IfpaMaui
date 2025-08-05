@@ -212,7 +212,7 @@ jobs:
             BUILD_NUMBER: ${{ env.VERSION_NUMBER_WITH_OFFSET }}
             APP_VERSION: ${{ env.VERSION }}
             IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
-            run: |
+        run: |
                 WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
 
                 echo "🔢 Setting CFBundleVersion to $BUILD_NUMBER"
