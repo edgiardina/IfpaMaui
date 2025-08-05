@@ -207,28 +207,25 @@ jobs:
         env:
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
 
-      - name: Set Widget Version and Build to match App
-        run: |
-            WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
-
-            echo "🔢 Setting CFBundleVersion to ${{ env.VERSION_NUMBER_WITH_OFFSET }}"
-            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ env.VERSION_NUMBER_WITH_OFFSET }}" "$WIDGET_PLIST"
-
-            echo "🏷️ Setting CFBundleShortVersionString to ${{ env.VERSION }}"
-            /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${{ env.VERSION }}" "$WIDGET_PLIST"
-
-            echo "✅ Widget Info.plist updated"
-
-      - name: Replace IFPA API Key in Widget Info.plist
+      - name: Update Widget Info.plist version and API key
         env:
+            BUILD_NUMBER: ${{ env.VERSION_NUMBER_WITH_OFFSET }}
+            APP_VERSION: ${{ env.VERSION }}
             IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
-        run: |
-            WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
+            run: |
+                WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
 
-            echo "🔐 Replacing IFPAApiKey in $WIDGET_PLIST"
-            /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$WIDGET_PLIST"
+                echo "🔢 Setting CFBundleVersion to $BUILD_NUMBER"
+                /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" "$WIDGET_PLIST" || \
+                /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $BUILD_NUMBER" "$WIDGET_PLIST"
 
-            echo "✅ IFPAApiKey replaced"
+                echo "🔢 Setting CFBundleShortVersionString to $APP_VERSION"
+                /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $APP_VERSION" "$WIDGET_PLIST" || \
+                /usr/libexec/PlistBuddy -c "Add :CFBundleShortVersionString string $APP_VERSION" "$WIDGET_PLIST"
+
+                echo "🔐 Replacing IFPAApiKey"
+                /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$WIDGET_PLIST" || \
+                /usr/libexec/PlistBuddy -c "Add :IFPAApiKey string $IFPA_API_KEY" "$WIDGET_PLIST"
     
       - name: Build RankWidgetExtension
         run: |
