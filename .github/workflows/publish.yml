@@ -206,6 +206,29 @@ jobs:
           files: 'appsettings.json'
         env:
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
+
+      - name: Set Widget Version and Build to match App
+        run: |
+            WIDGET_PLIST="NativeIFPA/RankWidgetExtension/Info.plist"
+
+            echo "🔢 Setting CFBundleVersion to ${{ env.VERSION_NUMBER_WITH_OFFSET }}"
+            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ env.VERSION_NUMBER_WITH_OFFSET }}" "$WIDGET_PLIST"
+
+            echo "🏷️ Setting CFBundleShortVersionString to ${{ env.VERSION }}"
+            /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${{ env.VERSION }}" "$WIDGET_PLIST"
+
+            echo "✅ Widget Info.plist updated"
+
+      - name: Replace IFPA API Key in Widget Info.plist
+        env:
+            IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
+        run: |
+            WIDGET_PLIST="NativeIFPA/RankWidgetExtension/Info.plist"
+
+            echo "🔐 Replacing IFPAApiKey in $WIDGET_PLIST"
+            /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$WIDGET_PLIST"
+
+            echo "✅ IFPAApiKey replaced"
     
       - name: Build RankWidgetExtension
         run: |
@@ -244,24 +267,7 @@ jobs:
             -p:ApplicationDisplayVersion=${VERSION} \
             -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} \
             -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
-            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
-
-      - name: 🔍 Inspect entitlements of app and widget
-        run: |
-            TMPDIR=$(mktemp -d)
-            unzip -q "bin/Release/net9.0-ios/ios-arm64/publish/IfpaMaui.ipa" -d "$TMPDIR"
-    
-            APP_PATH=$(find "$TMPDIR" -name "*.app" -type d | head -n 1)
-            WIDGET_PATH=$(find "$APP_PATH" -name "*.appex" -type d | head -n 1)
-
-            echo "📦 App path: $APP_PATH"
-            echo "📦 Widget path: $WIDGET_PATH"
-
-            echo "🔐 App entitlements:"
-            codesign -d --entitlements :- "$APP_PATH/IfpaMaui" || echo "⚠️ App entitlements missing"
-
-            echo "🔐 Widget entitlements:"
-            codesign -d --entitlements :- "$WIDGET_PATH/RankWidgetExtension" || echo "⚠️ Widget entitlements missing"
+            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}            
 
       - uses: actions/upload-artifact@v4
         with:
