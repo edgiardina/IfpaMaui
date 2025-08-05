@@ -52,8 +52,10 @@
     <!-- Pre-build: Run xcodebuild for RankWidgetExtension if net9.0-ios -->
     <Target Name="RunXcodeWidgetBuildBeforeMaui" BeforeTargets="PreBuildEvent" Condition="'$(TargetPlatformIdentifier)' == 'ios' Or '$(TargetPlatformIdentifier)' == 'maccatalyst'">
         <Message Text="Running xcodebuild for RankWidgetExtension..." Importance="high" />
-        <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'" Command="xcodebuild -workspace $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj/project.xcworkspace -scheme RankWidgetExtension -configuration Debug -sdk iphonesimulator -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData CODE_SIGNING_ALLOWED=NO" />
-        <Exec Condition="'$(ComputedPlatform)' == 'iPhone'" Command="xcodebuild -workspace $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj/project.xcworkspace -scheme RankWidgetExtension -configuration Debug -sdk iphoneos -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData CODE_SIGNING_ALLOWED=NO" />
+        <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'"
+              Command="xcodebuild -project $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj -scheme RankWidgetExtension -configuration Debug -sdk iphonesimulator -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData CODE_SIGNING_ALLOWED=NO" />
+        <Exec Condition="'$(ComputedPlatform)' == 'iPhone'"
+              Command="xcodebuild -project $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj -scheme RankWidgetExtension -configuration Debug -sdk iphoneos -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData CODE_SIGNING_ALLOWED=NO" />
     </Target>
 
     <PropertyGroup>
