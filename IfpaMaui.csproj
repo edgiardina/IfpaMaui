@@ -50,6 +50,7 @@
     </ItemGroup>
 
     <!-- Pre-build: Run xcodebuild for RankWidgetExtension if net9.0-ios -->
+    <!-- For now, this is done in the github action
     <Target Name="RunXcodeWidgetBuildBeforeMaui" BeforeTargets="PreBuildEvent" Condition="'$(TargetPlatformIdentifier)' == 'ios' Or '$(TargetPlatformIdentifier)' == 'maccatalyst'">
         <Message Text="Running xcodebuild for RankWidgetExtension..." Importance="high" />
         <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'"
@@ -57,6 +58,7 @@
         <Exec Condition="'$(ComputedPlatform)' == 'iPhone'"
               Command="xcodebuild -project $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj -scheme RankWidgetExtension -configuration Debug -sdk iphoneos -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData" />
     </Target>
+    -->
 
     <PropertyGroup>
         <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
