@@ -209,7 +209,7 @@ jobs:
 
       - name: Set Widget Version and Build to match App
         run: |
-            WIDGET_PLIST="NativeIFPA/RankWidgetExtension/Info.plist"
+            WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
 
             echo "🔢 Setting CFBundleVersion to ${{ env.VERSION_NUMBER_WITH_OFFSET }}"
             /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ env.VERSION_NUMBER_WITH_OFFSET }}" "$WIDGET_PLIST"
