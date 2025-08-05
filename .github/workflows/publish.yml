@@ -223,7 +223,7 @@ jobs:
         env:
             IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
         run: |
-            WIDGET_PLIST="NativeIFPA/RankWidgetExtension/Info.plist"
+            WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
 
             echo "🔐 Replacing IFPAApiKey in $WIDGET_PLIST"
             /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$WIDGET_PLIST"
