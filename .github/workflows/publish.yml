@@ -214,23 +214,25 @@ jobs:
             PROFILE_PATH="$HOME/Library/MobileDevice/Provisioning Profiles/$WIDGET_PROVISIONING_UUID.mobileprovision"
 
             echo "🔐 Extracting installed certificate fingerprint..."
-            CERT_FINGERPRINT=$(security find-certificate -Z -c "Apple Distribution: Ed Giardina" $HOME/Library/Keychains/app-signing.keychain-db | awk '/SHA-1/{print $NF}')
+            CERT_FINGERPRINT=$(security find-certificate -Z -c "Apple Distribution: Ed Giardina" $HOME/Library/Keychains/app-signing.keychain-db | awk '/SHA-1/{print $NF}' | head -1)
             echo "🔐 Installed cert SHA-1: $CERT_FINGERPRINT"
 
             echo "📥 Decoding provisioning profile..."
             security cms -D -i "$PROFILE_PATH" -o widget_profile.plist
 
-            echo "🔢 Counting DeveloperCertificates..."
-            CERT_COUNT=$(/usr/libexec/PlistBuddy -c "Print DeveloperCertificates" widget_profile.plist | grep -c '^    Dict')
-            echo "Found $CERT_COUNT certificates in profile"
+            echo "📄 Extracting and decoding DeveloperCertificates..."
+            plutil -extract DeveloperCertificates xml1 -o certs.plist widget_profile.plist
+
+            CERT_COUNT=$(xmllint --xpath 'count(//array/dict/data)' certs.plist)
+            echo "🔢 Found $CERT_COUNT certificates in provisioning profile."
 
             MATCH_FOUND=false
-            for ((i = 0; i < CERT_COUNT; i++)); do
-              echo "📄 Checking cert $i..."
-              /usr/libexec/PlistBuddy -c "Print :DeveloperCertificates:$i" widget_profile.plist > cert.der.b64
-              base64 -D cert.der.b64 -o cert$i.cer
+            for i in $(seq 1 $CERT_COUNT); do
+              echo "➡️  Checking certificate $i..."
+              CERT_BASE64=$(xmllint --xpath "(//array/dict/data)[$i]/text()" certs.plist)
+              echo "$CERT_BASE64" | base64 -d > cert$i.cer
               PROFILE_SHA=$(openssl x509 -noout -fingerprint -sha1 -in cert$i.cer | sed 's/.*=//;s/://g')
-              echo "➡️  Profile cert $i SHA-1: $PROFILE_SHA"
+              echo "🔍 Profile cert $i SHA-1: $PROFILE_SHA"
 
               if [[ "$PROFILE_SHA" == "$CERT_FINGERPRINT" ]]; then
                 MATCH_FOUND=true
