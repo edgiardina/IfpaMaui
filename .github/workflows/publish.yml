@@ -211,35 +211,38 @@ jobs:
         run: |
             set -e
 
-            echo "🧩 Checking installed certificate fingerprint..."
+            PROFILE_PATH="$HOME/Library/MobileDevice/Provisioning Profiles/$WIDGET_PROVISIONING_UUID.mobileprovision"
+
+            echo "🔐 Extracting installed certificate fingerprint..."
             CERT_FINGERPRINT=$(security find-certificate -Z -c "Apple Distribution: Ed Giardina" $HOME/Library/Keychains/app-signing.keychain-db | awk '/SHA-1/{print $NF}')
             echo "🔐 Installed cert SHA-1: $CERT_FINGERPRINT"
 
-            echo "📥 Dumping widget provisioning profile..."
-            security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROVISIONING_UUID.mobileprovision > widget_profile.plist
+            echo "📥 Decoding provisioning profile..."
+            security cms -D -i "$PROFILE_PATH" -o widget_profile.plist
 
-            echo "📦 Extracting embedded certs from provisioning profile..."
-            /usr/libexec/PlistBuddy -c "Print :DeveloperCertificates" widget_profile.plist > /tmp/certs.dump 2>/dev/null || echo "❌ Failed to extract DeveloperCertificates"
+            echo "🔢 Counting DeveloperCertificates..."
+            CERT_COUNT=$(/usr/libexec/PlistBuddy -c "Print DeveloperCertificates" widget_profile.plist | grep -c '^    Dict')
+            echo "Found $CERT_COUNT certificates in profile"
 
-            echo "🔁 Comparing against installed cert fingerprint..."
             MATCH_FOUND=false
-            for ((i=0; ; i++)); do
-                CERT_DER=$(PlistBuddy -c "Print :DeveloperCertificates:$i" widget_profile.plist 2>/dev/null || break)
-                if [[ -n "$CERT_DER" ]]; then
-                echo "$CERT_DER" | base64 -D -o /tmp/tmp_cert.cer
-                PROFILE_SHA=$(openssl x509 -noout -fingerprint -sha1 -in /tmp/tmp_cert.cer | sed 's/.*=//;s/://g')
-                echo "📄 Profile cert $i SHA-1: $PROFILE_SHA"
-                if [[ "$PROFILE_SHA" == "$CERT_FINGERPRINT" ]]; then
-                    MATCH_FOUND=true
-                fi
-                fi
+            for ((i = 0; i < CERT_COUNT; i++)); do
+              echo "📄 Checking cert $i..."
+              /usr/libexec/PlistBuddy -c "Print :DeveloperCertificates:$i" widget_profile.plist > cert.der.b64
+              base64 -D cert.der.b64 -o cert$i.cer
+              PROFILE_SHA=$(openssl x509 -noout -fingerprint -sha1 -in cert$i.cer | sed 's/.*=//;s/://g')
+              echo "➡️  Profile cert $i SHA-1: $PROFILE_SHA"
+
+              if [[ "$PROFILE_SHA" == "$CERT_FINGERPRINT" ]]; then
+                MATCH_FOUND=true
+                break
+              fi
             done
 
             if [[ "$MATCH_FOUND" == "true" ]]; then
-                echo "✅ Certificate in provisioning profile matches installed cert."
+              echo "✅ Certificate in provisioning profile matches installed cert."
             else
-                echo "❌ No matching certificate fingerprint found in provisioning profile!"
-                exit 1
+              echo "❌ No matching certificate fingerprint found in provisioning profile!"
+              exit 1
             fi
     
       - name: Build RankWidgetExtension
