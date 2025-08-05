@@ -206,46 +206,6 @@ jobs:
           files: 'appsettings.json'
         env:
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
-
-      - name: 🔍 Debug certificate vs provisioning profile match
-        run: |
-            set -e
-
-            PROFILE_PATH="$HOME/Library/MobileDevice/Provisioning Profiles/$WIDGET_PROVISIONING_UUID.mobileprovision"
-
-            echo "🔐 Extracting installed certificate fingerprint..."
-            CERT_FINGERPRINT=$(security find-certificate -Z -c "Apple Distribution: Ed Giardina" $HOME/Library/Keychains/app-signing.keychain-db | awk '/SHA-1/{print $NF}' | head -1)
-            echo "🔐 Installed cert SHA-1: $CERT_FINGERPRINT"
-
-            echo "📥 Decoding provisioning profile..."
-            security cms -D -i "$PROFILE_PATH" -o widget_profile.plist
-
-            echo "📄 Extracting and decoding DeveloperCertificates..."
-            plutil -extract DeveloperCertificates xml1 -o certs.plist widget_profile.plist
-
-            CERT_COUNT=$(xmllint --xpath 'count(//array/dict/data)' certs.plist)
-            echo "🔢 Found $CERT_COUNT certificates in provisioning profile."
-
-            MATCH_FOUND=false
-            for i in $(seq 1 $CERT_COUNT); do
-              echo "➡️  Checking certificate $i..."
-              CERT_BASE64=$(xmllint --xpath "(//array/dict/data)[$i]/text()" certs.plist)
-              echo "$CERT_BASE64" | base64 -d > cert$i.cer
-              PROFILE_SHA=$(openssl x509 -noout -fingerprint -sha1 -in cert$i.cer | sed 's/.*=//;s/://g')
-              echo "🔍 Profile cert $i SHA-1: $PROFILE_SHA"
-
-              if [[ "$PROFILE_SHA" == "$CERT_FINGERPRINT" ]]; then
-                MATCH_FOUND=true
-                break
-              fi
-            done
-
-            if [[ "$MATCH_FOUND" == "true" ]]; then
-              echo "✅ Certificate in provisioning profile matches installed cert."
-            else
-              echo "❌ No matching certificate fingerprint found in provisioning profile!"
-              exit 1
-            fi
     
       - name: Build RankWidgetExtension
         run: |
@@ -256,7 +216,7 @@ jobs:
               -sdk iphoneos \
               -derivedDataPath NativeIFPA/DerivedData \
               CODE_SIGN_STYLE=Manual \
-              CODE_SIGN_IDENTITY="Apple Distribution: Ed Giardina (KH5JKUPW2Q)" \
+              CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
               DEVELOPMENT_TEAM=KH5JKUPW2Q \
               CODE_SIGN_ENTITLEMENTS="RankWidgetExtension.entitlements" \
               PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
