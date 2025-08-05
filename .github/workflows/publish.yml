@@ -222,6 +222,42 @@ jobs:
               PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
 
 
+      - name: 🔍 Debug certificate vs provisioning profile match
+        run: |
+            set -e
+
+            echo "🧩 Checking installed certificate fingerprint..."
+            CERT_FINGERPRINT=$(security find-certificate -Z -c "Apple Distribution: Ed Giardina" $HOME/Library/Keychains/app-signing.keychain-db | awk '/SHA-1/{print $NF}')
+            echo "🔐 Installed cert SHA-1: $CERT_FINGERPRINT"
+
+            echo "📥 Dumping widget provisioning profile..."
+            security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROVISIONING_UUID.mobileprovision > widget_profile.plist
+
+            echo "📦 Extracting embedded certs from provisioning profile..."
+            /usr/libexec/PlistBuddy -c "Print :DeveloperCertificates" widget_profile.plist > /tmp/certs.dump 2>/dev/null || echo "❌ Failed to extract DeveloperCertificates"
+
+            echo "🔁 Comparing against installed cert fingerprint..."
+            MATCH_FOUND=false
+            for ((i=0; ; i++)); do
+                CERT_DER=$(PlistBuddy -c "Print :DeveloperCertificates:$i" widget_profile.plist 2>/dev/null || break)
+                if [[ -n "$CERT_DER" ]]; then
+                echo "$CERT_DER" | base64 -D -o /tmp/tmp_cert.cer
+                PROFILE_SHA=$(openssl x509 -noout -fingerprint -sha1 -in /tmp/tmp_cert.cer | sed 's/.*=//;s/://g')
+                echo "📄 Profile cert $i SHA-1: $PROFILE_SHA"
+                if [[ "$PROFILE_SHA" == "$CERT_FINGERPRINT" ]]; then
+                    MATCH_FOUND=true
+                fi
+                fi
+            done
+
+            if [[ "$MATCH_FOUND" == "true" ]]; then
+                echo "✅ Certificate in provisioning profile matches installed cert."
+            else
+                echo "❌ No matching certificate fingerprint found in provisioning profile!"
+                exit 1
+            fi
+
+
       - name: Setup .NET 9
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
