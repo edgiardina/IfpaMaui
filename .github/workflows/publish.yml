@@ -245,27 +245,22 @@ jobs:
             -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
 
-      - name: 🔍 Dump entitlements from signed IPA
-        shell: bash
+      - name: 🔍 Inspect entitlements of app and widget
         run: |
-            IPA_PATH="bin/Release/net9.0-ios/ios-arm64/publish/IfpaMaui.ipa"
-            TMP_DIR=$(mktemp -d)
+            TMPDIR=$(mktemp -d)
+            unzip -q "bin/Release/net9.0-ios/ios-arm64/publish/IfpaMaui.ipa" -d "$TMPDIR"
+    
+            APP_PATH=$(find "$TMPDIR" -name "*.app" -type d | head -n 1)
+            WIDGET_PATH=$(find "$APP_PATH" -name "*.appex" -type d | head -n 1)
 
-            echo "📦 Unzipping IPA to temp directory..."
-            unzip -q "$IPA_PATH" -d "$TMP_DIR"
+            echo "📦 App path: $APP_PATH"
+            echo "📦 Widget path: $WIDGET_PATH"
 
-            APP_PATH=$(find "$TMP_DIR" -name "*.app" -type d | head -n 1)
-            if [[ -z "$APP_PATH" ]]; then
-                echo "❌ Could not locate .app inside IPA"
-                exit 1
-            fi
+            echo "🔐 App entitlements:"
+            codesign -d --entitlements :- "$APP_PATH/IfpaMaui" || echo "⚠️ App entitlements missing"
 
-            echo "📜 Dumping entitlements from binary..."
-            codesign -d --entitlements :- "$APP_PATH/IfpaMaui" || echo "❌ Failed to dump entitlements"
-
-            echo "📁 Contents of .app bundle:"
-            ls -la "$APP_PATH"
-
+            echo "🔐 Widget entitlements:"
+            codesign -d --entitlements :- "$WIDGET_PATH/RankWidgetExtension" || echo "⚠️ Widget entitlements missing"
 
       - uses: actions/upload-artifact@v4
         with:
