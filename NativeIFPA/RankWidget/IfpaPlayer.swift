@@ -51,6 +51,35 @@ struct Player: Codable {
         case playerStats = "player_stats"
         case series
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        playerID = try container.decode(String.self, forKey: .playerID)
+        firstName = try container.decode(String.self, forKey: .firstName)
+        lastName = try container.decode(String.self, forKey: .lastName)
+        initials = try container.decode(String.self, forKey: .initials)
+        excludedFlag = try container.decode(String.self, forKey: .excludedFlag)
+        // Custom decoding for age
+        if let ageString = try? container.decode(String.self, forKey: .age) {
+            age = ageString
+        } else if let ageInt = try? container.decode(Int.self, forKey: .age) {
+            age = String(ageInt)
+        } else {
+            age = ""
+        }
+        city = try container.decode(String.self, forKey: .city)
+        stateprov = try container.decode(String.self, forKey: .stateprov)
+        countryName = try container.decode(String.self, forKey: .countryName)
+        countryCode = try container.decode(String.self, forKey: .countryCode)
+        ifpaRegistered = try container.decode(String.self, forKey: .ifpaRegistered)
+        womensFlag = try container.decode(String.self, forKey: .womensFlag)
+        profilePhoto = try container.decode(String.self, forKey: .profilePhoto)
+        matchplayEvents = try container.decode(MatchplayEvents.self, forKey: .matchplayEvents)
+        twitchUsername = try? container.decode(String.self, forKey: .twitchUsername)
+        pinsideUsername = try? container.decode(String.self, forKey: .pinsideUsername)
+        playerStats = try container.decode(PlayerStats.self, forKey: .playerStats)
+        series = try? container.decode([Series].self, forKey: .series)
+    }
 }
 
 // MARK: - MatchplayEvents
