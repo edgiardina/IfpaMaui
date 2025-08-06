@@ -21,12 +21,18 @@
 - Notifications for Rank Change, Tournament Results posted, and new IFPA blog posts
 - Widgets available for iOS and Android
     - iOS Rank Widget
+
+      <img src="https://github.com/user-attachments/assets/2fc13c82-ca57-4f68-881d-7d7804d60c10" width="300" />
+
     - Android Rank Widget
+
+      <img src="https://github.com/edgiardina/IfpaMaui/assets/3627193/d20a6283-37cc-4be1-aaa6-75f607d7aaba" width="300" />
+    
     - Android Upcoming Tournaments Widget
  
    
 
-  <img src="https://github.com/edgiardina/IfpaMaui/assets/3627193/d20a6283-37cc-4be1-aaa6-75f607d7aaba" width="300" />
+  
 
 
 #### Requirements
