@@ -19,7 +19,12 @@
   <img src="https://github.com/edgiardina/IfpaMaui/assets/3627193/35713849-a825-41f8-b97c-a497840dc52a" width="300" />
 - Calendar to view upcoming tournaments including integration to add tournaments to your device's calendar
 - Notifications for Rank Change, Tournament Results posted, and new IFPA blog posts
-- Rank Widget available for Android
+- Widgets available for iOS and Android
+    - iOS Rank Widget
+    - Android Rank Widget
+    - Android Upcoming Tournaments Widget
+ 
+   
 
   <img src="https://github.com/edgiardina/IfpaMaui/assets/3627193/d20a6283-37cc-4be1-aaa6-75f607d7aaba" width="300" />
 
