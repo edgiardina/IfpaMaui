@@ -1,4 +1,4 @@
-name: continuous integration build
+﻿name: continuous integration build
 
 on:
   push:
@@ -96,6 +96,29 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+          # ✅ Install widget provisioning profile
+          WIDGET_PROFILE_UUID=$(grep -aA1 UUID $WIDGET_PP_PATH | grep -io "[-A-F0-9]\{36\}" | head -1)
+          if [[ -z "$WIDGET_PROFILE_UUID" ]]; then
+              echo "❌ Failed to extract UUID from widget provisioning profile"
+              exit 1
+          fi
+          cp $WIDGET_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROFILE_UUID.mobileprovision
+          echo "WIDGET_PROVISIONING_UUID=$WIDGET_PROFILE_UUID" >> $GITHUB_ENV
+
+      - name: Build RankWidgetExtension
+        run: |
+            xcodebuild \
+              -project NativeIFPA/IFPA.xcodeproj \
+              -scheme RankWidgetExtension \
+              -configuration Release \
+              -sdk iphoneos \
+              -derivedDataPath NativeIFPA/DerivedData \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
+              CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
+              DEVELOPMENT_TEAM=KH5JKUPW2Q \
+              PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" 
 
       - name: Build MAUI iOS
         run: dotnet build IfpaMaui.csproj -c Release -f net9.0-ios -p:ArchiveOnBuild=true
