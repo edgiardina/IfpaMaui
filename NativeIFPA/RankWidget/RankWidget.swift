@@ -75,83 +75,137 @@ struct RankWidgetEntryView : View {
 
     @ViewBuilder
     private func contentForFamily() -> some View {
-        switch family {
-        case .systemSmall:
-            VStack(alignment: .center, spacing: 4) {
-                Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
-                    .foregroundColor(.gray)
-                    .font(.caption)
-                Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
-                    .foregroundColor(.white)
-                    .bold()
-                    .font(.system(size: 28))
-                Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
-                    .foregroundColor(.gray)
-                    .font(.caption2)
-            }.padding()
-        case .systemMedium:
-            HStack(alignment: .center, spacing: 16) {
-                if let photoData = entry.profilePhotoData, let uiImage = UIImage(data: photoData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 80, height: 80)
-                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                }
-                VStack(alignment: .center, spacing: 4) {
-                    Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
-                        .foregroundColor(.gray)
-                        .font(.headline)
-                    Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
-                        .foregroundColor(.white)
-                        .bold()
-                        .font(.system(size: 36))
-                    Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
-                        .foregroundColor(.gray)
-                        .font(.subheadline)
-                }
-            }.frame(maxHeight: .infinity, alignment: .center)
-            .padding()
-        case .systemLarge:
-            HStack(alignment: .center, spacing: 20) {
-                if let photoData = entry.profilePhotoData, let uiImage = UIImage(data: photoData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 120, height: 120)
-                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                }
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
-                        .foregroundColor(.gray)
-                        .font(.title2)
-                    Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
-                        .foregroundColor(.white)
-                        .bold()
-                        .font(.system(size: 44))
-                    Text("Points: \(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")")
-                        .foregroundColor(.gray)
-                        .font(.body)
-                    Text("Efficiency Rank: \(Int(entry.player?.player.first?.playerStats.system.open.efficiencyRank ?? "0")?.ordinal ?? "")")
-                        .foregroundColor(.gray)
-                        .font(.body)
-                    // Additional stats example
-                    if let stats = entry.player?.player.first?.playerStats.system.open {
-                        Text("Events Played: \(stats.totalEventsAllTime ?? "-")")
-                            .foregroundColor(.gray)
-                            .font(.body)
-                        Text("Best Finish: \(stats.bestFinish ?? "-")")
-                            .foregroundColor(.gray)
-                            .font(.body)
-                    }
-                }
-            }.padding()
-        default:
-            // Fallback for other families
+        if entry.player == nil {
             VStack {
-                Text("IFPA Rank")
-                    .foregroundColor(.white)
+                Text("Player data not available.")
+                    .foregroundColor(.gray)
+                    .font(.headline)
             }.padding()
+        } else {
+            switch family {
+            case .systemSmall:
+                ZStack(alignment: .topLeading) {
+                    Image("ifpa_icon")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .padding([.top, .leading], -8)
+                    VStack(alignment: .center, spacing: 4) {
+                        Spacer().frame(height: 16)
+                        Text("# \(entry.player?.player.first?.playerID ?? "-")")
+                            .foregroundColor(.gray)
+                            .font(.caption2)
+                        Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
+                            .foregroundColor(.gray)
+                            .font(.caption)
+                        Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
+                            .foregroundColor(.white)
+                            .bold()
+                            .font(.system(size: 28))
+                        Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
+                            .foregroundColor(.gray)
+                            .font(.caption2)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .padding([.top, .leading], 0)
+                }
+            case .systemMedium:
+                ZStack(alignment: .topLeading) {
+                    Image("ifpa_icon")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .padding([.top, .leading], -8)
+                    HStack(alignment: .center, spacing: 16) {
+                        if let photoData = entry.profilePhotoData, let uiImage = UIImage(data: photoData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 120, height: 120)
+                                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        }
+                        VStack(alignment: .center, spacing: 4) {
+                            Text("# \(entry.player?.player.first?.playerID ?? "-")")
+                                .foregroundColor(.gray)
+                                .font(.caption2)
+                            Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
+                                .foregroundColor(.gray)
+                                .font(.headline)
+                            Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.system(size: 36))
+                            Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
+                                .foregroundColor(.gray)
+                                .font(.subheadline)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .padding([.top, .leading], 0)
+                }
+            case .systemLarge:
+                ZStack(alignment: .topLeading) {
+                    Image("ifpa_icon")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .padding([.top, .leading], -8)
+                    VStack(alignment: .leading, spacing: 16) {
+                        // Top half: image, id, name, rank, points in a row
+                        HStack(alignment: .center, spacing: 16) {
+                            if let photoData = entry.profilePhotoData, let uiImage = UIImage(data: photoData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                            }
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("# \(entry.player?.player.first?.playerID ?? "-")")
+                                    .foregroundColor(.gray)
+                                    .font(.caption2)
+                                Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
+                                    .foregroundColor(.gray)
+                                    .font(.title2)
+                                Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.system(size: 44))
+                                Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
+                                    .foregroundColor(.gray)
+                                    .font(.title3)
+                            }
+                        }
+                        // Bottom half: two-column grid of stats/info
+                        let stats: [(String, String)] = [
+                            ("Eff. Prct", entry.player?.player.first?.playerStats.system.open.efficiencyValue ?? "-"),
+                            ("Eff. Rank", Int(entry.player?.player.first?.playerStats.system.open.efficiencyRank ?? "0")?.ordinal ?? "-"),
+                            ("Events Played", entry.player?.player.first?.playerStats.system.open.totalEventsAllTime ?? "-"),
+                            ("Best Finish", entry.player?.player.first?.playerStats.system.open.bestFinish ?? "-"),
+                            ("Avg Finish", entry.player?.player.first?.playerStats.system.open.averageFinish ?? "-"),
+                            ("Highest Rank", Int(entry.player?.player.first?.playerStats.system.open.highestRank ?? "0")?.ordinal ?? "-"),
+                        ]
+                        LazyVGrid(columns: [GridItem(.flexible(), alignment: .top), GridItem(.flexible(), alignment: .top)], spacing: 8) {
+                            ForEach(stats, id: \.0) { stat in
+                                HStack(alignment: .top) {
+                                    Text(stat.0)
+                                        .foregroundColor(.gray)
+                                        .font(.body)
+                                    Spacer(minLength: 8)
+                                    Text(stat.1)
+                                        .foregroundColor(.white)
+                                        .font(.body)
+                                }
+                            }
+                        }
+                    }
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .padding()
+                }
+            default:
+                // Fallback for other families
+                VStack {
+                    Text("IFPA Rank")
+                        .foregroundColor(.white)
+                }.padding()
+            }
         }
     }
 }
