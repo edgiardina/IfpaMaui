@@ -128,10 +128,16 @@
             <_NativeExecutableFrameworks Remove="BrowserEngineKit" />
         </ItemGroup>
     </Target>
+    <ItemGroup>
+      <AndroidResource Remove="Platforms\Android\Resources\values\strings.xml" />
+    </ItemGroup>
 
     <!-- Compile Directives / File Compile Types -->
     <ItemGroup>
         <None Remove="appsettings.json" />
+        <None Remove="Platforms\Android\Resources\drawable\noplayerpic.png" />
+        <None Remove="Platforms\Android\Resources\drawable\profile_rounded.xml" />
+        <None Remove="Platforms\Android\Resources\xml\file_paths.xml" />
         <None Remove="Resources\Images\about.svg" />
         <None Remove="Resources\Images\activity_feed.svg" />
         <None Remove="Resources\Images\calendar.svg" />
