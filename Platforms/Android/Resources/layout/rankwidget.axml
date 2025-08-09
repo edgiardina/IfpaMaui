@@ -4,14 +4,14 @@
     android:id="@+id/widgetBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:background="@drawable/rounded_edge"
-    android:padding="10dp"
-    >
+    android:padding="10dp">
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textColor="@color/ifpaAltText"
         android:text="Please select a 'My Stats' player to see your rank in the Rank Widget"
         android:visibility="gone"
@@ -22,84 +22,75 @@
         android:layout_gravity="center"
         android:id="@+id/selectPlayerNotification"
         />
+
+    <ImageView
+        android:id="@+id/widgetIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@mipmap/appicon"
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="start"
+        android:contentDescription="IFPA Logo" />
+
+    <ImageView
+        android:id="@+id/profilePhoto"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/noplayerpic"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/profile_rounded"
+        android:contentDescription="Profile Photo" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageView
-            android:maxWidth="48dp"
-            android:maxHeight="48dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:contentDescription="IFPA Logo"
-            android:src="@drawable/widgeticon"
-            android:id="@+id/imageView2" />
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/widgetName"
-            android:textColor="@color/ifpaAltText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="John Q Plunge"
-            android:autoSizeMinTextSize="12dp"
-            android:autoSizeMaxTextSize="30dp"
-            android:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_marginLeft="20dp"
-            android:textAlignment="viewStart" />
-        <TextView
-            android:layout_width="match_parent"
-            android:id="@+id/widgetRank"
-            android:textColor="@android:color/white"
-            android:text="125th"
-            android:layout_height="match_parent"
-            android:textAlignment="viewEnd"
-            android:autoSizeMinTextSize="12dp"
-            android:autoSizeMaxTextSize="50dp"
-            android:autoSizeTextType="uniform"
-            android:layout_weight="1.2"
-            android:gravity="center"
-            android:paddingLeft="10dp"
+            android:textColor="@color/ifpaAltText"
+            android:textSize="20sp"
             android:textStyle="bold"
            />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/widgetRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="125th"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:textStyle="bold"
+         />
 
+    </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <TextView
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:textAlignment="viewStart"
-            android:textColor="@color/ifpaAltText"
-            android:text=""
-           />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:textSize="16dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/widgetPoints"
-            android:textAlignment="viewStart"
-            android:textColor="@color/ifpaAltText"
-            android:layout_weight="1"
-            android:text="250.00"
-            android:layout_marginLeft="20dp"
-           />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:textSize="16dp"
-            android:layout_height="wrap_content"
             android:id="@+id/widgetIfpaNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="# 12345"
             android:textColor="@color/ifpaAltText"
-            android:textAlignment="viewEnd"
-            android:layout_weight="1"
-            android:text="# 12345" />
-
+            android:layout_gravity="end"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/widgetPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250.00"
+            android:textColor="@color/ifpaAltText"
+            android:layout_gravity="end"
+            android:textSize="12sp" />
     </LinearLayout>
-
 </LinearLayout>
-
