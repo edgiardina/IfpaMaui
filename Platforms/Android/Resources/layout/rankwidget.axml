@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:gravity="center"
+    android:gravity="center_vertical"
     android:background="@drawable/rounded_edge"
     android:padding="10dp">
 
@@ -39,7 +39,7 @@
         android:src="@drawable/noplayerpic"
         android:scaleType="centerCrop"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/profile_rounded"
         android:contentDescription="Profile Photo" />
     <LinearLayout
@@ -47,14 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/widgetIfpaNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="# 12345"
-            android:textColor="@color/ifpaAltText"
-            android:textSize="10sp"
-      />
+
         <TextView
             android:id="@+id/widgetName"
             android:layout_width="wrap_content"
@@ -75,14 +68,29 @@
          />
 
     </LinearLayout>
-
-            <TextView
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/widgetIfpaNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="# 12345"
+            android:textColor="@color/ifpaAltText"
+            android:layout_gravity="end"
+            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <TextView
             android:id="@+id/widgetPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="250.00"
             android:textColor="@color/ifpaAltText"
-                android:layout_gravity="bottom|end"
-            android:textSize="16sp" />
+            android:layout_gravity="end"
+            android:textSize="12sp" />
+    </LinearLayout>
 </LinearLayout>
-
