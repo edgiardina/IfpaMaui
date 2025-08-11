@@ -5,7 +5,6 @@
              xmlns:tabView="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
              x:Class="Ifpa.Views.PlayerResultsPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              ios:Page.LargeTitleDisplay="Never"
              xmlns:local="clr-namespace:Ifpa"
@@ -15,8 +14,13 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.PlayerResultsPage_RankingProfile}"
                      x:Name="RankingProfileButton"
-                     Command="{Binding RankingProfileSelectCommand}"
-                     IconImageSource="{mi:Fluent Icon=People48, IconColor={StaticResource IconAccentColor}}" />
+                     Command="{Binding RankingProfileSelectCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.People48}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <datatemplate:PlayerResultDataTemplate x:Key="PlayerResultDataTemplate" />

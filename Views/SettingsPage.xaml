@@ -4,7 +4,6 @@
              x:Class="Ifpa.Views.SettingsPage"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:shimmer="clr-namespace:Syncfusion.Maui.Toolkit.Shimmer;assembly=Syncfusion.Maui.Toolkit"
              Title="{x:Static local:Strings.SettingsPage_Settings}"
@@ -75,11 +74,17 @@
                                            HorizontalOptions="StartAndExpand"
                                            VerticalOptions="Center"
                                            IsVisible="{Binding PlayerRecord, Converter={StaticResource nullConverter}}" />
-                                    <ImageButton IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
-                                                 Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}"
-                                                 Margin="0,0,10,0"
-                                                 HorizontalOptions="End"
-                                                 Clicked="Button_Clicked" />
+                                    <Label Text="{StaticResource FluentIcon.PersonDelete24}"
+                                           FontFamily="FluentRegular"
+                                           TextColor="Red"
+                                           FontSize="24"
+                                           Margin="0,0,10,0"
+                                           HorizontalOptions="End"
+                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="Button_Clicked" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
                                 </StackLayout>
                             </shimmer:SfShimmer>
                         </ViewCell>

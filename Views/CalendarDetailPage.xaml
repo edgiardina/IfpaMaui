@@ -4,7 +4,6 @@
              xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.CalendarDetailPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              xmlns:local="clr-namespace:Ifpa"
@@ -225,12 +224,22 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
                      x:Name="ShareButton"
-                     Command="{Binding ShareTournamentCommand}"
-                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+                     Command="{Binding ShareTournamentCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_AddToCalendar}"
                      x:Name="AddToCalendarButton"
-                     Command="{Binding AddToCalendarCommand}"
-                     IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
+                     Command="{Binding AddToCalendarCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.CalendarLtr28}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid RowDefinitions="*">
         <ActivityIndicator IsVisible="{Binding IsBusy}"

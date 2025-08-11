@@ -2,8 +2,6 @@
 using Ifpa.Interfaces;
 using Ifpa.Models;
 using Ifpa.ViewModels;
-using MauiIcons.Core;
-using MauiIcons.Fluent;
 using Microsoft.Maui.Layouts;
 
 namespace Ifpa.Views
@@ -135,7 +133,6 @@ namespace Ifpa.Views
             {
                 Uri = $"https://www.ifpapinball.com/player.php?p={ViewModel.PlayerId}",
                 Title = Strings.PlayerDetailPage_SharePlayer,
-
             });
         }
 
@@ -161,8 +158,20 @@ namespace Ifpa.Views
         {
             var colorDictionary = Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries.First();
             var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
-            var filledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Heart48, IconColor = toolbarIconColor };
-            var unfilledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.HeartBroken24, IconColor = toolbarIconColor };
+            
+            var filledHeartIcon = new FontImageSource 
+            { 
+                Glyph = (string)Application.Current.Resources["FluentIcon.Heart48"],
+                FontFamily = "FluentRegular",
+                Color = toolbarIconColor 
+            };
+            
+            var unfilledHeartIcon = new FontImageSource 
+            { 
+                Glyph = (string)Application.Current.Resources["FluentIcon.HeartBroken24"],
+                FontFamily = "FluentRegular",
+                Color = toolbarIconColor 
+            };
 
             if (isFavorite)
             {
@@ -223,8 +232,5 @@ namespace Ifpa.Views
                 isAvatarEnlarged = true;
             }
         }
-
     }
-
-
 }

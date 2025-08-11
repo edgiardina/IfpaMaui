@@ -5,7 +5,6 @@
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.CalendarPage"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
@@ -35,8 +34,13 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.CalendarPage_MyLocation}"
-                     Clicked="MyLocation_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Location48, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="MyLocation_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Location48}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarPage_ToggleView}"
                      Command="{Binding ChangeCalendarDisplayCommand}"
                      IconImageSource="{Binding CurrentType, Converter={StaticResource CalendarTypeToIconConverter}}" />
@@ -184,7 +188,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
         </Grid>
     </Grid>
 </ContentPage>

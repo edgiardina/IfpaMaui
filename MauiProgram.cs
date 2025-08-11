@@ -11,7 +11,6 @@ using Ifpa.Services;
 using Ifpa.ViewModels;
 using Ifpa.Views;
 using LiveChartsCore.SkiaSharpView.Maui;
-using MauiIcons.Fluent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
@@ -44,7 +43,6 @@ public static class MauiProgram
             .UseMauiCompatibility()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
-            .UseFluentMauiIcons()
             .UseShiny()
             .UseLiveCharts()
             .UseSkiaSharp()
@@ -55,9 +53,12 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("FluentSystemIcons-Regular.ttf", "FluentRegular");
+                fonts.AddFont("FluentSystemIcons-Filled.ttf", "FluentFilled");
             })
             .ConfigureMauiHandlers((handlers) =>
             {
+                // Inset table view renderer is to make our settings look like native iOS settings
 #if IOS
                 handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewRenderer));
 #endif

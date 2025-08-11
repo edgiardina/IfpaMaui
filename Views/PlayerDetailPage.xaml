@@ -6,7 +6,6 @@
              xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:local="clr-namespace:Ifpa"
              Title="{Binding PlayerRecord.Initials, Mode=OneWay}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
@@ -41,20 +40,40 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_ActivityFeed}"
                      x:Name="ActivityFeedButton"
-                     Clicked="ActivityFeedButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="ActivityFeedButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.BroadActivityFeed24}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Favorite}"
                      x:Name="FavoriteButton"
-                     Clicked="FavoriteButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="FavoriteButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Heart24}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_SetToMyStats}"
                      x:Name="StarButton"
-                     Clicked="StarButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="StarButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Star48}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Share}"
                      x:Name="ShareButton"
-                     Clicked="ShareButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="ShareButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid>
         <AbsoluteLayout x:Name="AvatarOverlay"
