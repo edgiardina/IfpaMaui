@@ -43,8 +43,8 @@
                      Clicked="ActivityFeedButton_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.BroadActivityFeed24}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Favorite}"
@@ -52,8 +52,8 @@
                      Clicked="FavoriteButton_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Heart24}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_SetToMyStats}"
@@ -61,8 +61,8 @@
                      Clicked="StarButton_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Star48}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Share}"
@@ -70,8 +70,8 @@
                      Clicked="ShareButton_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -125,11 +125,11 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <StackLayout Grid.Row="1"
-                                     Orientation="Horizontal"
-                                     VerticalOptions="Center">
+                        <Grid Grid.Row="1"
+                              ColumnDefinitions="*, 30"
+                              VerticalOptions="Center">
                             <Label LineBreakMode="NoWrap"
-                                   HorizontalOptions="StartAndExpand"
+                                   HorizontalOptions="Start"
                                    Style="{StaticResource playerHeader}"
                                    FontSize="16">
                                 <Label.FormattedText>
@@ -141,7 +141,8 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Image Source="https://www.ifpapinball.com/images/confirmed.png"
+                            <Image Grid.Column="1"
+                                   Source="https://www.ifpapinball.com/images/confirmed.png"
                                    IsVisible="{Binding PlayerRecord.IfpaRegistered}"
                                    HeightRequest="16">
                                 <Image.Shadow>
@@ -149,9 +150,8 @@
                                             Opacity="0.8" />
                                 </Image.Shadow>
                             </Image>
-                        </StackLayout>
-                        <Grid HorizontalOptions="FillAndExpand"
-                              Grid.Row="2">
+                        </Grid>
+                        <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="30" />
@@ -214,21 +214,21 @@
                         </Grid.Triggers>
 
                         <Border Style="{StaticResource FrameButton}"
-                               Grid.Column="0">
+                                Grid.Column="0">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="6.5" />
                             </Border.StrokeShape>
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"
-                                   TextColor="{StaticResource ButtonTextColor}"/>
+                                   TextColor="{StaticResource ButtonTextColor}" />
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
                             </Border.GestureRecognizers>
                         </Border>
 
                         <Border Style="{StaticResource FrameButton}"
-                               Grid.Column="1">
+                                Grid.Column="1">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="6.5" />
                             </Border.StrokeShape>
@@ -242,9 +242,9 @@
                         </Border>
 
                         <Border Style="{StaticResource FrameButton}"
-                               Grid.Column="2"
-                               IsVisible="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
-                               x:Name="ChampButton">
+                                Grid.Column="2"
+                                IsVisible="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
+                                x:Name="ChampButton">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="6.5" />
                             </Border.StrokeShape>
@@ -447,7 +447,7 @@
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                        <lvc:CartesianChart HeightRequest="300"                                            
+                        <lvc:CartesianChart HeightRequest="300"
                                             YAxes="{Binding RankAxis}"
                                             LegendPosition="Hidden"
                                             ZoomMode="None"
