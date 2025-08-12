@@ -69,6 +69,8 @@ public partial class AppShell : Shell
         }
 
         token?.Complete();
+
+        await Task.CompletedTask;
     }
     // TODO: this is a hack to get the correct tab to show when navigating to a page
     // https://github.com/dotnet/maui/issues/16568

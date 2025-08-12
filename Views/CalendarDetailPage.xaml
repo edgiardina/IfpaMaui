@@ -43,7 +43,7 @@
                     <the49:MediumDetent />
                 </the49:BottomSheet.Detents>
                 <ScrollView>
-                    <StackLayout HorizontalOptions="FillAndExpand"
+                    <StackLayout HorizontalOptions="Fill"
                                  Spacing="10"
                                  Margin="0,10"
                                  IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
