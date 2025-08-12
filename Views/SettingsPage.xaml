@@ -47,17 +47,17 @@
                                                WaveColor="{StaticResource IconAccentColor}"
                                                Fill="{StaticResource SecondaryTextColor}"
                                                Type="CirclePersona">
-                                <StackLayout Orientation="Horizontal"
-                                             Margin="10">
+                                <Grid Margin="10" ColumnDefinitions="60, Auto, *">
                                     <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
-                                                        HorizontalOptions="Center"
+                                                        HorizontalOptions="Start"
+                                                        Grid.Column="0"
                                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                                         BorderWidth="0"
                                                         CornerRadius="8"
                                                         TextColor="{StaticResource ButtonTextColor}" />
-                                    <Label Margin="15"
+                                    <Label
                                            FontSize="18"
-                                           HorizontalOptions="StartAndExpand"
+                                           Grid.Column="1"
                                            IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
                                            VerticalOptions="Center">
                                         <Label.FormattedText>
@@ -68,13 +68,13 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"
-                                           Margin="15"
+                                    <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"                                           
                                            FontSize="18"
-                                           HorizontalOptions="StartAndExpand"
+                                           Grid.Column="1"
                                            VerticalOptions="Center"
                                            IsVisible="{Binding PlayerRecord, Converter={StaticResource nullConverter}}" />
                                     <Label Text="{StaticResource FluentIcon.PersonDelete24}"
+                                           Grid.Column="2"
                                            FontFamily="FluentRegular"
                                            TextColor="Red"
                                            FontSize="24"
@@ -86,7 +86,7 @@
                                             <TapGestureRecognizer Tapped="Button_Clicked" />
                                         </Label.GestureRecognizers>
                                     </Label>
-                                </StackLayout>
+                                </Grid>
                             </shimmer:SfShimmer>
                         </ViewCell>
                     </TableSection>
