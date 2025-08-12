@@ -31,7 +31,6 @@
         <CollectionView x:Name="PlayersListView"
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding Players}"
-                        VerticalOptions="FillAndExpand"
                         SelectionMode="None"
                         EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites.">
             <CollectionView.ItemTemplate>
@@ -46,19 +45,19 @@
                                            BackgroundColor="{StaticResource DeleteBackgroundColor}">
                                     <SwipeItem.IconImageSource>
                                         <FontImageSource Glyph="{StaticResource FluentIcon.Delete24}"
-                                                        FontFamily="FluentRegular"
-                                                        Color="White" />
+                                                         FontFamily="FluentRegular"
+                                                         Color="White" />
                                     </SwipeItem.IconImageSource>
                                 </SwipeItem>
                             </SwipeItems>
                         </SwipeView.RightItems>
                         <VerticalStackLayout>
-                            <StackLayout Padding="15,10"
-                                         Orientation="Horizontal">
-                                <StackLayout.GestureRecognizers>
+                            <Grid Padding="15,10"
+                                  ColumnDefinitions="*, 100">
+                                <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.SelectPlayerCommand}"
                                                           CommandParameter="{Binding PlayerId}" />
-                                </StackLayout.GestureRecognizers>
+                                </Grid.GestureRecognizers>
                                 <StackLayout Orientation="Vertical">
                                     <Label LineBreakMode="NoWrap"
                                            FontSize="16">
@@ -82,12 +81,13 @@
                                         </Label.Text>
                                     </Label>
                                 </StackLayout>
-                                <Label HorizontalOptions="EndAndExpand"
+                                <Label Grid.Column="1"
                                        VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="End"
                                        Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource longToOrdinalString}}"
                                        LineBreakMode="NoWrap"
                                        FontSize="18" />
-                            </StackLayout>
+                            </Grid>
                             <BoxView Style="{StaticResource BoxSeperator}" />
                         </VerticalStackLayout>
                     </SwipeView>
