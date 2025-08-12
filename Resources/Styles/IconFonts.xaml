@@ -14,6 +14,8 @@
     <!-- Calendar Icons -->
     <x:String x:Key="FluentIcon.CalendarLtr28">&#xE250;</x:String>
     <x:String x:Key="FluentIcon.Map24">&#xF52E;</x:String>
+    <x:String x:Key="FluentIcon.CalendarAdd16">&#xE239;</x:String>
+    <x:String x:Key="FluentIcon.CalendarAdd28">&#xE23A;</x:String>
 
     <!-- Heart Icons -->
     <x:String x:Key="FluentIcon.Heart24">&#xF47A;</x:String>

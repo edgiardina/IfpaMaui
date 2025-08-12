@@ -235,7 +235,7 @@
                      x:Name="AddToCalendarButton"
                      Command="{Binding AddToCalendarCommand}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.CalendarLtr28}"
+                <FontImageSource Glyph="{StaticResource FluentIcon.CalendarAdd28}"
                                 FontFamily="FluentRegular"
                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
