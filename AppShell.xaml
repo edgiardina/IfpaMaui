@@ -12,8 +12,7 @@
                       Route="rankings">
             <ShellContent.Icon>
                 <FontImageSource Glyph="{StaticResource FluentIcon.TextNumberListLtr24}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular" />
             </ShellContent.Icon>
         </ShellContent>
         <ShellContent Title="{x:Static local:Strings.AppShell_ChampSeries}"
@@ -22,8 +21,7 @@
                       Route="champ-series-list">
             <ShellContent.Icon>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular" />
             </ShellContent.Icon>
         </ShellContent>
         <ShellContent Title="{x:Static local:Strings.AppShell_MyStats}"
@@ -32,8 +30,7 @@
                       Route="my-stats">
             <ShellContent.Icon>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Person48}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular" />
             </ShellContent.Icon>
         </ShellContent>
         <ShellContent Title="{x:Static local:Strings.AppShell_Calendar}"
@@ -42,8 +39,7 @@
                       Route="calendar">
             <ShellContent.Icon>
                 <FontImageSource Glyph="{StaticResource FluentIcon.CalendarLtr28}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular" />
             </ShellContent.Icon>
         </ShellContent>
         <!-- More Menu Items-->
@@ -53,8 +49,7 @@
                       Route="more">
             <ShellContent.Icon>
                 <FontImageSource Glyph="{StaticResource FluentIcon.MoreHorizontal28}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular" />
             </ShellContent.Icon>
         </ShellContent>
         <!--<ShellContent Title="Favorites" ContentTemplate="{DataTemplate views:FavoritesPage}" Icon="favorite.png" Route="favorites" />
