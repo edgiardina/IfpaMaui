@@ -80,6 +80,7 @@
                                            FontSize="24"
                                            Margin="0,0,10,0"
                                            HorizontalOptions="End"
+                                           VerticalOptions="Center"
                                            IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}">
                                         <Label.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="Button_Clicked" />

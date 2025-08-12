@@ -78,4 +78,12 @@
     <x:String x:Key="FluentIcon.Person28">&#xF5BF;</x:String>
     <x:String x:Key="FluentIcon.Person48">&#xF5C0;</x:String>
 
+    <!-- People Icons -->
+    <x:String x:Key="FluentIcon.People12">&#xE8EB;</x:String>
+    <x:String x:Key="FluentIcon.People48">&#xE8ED;</x:String>
+
+    <!-- Person Delete Icons -->
+    <x:String x:Key="FluentIcon.PersonDelete16">&#xF5D0;</x:String>
+    <x:String x:Key="FluentIcon.PersonDelete24">&#xF5D1;</x:String>
+
 </ResourceDictionary>
