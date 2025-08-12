@@ -71,7 +71,6 @@
         <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.90" />
         <PackageReference Include="CommunityToolkit.Maui" Version="12.2.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc5.4" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />        
@@ -138,30 +137,6 @@
         <None Remove="Platforms\Android\Resources\drawable\noplayerpic.png" />
         <None Remove="Platforms\Android\Resources\drawable\profile_rounded.xml" />
         <None Remove="Platforms\Android\Resources\xml\file_paths.xml" />
-        <None Remove="Resources\Images\about.svg" />
-        <None Remove="Resources\Images\activity_feed.svg" />
-        <None Remove="Resources\Images\calendar.svg" />
-        <None Remove="Resources\Images\calendar_add.svg" />
-        <None Remove="Resources\Images\directors.svg" />
-        <None Remove="Resources\Images\favorite.svg" />
-        <None Remove="Resources\Images\favorite_outline.svg" />
-        <None Remove="Resources\Images\filter.svg" />
-        <None Remove="Resources\Images\location.svg" />
-        <None Remove="Resources\Images\map.svg" />
-        <None Remove="Resources\Images\more.svg" />
-        <None Remove="Resources\Images\mystats.svg" />
-        <None Remove="Resources\Images\news.svg" />
-        <None Remove="Resources\Images\numbered_list.svg" />
-        <None Remove="Resources\Images\rankchange.svg" />
-        <None Remove="Resources\Images\ranking_profile.svg" />
-        <None Remove="Resources\Images\ribbon.svg" />
-        <None Remove="Resources\Images\rules.svg" />
-        <None Remove="Resources\Images\search.svg" />
-        <None Remove="Resources\Images\settings.svg" />
-        <None Remove="Resources\Images\share.svg" />
-        <None Remove="Resources\Images\star.svg" />
-        <None Remove="Resources\Images\stats.svg" />
-        <None Remove="Resources\Images\trophy.svg" />
     </ItemGroup>
 
     <ItemGroup>
@@ -220,6 +195,9 @@
     <ItemGroup>
         <MauiXaml Update="Controls\Chip.xaml">
             <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Resources\Styles\IconFonts.xaml">
+          <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="Views\AboutPage.xaml">
             <Generator>MSBuild:Compile</Generator>
@@ -335,5 +313,9 @@
         <MauiXaml Update="Views\TournamentResultsPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Images\" />
     </ItemGroup>
 </Project>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Search Icons -->
+    <x:String x:Key="FluentIcon.Search24">&#xF690;</x:String>
+    <x:String x:Key="FluentIcon.Search28">&#xF691;</x:String>
+    <x:String x:Key="FluentIcon.Search48">&#xEA7E;</x:String>
+
+    <!-- Filter Icons -->
+    <x:String x:Key="FluentIcon.Filter24">&#xF407;</x:String>
+    <x:String x:Key="FluentIcon.Filter28">&#xF408;</x:String>
+
+    <!-- Calendar Icons -->
+    <x:String x:Key="FluentIcon.CalendarLtr28">&#xE250;</x:String>
+    <x:String x:Key="FluentIcon.Map24">&#xF52E;</x:String>
+    <x:String x:Key="FluentIcon.CalendarAdd16">&#xE239;</x:String>
+    <x:String x:Key="FluentIcon.CalendarAdd28">&#xE23A;</x:String>
+
+    <!-- Heart Icons -->
+    <x:String x:Key="FluentIcon.Heart24">&#xF47A;</x:String>
+    <x:String x:Key="FluentIcon.Heart48">&#xE6FC;</x:String>
+    <x:String x:Key="FluentIcon.HeartBroken24">&#xEF25;</x:String>
+
+    <!-- Share Icons -->
+    <x:String x:Key="FluentIcon.Share48">&#xEAA8;</x:String>
+
+    <!-- Location Icons -->
+    <x:String x:Key="FluentIcon.Location48">&#xE77C;</x:String>
+
+    <!-- Delete Icons -->
+    <x:String x:Key="FluentIcon.Delete24">&#xF34D;</x:String>
+
+    <!-- Navigation Icons -->
+    <x:String x:Key="FluentIcon.ChevronRight24">&#xF2B1;</x:String>
+    <x:String x:Key="FluentIcon.ChevronRight28">&#xF2B2;</x:String>
+    <x:String x:Key="FluentIcon.ChevronRight48">&#xF2B3;</x:String>
+
+    <!-- Trophy Icons -->
+    <x:String x:Key="FluentIcon.Trophy16">&#xF835;</x:String>
+    <x:String x:Key="FluentIcon.Trophy20">&#xF836;</x:String>
+    <x:String x:Key="FluentIcon.Trophy24">&#xF837;</x:String>
+
+    <!-- Star Icons -->
+    <x:String x:Key="FluentIcon.Star24">&#xF710;</x:String>
+    <x:String x:Key="FluentIcon.Star48">&#xF711;</x:String>
+
+    <!-- Activity Feed Icons -->
+    <x:String x:Key="FluentIcon.BroadActivityFeed24">&#xF223;</x:String>
+
+    <!-- Info -->
+    <x:String x:Key="FluentIcon.Info28">&#xF4A5;</x:String>
+
+    <!-- Rankings -->
+    <x:String x:Key="FluentIcon.TextNumberListLtr24">&#xF7FA;</x:String>
+
+    <!-- News -->
+    <x:String x:Key="FluentIcon.News16">&#xE866;</x:String>
+
+    <!-- Rules -->
+    <x:String x:Key="FluentIcon.Scales24">&#xEA51;</x:String>
+
+    <!-- Directors -->
+    <x:String x:Key="FluentIcon.Earth24">&#xF3DB;</x:String>
+
+    <!-- Settings -->
+    <x:String x:Key="FluentIcon.Settings24">&#xF6AA;</x:String>
+
+    <!-- Stats -->
+    <x:String x:Key="FluentIcon.DataHistogram24">&#xF342;</x:String>
+
+    <!-- More / Overflow Menu -->
+    <x:String x:Key="FluentIcon.MoreHorizontal24">&#xE825;</x:String>
+    <x:String x:Key="FluentIcon.MoreHorizontal28">&#xE826;</x:String>
+
+    <!-- Person Icons -->
+    <x:String x:Key="FluentIcon.Person24">&#xF5BE;</x:String>
+    <x:String x:Key="FluentIcon.Person28">&#xF5BF;</x:String>
+    <x:String x:Key="FluentIcon.Person48">&#xF5C0;</x:String>
+
+</ResourceDictionary>

@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:views="clr-namespace:Ifpa.Views"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              x:Class="Ifpa.Views.MoreItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{x:Static local:Strings.MoreItemsPage_More}"
@@ -15,32 +14,86 @@
         <CollectionView.ItemsSource>
             <x:Array Type="{x:Type views:MoreItemsMenuItem}">
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Favorites}"
-                                         IconSource="favorite.png"
-                                         Route="favorites" />
+                                         Route="favorites">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Heart24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.TournamentSearchPage_Title}"
-                                         IconSource="trophy.png"
-                                         Route="tournament-search" />
+                                         Route="tournament-search">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_CustomRankings}"
-                                         IconSource="numbered_list.png"
-                                         Route="custom-rankings" />
+                                         Route="custom-rankings">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.TextNumberListLtr24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_News}"
-                                         IconSource="news.png"
-                                         Route="news" />
+                                         Route="news">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.News16}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Rules}"
-                                         IconSource="rules.png"
-                                         Route="rules" />
+                                         Route="rules">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Scales24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Stats}"
-                                         IconSource="stats.png"
-                                         Route="stats" />
+                                         Route="stats">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.DataHistogram24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Directors}"
-                                         IconSource="directors.png"
-                                         Route="directors" />
+                                         Route="directors">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Earth24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_Settings}"
-                                         IconSource="settings.png"
-                                         Route="settings" />
+                                         Route="settings">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Settings24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
                 <views:MoreItemsMenuItem Title="{x:Static local:Strings.MoreItemsPage_About}"
-                                         IconSource="about.png"
-                                         Route="about" />
+                                         Route="about">
+                    <views:MoreItemsMenuItem.IconSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Info28}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </views:MoreItemsMenuItem.IconSource>
+                </views:MoreItemsMenuItem>
+
             </x:Array>
         </CollectionView.ItemsSource>
         <CollectionView.ItemTemplate>
@@ -62,9 +115,13 @@
                                Text="{Binding Title}"
                                VerticalTextAlignment="Center"
                                FontSize="18" />
-                        <Image Source="{mi:Fluent Icon=ChevronRight24, IconColor={StaticResource SecondaryTextColor}}"
-                               Grid.Column="2"
-                               HeightRequest="16"/>
+                        <Label Grid.Column="2"
+                               Text="{StaticResource FluentIcon.ChevronRight24}"
+                               FontFamily="FluentRegular"
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               FontSize="16" />
                     </Grid>
                     <BoxView Style="{StaticResource BoxSeperator}" />
                 </StackLayout>

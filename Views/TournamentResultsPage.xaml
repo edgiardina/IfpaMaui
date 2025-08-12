@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.TournamentResultsPage"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
              Title="{Binding Title}"
@@ -172,12 +171,22 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
                      x:Name="ShareButton"
-                     Command="{Binding ShareTournamentCommand}"
-                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+                     Command="{Binding ShareTournamentCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Info}"
                      x:Name="InfoButton"
-                     Command="{Binding ViewTournamentInfoCommand}"
-                     IconImageSource="{mi:Fluent Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
+                     Command="{Binding ViewTournamentInfoCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Info28}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
