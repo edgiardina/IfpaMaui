@@ -8,8 +8,9 @@
              xmlns:local="clr-namespace:Ifpa"
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}"
-             xmlns:vm="clr-namespace:Ifpa.ViewModels">
-    <!-- TODO: use x:DataType for this page -->
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:PlayerVersusPlayerViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:PlayerVersusRecordStringConverter x:Key="pvpString" />
@@ -22,8 +23,8 @@
                      Clicked="InfoButton_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

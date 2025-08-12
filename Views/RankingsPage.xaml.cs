@@ -16,7 +16,7 @@ namespace Ifpa.Views
             BindingContext = ViewModel = viewModel;
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             if (ViewModel.Players.Count == 0)
             {

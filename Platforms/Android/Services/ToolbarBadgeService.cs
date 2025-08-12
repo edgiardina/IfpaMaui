@@ -8,9 +8,15 @@ namespace Ifpa.Platforms.Services
 {
     public class ToolbarBadgeService : IToolbarBadgeService
     {
+        readonly IDispatcher Dispatcher;
+        public ToolbarBadgeService(IDispatcher dispatcher)
+        {
+            Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+        }
+
         public void SetBadge(Page page, ToolbarItem item, int value, Color backgroundColor, Color textColor)
         {
-            Device.BeginInvokeOnMainThread(() =>
+            Dispatcher.Dispatch(() =>
             {
 
                 //var toolbar = Microsoft.Maui.ApplicationModel.Platform.CurrentActivity.FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);

@@ -63,7 +63,7 @@
                                         <Label.Text>
                                             <MultiBinding Converter="{StaticResource AddressFormatConverter}">
                                                 <Binding Path="City" />
-                                                <Binding Path="StateProvince" />
+                                                <Binding Path="Stateprov" />
                                                 <Binding Path="CountryName" />
                                             </MultiBinding>
                                         </Label.Text>

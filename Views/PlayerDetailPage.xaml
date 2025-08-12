@@ -198,12 +198,14 @@
                     <Grid ColumnSpacing="10">
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
+                                         x:DataType="Button"
                                          Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
                                          Value="True">
                                 <Setter Property="ColumnDefinitions"
                                         Value="*,*,*" />
                             </DataTrigger>
                             <DataTrigger TargetType="Grid"
+                                         x:DataType="Button"
                                          Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
                                          Value="False">
                                 <Setter Property="ColumnDefinitions"

@@ -24,7 +24,7 @@ namespace Ifpa.Platforms.Renderers
 
         public BadgeShellTabbarAppearanceTracker()
         {
-            notificationService = Application.Current.MainPage.Handler.MauiContext.Services.GetService<NotificationService>();
+            notificationService = Application.Current.Handler.MauiContext.Services.GetService<NotificationService>();
         }
 
         public override void SetAppearance(UITabBarController controller, ShellAppearance appearance)

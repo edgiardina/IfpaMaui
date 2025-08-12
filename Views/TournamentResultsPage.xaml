@@ -174,8 +174,8 @@
                      Command="{Binding ShareTournamentCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Info}"
@@ -183,8 +183,8 @@
                      Command="{Binding ViewTournamentInfoCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Info28}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -207,8 +207,7 @@
                                    FontSize="16"
                                    VerticalTextAlignment="Center"
                                    Text="{Binding Name}" />
-                            <StackLayout HorizontalOptions="EndAndExpand"
-                                         Grid.Column="1">
+                            <StackLayout Grid.Column="1">
                                 <Label LineBreakMode="NoWrap"
                                        HorizontalTextAlignment="End"
                                        Text="{Binding Position, Converter={StaticResource intToOrdinalString}}"
