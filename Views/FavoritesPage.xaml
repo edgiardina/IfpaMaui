@@ -9,8 +9,9 @@
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
              Title="{x:Static local:Strings.FavoritesPage_Title}"
              xmlns:local="clr-namespace:Ifpa"
-             x:Name="SearchPlayersPage"
+             x:Name="thisPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:views="clr-namespace:Ifpa.Views"
              x:DataType="vm:FavoritesViewModel"
              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
@@ -40,7 +41,7 @@
                         <SwipeView.RightItems>
                             <SwipeItems>
                                 <SwipeItem Text="{x:Static local:Strings.FavoritesPage_Delete}"
-                                           Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.DeletePlayerCommand}"
+                                           Command="{Binding Source={x:Reference thisPage}, Path=BindingContext.DeletePlayerCommand, x:DataType=vm:FavoritesViewModel}"
                                            CommandParameter="{Binding PlayerId}"
                                            BackgroundColor="{StaticResource DeleteBackgroundColor}">
                                     <SwipeItem.IconImageSource>
@@ -55,7 +56,7 @@
                             <Grid Padding="15,10"
                                   ColumnDefinitions="*, 100">
                                 <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.SelectPlayerCommand}"
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference thisPage}, Path=BindingContext.SelectPlayerCommand, x:DataType=vm:FavoritesViewModel}"
                                                           CommandParameter="{Binding PlayerId}" />
                                 </Grid.GestureRecognizers>
                                 <StackLayout Orientation="Vertical">

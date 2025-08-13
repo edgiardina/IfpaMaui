@@ -20,6 +20,7 @@
             <toolkit:IsNotNullConverter x:Key="isNotNullConverter" />
             <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter" />
             <converters:NotEqualMultiValueConverter x:Key="NotEqualMultiValueConverter" />
+
             <Style x:Key="calendarHeader"
                    TargetType="Label">
                 <Setter Property="TextColor"
@@ -117,7 +118,7 @@
                                     <Label Text="{Binding Tournament.EventStartDate, StringFormat='{0:d}', Mode=OneWay}"
                                            Style="{DynamicResource valueStyle}" />
                                     <Label Text="{x:Static local:Strings.Hyphen}"
-                                           HorizontalTextAlignment="Center"                  
+                                           HorizontalTextAlignment="Center"
                                            Padding="10,0,0,0"
                                            Margin="5,0,0,0">
                                         <Label.IsVisible>
@@ -226,8 +227,8 @@
                      Command="{Binding ShareTournamentCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_AddToCalendar}"
@@ -235,8 +236,8 @@
                      Command="{Binding AddToCalendarCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.CalendarAdd28}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

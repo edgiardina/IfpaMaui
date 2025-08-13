@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using Plugin.Maui.CalendarStore;
