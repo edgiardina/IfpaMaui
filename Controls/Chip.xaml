@@ -10,8 +10,7 @@
             StrokeShape="RoundRectangle 6.5"
             Padding="8,5"
             Margin="{OnPlatform Android=1}"
-            BackgroundColor="{StaticResource IconAccentColor}"
-            Shadow="{OnPlatform Android=null, iOS=null, Default={Shadow Offset='0,2', Opacity=0.2}}">
+            BackgroundColor="{StaticResource IconAccentColor}">
         <Label x:Name="Label"
                Text="{Binding Text}"
                FontSize="{Binding FontSize}"

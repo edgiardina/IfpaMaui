@@ -199,14 +199,14 @@
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
                                          x:DataType="Button"
-                                         Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
+                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
                                          Value="True">
                                 <Setter Property="ColumnDefinitions"
                                         Value="*,*,*" />
                             </DataTrigger>
                             <DataTrigger TargetType="Grid"
                                          x:DataType="Button"
-                                         Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
+                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
                                          Value="False">
                                 <Setter Property="ColumnDefinitions"
                                         Value="*,*" />
