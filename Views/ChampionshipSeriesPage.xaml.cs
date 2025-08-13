@@ -27,7 +27,7 @@ namespace Ifpa.Views
             {
                 ViewModel.Year = Year;
                 ViewModel.SeriesCode = SeriesCode;
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
         }
 
@@ -39,7 +39,7 @@ namespace Ifpa.Views
             {
                 this.Year = yearValue;
                 ViewModel.Year = yearValue;
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
         }
     }

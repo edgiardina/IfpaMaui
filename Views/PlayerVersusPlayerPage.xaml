@@ -57,20 +57,18 @@
                         <StackLayout Orientation="Vertical"
                                      BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
                             <Label Text="{Binding Key}"
-                                   Padding="15,10,0,10"
-                                   VerticalOptions="CenterAndExpand" />
+                                   Padding="15,10,0,10" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.GroupHeaderTemplate>
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifpaplayer:PlayerVersusRecord">
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal"
-                                     Margin="10">
+                        <Grid ColumnDefinitions="*,*"
+                              Margin="10">
                             <Label LineBreakMode="NoWrap"
                                    FontSize="16"
-                                   HorizontalOptions="StartAndExpand"
                                    HorizontalTextAlignment="Start">
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -84,7 +82,8 @@
                             </Label>
                             <Label LineBreakMode="NoWrap"
                                    FontSize="16"
-                                   HorizontalTextAlignment="Center"
+                                   Grid.Column="1"
+                                   HorizontalTextAlignment="End"
                                    TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -98,7 +97,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                        </StackLayout>
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

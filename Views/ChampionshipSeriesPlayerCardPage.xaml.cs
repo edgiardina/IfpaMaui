@@ -35,7 +35,7 @@ namespace Ifpa.Views
                 ViewModel.SeriesCode = SeriesCode;     
                 ViewModel.Year = Year;
 
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
         }
     }

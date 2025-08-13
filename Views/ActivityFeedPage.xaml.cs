@@ -20,7 +20,7 @@ namespace Ifpa.Views
             base.OnAppearing();
 
             activityFeedViewModel.SelectedItem = null;
-            activityFeedViewModel.ExecuteLoadItems();
+            _ = activityFeedViewModel.ExecuteLoadItems();
         }
     }
 }

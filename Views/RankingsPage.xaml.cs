@@ -35,7 +35,7 @@ namespace Ifpa.Views
 
                 ViewModel.CountryToShow = new Country { CountryName = Preferences.Get("CountryName", ViewModel.DefaultCountry.CountryName) };
 
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
             base.OnAppearing();
         }

@@ -29,7 +29,7 @@ namespace Ifpa.Views
             ViewModel.RegionCode = RegionCode;
             ViewModel.SeriesCode = SeriesCode;
 
-            ViewModel.LoadItems();
+            _ = ViewModel.LoadItems();
         }
     }
 }

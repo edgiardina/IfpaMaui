@@ -98,7 +98,7 @@ namespace Ifpa.ViewModels
             if (action != null && action != Strings.Cancel)
             {
                 RankingType = (PlayerRankingSystem)Enum.Parse(typeof(PlayerRankingSystem), action);
-                LoadItems();
+                _ = LoadItems();
             }
         }
     }
