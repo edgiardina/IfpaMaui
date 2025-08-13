@@ -20,7 +20,7 @@ namespace Ifpa.Platforms.Renderers
 
         private const int myStatsTabIndex = 2;
 
-        private UITabBarItem? _myStatsTabBarItem;
+        private UITabBarItem _myStatsTabBarItem;
 
         public BadgeShellTabbarAppearanceTracker()
         {

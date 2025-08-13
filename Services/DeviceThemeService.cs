@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ifpa.Services
+﻿namespace Ifpa.Services
 {
     public interface IDeviceThemeService
     {
@@ -29,7 +23,7 @@ namespace Ifpa.Services
     {
         private readonly IPreferences _preferences = preferences;
 
-        static DeviceThemeService? currentImplementation;
+        static DeviceThemeService currentImplementation;
         public static DeviceThemeService Instance => currentImplementation ??= new DeviceThemeService(Preferences.Default);
 
 

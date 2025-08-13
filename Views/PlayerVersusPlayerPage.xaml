@@ -10,7 +10,8 @@
              Title="{Binding Title}"
              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
-             x:DataType="vm:PlayerVersusPlayerViewModel">
+             x:DataType="vm:PlayerVersusPlayerViewModel"
+             xmlns:models="clr-namespace:Ifpa.Models">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:PlayerVersusRecordStringConverter x:Key="pvpString" />
@@ -48,11 +49,9 @@
                   ItemTapped="Handle_ItemTapped"
                   CachingStrategy="RecycleElement"
                   HasUnevenRows="true"
-                  IsGroupingEnabled="True"
-                  GroupDisplayBinding="{Binding Key}"
-                  GroupShortNameBinding="{Binding Key}">
+                  IsGroupingEnabled="True">
             <ListView.GroupHeaderTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:PlayerVersusRecordGroup">
                     <ViewCell>
                         <StackLayout Orientation="Vertical"
                                      BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">

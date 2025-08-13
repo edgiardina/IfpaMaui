@@ -29,8 +29,8 @@
                        MaxLength="100"
                        HeightRequest="60"
                        Keyboard="Text"
-                       Placeholder="Type a player's name to search"
-                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
+                       Text="{Binding Text, Mode=TwoWay}"
+                       Placeholder="Type a player's name to search" />
             <ActivityIndicator Grid.Row="1"
                                IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />

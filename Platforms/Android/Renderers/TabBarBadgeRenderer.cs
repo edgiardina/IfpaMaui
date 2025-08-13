@@ -22,7 +22,7 @@ namespace Ifpa.Platforms.Renderers
 
         private const int myStatsTabIndex = 2;
 
-        private BadgeDrawable? badgeDrawable;
+        private BadgeDrawable badgeDrawable;
         public BadgeShellBottomNavViewAppearanceTracker(IShellContext shellContext, ShellItem shellItem) : base(shellContext, shellItem)
         {
             notificationService = Application.Current.Handler.MauiContext.Services.GetService<NotificationService>();

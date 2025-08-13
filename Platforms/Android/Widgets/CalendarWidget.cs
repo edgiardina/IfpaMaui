@@ -137,7 +137,7 @@ namespace Ifpa.Platforms.Android.Widgets
                         var templateIntent = new Intent(context, typeof(CalendarWidget));
                         templateIntent.SetAction(ACTION_TOURNAMENT_CLICKED);
 
-                        var pendingIntentTemplate = PendingIntent.GetBroadcast( // ← FIXED
+                        var pendingIntentTemplate = PendingIntent.GetBroadcast(
                             context,
                             0,
                             templateIntent,

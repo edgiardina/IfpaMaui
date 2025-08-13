@@ -35,7 +35,6 @@
                                IsVisible="True"
                                HasBackdrop="False"
                                Padding="10"
-                               BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
                                CornerRadius="10"
                                BackgroundColor="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}">
                 <the49:BottomSheet.Detents>
