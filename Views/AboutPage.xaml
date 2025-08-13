@@ -132,8 +132,8 @@
                                 <DataTemplate>
                                     <Label TextColor="{StaticResource LinkTextColor}">
                                         <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type views:AboutPage}},
-                                                                           Path=BindingContext.ViewPlayerCommand, x:DataType=views:AboutPage}"
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AboutViewModel}},
+                                                                           Path=ViewPlayerCommand, x:DataType=vm:AboutViewModel}"
                                                                   CommandParameter="{Binding PlayerId, x:DataType=ifpaplayer:Player}" />
                                         </Label.GestureRecognizers>
                                         <Label.FormattedText>
