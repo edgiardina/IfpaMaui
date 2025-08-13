@@ -15,6 +15,7 @@
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
         <DataTemplate x:Name="BottomSheetTemplate"
+                      x:DataType="vm:TournamentResultsViewModel"
                       x:Key="BottomSheetTemplate">
             <Grid Padding="10,10,10,10"
                   VerticalOptions="Center"
