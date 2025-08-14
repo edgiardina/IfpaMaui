@@ -28,7 +28,7 @@ namespace Ifpa.Views
             {
                 ViewModel.PlayerOneId = PlayerId;
                 ViewModel.PlayerTwoId = ComparePlayerId;
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
         }
     }

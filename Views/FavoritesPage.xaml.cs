@@ -18,7 +18,7 @@ namespace Ifpa.Views
         {            
             base.OnAppearing();
 
-            ViewModel.LoadItems();
+            _ = ViewModel.LoadItems();
         }
     }
 }

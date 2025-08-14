@@ -17,7 +17,7 @@ namespace Ifpa.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.LoadItems();
+            _ = ViewModel.LoadItems();
         }
     }
 }

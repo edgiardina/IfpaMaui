@@ -9,9 +9,11 @@
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
              Title="{x:Static local:Strings.FavoritesPage_Title}"
              xmlns:local="clr-namespace:Ifpa"
-             x:Name="SearchPlayersPage"
+             x:Name="thisPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:views="clr-namespace:Ifpa.Views"
              x:DataType="vm:FavoritesViewModel"
+             xmlns:ct="clr-namespace:CommunityToolkit.Mvvm.ComponentModel;assembly=CommunityToolkit.Mvvm"
              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -31,7 +33,6 @@
         <CollectionView x:Name="PlayersListView"
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding Players}"
-                        VerticalOptions="FillAndExpand"
                         SelectionMode="None"
                         EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites.">
             <CollectionView.ItemTemplate>
@@ -41,24 +42,24 @@
                         <SwipeView.RightItems>
                             <SwipeItems>
                                 <SwipeItem Text="{x:Static local:Strings.FavoritesPage_Delete}"
-                                           Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.DeletePlayerCommand}"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, Path=DeletePlayerCommand, x:DataType=vm:FavoritesViewModel}"
                                            CommandParameter="{Binding PlayerId}"
                                            BackgroundColor="{StaticResource DeleteBackgroundColor}">
                                     <SwipeItem.IconImageSource>
                                         <FontImageSource Glyph="{StaticResource FluentIcon.Delete24}"
-                                                        FontFamily="FluentRegular"
-                                                        Color="White" />
+                                                         FontFamily="FluentRegular"
+                                                         Color="White" />
                                     </SwipeItem.IconImageSource>
                                 </SwipeItem>
                             </SwipeItems>
                         </SwipeView.RightItems>
                         <VerticalStackLayout>
-                            <StackLayout Padding="15,10"
-                                         Orientation="Horizontal">
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference SearchPlayersPage}, Path=BindingContext.SelectPlayerCommand}"
+                            <Grid Padding="15,10"
+                                  ColumnDefinitions="*, 100">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, Path=SelectPlayerCommand, x:DataType=vm:FavoritesViewModel}"
                                                           CommandParameter="{Binding PlayerId}" />
-                                </StackLayout.GestureRecognizers>
+                                </Grid.GestureRecognizers>
                                 <StackLayout Orientation="Vertical">
                                     <Label LineBreakMode="NoWrap"
                                            FontSize="16">
@@ -76,18 +77,19 @@
                                         <Label.Text>
                                             <MultiBinding Converter="{StaticResource AddressFormatConverter}">
                                                 <Binding Path="City" />
-                                                <Binding Path="StateProvince" />
+                                                <Binding Path="Stateprov" />
                                                 <Binding Path="CountryName" />
                                             </MultiBinding>
                                         </Label.Text>
                                     </Label>
                                 </StackLayout>
-                                <Label HorizontalOptions="EndAndExpand"
+                                <Label Grid.Column="1"
                                        VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="End"
                                        Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource longToOrdinalString}}"
                                        LineBreakMode="NoWrap"
                                        FontSize="18" />
-                            </StackLayout>
+                            </Grid>
                             <BoxView Style="{StaticResource BoxSeperator}" />
                         </VerticalStackLayout>
                     </SwipeView>

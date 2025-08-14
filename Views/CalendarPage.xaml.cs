@@ -26,7 +26,7 @@ namespace Ifpa.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            UpdateCalendarData();
+            _ = UpdateCalendarData();
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)

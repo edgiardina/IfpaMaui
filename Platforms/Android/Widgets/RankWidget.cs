@@ -10,6 +10,7 @@ using PinballApi.Interfaces;
 using AndroidNet = Android.Net;
 using Application = Android.App.Application;
 using Android.Graphics;
+using System; // for OperatingSystem
 
 namespace Ifpa.Platforms.Android.Widgets
 {
@@ -137,7 +138,12 @@ namespace Ifpa.Platforms.Android.Widgets
             intent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, appWidgetIds);
 
             // Register click event for the Background
-            var piBackground = PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
+            var flags = PendingIntentFlags.UpdateCurrent;
+            if (OperatingSystem.IsAndroidVersionAtLeast(23))
+            {
+                flags |= PendingIntentFlags.Immutable;
+            }
+            var piBackground = PendingIntent.GetBroadcast(context, 0, intent, flags);
 
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
 
@@ -148,7 +154,13 @@ namespace Ifpa.Platforms.Android.Widgets
         {
             var intent = new Intent(context, typeof(RankWidget));
             intent.SetAction(action);
-            return PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
+
+            var flags = PendingIntentFlags.UpdateCurrent;
+            if (OperatingSystem.IsAndroidVersionAtLeast(23))
+            {
+                flags |= PendingIntentFlags.Immutable;
+            }
+            return PendingIntent.GetBroadcast(context, 0, intent, flags);
         }
 
         /// <summary>
@@ -163,7 +175,11 @@ namespace Ifpa.Platforms.Android.Widgets
                 {
                     var packageName = "com.edgiardina.ifpa";
                     var launchIntent = pm.GetLaunchIntentForPackage(packageName);
-                    context.StartActivity(launchIntent);
+                    if (launchIntent != null)
+                    {
+                        launchIntent.AddFlags(ActivityFlags.NewTask);
+                        context.StartActivity(launchIntent);
+                    }
                 }
                 catch (Exception ex)
                 {

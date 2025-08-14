@@ -19,6 +19,9 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private Player selectedPlayer;
 
+        [ObservableProperty]
+        private string text = string.Empty;
+
         private readonly IPinballRankingApi PinballRankingApi;
 
         public PlayerSearchViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerSearchViewModel> logger) : base(logger)
@@ -27,7 +30,7 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task Search(string text)
+        public async Task Search()
         {
             if (IsBusy)
                 return;
@@ -38,9 +41,9 @@ namespace Ifpa.ViewModels
             {
                 Players.Clear();
 
-                if (text.Trim().Length > 0)
+                if (Text.Trim().Length > 0)
                 {
-                    var items = await PinballRankingApi.PlayerSearch(name: text.Trim());
+                    var items = await PinballRankingApi.PlayerSearch(name: Text.Trim());
 
                     Players = items.Results?.ToObservableCollection();
                 }
@@ -48,7 +51,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error searching for player {text}", text);
+                logger.LogError(ex, "Error searching for player {text}", Text);
             }
             finally
             {

@@ -7,10 +7,11 @@
              ios:Page.ModalPresentationStyle="PageSheet"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:rankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings;assembly=PinballApi"
              x:DataType="vm:RankingsViewModel">
     <ContentPage.Content>
         <Grid Padding="10,10,10,10"
-              VerticalOptions="CenterAndExpand"
+              VerticalOptions="Center"
               RowSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -33,7 +34,7 @@
                     Grid.ColumnSpan="2"
                     Grid.Column="1"
                     Grid.Row="0"
-                    HorizontalOptions="FillAndExpand"
+                    HorizontalOptions="Fill"
                     SelectedIndexChanged="RankingType_SelectedIndexChanged"
                     SelectedItem="{Binding CurrentRankingType, Mode=TwoWay}"
                     ItemsSource="{Binding RankingTypes, Mode=OneWay}" />
@@ -46,9 +47,9 @@
             <Picker Grid.ColumnSpan="2"
                     Grid.Column="1"
                     Grid.Row="1"
-                    HorizontalOptions="FillAndExpand"
+                    HorizontalOptions="Fill"
                     ItemsSource="{Binding Countries, Mode=OneWay}"
-                    ItemDisplayBinding="{Binding CountryName}"
+                    ItemDisplayBinding="{Binding CountryName, x:DataType=rankings:Country}"
                     SelectedItem="{Binding CountryToShow, Mode=TwoWay}"
                     x:Name="CountryPicker"
                     SelectedIndexChanged="Picker_SelectedIndexChanged" />
@@ -61,7 +62,7 @@
             <Picker Grid.ColumnSpan="2"
                     Grid.Column="1"
                     Grid.Row="1"
-                    HorizontalOptions="FillAndExpand"
+                    HorizontalOptions="Fill"
                     ItemsSource="{Binding RankingSystems, Mode=OneWay}"
                     SelectedItem="{Binding CurrentRankingSystem, Mode=TwoWay}"
                     x:Name="TypePicker"
@@ -76,11 +77,11 @@
             <Picker Grid.ColumnSpan="2"
                     Grid.Column="1"
                     Grid.Row="1"
-                    HorizontalOptions="FillAndExpand"
+                    HorizontalOptions="Fill"
                     ItemsSource="{Binding ProRankingTypes, Mode=OneWay}"
                     SelectedItem="{Binding CurrentProRankingType, Mode=TwoWay}"
                     x:Name="ProTypeFilter"
-                    SelectedIndexChanged="ProTypeFilter_SelectedIndexChanged"/>
+                    SelectedIndexChanged="ProTypeFilter_SelectedIndexChanged" />
 
             <Label Grid.Column="0"
                    Grid.Row="2"
@@ -92,7 +93,7 @@
                    Text="{Binding CountOfItemsToFetch}"
                    HorizontalTextAlignment="End"
                    LineBreakMode="NoWrap"
-                   HorizontalOptions="FillAndExpand"
+                   HorizontalOptions="Fill"
                    VerticalTextAlignment="Center" />
             <Stepper Grid.Column="2"
                      Grid.Row="2"
@@ -113,7 +114,7 @@
                    HorizontalTextAlignment="End"
                    LineBreakMode="NoWrap"
                    x:Name="StartingPositionLabel"
-                   HorizontalOptions="FillAndExpand"
+                   HorizontalOptions="Fill"
                    VerticalTextAlignment="Center" />
             <Stepper Grid.Column="3"
                      Grid.Row="3"
@@ -124,20 +125,21 @@
                      Increment="100"
                      Value="{Binding StartingPosition, Mode=TwoWay}"
                      ValueChanged="Stepper_ValueChanged" />
-            <StackLayout Orientation="Horizontal"
-                         Grid.Row="4"
-                         Grid.ColumnSpan="3">
+            <Grid ColumnDefinitions="*,*"
+                  Grid.Row="4"
+                  Grid.ColumnSpan="3">
                 <Button WidthRequest="160"
                         Padding="10,0,10,0"
-                        HorizontalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
                         Text="{x:Static local:Strings.RankingsFilterModalPage_Cancel}"
                         Clicked="CancelButton_Clicked" />
                 <Button WidthRequest="160"
+                        Grid.Column="1"
                         Padding="10,0,10,0"
-                        HorizontalOptions="CenterAndExpand"
+                        HorizontalOptions="Center"
                         Text="{x:Static local:Strings.RankingsFilterModalPage_FilterRankings}"
                         Clicked="Button_Clicked" />
-            </StackLayout>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

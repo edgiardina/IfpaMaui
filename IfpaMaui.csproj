@@ -99,7 +99,11 @@
         <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
 
         <PackageReference Include="PinballApi" Version="3.1.13" />
-    </ItemGroup>    
+    </ItemGroup>
+
+    <PropertyGroup>
+        <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+    </PropertyGroup>
 
     <!-- Maui Specifics -->
     <ItemGroup>

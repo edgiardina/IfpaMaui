@@ -11,7 +11,7 @@ public partial class App : Application
     protected readonly NotificationService NotificationService;
     protected readonly IDeepLinkService DeepLinkService;
 
-    public App(INotificationManager notificationManager, 
+    public App(INotificationManager notificationManager,
               NotificationService notificationService,
               IDeepLinkService deepLinkService)
     {
@@ -28,8 +28,6 @@ public partial class App : Application
 
         InitializeComponent();
 
-        MainPage = new AppShell();
-
         //TODO: this conditional compilation should be removed when this bug is fixed
         //https://github.com/dotnet/maui/issues/12295
 #if IOS
@@ -43,9 +41,15 @@ public partial class App : Application
         // https://github.com/the49ltd/The49.Maui.BottomSheet/issues/89
         DeviceThemeService.Instance.ReloadRequestedTheme();
 
-        Current.RequestedThemeChanged += (sender, args) => {
+        Current.RequestedThemeChanged += (sender, args) =>
+        {
             DeviceThemeService.Instance.ReloadRequestedTheme();
         };
+    }
+
+    protected override Window CreateWindow(IActivationState activationState)
+    {
+        return new Window(new AppShell());
     }
 
     protected override async void OnStart()

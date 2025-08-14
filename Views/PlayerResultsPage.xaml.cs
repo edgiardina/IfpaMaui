@@ -23,7 +23,7 @@ namespace Ifpa.Views
             if (ViewModel.ActiveResults.Count == 0)
             {
                 ViewModel.PlayerId = PlayerId;
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
         }
 

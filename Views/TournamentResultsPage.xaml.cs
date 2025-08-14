@@ -24,7 +24,7 @@ namespace Ifpa.Views
             if (ViewModel.Results.Count == 0)
             {
                 ViewModel.TournamentId = TournamentId;
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
         }
     }

@@ -186,13 +186,13 @@ namespace Ifpa.Views
 
         private bool isAvatarEnlarged = false;
 
-        private async void OnAvatarTapped(object sender, EventArgs e)
+        private void OnAvatarTapped(object sender, EventArgs e)
         {
             if (isAvatarEnlarged)
             {
                 // Shrink enlarged avatar back to original size and position
-                EnlargedPlayerAvatar.ScaleTo(1, 250, Easing.CubicOut);
-                EnlargedPlayerAvatar.TranslateTo(0, 0, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.ScaleTo(1, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.TranslateTo(0, 0, 250, Easing.CubicOut);
 
                 AvatarOverlay.IsVisible = false;
                 PlayerAvatar.IsVisible = true;
@@ -227,7 +227,7 @@ namespace Ifpa.Views
 
                 // Animate to the center with the new size
                 //EnlargedPlayerAvatar.TranslateTo(targetX, targetY - PlayerAvatar.Y, 250, Easing.CubicOut);
-                EnlargedPlayerAvatar.ScaleTo(targetWidth / PlayerAvatar.Width, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.ScaleTo(targetWidth / PlayerAvatar.Width, 250, Easing.CubicOut);
 
                 isAvatarEnlarged = true;
             }

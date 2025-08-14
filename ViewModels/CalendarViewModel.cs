@@ -60,6 +60,7 @@ namespace Ifpa.ViewModels
         public async Task ChangeCalendarDisplay()
         {
             CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList;
+            await Task.CompletedTask;
         }
 
         [RelayCommand]

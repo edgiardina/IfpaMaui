@@ -13,6 +13,7 @@ using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using System.Text;
 using static Android.Widget.RemoteViewsService;
 using Uri = Android.Net.Uri;
+using System; // for OperatingSystem
 
 namespace Ifpa.Platforms.Android.Widgets
 {
@@ -117,31 +118,75 @@ namespace Ifpa.Platforms.Android.Widgets
                         remoteViews.SetViewVisibility(Resource.Id.noTournamentsNotification, ViewStates.Gone);
                         remoteViews.SetViewVisibility(Resource.Id.tournamentGrid, ViewStates.Visible);
 
-                        var firstTournament = upcomingTournaments.First();
+                        // Create adapter for versions before Android 12 (S)
+                        if (!OperatingSystem.IsAndroidVersionAtLeast(31))
+                        {
+                            // Create adapter intent
+                            var adapterIntent = new Intent(context, typeof(TournamentWidgetService));
+                            adapterIntent.PutExtra(AppWidgetManager.ExtraAppwidgetId, widgetId);
 
-                        // Create adapter intent
-                        var adapterIntent = new Intent(context, typeof(TournamentWidgetService));
-                        adapterIntent.PutExtra(AppWidgetManager.ExtraAppwidgetId, widgetId);
+                            // Store tournaments in preferences for the service to read
+                            var preferences = context.GetSharedPreferences("TournamentWidget", FileCreationMode.Private);
+                            var editor = preferences.Edit();
+                            editor.PutString($"tournaments_{widgetId}",
+                                System.Text.Json.JsonSerializer.Serialize(upcomingTournaments.Take(tournamentsToShow)));
+                            editor.Apply();
 
-                        // Store tournaments in preferences
-                        var preferences = context.GetSharedPreferences("TournamentWidget", FileCreationMode.Private);
-                        var editor = preferences.Edit();
-                        editor.PutString($"tournaments_{widgetId}",
-                            System.Text.Json.JsonSerializer.Serialize(upcomingTournaments.Take(tournamentsToShow)));
-                        editor.Apply();
+                            remoteViews.SetRemoteAdapter(Resource.Id.tournamentGrid, adapterIntent);
 
-                        remoteViews.SetRemoteAdapter(Resource.Id.tournamentGrid, adapterIntent);
+                            remoteViews.SetEmptyView(Resource.Id.tournamentGrid, Resource.Id.noTournamentsNotification);
+                        }
+                        else
+                        {
+                            // Android 12+ use RemoteCollectionItems to avoid obsolete API warnings
+                            var builder = new RemoteViews.RemoteCollectionItems.Builder();
+                            builder.SetHasStableIds(true);
 
-                        remoteViews.SetEmptyView(Resource.Id.tournamentGrid, Resource.Id.noTournamentsNotification);
+                            long id = 0;
+                            foreach (var t in upcomingTournaments.Take(tournamentsToShow))
+                            {
+                                var itemView = new RemoteViews(context.PackageName, Resource.Layout.tournament_item);
+
+                                itemView.SetTextViewText(Resource.Id.tournamentName, t.TournamentName);
+
+                                var dateText = t.EventStartDate.ToString("MMM d");
+                                if (t.EventStartDate != t.EventEndDate)
+                                {
+                                    dateText += " - " + t.EventEndDate.ToString("MMM d");
+                                }
+                                itemView.SetTextViewText(Resource.Id.tournamentDate, dateText);
+
+                                var location = new StringBuilder();
+                                if (!string.IsNullOrEmpty(t.City))
+                                {
+                                    location.Append(t.City);
+                                    if (!string.IsNullOrEmpty(t.Stateprov))
+                                    {
+                                        location.Append(", ").Append(t.Stateprov);
+                                    }
+                                }
+                                itemView.SetTextViewText(Resource.Id.tournamentLocation, location.ToString());
+
+                                var fillInIntent = new Intent();
+                                fillInIntent.SetAction(ACTION_TOURNAMENT_CLICKED);
+                                fillInIntent.PutExtra("TournamentId", t.TournamentId);
+                                itemView.SetOnClickFillInIntent(Resource.Id.tournamentItemRoot, fillInIntent);
+
+                                builder.AddItem(id++, itemView);
+                            }
+
+                            remoteViews.SetRemoteAdapter(Resource.Id.tournamentGrid, builder.Build());
+                        }
 
                         var templateIntent = new Intent(context, typeof(CalendarWidget));
                         templateIntent.SetAction(ACTION_TOURNAMENT_CLICKED);
 
-                        var pendingIntentTemplate = PendingIntent.GetBroadcast( // ← FIXED
+                        var flags = PendingIntentFlags.UpdateCurrent | GetMutableIfAndroid12Plus();
+                        var pendingIntentTemplate = PendingIntent.GetBroadcast(
                             context,
                             0,
                             templateIntent,
-                            PendingIntentFlags.Mutable);
+                            flags);
 
                         remoteViews.SetPendingIntentTemplate(Resource.Id.tournamentGrid, pendingIntentTemplate);
                     }
@@ -158,6 +203,14 @@ namespace Ifpa.Platforms.Android.Widgets
             {
                 logger.LogError(ex, "Error updating calendar widget");
             }
+        }
+
+        private static PendingIntentFlags GetMutableIfAndroid12Plus()
+        {
+            // Avoid referencing PendingIntentFlags.Mutable directly to satisfy CA1416
+            return OperatingSystem.IsAndroidVersionAtLeast(31)
+                ? (PendingIntentFlags)0x02000000 // FLAG_MUTABLE = 0x02000000
+                : 0;
         }
 
         public override void OnAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions)

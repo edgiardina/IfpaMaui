@@ -8,8 +8,10 @@
              xmlns:local="clr-namespace:Ifpa"
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}"
-             xmlns:vm="clr-namespace:Ifpa.ViewModels">
-    <!-- TODO: use x:DataType for this page -->
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:PlayerVersusPlayerViewModel"
+             xmlns:models="clr-namespace:Ifpa.Models">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:PlayerVersusRecordStringConverter x:Key="pvpString" />
@@ -22,8 +24,8 @@
                      Clicked="InfoButton_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -47,29 +49,25 @@
                   ItemTapped="Handle_ItemTapped"
                   CachingStrategy="RecycleElement"
                   HasUnevenRows="true"
-                  IsGroupingEnabled="True"
-                  GroupDisplayBinding="{Binding Key}"
-                  GroupShortNameBinding="{Binding Key}">
+                  IsGroupingEnabled="True">
             <ListView.GroupHeaderTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:PlayerVersusRecordGroup">
                     <ViewCell>
                         <StackLayout Orientation="Vertical"
                                      BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
                             <Label Text="{Binding Key}"
-                                   Padding="15,10,0,10"
-                                   VerticalOptions="CenterAndExpand" />
+                                   Padding="15,10,0,10" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.GroupHeaderTemplate>
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="ifpaplayer:PlayerVersusRecord">
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal"
-                                     Margin="10">
+                        <Grid ColumnDefinitions="*,*"
+                              Margin="10">
                             <Label LineBreakMode="NoWrap"
                                    FontSize="16"
-                                   HorizontalOptions="StartAndExpand"
                                    HorizontalTextAlignment="Start">
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -83,7 +81,8 @@
                             </Label>
                             <Label LineBreakMode="NoWrap"
                                    FontSize="16"
-                                   HorizontalTextAlignment="Center"
+                                   Grid.Column="1"
+                                   HorizontalTextAlignment="End"
                                    TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
                                 <Label.FormattedText>
                                     <FormattedString>
@@ -97,7 +96,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                        </StackLayout>
+                        </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

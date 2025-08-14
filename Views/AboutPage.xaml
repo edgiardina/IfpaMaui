@@ -129,18 +129,19 @@
                                Margin="0,0,0,10" />
                         <CollectionView ItemsSource="{Binding Sponsors}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ifpaplayer:Player">
+                                <DataTemplate>
                                     <Label TextColor="{StaticResource LinkTextColor}">
                                         <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.ViewPlayerCommand, Source={RelativeSource AncestorType={x:Type views:AboutPage}}}"
-                                                                  CommandParameter="{Binding PlayerId}" />
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AboutViewModel}},
+                                                                           Path=ViewPlayerCommand, x:DataType=vm:AboutViewModel}"
+                                                                  CommandParameter="{Binding PlayerId, x:DataType=ifpaplayer:Player}" />
                                         </Label.GestureRecognizers>
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span Text="{Binding FirstName}" />
+                                                    <Span Text="{Binding FirstName, x:DataType=ifpaplayer:Player}" />
                                                     <Span Text=" " />
-                                                    <Span Text="{Binding LastName}" />
+                                                    <Span Text="{Binding LastName, x:DataType=ifpaplayer:Player}" />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>

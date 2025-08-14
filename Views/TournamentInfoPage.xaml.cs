@@ -21,7 +21,7 @@ namespace Ifpa.Views
             base.OnAppearing();
 
             viewModel.TournamentId = TournamentId;
-            viewModel.LoadItems();
+            _ = viewModel.LoadItems();
         }
 
         private async void CloseButton_Clicked(object sender, System.EventArgs e)
