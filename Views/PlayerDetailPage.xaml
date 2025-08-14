@@ -199,14 +199,14 @@
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
                                          x:DataType="Button"
-                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
+                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}, x:DataType=vm:PlayerDetailViewModel}"
                                          Value="True">
                                 <Setter Property="ColumnDefinitions"
                                         Value="*,*,*" />
                             </DataTrigger>
                             <DataTrigger TargetType="Grid"
                                          x:DataType="Button"
-                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
+                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}, x:DataType=vm:PlayerDetailViewModel}"
                                          Value="False">
                                 <Setter Property="ColumnDefinitions"
                                         Value="*,*" />
