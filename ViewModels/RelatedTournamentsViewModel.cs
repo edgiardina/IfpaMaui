@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Tournaments.Related;
-using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
@@ -22,7 +21,6 @@ namespace Ifpa.ViewModels
 
         public RelatedTournamentsViewModel(IPinballRankingApi pinballRankingApi, ILogger<RelatedTournamentsViewModel> logger) : base(logger)
         {
-            Title = "Related Tournaments";
             RelatedTournaments = new ObservableCollection<RelatedTournament>();
             PinballRankingApi = pinballRankingApi;
         }
