@@ -127,7 +127,7 @@ namespace Ifpa.ViewModels
                                       Location = n.Address1 + " " + n.City + ", " + n.Stateprov,
                                       Title = n.TournamentName,
                                       StartDate = n.EventStartDate.DateTime,
-                                      EndDate = n.EventEndDate.DateTime
+                                      EndDate = n.EventEndDate.HasValue ? n.EventEndDate.Value.DateTime : n.EventStartDate.DateTime,
                                   })
                                   .ToList();
 
@@ -152,7 +152,7 @@ namespace Ifpa.ViewModels
             var longitude = LastGeolocation?.Longitude;
             var latitude = LastGeolocation?.Latitude;
             // NativeCalendarView.Events.Any(e => e.StartDate.Date <= new DateTime(year, month + 1, day) && e.EndDate.Date >= new DateTime(year, month + 1, day)))
-            SelectedDateCalendarItems = Tournaments.Where(n => n.EventStartDate.Date <= e.NewDate && n.EventEndDate.Date >= e.NewDate)
+            SelectedDateCalendarItems = Tournaments.Where(n => n.EventStartDate.Date <= e.NewDate && n.EventEndDate?.Date >= e.NewDate)
                                                    .Select(n => new TournamentWithDistance(n, (long)Location.CalculateDistance(latitude.Value, longitude.Value, n.Latitude, n.Longitude, DistanceUnits.Miles)))
                                                    .ToList();
         }

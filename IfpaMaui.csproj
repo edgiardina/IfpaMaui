@@ -98,7 +98,7 @@
         <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
         <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
 
-        <PackageReference Include="PinballApi" Version="3.1.13" />
+        <PackageReference Include="PinballApi" Version="3.1.15" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -268,6 +268,9 @@
         </MauiXaml>
         <MauiXaml Update="Views\PlayerDetailNoPlayerSelectedPage.xaml">
             <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Views\RelatedTournamentsPage.xaml">
+          <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="Views\TournamentSearchPage.xaml">
             <Generator>MSBuild:Compile</Generator>

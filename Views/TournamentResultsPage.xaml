@@ -179,6 +179,15 @@
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <ToolbarItem Text="Related Tournaments"
+                     x:Name="RelatedTournamentsButton"
+                     Command="{Binding ViewRelatedTournamentsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.BroadActivityFeed24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Info}"
                      x:Name="InfoButton"
                      Command="{Binding ViewTournamentInfoCommand}">

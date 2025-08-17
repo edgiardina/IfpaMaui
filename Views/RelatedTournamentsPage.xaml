@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
+             x:Class="Ifpa.Views.RelatedTournamentsPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:Ifpa"
+             Title="{Binding Title}"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:RelatedTournamentsViewModel"
+             xmlns:searchmodels="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="isNotNullOrEmptyConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
+        <CollectionView x:Name="TournamentsList"
+                        ItemsSource="{Binding RelatedTournaments}"
+                        SelectedItem="{Binding SelectedTournament}"
+                        SelectionChangedCommand="{Binding TournamentSelectedCommand}"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                        SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="searchmodels:Tournament">
+                    <VerticalStackLayout Spacing="0">
+                        <Grid ColumnDefinitions="*, Auto"
+                              Margin="15,10">
+                            <StackLayout Grid.Column="0"
+                                         Spacing="2">
+                                <Label Text="{Binding TournamentName}"
+                                       FontSize="16"
+                                       LineBreakMode="WordWrap"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding EventName}"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource SecondaryTextColor}"
+                                       LineBreakMode="WordWrap" />
+                                <StackLayout Orientation="Horizontal"
+                                             Spacing="5">
+                                    <Label Text="{Binding City}"
+                                           FontSize="12"
+                                           TextColor="{DynamicResource SecondaryTextColor}" />
+                                    <Label Text=", "
+                                           FontSize="12"
+                                           TextColor="{DynamicResource SecondaryTextColor}"
+                                           IsVisible="{Binding City, Converter={StaticResource isNotNullOrEmptyConverter}}" />
+                                    <Label Text="{Binding Stateprov}"
+                                           FontSize="12"
+                                           TextColor="{DynamicResource SecondaryTextColor}" />
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1"
+                                         HorizontalOptions="End">
+                                <Label Text="{Binding EventStartDate, StringFormat='{0:d}'}"
+                                       FontSize="12"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="{DynamicResource SecondaryTextColor}" />
+                                <Label Text="{Binding PlayerCount, StringFormat='{0} players'}"
+                                       FontSize="11"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="{DynamicResource SecondaryTextColor}"
+                                       IsVisible="{Binding PlayerCount, Converter={StaticResource isNotNullOrEmptyConverter}}" />
+                            </StackLayout>
+                        </Grid>
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Grid>
+                    <StackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Spacing="10">
+                        <Label Text="No related tournaments found"
+                               FontSize="16"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                    </StackLayout>
+                </Grid>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>
