@@ -8,7 +8,7 @@ using Microsoft.Maui.Platform;
 
 namespace Ifpa.Platforms.Renderers
 {
-    public class TabbarBadgeRenderer : ShellRenderer
+    public class IfpaShellRenderer : ShellRenderer
     {
         protected override IShellBottomNavViewAppearanceTracker CreateBottomNavViewAppearanceTracker(ShellItem shellItem)
         {
