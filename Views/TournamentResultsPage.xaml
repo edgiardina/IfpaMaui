@@ -195,7 +195,7 @@
                      Order="Secondary"
                      Command="{Binding ViewRelatedTournamentsCommand}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.BroadActivityFeed24}"
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
