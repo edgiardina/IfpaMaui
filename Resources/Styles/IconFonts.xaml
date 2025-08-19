@@ -85,5 +85,11 @@
     <!-- Person Delete Icons -->
     <x:String x:Key="FluentIcon.PersonDelete16">&#xF5D0;</x:String>
     <x:String x:Key="FluentIcon.PersonDelete24">&#xF5D1;</x:String>
+    
+    <!-- Ribbon Star -->
+    <x:String x:Key="FluentIcon.RibbonStar24">&#xEA30;</x:String>
+    
+    <!-- Arrow Up/Down -->
+    <x:String x:Key="FluentIcon.ArrowSort16">&#xF1B3;</x:String>
 
 </ResourceDictionary>

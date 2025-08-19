@@ -17,15 +17,16 @@
                 </ResourceDictionary>
             </Grid.Resources>
             <Image Grid.Column="0"
-                   Source="rankchange.png"
                    HeightRequest="25"
                    WidthRequest="25">
-                <Image.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
-                </Image.Behaviors>
+                <Image.Source>
+                    <FontImageSource Glyph="{StaticResource FluentIcon.ArrowSort16}"
+                                     FontFamily="FluentRegular"
+                                     Color="{StaticResource IconAccentColor}" />
+                </Image.Source>
             </Image>
             <StackLayout Grid.Column="1"
-                         HorizontalOptions="FillAndExpand"
+                         HorizontalOptions="Fill"
                          Padding="10,0,0,0">
                 <Label Text="{x:Static local:Strings.ActivityFeedRankChangeDataTemplate_RankChanged}"
                        FontAttributes="Bold" />
