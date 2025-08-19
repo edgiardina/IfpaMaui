@@ -1,5 +1,4 @@
-﻿using Foundation;
-using Ifpa.Platforms.iOS.Utils;
+﻿using Ifpa.Platforms.iOS.Utils;
 using Ifpa.Services;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 using Microsoft.Maui.Controls.Platform.Compatibility;
@@ -128,7 +127,7 @@ namespace Ifpa.Platforms.Renderers
             {
                 if (item.Order == ToolbarItemOrder.Secondary)
                 {
-                    secondaryActions.Add(item.ToSecondaryUiAction());
+                    secondaryActions.Add(item.ToSecondaryUiAction(_fontManager));
                 }
                 else
                 {
@@ -174,27 +173,6 @@ namespace Ifpa.Platforms.Renderers
 
             // 3) Last resort: a plain more icon (rarely null on modern iOS)
             return UIImage.FromBundle("more");
-        }
-    }
-
-    internal static class ToolbarItemSecondaryExtensions
-    {
-        public static UIAction ToSecondaryUiAction(this ToolbarItem item)
-        {
-            var weak = new WeakReference<ToolbarItem>(item);
-
-            return UIAction.Create(item.Text ?? string.Empty, image: null, identifier: null, handler: _ =>
-            {
-                // Prefer internal activation if available
-                if (item is IMenuItemController mic)
-                {
-                    mic.Activate();
-                    return;
-                }
-
-                if (weak.TryGetTarget(out var target))
-                    target.Command?.Execute(target.CommandParameter);
-            });
         }
     }
 }
