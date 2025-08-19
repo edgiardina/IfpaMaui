@@ -127,7 +127,7 @@ namespace Ifpa.Platforms.Renderers
                 }
                 else
                 {
-                    primaryButtons.Add(item.ToUIBarButtonItem(forceShowAsPrimary: false, addToRightSide: true));
+                    primaryButtons.Add(item.ToUIBarButtonItem());
                 }
             }
 
