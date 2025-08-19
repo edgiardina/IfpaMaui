@@ -170,17 +170,9 @@
         </DataTemplate>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
-                     x:Name="ShareButton"
-                     Command="{Binding ShareTournamentCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Info}"
                      x:Name="InfoButton"
+                     Order="Secondary"
                      Command="{Binding ViewTournamentInfoCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Info28}"
@@ -188,6 +180,26 @@
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
+                     x:Name="ShareButton"
+                     Order="Secondary"
+                     Command="{Binding ShareTournamentCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Related Tournaments"
+                     x:Name="RelatedTournamentsButton"
+                     Order="Secondary"
+                     Command="{Binding ViewRelatedTournamentsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>        
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"

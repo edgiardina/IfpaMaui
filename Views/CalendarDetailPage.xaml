@@ -222,8 +222,19 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_AddToCalendar}"
+                     x:Name="AddToCalendarButton"
+                     Order="Secondary"
+                     Command="{Binding AddToCalendarCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.CalendarAdd28}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
                      x:Name="ShareButton"
+                     Order="Secondary"
                      Command="{Binding ShareTournamentCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
@@ -231,11 +242,12 @@
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_AddToCalendar}"
-                     x:Name="AddToCalendarButton"
-                     Command="{Binding AddToCalendarCommand}">
+        <ToolbarItem Text="Related Tournaments"
+                     x:Name="RelatedTournamentsButton"
+                     Order="Secondary"
+                     Command="{Binding ViewRelatedTournamentsCommand}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.CalendarAdd28}"
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>

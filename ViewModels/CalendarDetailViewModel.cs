@@ -79,6 +79,12 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
+        public async Task ViewRelatedTournaments()
+        {
+            await Shell.Current.GoToAsync($"related-tournaments?tournamentId={TournamentId}");
+        }
+
+        [RelayCommand]
         public async Task OpenMap()
         {
             var placemark = new Placemark

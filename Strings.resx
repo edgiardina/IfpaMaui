@@ -753,4 +753,10 @@
   <data name="SettingsPage_ClearCache" xml:space="preserve">
     <value>Clear Cache</value>
   </data>
+  <data name="RelatedTournamentsPage_NoTournamentsFound" xml:space="preserve">
+    <value>No related tournaments found</value>
+  </data>
+  <data name="RelatedTournamentsPage_Title" xml:space="preserve">
+    <value>Related Tournaments</value>
+  </data>
 </root>

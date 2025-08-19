@@ -78,7 +78,7 @@ public static class MauiProgram
             // Show custom Tabbar Badges for iOS and Android
             .ConfigureMauiHandlers(h =>
             {
-                h.AddHandler<Shell, TabbarBadgeRenderer>();
+                h.AddHandler<Shell, IfpaShellRenderer>();
             })
             /*
             .ConfigureLifecycleEvents(events =>

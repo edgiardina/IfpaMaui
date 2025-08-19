@@ -26,6 +26,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("champ-series-player", typeof(ChampionshipSeriesPlayerCardPage));
 
         Routing.RegisterRoute("calendar-detail", typeof(CalendarDetailPage));
+        Routing.RegisterRoute("related-tournaments", typeof(RelatedTournamentsPage));
 
         // more menu
         Routing.RegisterRoute("favorites", typeof(FavoritesPage));

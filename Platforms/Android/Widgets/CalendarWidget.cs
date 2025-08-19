@@ -13,7 +13,6 @@ using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using System.Text;
 using static Android.Widget.RemoteViewsService;
 using Uri = Android.Net.Uri;
-using System; // for OperatingSystem
 
 namespace Ifpa.Platforms.Android.Widgets
 {
@@ -149,10 +148,10 @@ namespace Ifpa.Platforms.Android.Widgets
 
                                 itemView.SetTextViewText(Resource.Id.tournamentName, t.TournamentName);
 
-                                var dateText = t.EventStartDate.ToString("MMM d");
+                                var dateText = t.EventStartDate.DateTime.ToString("MMM d");
                                 if (t.EventStartDate != t.EventEndDate)
                                 {
-                                    dateText += " - " + t.EventEndDate.ToString("MMM d");
+                                    dateText += " - " + t.EventEndDate?.DateTime.ToString("MMM d");
                                 }
                                 itemView.SetTextViewText(Resource.Id.tournamentDate, dateText);
 
@@ -298,10 +297,10 @@ namespace Ifpa.Platforms.Android.Widgets
 
             itemView.SetTextViewText(Resource.Id.tournamentName, tournament.TournamentName);
 
-            var dateText = tournament.EventStartDate.ToString("MMM d");
+            var dateText = tournament.EventStartDate.DateTime.ToString("MMM d");
             if (tournament.EventStartDate != tournament.EventEndDate)
             {
-                dateText += " - " + tournament.EventEndDate.ToString("MMM d");
+                dateText += " - " + tournament.EventEndDate?.DateTime.ToString("MMM d");
             }
             itemView.SetTextViewText(Resource.Id.tournamentDate, dateText);
 

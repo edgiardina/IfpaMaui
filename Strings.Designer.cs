@@ -1519,6 +1519,24 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No related tournaments found.
+        /// </summary>
+        internal static string RelatedTournamentsPage_NoTournamentsFound {
+            get {
+                return ResourceManager.GetString("RelatedTournamentsPage_NoTournamentsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Related Tournaments.
+        /// </summary>
+        internal static string RelatedTournamentsPage_Title {
+            get {
+                return ResourceManager.GetString("RelatedTournamentsPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ).
         /// </summary>
         internal static string RightParens {

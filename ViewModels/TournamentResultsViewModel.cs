@@ -13,7 +13,8 @@ namespace Ifpa.ViewModels
     {
         public ObservableCollection<TournamentResult> Results { get; set; }
 
-        public Tournament TournamentDetails { get; set; }
+        [ObservableProperty]
+        private Tournament tournamentDetails;
 
         public int TournamentId { get; set; }
 
@@ -46,7 +47,6 @@ namespace Ifpa.ViewModels
                 Results = tournamentResults.Results.ToObservableCollection();
 
                 Title = TournamentDetails.TournamentName;
-                OnPropertyChanged(nameof(TournamentDetails));
                 OnPropertyChanged(nameof(Results));
 
                 AddTournamentToAppLinks();
@@ -75,6 +75,12 @@ namespace Ifpa.ViewModels
         public async Task ViewTournamentInfo()
         {
             await Shell.Current.GoToAsync($"tournament-info?tournamentId={TournamentId}");
+        }
+
+        [RelayCommand]
+        public async Task ViewRelatedTournaments()
+        {
+            await Shell.Current.GoToAsync($"related-tournaments?tournamentId={TournamentId}");
         }
 
         [RelayCommand]
