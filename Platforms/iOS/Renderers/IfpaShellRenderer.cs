@@ -105,7 +105,12 @@ namespace Ifpa.Platforms.Renderers
     /// </summary>
     internal sealed class SecondaryToolbarMenuPageRendererTracker : ShellPageRendererTracker
     {
-        public SecondaryToolbarMenuPageRendererTracker(IShellContext context) : base(context) { }
+        private readonly IFontManager _fontManager;
+
+        public SecondaryToolbarMenuPageRendererTracker(IShellContext context) : base(context)
+        {
+            _fontManager = IPlatformApplication.Current?.Services.GetService<IFontManager>();
+        }
 
         protected override void UpdateToolbarItems()
         {
@@ -127,7 +132,7 @@ namespace Ifpa.Platforms.Renderers
                 }
                 else
                 {
-                    primaryButtons.Add(item.ToUIBarButtonItem());
+                    primaryButtons.Add(item.ToUIBarButtonItem(_fontManager));
                 }
             }
 

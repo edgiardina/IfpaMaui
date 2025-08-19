@@ -7,15 +7,15 @@ namespace Ifpa.Platforms.iOS.Utils
 {
     internal static class ToolbarItemSecondaryExtensions
     {
-        public static UIAction ToSecondaryUiAction(this ToolbarItem item)
+        public static UIAction ToSecondaryUiAction(this ToolbarItem item, IFontManager? fontManager)
         {
             var weak = new WeakReference<ToolbarItem>(item);
 
             var action = UIAction.Create(
                 item.Text ?? string.Empty,
-                image: GetUIImage(item.IconImageSource, defaultPointSize: 17),
+                image: GetUIImage(item.IconImageSource, defaultPointSize: 17, fontManager),
                 identifier: new NSString($"Secondary_{item.Text ?? Guid.NewGuid().ToString()}"),
-                handler: _ =>
+                            handler: _ =>
                 {
                     if (item is IMenuItemController mic)
                     {
@@ -34,13 +34,13 @@ namespace Ifpa.Platforms.iOS.Utils
                     action.Title = item.Text ?? string.Empty;
 
                 if (e.PropertyName == nameof(ToolbarItem.IconImageSource))
-                    action.Image = GetUIImage(item.IconImageSource, defaultPointSize: 17);
+                    action.Image = GetUIImage(item.IconImageSource, defaultPointSize: 17, fontManager);
             };
 
             return action;
         }
 
-        public static UIBarButtonItem ToUIBarButtonItem(this ToolbarItem item)
+        public static UIBarButtonItem ToUIBarButtonItem(this ToolbarItem item, IFontManager? fontManager)
         {
             EventHandler onClick = (_, __) =>
             {
@@ -54,7 +54,7 @@ namespace Ifpa.Platforms.iOS.Utils
                     item.Command.Execute(item.CommandParameter);
             };
 
-            var image = GetUIImage(item.IconImageSource, defaultPointSize: 17);
+            var image = GetUIImage(item.IconImageSource, 17, fontManager);
 
             UIBarButtonItem barItem;
             if (image != null)
@@ -84,7 +84,7 @@ namespace Ifpa.Platforms.iOS.Utils
 
                 if (e.PropertyName == nameof(ToolbarItem.IconImageSource))
                 {
-                    var newImg = GetUIImage(item.IconImageSource, defaultPointSize: 17);
+                    var newImg = GetUIImage(item.IconImageSource, defaultPointSize: 17, fontManager);
                     if (newImg != null)
                     {
                         barItem.Image = newImg;
@@ -104,18 +104,15 @@ namespace Ifpa.Platforms.iOS.Utils
         /// <summary>
         /// Returns a UIImage for FileImageSource or FontImageSource. Null for others.
         /// </summary>
-        static UIImage? GetUIImage(ImageSource? src, nfloat defaultPointSize)
+        static UIImage? GetUIImage(ImageSource? src, nfloat defaultPointSize, IFontManager? fontManager)
         {
             if (src is null) return null;
 
-            if (src is FileImageSource fi)
-            {
-                var img = UIImage.FromBundle(fi.File);
-                if (img != null) return img;
-            }
+            if (src is FileImageSource fi && !string.IsNullOrEmpty(fi.File))
+                return UIImage.FromBundle(fi.File);
 
-            if (src is FontImageSource font)
-                return RenderFontImage(font, defaultPointSize);
+            if (src is FontImageSource fnt)
+                return RenderFontImage(fnt, defaultPointSize, fontManager);
 
             return null;
         }
@@ -124,52 +121,49 @@ namespace Ifpa.Platforms.iOS.Utils
         /// Renders a FontImageSource into a UIImage using CoreGraphics.
         /// Honors Glyph, Size, Color, and FontFamily.
         /// </summary>
-        static UIImage? RenderFontImage(FontImageSource font, nfloat defaultPointSize)
+        static UIImage? RenderFontImage(FontImageSource font, nfloat defaultPointSize, IFontManager? fontManager)
         {
-            var glyph = font.Glyph;
-            if (string.IsNullOrEmpty(glyph))
+            // No glyph? nothing to draw.
+            if (string.IsNullOrEmpty(font.Glyph))
                 return null;
 
-            var sizePt = (nfloat)(font.Size > 0 ? font.Size : defaultPointSize);
+            var pointSize = (nfloat)(font.Size > 0 ? font.Size : defaultPointSize);
 
             // Resolve UIColor (defaults to label color)
-            UIColor color = font.Color.ToNative() ?? UIColor.Label;
+            var uiColor = (font.Color is { } c)
+                ? UIColor.FromRGBA((nfloat)c.Red, (nfloat)c.Green, (nfloat)c.Blue, (nfloat)c.Alpha)
+                : UIColor.Label;
 
-            // Resolve UIFont
+            // Use MAUI's font manager so aliases from ConfigureFonts() are honored
             UIFont uiFont;
-            if (!string.IsNullOrEmpty(font.FontFamily))
-                uiFont = UIFont.FromName(font.FontFamily, sizePt) ?? UIFont.SystemFontOfSize(sizePt);
+            if (fontManager != null)
+            {
+                var mauiFont = Microsoft.Maui.Font.OfSize(font.FontFamily, pointSize);
+                uiFont = fontManager.GetFont(mauiFont) ?? UIFont.SystemFontOfSize(pointSize);
+            }
             else
-                uiFont = UIFont.SystemFontOfSize(sizePt);
-
-            var attributes = new UIStringAttributes
             {
-                ForegroundColor = color,
-                Font = uiFont
-            };
+                // Fallback if DI unavailable
+                uiFont = !string.IsNullOrEmpty(font.FontFamily)
+                    ? (UIFont.FromName(font.FontFamily, pointSize) ?? UIFont.SystemFontOfSize(pointSize))
+                    : UIFont.SystemFontOfSize(pointSize);
+            }
 
-            using var ns = new NSString(glyph);
-            var stringSize = ns.GetSizeUsingAttributes(attributes);
+            var attrs = new UIStringAttributes { Font = uiFont, ForegroundColor = uiColor };
 
-            var padding = new nfloat(2);
-            var imgSize = new CGSize(Math.Ceiling(stringSize.Width + padding * 2),
-                                     Math.Ceiling(stringSize.Height + padding * 2));
+            using var ns = new NSString(font.Glyph);
+            var size = ns.GetSizeUsingAttributes(attrs);
+            var pad = (nfloat)2;
+            var imageSize = new CGSize(Math.Ceiling(size.Width + pad * 2), Math.Ceiling(size.Height + pad * 2));
 
-            // Use UIGraphicsImageRenderer instead of deprecated BeginImageContext
-            var format = new UIGraphicsImageRendererFormat
+            // iOS 17+ safe image renderer
+            var format = new UIGraphicsImageRendererFormat { Opaque = false, Scale = 0 };
+            var renderer = new UIGraphicsImageRenderer(imageSize, format);
+
+            return renderer.CreateImage(ctx =>
             {
-                Opaque = false,
-                Scale = 0 // use device scale
-            };
-            var renderer = new UIGraphicsImageRenderer(imgSize, format);
-
-            var image = renderer.CreateImage(ctx =>
-            {
-                var rect = new CGRect(padding, padding, stringSize.Width, stringSize.Height);
-                ns.DrawString(rect, attributes);
+                ns.DrawString(new CGRect(pad, pad, size.Width, size.Height), attrs);
             });
-
-            return image;
         }
 
 
