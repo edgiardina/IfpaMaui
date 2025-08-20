@@ -376,6 +376,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directions.
+        /// </summary>
+        internal static string CalendarDetailPage_Directions {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Directions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Director.
         /// </summary>
         internal static string CalendarDetailPage_Director {

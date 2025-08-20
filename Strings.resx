@@ -141,6 +141,9 @@
   <data name="CalendarDetailPage_Date" xml:space="preserve">
     <value>Date</value>
   </data>
+  <data name="CalendarDetailPage_Directions" xml:space="preserve">
+    <value>Directions</value>
+  </data>
   <data name="PlayerDetailPage_RankingStatistics" xml:space="preserve">
     <value>Ranking Statistics</value>
   </data>

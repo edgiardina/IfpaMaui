@@ -232,22 +232,31 @@
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.RelatedTournamentsPage_Title}"
+                     x:Name="RelatedTournamentsButton"
+                     Order="Secondary"
+                     Command="{Binding ViewRelatedTournamentsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Directions}"
+                     Order="Secondary"
+                     Command="{Binding OpenMapCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Directions24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
                      x:Name="ShareButton"
                      Order="Secondary"
                      Command="{Binding ShareTournamentCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-        <ToolbarItem Text="Related Tournaments"
-                     x:Name="RelatedTournamentsButton"
-                     Order="Secondary"
-                     Command="{Binding ViewRelatedTournamentsCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>

@@ -90,6 +90,9 @@
     <x:String x:Key="FluentIcon.RibbonStar24">&#xEA30;</x:String>
     
     <!-- Arrow Up/Down -->
-    <x:String x:Key="FluentIcon.ArrowSort16">&#xF1B3;</x:String>
+    <x:String x:Key="FluentIcon.ArrowSort16">&#xF18B;</x:String>
+
+    <!-- Directions --> 
+    <x:String x:Key="FluentIcon.Directions24">&#xF366;</x:String>
 
 </ResourceDictionary>

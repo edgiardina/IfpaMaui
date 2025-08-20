@@ -180,6 +180,16 @@
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.RelatedTournamentsPage_Title}"
+                     x:Name="RelatedTournamentsButton"
+                     Order="Secondary"
+                     Command="{Binding ViewRelatedTournamentsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
                      x:Name="ShareButton"
                      Order="Secondary"
@@ -190,16 +200,6 @@
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Related Tournaments"
-                     x:Name="RelatedTournamentsButton"
-                     Order="Secondary"
-                     Command="{Binding ViewRelatedTournamentsCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
-                                 FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>        
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
