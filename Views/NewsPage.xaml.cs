@@ -1,9 +1,4 @@
 ﻿using Ifpa.ViewModels;
-using System.Linq;
-using System.ServiceModel.Syndication;
-using System.Threading.Tasks;
-using Microsoft.Maui;
-
 
 namespace Ifpa.Views
 {
@@ -27,17 +22,6 @@ namespace Ifpa.Views
             {                
                 await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
             }
-        }
-
-        private async void ItemsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var newsItem = e.SelectedItem as SyndicationItem;
-            if (newsItem == null)
-                return;
-
-            ItemsListView.SelectedItem = null;
-
-            await Shell.Current.GoToAsync($"news-detail?newsUri={System.Uri.EscapeDataString(newsItem.Links.FirstOrDefault().Uri.ToString())}");    
         }
     }
 }

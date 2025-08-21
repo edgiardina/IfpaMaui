@@ -2,81 +2,229 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.NewsPage"
-             Title="{Binding Title}"
+             Title="{x:Static local:Strings.NewsPage_Title}"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:NewsViewModel"
              xmlns:synd="clr-namespace:System.ServiceModel.Syndication;assembly=System.ServiceModel.Syndication">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Card Style for News Items -->
+            <Style x:Key="NewsCardBorder"
+                   TargetType="Border">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+                <Setter Property="Stroke"
+                        Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+                <Setter Property="StrokeShape"
+                        Value="RoundRectangle 12" />
+                <Setter Property="StrokeThickness"
+                        Value="1" />
+                <Setter Property="Padding"
+                        Value="0" />
+                <Setter Property="Margin"
+                        Value="16,8" />
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="{AppThemeBinding Light=Gray, Dark=Black}"
+                                Offset="0,2"
+                                Radius="4"
+                                Opacity="0.3" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- News Category/Badge Style -->
+            <Style x:Key="NewsCategoryBorder"
+                   TargetType="Border">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource IconAccentColor}" />
+                <Setter Property="StrokeShape"
+                        Value="RoundRectangle 12" />
+                <Setter Property="Padding"
+                        Value="8,4" />
+                <Setter Property="StrokeThickness"
+                        Value="0" />
+            </Style>
+
+            <!-- News Title Style -->
+            <Style x:Key="NewsTitleLabel"
+                   TargetType="Label">
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="FontSize"
+                        Value="18" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <Setter Property="LineBreakMode"
+                        Value="WordWrap" />
+                <Setter Property="MaxLines"
+                        Value="3" />
+            </Style>
+
+            <!-- News Summary Style -->
+            <Style x:Key="NewsSummaryLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="14" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}" />
+                <Setter Property="LineBreakMode"
+                        Value="WordWrap" />
+                <Setter Property="MaxLines"
+                        Value="4" />
+            </Style>
+
+            <!-- News Meta Style -->
+            <Style x:Key="NewsMetaLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="12" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}" />
+                <Setter Property="FontAttributes"
+                        Value="None" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid>
-        <ListView x:Name="ItemsListView"
-                  ItemsSource="{Binding NewsItems}"
-                  VerticalOptions="FillAndExpand"
-                  HasUnevenRows="true"
-                  SeparatorVisibility="None"
-                  RefreshCommand="{Binding LoadItemsCommand}"
-                  IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  CachingStrategy="RecycleElement"
-                  ItemSelected="ItemsListView_ItemSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="synd:SyndicationItem">
-                    <ViewCell>
-                        <Grid VerticalOptions="FillAndExpand"
-                              Padding="10"
-                              Margin="0"
-                              HorizontalOptions="FillAndExpand">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0"
-                                  VerticalOptions="FillAndExpand"
-                                  Margin="0"
-                                  HorizontalOptions="FillAndExpand"
-                                  Padding="5,5,5,5">
+        <!-- Loading Indicator -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+
+        <!-- News Content -->
+        <RefreshView IsRefreshing="{Binding IsBusy}"
+                     Command="{Binding LoadItemsCommand}"
+                     IsVisible="{Binding IsDataReady}">
+            <CollectionView x:Name="ItemsListView"
+                            ItemsSource="{Binding NewsItems}"
+                            SelectionMode="None"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="synd:SyndicationItem">
+
+                        <Border Style="{StaticResource NewsCardBorder}">
+                            <Grid Padding="20,16">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Label FontAttributes="Bold"
-                                       Grid.Row="0"
-                                       HorizontalTextAlignment="Start"
-                                       VerticalTextAlignment="Center"
-                                       FontSize="Default"
-                                       Text="{Binding Title.Text}"
-                                       Margin="0" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:NewsViewModel}}, Path=ItemTappedCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Grid.GestureRecognizers>
+
+                                <!-- News Category/Badge (if needed) -->
+                                <StackLayout Grid.Row="0"
+                                             Orientation="Horizontal"
+                                             Margin="0,0,0,8"
+                                             IsVisible="False">
+                                    <Border Style="{StaticResource NewsCategoryBorder}">
+                                        <Label Text="NEWS"
+                                               FontSize="10"
+                                               FontAttributes="Bold"
+                                               TextColor="White" />
+                                    </Border>
+                                </StackLayout>
+
+                                <!-- Title -->
                                 <Label Grid.Row="1"
-                                       VerticalTextAlignment="Start"
-                                       FontSize="Small"
+                                       Text="{Binding Title.Text}"
+                                       Style="{StaticResource NewsTitleLabel}"
+                                       Margin="0,0,0,12" />
+
+                                <!-- Summary/Excerpt -->
+                                <Label Grid.Row="2"
                                        Text="{Binding Summary.Text}"
-                                       Margin="0" />
+                                       Style="{StaticResource NewsSummaryLabel}"
+                                       Margin="0,0,0,16" />
+
+                                <!-- Meta Information -->
+                                <Grid Grid.Row="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Author -->
+                                    <StackLayout Grid.Column="0"
+                                                 Orientation="Horizontal"
+                                                 VerticalOptions="Center">
+                                        <Image WidthRequest="24"
+                                               HeightRequest="24"
+                                               Margin="0,0,8,0">
+                                            <Image.Source>
+                                                <FontImageSource Glyph="{StaticResource FluentIcon.Person48}"
+                                                                 FontFamily="FluentRegular"
+                                                                 Color="{StaticResource IconAccentColor}" />
+                                            </Image.Source>
+                                        </Image>
+                                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Authors}">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="synd:SyndicationPerson">
+                                                    <Label Text="{Binding Name}"
+                                                           Style="{StaticResource NewsMetaLabel}"
+                                                           FontAttributes="Bold"
+                                                           VerticalOptions="Center" />
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </HorizontalStackLayout>
+                                    </StackLayout>
+
+                                    <!-- Date and Read More -->
+                                    <StackLayout Grid.Column="1"
+                                                 Orientation="Horizontal"
+                                                 VerticalOptions="Center"
+                                                 Spacing="12">
+                                        <Label Text="{Binding PublishDate, StringFormat='{0:MMM d, yyyy}'}"
+                                               Style="{StaticResource NewsMetaLabel}"
+                                               VerticalOptions="Center" />
+                                        <Image WidthRequest="16">
+                                            <Image.Source>
+                                                <FontImageSource Glyph="{StaticResource FluentIcon.ArrowRight28}"
+                                                                 FontFamily="FluentRegular"
+                                                                 Color="{StaticResource IconAccentColor}" />
+                                            </Image.Source>
+                                        </Image>
+                                    </StackLayout>
+                                </Grid>
                             </Grid>
-                            <StackLayout Orientation="Horizontal"
-                                         Grid.Row="1"
-                                         Padding="5"
-                                         HorizontalOptions="FillAndExpand"
-                                         BackgroundColor="{AppThemeBinding Light={DynamicResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Authors}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate x:DataType="synd:SyndicationPerson">
-                                            <Label HorizontalTextAlignment="Start"
-                                                   FontSize="Small"
-                                                   Text="{Binding Name}"
-                                                   Margin="0" />
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </HorizontalStackLayout>
-                                
-                           
-                                <Label HorizontalTextAlignment="End"
-                                       FontSize="Small"
-                                       Text="{Binding PublishDate, StringFormat='{0:d}'}" />
-                            </StackLayout>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <!-- Empty State -->
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="40"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center">
+                        <Image WidthRequest="48">
+                            <Image.Source>
+                                <FontImageSource Glyph="{StaticResource FluentIcon.News16}"
+                                                 FontFamily="FluentRegular" />
+                            </Image.Source>
+                        </Image>
+
+                        <Label Text="{x:Static local:Strings.NewsPage_NoNewsHeader}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               HorizontalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
+                               Margin="0,0,0,8" />
+                        <Label Text="{x:Static local:Strings.NewsPage_NoNewsDetail}"
+                               FontSize="14"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
     </Grid>
 </ContentPage>

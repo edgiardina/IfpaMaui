@@ -37,7 +37,10 @@ namespace Ifpa.Views
             if (ViewModel.CommentCounts > 0)
             {
                 ItemsListView.IsVisible = !ItemsListView.IsVisible;
-                ItemsListView.ScrollTo(((IList)ItemsListView.ItemsSource)[0], ScrollToPosition.Start, false);
+                if (ItemsListView.IsVisible && ViewModel.Comments.Count > 0)
+                {
+                    ItemsListView.ScrollTo(ViewModel.Comments[0], position: ScrollToPosition.Start, animate: false);
+                }
             }
         }
 

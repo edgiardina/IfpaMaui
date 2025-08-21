@@ -835,6 +835,33 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No News Available.
+        /// </summary>
+        internal static string NewsPage_NoNewsDetail {
+            get {
+                return ResourceManager.GetString("NewsPage_NoNewsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pull down to refresh or check back later for the latest IFPA news..
+        /// </summary>
+        internal static string NewsPage_NoNewsHeader {
+            get {
+                return ResourceManager.GetString("NewsPage_NoNewsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to News.
+        /// </summary>
+        internal static string NewsPage_Title {
+            get {
+                return ResourceManager.GetString("NewsPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to News item &quot;{0}&quot; has been published.
         /// </summary>
         internal static string NotificationService_NewBlogPostDescription {
