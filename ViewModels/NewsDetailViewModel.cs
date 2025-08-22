@@ -28,10 +28,8 @@ namespace Ifpa.ViewModels
 
         private BlogPostService BlogPostService { get; set; }
 
-        //TODO: convert IConfiguration to IOptions?
         public NewsDetailViewModel(BlogPostService blogPostService, ILogger<NewsDetailViewModel> logger) : base(logger)
         {
-            Title = "News";
             BlogPostService = blogPostService;
         }
 
@@ -49,9 +47,6 @@ namespace Ifpa.ViewModels
                 var newsItemDetails = await BlogPostService.GetBlogPosts();
 
                 NewsItem = newsItemDetails.Single(n => n.Links.Any(m => m.Uri == NewsItemUrl));
-
-                // Extract author from dc:creator element for the main news item
-                ExtractAndSetAuthor(NewsItem);
 
                 Title = NewsItem.Title.Text;
                 //TODO: make this HTML and CSS in discrete files 
@@ -82,13 +77,6 @@ namespace Ifpa.ViewModels
                 });
 
                 var comments = await BlogPostService.GetCommentsForBlogPost(NewsItem.Id);
-                
-                // Extract authors for comments as well
-                foreach (var comment in comments)
-                {
-                    ExtractAndSetAuthor(comment);
-                }
-                
                 Comments = comments.ToObservableCollection();
                 CommentCounts = Comments.Count;
             }
@@ -99,48 +87,6 @@ namespace Ifpa.ViewModels
             finally
             {
                 IsBusy = false;
-            }
-        }
-
-        /// <summary>
-        /// Extracts author information from dc:creator element and ensures it's available in the Authors collection
-        /// </summary>
-        private void ExtractAndSetAuthor(SyndicationItem item)
-        {
-            try
-            {
-                // Try to extract dc:creator from extension elements
-                var creatorElement = item.ElementExtensions
-                    .FirstOrDefault(ext => ext.OuterName == "creator" && 
-                                          (ext.OuterNamespace == "http://purl.org/dc/elements/1.1/" || 
-                                           ext.OuterNamespace == ""));
-
-                if (creatorElement != null)
-                {
-                    var creatorName = creatorElement.GetObject<XmlElement>()?.InnerText;
-                    
-                    if (!string.IsNullOrEmpty(creatorName))
-                    {
-                        // Clear existing authors and add the creator
-                        item.Authors.Clear();
-                        item.Authors.Add(new SyndicationPerson { Name = creatorName });
-                    }
-                }
-                
-                // Fallback: if no authors and no dc:creator found, add a default
-                if (!item.Authors.Any())
-                {
-                    item.Authors.Add(new SyndicationPerson { Name = "IFPA" });
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.LogWarning(ex, "Error extracting author from RSS item");
-                // Ensure there's always at least a default author
-                if (!item.Authors.Any())
-                {
-                    item.Authors.Add(new SyndicationPerson { Name = "IFPA" });
-                }
             }
         }
     }

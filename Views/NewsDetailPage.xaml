@@ -9,9 +9,11 @@
              xmlns:local="clr-namespace:Ifpa"
              Title="{Binding Title}"
              x:DataType="vm:NewsDetailViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:synd="clr-namespace:System.ServiceModel.Syndication;assembly=System.ServiceModel.Syndication">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <toolkit:IntToBoolConverter x:Key="IntToBoolConverter" />
             <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
             
             <!-- Article Header Style -->
@@ -59,10 +61,15 @@
                     <StackLayout Grid.Column="0" 
                                Orientation="Horizontal"
                                VerticalOptions="Center">
-                        <Ellipse Fill="{StaticResource IconAccentColor}"
-                               WidthRequest="32"
-                               HeightRequest="32"
-                               Margin="0,0,12,0" />
+                        <Image WidthRequest="24"
+                               HeightRequest="24"
+                               Margin="0,0,8,0">
+                            <Image.Source>
+                                <FontImageSource Glyph="{StaticResource FluentIcon.Person48}"
+                                                 FontFamily="FluentRegular"
+                                                 Color="{StaticResource IconAccentColor}" />
+                            </Image.Source>
+                        </Image>
                         <StackLayout VerticalOptions="Center">
                             <HorizontalStackLayout BindableLayout.ItemsSource="{Binding NewsItem.Authors}">
                                 <BindableLayout.ItemTemplate>
@@ -97,7 +104,7 @@
             <StackLayout Margin="0,20,0,0">
                 <StackLayout Orientation="Horizontal" 
                            Padding="20,0,20,8"
-                           IsVisible="{Binding CommentCounts}">
+                           IsVisible="{Binding CommentCounts, Converter={StaticResource IntToBoolConverter}}">
                     <Label FontSize="18"
                            FontAttributes="Bold"
                            TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"

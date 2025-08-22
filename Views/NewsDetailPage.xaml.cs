@@ -28,7 +28,7 @@ namespace Ifpa.Views
             if (ViewModel.NewsItem == null)
             {
                 ViewModel.NewsItemUrl = new System.Uri(NewsUri);
-                await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
+                await Task.Run(ViewModel.LoadItems);
             }
         }
 

@@ -14,13 +14,13 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
             if (ViewModel.NewsItems.Count == 0)
-            {                
-                await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
+            {
+                _ = Task.Run(ViewModel.ExecuteLoadItems);
             }
         }
     }
