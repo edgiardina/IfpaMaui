@@ -2,7 +2,6 @@
 using System.ServiceModel.Syndication;
 using Ifpa.Services;
 using System.Xml;
-using PinballApi;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Maui.Core.Extensions;
@@ -56,7 +55,7 @@ namespace Ifpa.ViewModels
 
                 string webviewTheme = (Application.Current.RequestedTheme == AppTheme.Dark) ? "dark-theme" : "light-theme";
 
-                await MainThread.InvokeOnMainThreadAsync(() =>
+                _ = MainThread.InvokeOnMainThreadAsync(() =>
                 {
                     NewsItemContent = new HtmlWebViewSource();
                     NewsItemContent.Html = @$"<html>

@@ -97,5 +97,8 @@
     
     <!-- Arrow Right -->
     <x:String x:Key="FluentIcon.ArrowRight28">&#xF183;</x:String>
+    
+    <!-- Comment -->
+    <x:String x:Key="FluentIcon.Comment24">&#xF300;</x:String>
 
 </ResourceDictionary>

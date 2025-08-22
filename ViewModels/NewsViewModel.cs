@@ -57,6 +57,7 @@ namespace Ifpa.ViewModels
                     item.Summary = new TextSyndicationContent(HttpUtility.HtmlDecode(item.Summary.Text));
                     NewsItems.Add(item);
                 }
+                OnPropertyChanged(nameof(NewsItems));
             }
             catch (Exception ex)
             {

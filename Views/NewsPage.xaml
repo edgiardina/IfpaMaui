@@ -5,10 +5,13 @@
              Title="{x:Static local:Strings.NewsPage_Title}"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="vm:NewsViewModel"
              xmlns:synd="clr-namespace:System.ServiceModel.Syndication;assembly=System.ServiceModel.Syndication">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+
             <!-- Card Style for News Items -->
             <Style x:Key="NewsCardBorder"
                    TargetType="Border">
@@ -101,7 +104,7 @@
                         SelectionMode="Single"
                         SelectionChangedCommand="{Binding ItemTappedCommand}"
                         SelectedItem="{Binding SelectedNewsItem}"
-                        IsVisible="{Binding IsDataReady}"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="synd:SyndicationItem">
