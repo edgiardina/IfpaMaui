@@ -762,4 +762,13 @@
   <data name="RelatedTournamentsPage_Title" xml:space="preserve">
     <value>Related Tournaments</value>
   </data>
+  <data name="NewsPage_Title" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="NewsPage_NoNewsHeader" xml:space="preserve">
+    <value>Pull down to refresh or check back later for the latest IFPA news.</value>
+  </data>
+  <data name="NewsPage_NoNewsDetail" xml:space="preserve">
+    <value>No News Available</value>
+  </data>
 </root>

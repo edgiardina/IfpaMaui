@@ -1,8 +1,4 @@
 ﻿using Ifpa.ViewModels;
-using System;
-using System.Collections;
-using System.Threading.Tasks;
-using Microsoft.Maui;
 
 
 namespace Ifpa.Views
@@ -21,14 +17,14 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
             if (ViewModel.NewsItem == null)
             {
-                ViewModel.NewsItemUrl = new System.Uri(NewsUri);
-                await Task.Run(() => ViewModel.LoadItemsCommand.Execute(null));
+                ViewModel.NewsItemUrl = new Uri(NewsUri);
+                _ = Task.Run(ViewModel.LoadItems);
             }
         }
 
@@ -36,8 +32,11 @@ namespace Ifpa.Views
         {
             if (ViewModel.CommentCounts > 0)
             {
-                ItemsListView.IsVisible = !ItemsListView.IsVisible;
-                ItemsListView.ScrollTo(((IList)ItemsListView.ItemsSource)[0], ScrollToPosition.Start, false);
+                CommentsScrollView.IsVisible = !CommentsScrollView.IsVisible;
+                if (CommentsScrollView.IsVisible && ViewModel.Comments.Count > 0)
+                {
+                    ItemsListView.ScrollTo(ViewModel.Comments[0], position: ScrollToPosition.Start, animate: false);
+                }
             }
         }
 

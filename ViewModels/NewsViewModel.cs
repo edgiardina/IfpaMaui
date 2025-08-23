@@ -1,18 +1,27 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Ifpa.Services;
+using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 using System.ServiceModel.Syndication;
 using System.Web;
-using Microsoft.Extensions.Configuration;
-using PinballApi;
-using Microsoft.Extensions.Logging;
 
 namespace Ifpa.ViewModels
 {
-    public class NewsViewModel : BaseViewModel
+    public partial class NewsViewModel : BaseViewModel
     {
-        public ObservableCollection<SyndicationItem> NewsItems { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        public ObservableCollection<SyndicationItem> NewsItems { get; set; } 
+
+        [ObservableProperty]
+        private SyndicationItem selectedNewsItem;
+
+        [ObservableProperty]
+        private bool isLoaded = false;
+
+        /// <summary>
+        /// Returns true when data should be visible (not busy and loaded)
+        /// </summary>
+        public bool IsDataReady => !IsBusy && IsLoaded;
 
         private BlogPostService BlogPostService { get; set; }
 
@@ -20,12 +29,18 @@ namespace Ifpa.ViewModels
         {
             BlogPostService = blogPostService;
 
-            Title = "News";
             NewsItems = new ObservableCollection<SyndicationItem>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
         }
 
-        async Task ExecuteLoadItemsCommand()
+        [RelayCommand]
+        public async Task ItemTapped()
+        {
+            await Shell.Current.GoToAsync($"news-detail?newsUri={Uri.EscapeDataString(SelectedNewsItem.Links.FirstOrDefault().Uri.ToString())}");
+            SelectedNewsItem = null;
+        }
+
+        [RelayCommand]
+        public async Task ExecuteLoadItems()
         {
             if (IsBusy)
                 return;
@@ -42,6 +57,7 @@ namespace Ifpa.ViewModels
                     item.Summary = new TextSyndicationContent(HttpUtility.HtmlDecode(item.Summary.Text));
                     NewsItems.Add(item);
                 }
+                OnPropertyChanged(nameof(NewsItems));
             }
             catch (Exception ex)
             {
@@ -50,9 +66,8 @@ namespace Ifpa.ViewModels
             finally
             {
                 IsBusy = false;
+                IsLoaded = true;
             }
         }
-
-
     }
 }
