@@ -14,37 +14,58 @@
         <ResourceDictionary>
             <toolkit:IntToBoolConverter x:Key="IntToBoolConverter" />
             <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
-            
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+
             <!-- Article Header Style -->
-            <Style x:Key="ArticleHeaderStyle" TargetType="StackLayout">
-                <Setter Property="Padding" Value="20,16" />
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+            <Style x:Key="ArticleHeaderStyle"
+                   TargetType="StackLayout">
+                <Setter Property="Padding"
+                        Value="20,16" />
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
             </Style>
-            
+
             <!-- Article Title Style -->
-            <Style x:Key="ArticleTitleStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="24" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                <Setter Property="LineBreakMode" Value="WordWrap" />
-                <Setter Property="Margin" Value="0,0,0,16" />
+            <Style x:Key="ArticleTitleStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="24" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <Setter Property="LineBreakMode"
+                        Value="WordWrap" />
+                <Setter Property="Margin"
+                        Value="0,0,0,16" />
             </Style>
-            
+
             <!-- Comments Container Style -->
-            <Style x:Key="CommentsContainerStyle" TargetType="ScrollView">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" />
-                <Setter Property="Margin" Value="0,8,0,20" />
-                <Setter Property="HeightRequest" Value="300" />
+            <Style x:Key="CommentsContainerStyle"
+                   TargetType="ScrollView">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" />
+                <Setter Property="Margin"
+                        Value="0,8,0,20" />
+                <Setter Property="HeightRequest"
+                        Value="300" />
             </Style>
-            
+
             <!-- Comments Section Style -->
-            <Style x:Key="CommentsSectionBorder" TargetType="Border">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
-                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 12" />
-                <Setter Property="Padding" Value="16" />
-                <Setter Property="Margin" Value="16,8" />
+            <Style x:Key="CommentsSectionBorder"
+                   TargetType="Border">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+                <Setter Property="Stroke"
+                        Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <Setter Property="StrokeThickness"
+                        Value="1" />
+                <Setter Property="StrokeShape"
+                        Value="RoundRectangle 12" />
+                <Setter Property="Padding"
+                        Value="16" />
+                <Setter Property="Margin"
+                        Value="16,8" />
                 <Setter Property="Shadow">
                     <Setter.Value>
                         <Shadow Brush="{AppThemeBinding Light=Gray, Dark=Black}"
@@ -54,15 +75,18 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            
+
             <!-- Comments Header Style -->
-            <Style x:Key="CommentsHeaderStyle" TargetType="StackLayout">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
-                <Setter Property="Padding" Value="20,8,20,8" />
+            <Style x:Key="CommentsHeaderStyle"
+                   TargetType="StackLayout">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+                <Setter Property="Padding"
+                        Value="20,8,20,8" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -71,24 +95,23 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ActivityIndicator Grid.RowSpan="4" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-
         <!-- Article Header -->
-        <StackLayout Grid.Row="0" Style="{StaticResource ArticleHeaderStyle}">
+        <StackLayout Grid.Row="0"
+                     Style="{StaticResource ArticleHeaderStyle}">
             <Label Text="{Binding Title}"
                    Style="{StaticResource ArticleTitleStyle}" />
-            
+
             <!-- Article Meta -->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                
+
                 <!-- Author -->
-                <StackLayout Grid.Column="0" 
-                           Orientation="Horizontal"
-                           VerticalOptions="Center">
+                <StackLayout Grid.Column="0"
+                             Orientation="Horizontal"
+                             VerticalOptions="Center">
                     <Image WidthRequest="24"
                            HeightRequest="24"
                            Margin="0,0,8,0">
@@ -116,36 +139,43 @@
                 </StackLayout>
             </Grid>
         </StackLayout>
-        
+
         <!-- Separator -->
-        <BoxView Grid.Row="1" 
-                 Style="{StaticResource BoxSeperator}" 
+        <BoxView Grid.Row="1"
+                 Style="{StaticResource BoxSeperator}"
                  Margin="20,0" />
-        
+
+        <ActivityIndicator Grid.Row="2"
+                           IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           ZIndex="2" />
+
         <!-- Article Content - WebView with defined height -->
         <WebView Grid.Row="2"
                  Source="{Binding NewsItemContent}"
+                 IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                  Navigating="WebView_Navigating"
                  Margin="0,16,0,16" />
-        
+
         <!-- Comments Section -->
-        <StackLayout Grid.Row="3" Spacing="0">
+        <StackLayout Grid.Row="3"
+                     Spacing="0">
             <BoxView Grid.Row="1"
                      Style="{StaticResource BoxSeperator}"
                      Margin="20,0" />
             <!-- Comments Header -->
-            <StackLayout Orientation="Horizontal" 
+            <StackLayout Orientation="Horizontal"
                          Spacing="10"
-                       Style="{StaticResource CommentsHeaderStyle}"
-                       IsVisible="{Binding CommentCounts, Converter={StaticResource IntToBoolConverter}}">
+                         Style="{StaticResource CommentsHeaderStyle}"
+                         IsVisible="{Binding CommentCounts, Converter={StaticResource IntToBoolConverter}}">
                 <Image HeightRequest="20">
                     <Image.Source>
                         <FontImageSource Glyph="{StaticResource FluentIcon.Comment24}"
-                                         FontFamily="FluentRegular"                                         
+                                         FontFamily="FluentRegular"
                                          Color="{StaticResource IconAccentColor}" />
                     </Image.Source>
                 </Image>
-                
+
                 <Label FontSize="18"
                        FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
@@ -155,7 +185,7 @@
                     </Label.GestureRecognizers>
                     <Label.FormattedText>
                         <FormattedString>
-                            <FormattedString.Spans>                               
+                            <FormattedString.Spans>
                                 <Span Text="{Binding CommentCounts, Mode=OneWay}" />
                                 <Span Text="{x:Static local:Strings.NewsDetailPage_Comments}" />
                             </FormattedString.Spans>
@@ -171,18 +201,18 @@
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                     </Image.GestureRecognizers>
-                </Image>           
-               
+                </Image>
+
             </StackLayout>
-            
+
             <!-- Comments List -->
             <ScrollView IsVisible="False"
-                       x:Name="CommentsScrollView"
-                       Style="{StaticResource CommentsContainerStyle}">
+                        x:Name="CommentsScrollView"
+                        Style="{StaticResource CommentsContainerStyle}">
                 <CollectionView x:Name="ItemsListView"
-                              ItemsSource="{Binding Comments}"
-                              SelectionMode="None"
-                              BackgroundColor="Transparent">
+                                ItemsSource="{Binding Comments}"
+                                SelectionMode="None"
+                                BackgroundColor="Transparent">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="synd:SyndicationItem">
                             <Grid>
