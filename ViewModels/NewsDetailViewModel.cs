@@ -23,7 +23,7 @@ namespace Ifpa.ViewModels
         public Uri NewsItemUrl { get; set; }
 
         [ObservableProperty]
-        private WebViewSource newsItemContent;
+        private HtmlWebViewSource newsItemContent;
 
         private BlogPostService BlogPostService { get; set; }
 
@@ -38,26 +38,26 @@ namespace Ifpa.ViewModels
             if (IsBusy)
                 return;
 
-            IsBusy = true;            
+            IsBusy = true;
             Title = "Loading...";
 
             try
             {
                 Comments.Clear();
-                
+
                 var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(30));
                 var newsItemDetails = await BlogPostService.GetBlogPosts();
                 logger.LogInformation($"GetBlogPosts() returned {newsItemDetails?.Count() ?? 0} items");
 
-                NewsItem = newsItemDetails.Single(n => n.Links.Any(m => m.Uri == NewsItemUrl));        
-                
+                NewsItem = newsItemDetails.Single(n => n.Links.Any(m => m.Uri == NewsItemUrl));
+
                 //TODO: make this HTML and CSS in discrete files 
                 var articleContent = NewsItem.ElementExtensions
                       .FirstOrDefault(ext => ext.OuterName == "encoded")
                       .GetObject<XmlElement>().InnerText;
 
                 string webviewTheme = (Application.Current.RequestedTheme == AppTheme.Dark) ? "dark-theme" : "light-theme";
-           
+
                 // Create improved HTML content with better CSS
                 var htmlContent = @$"<!DOCTYPE html>
                                     <html>
@@ -93,23 +93,17 @@ namespace Ifpa.ViewModels
                                     </body>
                                     </html>";
 
+                NewsItemContent = new HtmlWebViewSource
+                {
+                    Html = htmlContent
+                };
 
-                    logger.LogInformation("Setting WebView content");
-                    NewsItemContent = new HtmlWebViewSource
-                    {
-                        Html = htmlContent,
-                        BaseUrl = "https://www.ifpapinball.com/"
-                    };
-                    logger.LogInformation("WebView content set");
-             
-                // Set final title
                 Title = NewsItem.Title.Text;
 
-                var comments = await BlogPostService.GetCommentsForBlogPost(NewsItem.Id);               
+                var comments = await BlogPostService.GetCommentsForBlogPost(NewsItem.Id);
 
                 Comments = comments.ToObservableCollection();
-                CommentCounts = Comments.Count;               
-          
+                CommentCounts = Comments.Count;
             }
             catch (Exception ex)
             {
@@ -117,11 +111,7 @@ namespace Ifpa.ViewModels
             }
             finally
             {
-                // Ensure IsBusy update happens on main thread
-                await MainThread.InvokeOnMainThreadAsync(() =>
-                {
-                    IsBusy = false;
-                });
+                IsBusy = false;
             }
         }
     }
