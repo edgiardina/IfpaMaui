@@ -24,6 +24,7 @@ using Shiny.Infrastructure;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using The49.Maui.BottomSheet;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ifpa;
 
@@ -128,6 +129,11 @@ public static class MauiProgram
         var appSettings = c.GetRequiredSection("AppSettings").Get<AppSettings>();
 
         s.AddSingleton<BlogPostService>();
+        builder.Services.AddHttpClient<BlogPostService>(c =>
+        {
+            c.DefaultRequestHeaders.UserAgent.ParseAdd("IfpaMaui/1.0");
+        });
+
         s.AddSingleton<NotificationService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
         s.AddSingleton<IDeepLinkService, DeepLinkService>();

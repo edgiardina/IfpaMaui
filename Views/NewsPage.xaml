@@ -208,7 +208,7 @@
                         <Image.Source>
                             <FontImageSource Glyph="{StaticResource FluentIcon.News16}"
                                              FontFamily="FluentRegular"
-                                             Color="{StaticResource PrimaryTextColor}" />
+                                             Color="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
                         </Image.Source>
                     </Image>
 

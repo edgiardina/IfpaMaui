@@ -17,14 +17,14 @@ namespace Ifpa.Views
             BindingContext = this.ViewModel = viewModel;
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
             if (ViewModel.NewsItem == null)
             {
                 ViewModel.NewsItemUrl = new Uri(NewsUri);
-                await Task.Run(ViewModel.LoadItems);
+                _ = Task.Run(ViewModel.LoadItems);
             }
         }
 

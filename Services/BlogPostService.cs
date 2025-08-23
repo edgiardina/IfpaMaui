@@ -1,6 +1,7 @@
 ﻿using Ifpa.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Headers;
 using System.ServiceModel.Syndication;
 using System.Xml;
 
@@ -8,109 +9,104 @@ namespace Ifpa.Services
 {
     public class BlogPostService
     {
-        protected AppSettings AppSettings { get; set; }
-        private readonly ILogger<BlogPostService> logger;
+        private readonly AppSettings _appSettings;
+        private readonly ILogger<BlogPostService> _logger;
+        private readonly HttpClient _http;
 
-        public BlogPostService(IConfiguration config, ILogger<BlogPostService> logger)
+        public BlogPostService(IConfiguration config, ILogger<BlogPostService> logger, HttpClient http)
         {
-            AppSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
-            this.logger = logger;
+            _appSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
+            _logger = logger;
+            _http = http;
         }
 
-        public async Task<IEnumerable<SyndicationItem>> GetBlogPosts()
+        public async Task<IReadOnlyList<SyndicationItem>> GetBlogPosts()
         {
-            var items = await Parse(AppSettings.IfpaRssFeedUrl);
-            
-            // Extract authors for all items
-            foreach (var item in items)
-            {
-                ExtractAndSetAuthor(item);
-            }
-            
+            var items = await Parse(_appSettings.IfpaRssFeedUrl).ConfigureAwait(false);
+            foreach (var item in items) ExtractAndSetAuthor(item);
             return items;
         }
 
-        public async Task<IEnumerable<SyndicationItem>> GetCommentsForBlogPost(string blogPostId)
+        public async Task<IReadOnlyList<SyndicationItem>> GetCommentsForBlogPost(string blogPostId)
         {
-            var blogPosts = await Parse(AppSettings.IfpaRssFeedUrl);
-            var post = blogPosts.Single(n => n.Id == blogPostId);
-            var link = post.Links.FirstOrDefault().Uri.ToString();
+            var posts = await Parse(_appSettings.IfpaRssFeedUrl).ConfigureAwait(false);
+            var post = posts.Single(n => n.Id == blogPostId);
+            var link = post.Links.FirstOrDefault()?.Uri?.ToString();
+            if (string.IsNullOrEmpty(link)) return Array.Empty<SyndicationItem>();
 
-            var comments = await Parse(link + "/feed");
-            
-            // Extract authors for all comments
-            foreach (var comment in comments)
-            {
-                ExtractAndSetAuthor(comment);
-            }
-            
+            var comments = await Parse(link + "/feed").ConfigureAwait(false);
+            foreach (var c in comments) ExtractAndSetAuthor(c);
             return comments;
         }
 
-        public int ParseBlogPostIdFromInternalIdUrl(string internalIdUrl)
-        {
-            //parse url and return integer p value from the following url style
-            //https://www.ifpapinball.com/?p=12345
-            return int.Parse(internalIdUrl.Split('=')[1]);
-        }
+        public int ParseBlogPostIdFromInternalIdUrl(string internalIdUrl) =>
+            int.Parse(internalIdUrl.Split('=')[1]);
 
-        /// <summary>
-        /// Extracts author information from dc:creator element and ensures it's available in the Authors collection
-        /// </summary>
         public void ExtractAndSetAuthor(SyndicationItem item)
         {
             try
             {
-                // Try to extract dc:creator from extension elements
-                var creatorElement = item.ElementExtensions
-                    .FirstOrDefault(ext => ext.OuterName == "creator" && 
-                                          (ext.OuterNamespace == "http://purl.org/dc/elements/1.1/" || 
-                                           ext.OuterNamespace == ""));
+                var creatorElement = item.ElementExtensions.FirstOrDefault(ext =>
+                    ext.OuterName == "creator" &&
+                    (ext.OuterNamespace == "http://purl.org/dc/elements/1.1/" || ext.OuterNamespace == ""));
 
                 if (creatorElement != null)
                 {
                     var creatorName = creatorElement.GetObject<XmlElement>()?.InnerText;
-                    
-                    if (!string.IsNullOrEmpty(creatorName))
+                    if (!string.IsNullOrWhiteSpace(creatorName))
                     {
-                        // Clear existing authors and add the creator
                         item.Authors.Clear();
                         item.Authors.Add(new SyndicationPerson { Name = creatorName });
                     }
                 }
-                
-                // Fallback: if no authors and no dc:creator found, add a default
+
                 if (!item.Authors.Any())
-                {
                     item.Authors.Add(new SyndicationPerson { Name = "IFPA" });
-                }
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, "Error extracting author from RSS item");
-                // Ensure there's always at least a default author
+                _logger.LogWarning(ex, "Error extracting author from RSS item");
                 if (!item.Authors.Any())
-                {
                     item.Authors.Add(new SyndicationPerson { Name = "IFPA" });
-                }
             }
         }
 
-        private async Task<IEnumerable<SyndicationItem>> Parse(string url)
+        private async Task<IReadOnlyList<SyndicationItem>> Parse(string url)
         {
-            Stream stream = null;
-
-            using (var client = new HttpClient())
+            try
             {
-                stream = await client.GetStreamAsync(url);
-            }
-            
-            if (stream == null) return new List<SyndicationItem>();
+                var sep = url.Contains('?') ? "&" : "?";
+                var urlWithTs = $"{url}{sep}_t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
 
-            XmlReader reader = XmlReader.Create(stream);
-            SyndicationFeed feed = SyndicationFeed.Load(reader);
-     
-            return feed.Items;
+                using var req = new HttpRequestMessage(HttpMethod.Get, urlWithTs);
+                req.Headers.CacheControl = new CacheControlHeaderValue
+                {
+                    NoCache = true,
+                    NoStore = true,
+                    MaxAge = TimeSpan.Zero,
+                    MustRevalidate = true
+                };
+                req.Headers.Pragma.ParseAdd("no-cache");
+
+                using var resp = await _http.SendAsync(
+                    req,
+                    HttpCompletionOption.ResponseHeadersRead
+                ).ConfigureAwait(false);
+
+                resp.EnsureSuccessStatusCode();
+
+                await using var stream = await resp.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                var xmlSettings = new XmlReaderSettings { Async = true, DtdProcessing = DtdProcessing.Ignore };
+
+                using var reader = XmlReader.Create(stream, xmlSettings);
+                var feed = SyndicationFeed.Load(reader);
+                return (feed?.Items?.ToList() ?? new List<SyndicationItem>());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to parse RSS from {Url}", url);
+                return Array.Empty<SyndicationItem>();
+            }
         }
     }
 }

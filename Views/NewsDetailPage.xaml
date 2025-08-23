@@ -70,10 +70,12 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
+        <ActivityIndicator Grid.RowSpan="4" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+
         <!-- Article Header -->
         <StackLayout Grid.Row="0" Style="{StaticResource ArticleHeaderStyle}">
-            <Label Text="{Binding NewsItem.Title.Text}"
+            <Label Text="{Binding Title}"
                    Style="{StaticResource ArticleTitleStyle}" />
             
             <!-- Article Meta -->
@@ -123,8 +125,6 @@
         <!-- Article Content - WebView with defined height -->
         <WebView Grid.Row="2"
                  Source="{Binding NewsItemContent}"
-                 VerticalOptions="FillAndExpand"
-                 HorizontalOptions="FillAndExpand"
                  Navigating="WebView_Navigating"
                  Margin="0,16,0,16" />
         
