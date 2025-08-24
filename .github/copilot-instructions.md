@@ -79,8 +79,14 @@ This is the **IFPA (International Flipper Pinball Association) Companion App** -
 - Use FluentUI icons: `FluentIcon.IconName` with `FluentRegular`/`FluentFilled` fonts
 - Implement proper layout containers for responsive design
 
+### UI considerations
+- Try to create a UI which looks "default" or "native" on the platform. My original inspiration was the iOS Mail app.
+- When possible, use Fluent UI icons for consistency
+- If an icon doesn't exist in IconFonts.xaml, examine appropriate hex codes here: https://github.com/AathifMahir/MauiIcons/blob/master/src/MauiIcons.Fluent/Icons/FluentIcons.cs
+- Avoid using images, which may bloat the app size, whenever possible.
+
 ### Error Handling
-- Always wrap async operations in try-catch blocks
+- Always wrap operations that can throw in try-catch blocks from the ViewModel; never let exceptions crash the app
 - Use structured logging with Serilog
 - Display user-friendly error messages via `Shell.Current.DisplayAlert`
 - Log exceptions with context using `logger.LogError(ex, "message")`
@@ -133,9 +139,6 @@ public partial class SampleViewModel : BaseViewModel
 {
     [ObservableProperty]
     private string title = "Sample";
-    
-    [ObservableProperty]
-    private bool isLoading;
     
     [RelayCommand]
     private async Task LoadData()
