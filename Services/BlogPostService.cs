@@ -1,5 +1,4 @@
 ﻿using Ifpa.Models;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.ServiceModel.Syndication;
@@ -13,9 +12,9 @@ namespace Ifpa.Services
         private readonly ILogger<BlogPostService> _logger;
         private readonly HttpClient _http;
 
-        public BlogPostService(IConfiguration config, ILogger<BlogPostService> logger, HttpClient http)
+        public BlogPostService(AppSettings appSettings, ILogger<BlogPostService> logger, HttpClient http)
         {
-            _appSettings = config.GetRequiredSection("AppSettings").Get<AppSettings>();
+            _appSettings = appSettings;
             _logger = logger;
             _http = http;
         }
