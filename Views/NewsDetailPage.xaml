@@ -218,10 +218,18 @@
                             <Grid>
                                 <Border Style="{StaticResource CommentsSectionBorder}">
                                     <StackLayout Spacing="8">
-                                        <Label Text="{Binding Title.Text}"
-                                               FontSize="14"
-                                               FontAttributes="Bold"
-                                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Authors}"
+                                                               Spacing="4">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="synd:SyndicationPerson">
+                                                    <Label Text="{Binding Name}"
+                                                           FontSize="14"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </HorizontalStackLayout>
+                                       
                                         <Label Text="{Binding Summary.Text, Converter={StaticResource HtmlDecodeConverter}}"
                                                FontSize="14"
                                                TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
