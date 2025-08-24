@@ -33,8 +33,7 @@
         <CollectionView x:Name="PlayersListView"
                         IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                         ItemsSource="{Binding Players}"
-                        SelectionMode="None"
-                        EmptyView="You have no favorite players selected. Use the heart icon to add a player to your favorites.">
+                        SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:Player">
                     <SwipeView ios:SwipeView.SwipeTransitionMode="Drag"
@@ -95,6 +94,28 @@
                     </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
+            <CollectionView.EmptyView>
+                <StackLayout Padding="40"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+                    <Image WidthRequest="48">
+                        <Image.Source>
+                            <FontImageSource Glyph="{StaticResource FluentIcon.Heart48}"
+                                             FontFamily="FluentRegular"
+                                             Color="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                        </Image.Source>
+                    </Image>
+                    <Label Text="{x:Static local:Strings.FavoritesPage_Empty}"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                </StackLayout>
+
+            </CollectionView.EmptyView>
+
         </CollectionView>
     </Grid>
 </ContentPage>

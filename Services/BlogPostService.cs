@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using System.Diagnostics;
 
 namespace Ifpa.Services
 {
@@ -21,21 +22,72 @@ namespace Ifpa.Services
 
         public async Task<IReadOnlyList<SyndicationItem>> GetBlogPosts()
         {
-            var items = await Parse(_appSettings.IfpaRssFeedUrl).ConfigureAwait(false);
-            foreach (var item in items) ExtractAndSetAuthor(item);
-            return items;
+            var stopwatch = Stopwatch.StartNew();
+            try
+            {
+                var items = await Parse(_appSettings.IfpaRssFeedUrl).ConfigureAwait(false);
+                foreach (var item in items) ExtractAndSetAuthor(item);
+                
+                _logger.LogInformation("GetBlogPosts completed in {ElapsedMs}ms, returned {ItemCount} items", 
+                    stopwatch.ElapsedMilliseconds, items.Count);
+                
+                return items;
+            }
+            finally
+            {
+                stopwatch.Stop();
+            }
         }
 
         public async Task<IReadOnlyList<SyndicationItem>> GetCommentsForBlogPost(string blogPostId)
         {
-            var posts = await Parse(_appSettings.IfpaRssFeedUrl).ConfigureAwait(false);
-            var post = posts.Single(n => n.Id == blogPostId);
-            var link = post.Links.FirstOrDefault()?.Uri?.ToString();
-            if (string.IsNullOrEmpty(link)) return Array.Empty<SyndicationItem>();
+            var stopwatch = Stopwatch.StartNew();
+            try
+            {
+                var posts = await Parse(_appSettings.IfpaRssFeedUrl).ConfigureAwait(false);
+                var post = posts.Single(n => n.Id == blogPostId);
+                var link = post.Links.FirstOrDefault()?.Uri?.ToString();
+                if (string.IsNullOrEmpty(link)) return Array.Empty<SyndicationItem>();
 
-            var comments = await Parse(link + "/feed").ConfigureAwait(false);
-            foreach (var c in comments) ExtractAndSetAuthor(c);
-            return comments;
+                var comments = await Parse(link + "/feed").ConfigureAwait(false);
+                foreach (var c in comments) ExtractAndSetAuthor(c);
+                
+                _logger.LogInformation("GetCommentsForBlogPost(string) completed in {ElapsedMs}ms, returned {CommentCount} comments", 
+                    stopwatch.ElapsedMilliseconds, comments.Count);
+                
+                return comments;
+            }
+            finally
+            {
+                stopwatch.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Gets comments for the given blog post without re-parsing the RSS feed
+        /// </summary>
+        /// <param name="blogPost">The blog post to get comments for</param>
+        /// <returns>List of comments as SyndicationItems</returns>
+        public async Task<IReadOnlyList<SyndicationItem>> GetCommentsForBlogPost(SyndicationItem blogPost)
+        {
+            var stopwatch = Stopwatch.StartNew();
+            try
+            {
+                var link = blogPost.Links.FirstOrDefault()?.Uri?.ToString();
+                if (string.IsNullOrEmpty(link)) return Array.Empty<SyndicationItem>();
+
+                var comments = await Parse(link + "/feed").ConfigureAwait(false);
+                foreach (var c in comments) ExtractAndSetAuthor(c);
+                
+                _logger.LogInformation("GetCommentsForBlogPost(SyndicationItem) completed in {ElapsedMs}ms, returned {CommentCount} comments", 
+                    stopwatch.ElapsedMilliseconds, comments.Count);
+                
+                return comments;
+            }
+            finally
+            {
+                stopwatch.Stop();
+            }
         }
 
         public int ParseBlogPostIdFromInternalIdUrl(string internalIdUrl) =>
@@ -72,6 +124,7 @@ namespace Ifpa.Services
 
         private async Task<IReadOnlyList<SyndicationItem>> Parse(string url)
         {
+            var stopwatch = Stopwatch.StartNew();
             try
             {
                 var sep = url.Contains('?') ? "&" : "?";
@@ -99,12 +152,21 @@ namespace Ifpa.Services
 
                 using var reader = XmlReader.Create(stream, xmlSettings);
                 var feed = SyndicationFeed.Load(reader);
-                return (feed?.Items?.ToList() ?? new List<SyndicationItem>());
+                var items = feed?.Items?.ToList() ?? new List<SyndicationItem>();
+                
+                _logger.LogInformation("RSS Parse({Url}) completed in {ElapsedMs}ms, returned {ItemCount} items", 
+                    url, stopwatch.ElapsedMilliseconds, items.Count);
+                
+                return items;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to parse RSS from {Url}", url);
+                _logger.LogError(ex, "Failed to parse RSS from {Url} after {ElapsedMs}ms", url, stopwatch.ElapsedMilliseconds);
                 return Array.Empty<SyndicationItem>();
+            }
+            finally
+            {
+                stopwatch.Stop();
             }
         }
     }

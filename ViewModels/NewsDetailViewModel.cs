@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
 
 namespace Ifpa.ViewModels
 {
@@ -100,14 +101,14 @@ namespace Ifpa.ViewModels
 
                 Title = NewsItem.Title.Text;
 
-                var comments = await BlogPostService.GetCommentsForBlogPost(NewsItem.Id);
+                var comments = await BlogPostService.GetCommentsForBlogPost(NewsItem);
 
                 Comments = comments.ToObservableCollection();
                 CommentCounts = Comments.Count;
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error loading news item {0}", NewsItemUrl);
+                logger.LogError(ex, "Error loading news item {NewsUrl} after {ElapsedMs}ms", NewsItemUrl, stopwatch.ElapsedMilliseconds);
             }
             finally
             {

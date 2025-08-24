@@ -480,6 +480,9 @@
   <data name="FavoritesPage_Title" xml:space="preserve">
     <value>Favorites</value>
   </data>
+  <data name="FavoritesPage_Empty" xml:space="preserve">
+    <value>You have no favorite players selected. Use the heart icon to add a player to your favorites</value>
+  </data>
   <data name="PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet" xml:space="preserve">
     <value>Player has not played against competitors yet.</value>
   </data>

@@ -718,6 +718,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have no favorite players selected. Use the heart icon to add a player to your favorites.
+        /// </summary>
+        internal static string FavoritesPage_Empty {
+            get {
+                return ResourceManager.GetString("FavoritesPage_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Favorites.
         /// </summary>
         internal static string FavoritesPage_Title {
