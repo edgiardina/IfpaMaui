@@ -108,7 +108,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error loading news item {NewsUrl} after {ElapsedMs}ms", NewsItemUrl, stopwatch.ElapsedMilliseconds);
+                logger.LogError(ex, "Error loading news item {NewsUrl}", NewsItemUrl);
             }
             finally
             {
