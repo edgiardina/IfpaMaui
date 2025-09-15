@@ -23,7 +23,8 @@ namespace Ifpa.Controls
             }
             else
             {
-                await viewModel.Search(newValue);          
+                viewModel.Text = newValue;
+                await viewModel.Search();
 
                 ItemsSource = viewModel.Players;
             }

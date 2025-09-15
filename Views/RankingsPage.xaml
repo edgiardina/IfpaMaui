@@ -38,9 +38,13 @@
         <controls:PlayerSearchHandler x:Name="searchHandler"
                                       SearchBoxVisibility="Collapsible"
                                       Placeholder="Type a player's name to search"
-                                      QueryIcon="{mi:Fluent Icon=Search48, IconColor={StaticResource IconAccentColor}}"
                                       ShowsResults="true"
                                       Keyboard="Plain">
+            <controls:PlayerSearchHandler.QueryIcon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Search48}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </controls:PlayerSearchHandler.QueryIcon>
             <controls:PlayerSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:Player">
                     <StackLayout Padding="10,0">
