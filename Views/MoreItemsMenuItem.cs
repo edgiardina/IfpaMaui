@@ -21,6 +21,6 @@ namespace Ifpa.Views
 
         public string Route { get; set; }
 
-        public string IconSource { get; set; }
+        public ImageSource IconSource { get; set; }
     }
 }

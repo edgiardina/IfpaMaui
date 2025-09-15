@@ -11,7 +11,6 @@ using Ifpa.Services;
 using Ifpa.ViewModels;
 using Ifpa.Views;
 using LiveChartsCore.SkiaSharpView.Maui;
-using MauiIcons.Fluent;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Compatibility.Hosting;
@@ -34,17 +33,18 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
 
-        //pull in appsettings.json
+        // pull in appsettings.json
         builder.Configuration.AddJsonPlatformBundle();
+        var appSettings = builder.Configuration.GetRequiredSection(nameof(AppSettings)).Get<AppSettings>() ?? new AppSettings();
+        builder.Services.AddSingleton(appSettings);
 
         builder
             .UseMauiApp<App>()
-            //TODO: Maui Compatibility is required for iOS App Links; remove when the below bug is resolved
-            //https://github.com/dotnet/maui/issues/12295
+            // TODO: Maui Compatibility is required for iOS App Links; remove when the below bug is resolved
+            // https://github.com/dotnet/maui/issues/12295
             .UseMauiCompatibility()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
-            .UseFluentMauiIcons()
             .UseShiny()
             .UseLiveCharts()
             .UseSkiaSharp()
@@ -55,17 +55,20 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("FluentSystemIcons-Regular.ttf", "FluentRegular");
+                fonts.AddFont("FluentSystemIcons-Filled.ttf", "FluentFilled");
             })
             .ConfigureMauiHandlers((handlers) =>
             {
 #if IOS
+                // Inset table view renderer is to make our settings look like native iOS settings
                 handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewRenderer));
 #endif
             })
-            .ConfigureLogging()
+            .ConfigureLogging(appSettings)
             .ConfigureEssentials(essentials =>
             {
-                //TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
+                // TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
                 essentials
                     .AddAppAction("calendar", Strings.AppShell_Calendar, "IFPA Tournament Calendar", "calendar")
                     .AddAppAction("my-stats", Strings.AppShell_MyStats, "Your IFPA player data", "mystats")
@@ -77,26 +80,12 @@ public static class MauiProgram
             // Show custom Tabbar Badges for iOS and Android
             .ConfigureMauiHandlers(h =>
             {
-                h.AddHandler<Shell, TabbarBadgeRenderer>();
+                h.AddHandler<Shell, IfpaShellRenderer>();
             })
-            /*
-            .ConfigureLifecycleEvents(events =>
-            {
-#if IOS
-                events.AddiOS(ios => ios
-                    .OpenUrl((app,url,opion) => LogEvent(app, url, opion)));
-
-                static bool LogEvent(UIKit.UIApplication application, Foundation.NSUrl url, Foundation.NSDictionary options)
-                {
-                    Microsoft.Maui.Controls.Application.Current.SendOnAppLinkRequestReceived(url);
-                    return true;
-                }
-#endif
-            })
-            */
             .RegisterShinyServices()
             .RegisterIfpaModels()
             .RegisterIfpaServices();
+
 
         return builder.Build();
     }
@@ -104,18 +93,13 @@ public static class MauiProgram
     static MauiAppBuilder RegisterIfpaModels(this MauiAppBuilder builder)
     {
         var s = builder.Services;
-        var c = builder.Configuration;
-        var appSettings = c.GetRequiredSection("AppSettings").Get<AppSettings>();
 
-        //Add all viewmodels
+        // Add all viewmodels
         s.AddAllFromNamespace<BaseViewModel>();
-        //Add all pages
+        // Add all pages
         s.AddAllFromNamespace<RankingsPage>();
-        //Adding RankingsViewModel as a singleton because it's injected into both RankingsPage
-        //and RankingsFilterPage
+        // RankingsViewModel is used by multiple pages
         s.AddSingleton<RankingsViewModel>();
-
-        s.AddSingleton(appSettings);
 
         return builder;
     }
@@ -123,19 +107,26 @@ public static class MauiProgram
     static MauiAppBuilder RegisterIfpaServices(this MauiAppBuilder builder)
     {
         var s = builder.Services;
-        var c = builder.Configuration;
-        var appSettings = c.GetRequiredSection("AppSettings").Get<AppSettings>();
 
-        s.AddSingleton<BlogPostService>();
+        // Typed HttpClient for BlogPostService; remove any separate singleton registration
+        s.AddHttpClient<BlogPostService>(c =>
+        {
+            c.DefaultRequestHeaders.UserAgent.ParseAdd("IfpaMaui/1.0");
+        });
+
         s.AddSingleton<NotificationService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
         s.AddSingleton<IDeepLinkService, DeepLinkService>();
+
+        // IPinballRankingApi that uses AppSettings injected directly
         s.AddSingleton<IPinballRankingApi>(sp =>
         {
-            var online = new PinballRankingApi(appSettings.IfpaApiKey);
+            var settings = sp.GetRequiredService<AppSettings>();
+            var online = new PinballRankingApi(settings.IfpaApiKey);
             var logger = sp.GetRequiredService<ILogger<CachingPinballRankingApi>>();
             return new CachingPinballRankingApi(online, logger);
         });
+
         s.AddSingleton(Geocoding.Default);
         s.AddSingleton(Badge.Default);
         s.AddSingleton(CalendarStore.Default);
@@ -159,27 +150,28 @@ public static class MauiProgram
         return builder;
     }
 
-    static MauiAppBuilder ConfigureLogging(this MauiAppBuilder builder)
+    static MauiAppBuilder ConfigureLogging(this MauiAppBuilder builder, AppSettings appSettings)
     {
         Log.Logger = new LoggerConfiguration()
-        .MinimumLevel.Debug()
-        .WriteTo.Console()
+            .MinimumLevel.Debug()
+            .WriteTo.Console()
 #if ANDROID
-		.WriteTo.AndroidLog()
-        .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")
+            .WriteTo.AndroidLog()
+            .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")
 #endif
 #if IOS
-        .WriteTo.NSLog()
-        .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")  
+            .WriteTo.NSLog()
+            .Enrich.WithProperty(Serilog.Core.Constants.SourceContextPropertyName, "IFPA")
 #endif
 #if DEBUG
-        .WriteTo.Debug()
+            .WriteTo.Debug()
 #endif
-        .WriteTo.File(Settings.LogFilePath,
-            rollingInterval: RollingInterval.Day,
-            retainedFileCountLimit: builder.Configuration.GetRequiredSection("AppSettings").Get<AppSettings>().LogRetentionDays)
-
-        .CreateLogger();
+            .WriteTo.File(
+                Settings.LogFilePath,
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: appSettings.LogRetentionDays
+            )
+            .CreateLogger();
 
         builder.Logging.AddSerilog(dispose: true);
 
@@ -187,5 +179,4 @@ public static class MauiProgram
 
         return builder;
     }
-
 }

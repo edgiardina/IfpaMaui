@@ -6,7 +6,6 @@
              xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:local="clr-namespace:Ifpa"
              Title="{Binding PlayerRecord.Initials, Mode=OneWay}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
@@ -41,20 +40,40 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_ActivityFeed}"
                      x:Name="ActivityFeedButton"
-                     Clicked="ActivityFeedButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=BroadActivityFeed24, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="ActivityFeedButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.BroadActivityFeed24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Favorite}"
                      x:Name="FavoriteButton"
-                     Clicked="FavoriteButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Heart24, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="FavoriteButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Heart24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_SetToMyStats}"
                      x:Name="StarButton"
-                     Clicked="StarButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Star48, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="StarButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Star48}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Share}"
                      x:Name="ShareButton"
-                     Clicked="ShareButton_Clicked"
-                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
+                     Clicked="ShareButton_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid>
         <AbsoluteLayout x:Name="AvatarOverlay"
@@ -106,11 +125,11 @@
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
-                        <StackLayout Grid.Row="1"
-                                     Orientation="Horizontal"
-                                     VerticalOptions="Center">
+                        <Grid Grid.Row="1"
+                              ColumnDefinitions="*, 30"
+                              VerticalOptions="Center">
                             <Label LineBreakMode="NoWrap"
-                                   HorizontalOptions="StartAndExpand"
+                                   HorizontalOptions="Start"
                                    Style="{StaticResource playerHeader}"
                                    FontSize="16">
                                 <Label.FormattedText>
@@ -122,7 +141,8 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Image Source="https://www.ifpapinball.com/images/confirmed.png"
+                            <Image Grid.Column="1"
+                                   Source="https://www.ifpapinball.com/images/confirmed.png"
                                    IsVisible="{Binding PlayerRecord.IfpaRegistered}"
                                    HeightRequest="16">
                                 <Image.Shadow>
@@ -130,9 +150,8 @@
                                             Opacity="0.8" />
                                 </Image.Shadow>
                             </Image>
-                        </StackLayout>
-                        <Grid HorizontalOptions="FillAndExpand"
-                              Grid.Row="2">
+                        </Grid>
+                        <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="30" />
@@ -179,13 +198,15 @@
                     <Grid ColumnSpacing="10">
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
-                                         Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
+                                         x:DataType="Button"
+                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}, x:DataType=vm:PlayerDetailViewModel}"
                                          Value="True">
                                 <Setter Property="ColumnDefinitions"
                                         Value="*,*,*" />
                             </DataTrigger>
                             <DataTrigger TargetType="Grid"
-                                         Binding="{Binding Source={x:Reference ChampButton}, Path=IsVisible}"
+                                         x:DataType="Button"
+                                         Binding="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}, x:DataType=vm:PlayerDetailViewModel}"
                                          Value="False">
                                 <Setter Property="ColumnDefinitions"
                                         Value="*,*" />
@@ -193,21 +214,21 @@
                         </Grid.Triggers>
 
                         <Border Style="{StaticResource FrameButton}"
-                               Grid.Column="0">
+                                Grid.Column="0">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="6.5" />
                             </Border.StrokeShape>
                             <Label Text="{x:Static local:Strings.PlayerDetailPage_TournamentResults}"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"
-                                   TextColor="{StaticResource ButtonTextColor}"/>
+                                   TextColor="{StaticResource ButtonTextColor}" />
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ShowPlayerTournamentResultsCommand}" />
                             </Border.GestureRecognizers>
                         </Border>
 
                         <Border Style="{StaticResource FrameButton}"
-                               Grid.Column="1">
+                                Grid.Column="1">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="6.5" />
                             </Border.StrokeShape>
@@ -221,9 +242,9 @@
                         </Border>
 
                         <Border Style="{StaticResource FrameButton}"
-                               Grid.Column="2"
-                               IsVisible="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
-                               x:Name="ChampButton">
+                                Grid.Column="2"
+                                IsVisible="{Binding PlayerRecord.Series, Converter={StaticResource IsListNotNullOrEmptyConverter}}"
+                                x:Name="ChampButton">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="6.5" />
                             </Border.StrokeShape>
@@ -426,7 +447,7 @@
                                VerticalOptions="Center"
                                FontSize="16"
                                TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
-                        <lvc:CartesianChart HeightRequest="300"                                            
+                        <lvc:CartesianChart HeightRequest="300"
                                             YAxes="{Binding RankAxis}"
                                             LegendPosition="Hidden"
                                             ZoomMode="None"

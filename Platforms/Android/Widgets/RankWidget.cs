@@ -4,8 +4,13 @@ using Android.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Ifpa.Models;
 using PinballApi.Extensions;
 using PinballApi.Interfaces;
+using AndroidNet = Android.Net;
+using Application = Android.App.Application;
+using Android.Graphics;
+using System; // for OperatingSystem
 
 namespace Ifpa.Platforms.Android.Widgets
 {
@@ -15,12 +20,15 @@ namespace Ifpa.Platforms.Android.Widgets
     public class RankWidget : AppWidgetProvider
     {
         private readonly IPinballRankingApi PinballRankingApi;
+        private readonly AppSettings AppSettings;
 
         private static string BackgroundClick = "BackgroundClickTag";
 
         public RankWidget()
         {
+            // TODO: Use Dependency Injection to get the PinballRankingApi instance
             PinballRankingApi = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPinballRankingApi>();
+            AppSettings = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<AppSettings>();
         }
 
         public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
@@ -50,13 +58,66 @@ namespace Ifpa.Platforms.Android.Widgets
                     widgetView.SetViewVisibility(Resource.Id.selectPlayerNotification, ViewStates.Gone);
 
                     var player = await PinballRankingApi.GetPlayer(playerId);
-
                     var playerStats = player.PlayerStats.Open;
 
                     widgetView.SetTextViewText(Resource.Id.widgetName, $"{player.FirstName} {player.LastName}");
                     widgetView.SetTextViewText(Resource.Id.widgetRank, playerStats.CurrentRank.OrdinalSuffix());
                     widgetView.SetTextViewText(Resource.Id.widgetIfpaNumber, $"# {player.PlayerId}");
                     widgetView.SetTextViewText(Resource.Id.widgetPoints, $"{playerStats.CurrentPoints}");
+
+                    // Set profile photo with local caching and FileProvider
+                    var profilePhotoUrl = player.ProfilePhoto != null && !string.IsNullOrWhiteSpace(player.ProfilePhoto.ToString())
+                        ? player.ProfilePhoto.ToString()
+                        : AppSettings.IfpaPlayerNoProfilePicUrl;
+
+                    string localPath = null;
+                    AndroidNet.Uri contentUri = null;
+                    if (!string.IsNullOrEmpty(profilePhotoUrl) && profilePhotoUrl.StartsWith("http"))
+                    {
+                        var fileName = $"profile_{player.PlayerId}.jpg";
+                        var cacheDir = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData), "profilecache");
+                        System.IO.Directory.CreateDirectory(cacheDir);
+                        localPath = System.IO.Path.Combine(cacheDir, fileName);
+
+                        if (!File.Exists(localPath))
+                        {
+                            try
+                            {
+                                using var httpClient = new HttpClient();
+                                var imageBytes = await httpClient.GetByteArrayAsync(profilePhotoUrl);
+                                await File.WriteAllBytesAsync(localPath, imageBytes);
+                            }
+                            catch
+                            {
+                                localPath = null;
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(localPath) && File.Exists(localPath))
+                        {
+                            var context = Application.Context;
+                            contentUri = AndroidX.Core.Content.FileProvider.GetUriForFile(context, "com.edgiardina.ifpa.fileprovider", new Java.IO.File(localPath));
+                        }
+                    }
+
+                    if (contentUri != null)
+                    {
+                        if (!string.IsNullOrEmpty(localPath) && File.Exists(localPath))
+                        {
+                            var bitmap = BitmapFactory.DecodeFile(localPath);
+                            if (bitmap != null)
+                                widgetView.SetImageViewBitmap(Resource.Id.profilePhoto, bitmap);
+                            else
+                                widgetView.SetImageViewResource(Resource.Id.profilePhoto, Resource.Drawable.noplayerpic);
+                        }
+                        else
+                        {
+                            widgetView.SetImageViewResource(Resource.Id.profilePhoto, Resource.Drawable.noplayerpic);
+                        }
+                    }
+                    else
+                    {
+                        widgetView.SetImageViewResource(Resource.Id.profilePhoto, Resource.Drawable.noplayerpic);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -66,6 +127,7 @@ namespace Ifpa.Platforms.Android.Widgets
             else
             {
                 widgetView.SetViewVisibility(Resource.Id.selectPlayerNotification, ViewStates.Visible);
+                widgetView.SetImageViewResource(Resource.Id.profilePhoto, Resource.Drawable.noplayerpic);
             }
         }
 
@@ -76,7 +138,12 @@ namespace Ifpa.Platforms.Android.Widgets
             intent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, appWidgetIds);
 
             // Register click event for the Background
-            var piBackground = PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
+            var flags = PendingIntentFlags.UpdateCurrent;
+            if (OperatingSystem.IsAndroidVersionAtLeast(23))
+            {
+                flags |= PendingIntentFlags.Immutable;
+            }
+            var piBackground = PendingIntent.GetBroadcast(context, 0, intent, flags);
 
             widgetView.SetOnClickPendingIntent(Resource.Id.widgetBackground, piBackground);
 
@@ -87,7 +154,13 @@ namespace Ifpa.Platforms.Android.Widgets
         {
             var intent = new Intent(context, typeof(RankWidget));
             intent.SetAction(action);
-            return PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.Immutable);
+
+            var flags = PendingIntentFlags.UpdateCurrent;
+            if (OperatingSystem.IsAndroidVersionAtLeast(23))
+            {
+                flags |= PendingIntentFlags.Immutable;
+            }
+            return PendingIntent.GetBroadcast(context, 0, intent, flags);
         }
 
         /// <summary>
@@ -102,7 +175,11 @@ namespace Ifpa.Platforms.Android.Widgets
                 {
                     var packageName = "com.edgiardina.ifpa";
                     var launchIntent = pm.GetLaunchIntentForPackage(packageName);
-                    context.StartActivity(launchIntent);
+                    if (launchIntent != null)
+                    {
+                        launchIntent.AddFlags(ActivityFlags.NewTask);
+                        context.StartActivity(launchIntent);
+                    }
                 }
                 catch (Exception ex)
                 {

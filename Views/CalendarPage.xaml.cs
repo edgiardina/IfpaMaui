@@ -2,8 +2,6 @@
 using Ifpa.Models;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
-using MauiIcons.Fluent;
-using MauiIcons.Core;
 using Microsoft.Extensions.Logging;
 
 namespace Ifpa.Views
@@ -12,7 +10,6 @@ namespace Ifpa.Views
     public partial class CalendarPage : ContentPage
     {
         public CalendarViewModel ViewModel { get; set; }
-
 
         private readonly ILogger<CalendarPage> logger;
 
@@ -29,7 +26,7 @@ namespace Ifpa.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            UpdateCalendarData();
+            _ = UpdateCalendarData();
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)

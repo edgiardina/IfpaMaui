@@ -33,7 +33,7 @@ namespace Ifpa.Platforms.Android
             }
 
             var contentResolver = Application.Context.ContentResolver;
-            ICursor? cursor = null;
+            ICursor cursor = null;
             try
             {
                 packageNameArray[0] = packageName;

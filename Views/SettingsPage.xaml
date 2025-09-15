@@ -4,7 +4,6 @@
              x:Class="Ifpa.Views.SettingsPage"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:shimmer="clr-namespace:Syncfusion.Maui.Toolkit.Shimmer;assembly=Syncfusion.Maui.Toolkit"
              Title="{x:Static local:Strings.SettingsPage_Settings}"
@@ -48,17 +47,17 @@
                                                WaveColor="{StaticResource IconAccentColor}"
                                                Fill="{StaticResource SecondaryTextColor}"
                                                Type="CirclePersona">
-                                <StackLayout Orientation="Horizontal"
-                                             Margin="10">
+                                <Grid Margin="10" ColumnDefinitions="60, Auto, *">
                                     <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
-                                                        HorizontalOptions="Center"
+                                                        HorizontalOptions="Start"
+                                                        Grid.Column="0"
                                                         BackgroundColor="{StaticResource ButtonBackgroundColor}"
                                                         BorderWidth="0"
                                                         CornerRadius="8"
                                                         TextColor="{StaticResource ButtonTextColor}" />
-                                    <Label Margin="15"
+                                    <Label
                                            FontSize="18"
-                                           HorizontalOptions="StartAndExpand"
+                                           Grid.Column="1"
                                            IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
                                            VerticalOptions="Center">
                                         <Label.FormattedText>
@@ -69,18 +68,25 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"
-                                           Margin="15"
+                                    <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"                                           
                                            FontSize="18"
-                                           HorizontalOptions="StartAndExpand"
+                                           Grid.Column="1"
                                            VerticalOptions="Center"
                                            IsVisible="{Binding PlayerRecord, Converter={StaticResource nullConverter}}" />
-                                    <ImageButton IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
-                                                 Source="{mi:Fluent Icon=PersonDelete24, IconColor=Red}"
-                                                 Margin="0,0,10,0"
-                                                 HorizontalOptions="End"
-                                                 Clicked="Button_Clicked" />
-                                </StackLayout>
+                                    <Label Text="{StaticResource FluentIcon.PersonDelete24}"
+                                           Grid.Column="2"
+                                           FontFamily="FluentRegular"
+                                           TextColor="Red"
+                                           FontSize="24"
+                                           Margin="0,0,10,0"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Center"
+                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="Button_Clicked" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                </Grid>
                             </shimmer:SfShimmer>
                         </ViewCell>
                     </TableSection>

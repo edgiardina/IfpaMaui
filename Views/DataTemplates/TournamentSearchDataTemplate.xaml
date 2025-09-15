@@ -4,7 +4,6 @@
               xmlns:local="clr-namespace:Ifpa.Converters"
               x:Class="Ifpa.Views.DataTemplates.TournamentSearchDataTemplate"
               xmlns:ifpatournament="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi"
-              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
               x:DataType="ifpatournament:Tournament">
     <VerticalStackLayout>
         <Grid Padding="15,10"
@@ -60,8 +59,10 @@
                            HorizontalOptions="End"
                            Text="{Binding Winner.PlayerName}"
                            FontSize="12" />
-                    <Image Source="{mi:Fluent Icon=Trophy16, IconColor={StaticResource IconAccentColor}}"
-                           HeightRequest="16"
+                    <Label Text="{StaticResource FluentIcon.Trophy16}"
+                           FontFamily="FluentRegular"
+                           TextColor="{StaticResource IconAccentColor}"
+                           FontSize="16"
                            Margin="5,0" />
                 </HorizontalStackLayout>
             </Grid>

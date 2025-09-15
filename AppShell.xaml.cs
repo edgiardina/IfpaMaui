@@ -25,6 +25,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("champ-series-player", typeof(ChampionshipSeriesPlayerCardPage));
 
         Routing.RegisterRoute("calendar-detail", typeof(CalendarDetailPage));
+        Routing.RegisterRoute("related-tournaments", typeof(RelatedTournamentsPage));
 
         // more menu
         Routing.RegisterRoute("favorites", typeof(FavoritesPage));
@@ -68,6 +69,8 @@ public partial class AppShell : Shell
         }
 
         token?.Complete();
+
+        await Task.CompletedTask;
     }
     // TODO: this is a hack to get the correct tab to show when navigating to a page
     // https://github.com/dotnet/maui/issues/16568

@@ -113,57 +113,68 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Install the Apple certificate and provisioning profile
+      - name: Install the Apple certificate and provisioning profiles
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.DISTRIBUTION_CERT_BASE64 }}
-          P12_PASSWORD: ${{ secrets.DISTRIBUTION_CERT_PW }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_PROVISION_PROFILE_BASE64 }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+            BUILD_CERTIFICATE_BASE64: ${{ secrets.DISTRIBUTION_CERT_BASE64 }}
+            P12_PASSWORD: ${{ secrets.DISTRIBUTION_CERT_PW }}
+            BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_PROVISION_PROFILE_BASE64 }}
+            DISTRIBUTION_WIDGET_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_WIDGET_PROVISION_PROFILE_BASE64 }}
+            KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          KEYCHAIN_PATH=$HOME/Library/Keychains/app-signing.keychain-db
-      
-          # Decode cert and provisioning profile
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
-      
-          # Create and unlock custom keychain
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-      
-          # Import cert with access for codesign and security
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH -T /usr/bin/codesign -T /usr/bin/security
-      
-          # Set keychain search and default to make it visible to MSBuild
-          security list-keychains -s $KEYCHAIN_PATH login.keychain-db
-          security default-keychain -s $KEYCHAIN_PATH
-      
-          # Grant signing tools access to the private key
-          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-      
-          # ✅ OPTIONAL: Try to trust the certificate globally (might help dotnet/xcode build trust chain)
-          CERT_SHA=$(security find-certificate -c "Apple Distribution" -Z $KEYCHAIN_PATH | awk '/SHA-1/ { print $NF }')
-          if [[ -n "$CERT_SHA" ]]; then
-            CERT_PATH=$(security find-certificate -Z -a -p $KEYCHAIN_PATH | awk 'BEGIN {p=0} /BEGIN CERTIFICATE/ {p=1} {if(p)print} /END CERTIFICATE/ {p=0}' > temp_cert.cer && echo "temp_cert.cer")
-            sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "$CERT_PATH" || echo "⚠️ Could not trust cert — continuing anyway"
-          fi
-      
-          # ✅ Extract real UUID from provisioning profile and name it correctly
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          PROFILE_UUID=$(grep -aA1 UUID $PP_PATH | grep -io "[-A-F0-9]\{36\}" | head -1)
-          echo "PROVISIONING_UUID=$PROFILE_UUID" >> $GITHUB_ENV
+            CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+            APP_PP_PATH=$RUNNER_TEMP/app_pp.mobileprovision
+            WIDGET_PP_PATH=$RUNNER_TEMP/widget_pp.mobileprovision
+            KEYCHAIN_PATH=$HOME/Library/Keychains/app-signing.keychain-db
 
-          if [[ -z "$PROFILE_UUID" ]]; then
-            echo "❌ Failed to extract UUID from provisioning profile"
-            exit 1
-          fi
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$PROFILE_UUID.mobileprovision
-      
-          # Debug output to confirm identity is available
-          echo "🔍 Signing identities:"
-          security find-identity -v -p codesigning $KEYCHAIN_PATH
+            # Decode cert and both provisioning profiles
+            echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+            echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $APP_PP_PATH
+            echo -n "$DISTRIBUTION_WIDGET_PROVISION_PROFILE_BASE64" | base64 --decode -o $WIDGET_PP_PATH
+
+            # Create and unlock custom keychain
+            security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+            security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+            security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+            # Import cert with access for codesign and security
+            security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH -T /usr/bin/codesign -T /usr/bin/security
+
+            # Set keychain search and default to make it visible to MSBuild
+            security list-keychains -s $KEYCHAIN_PATH login.keychain-db
+            security default-keychain -s $KEYCHAIN_PATH
+
+            # Grant signing tools access to the private key
+            security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+            # OPTIONAL: Try to trust the certificate globally
+            CERT_SHA=$(security find-certificate -c "Apple Distribution" -Z $KEYCHAIN_PATH | awk '/SHA-1/ { print $NF }')
+            if [[ -n "$CERT_SHA" ]]; then
+                CERT_PATH=$(security find-certificate -Z -a -p $KEYCHAIN_PATH | awk 'BEGIN {p=0} /BEGIN CERTIFICATE/ {p=1} {if(p)print} /END CERTIFICATE/ {p=0}' > temp_cert.cer && echo "temp_cert.cer")
+                sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "$CERT_PATH" || echo "⚠️ Could not trust cert — continuing anyway"
+            fi
+
+            # ✅ Install main app provisioning profile
+            mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+            APP_PROFILE_UUID=$(grep -aA1 UUID $APP_PP_PATH | grep -io "[-A-F0-9]\{36\}" | head -1)
+            if [[ -z "$APP_PROFILE_UUID" ]]; then
+                echo "❌ Failed to extract UUID from main app provisioning profile"
+                exit 1
+            fi
+            cp $APP_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$APP_PROFILE_UUID.mobileprovision
+            echo "PROVISIONING_UUID=$APP_PROFILE_UUID" >> $GITHUB_ENV
+
+            # ✅ Install widget provisioning profile
+            WIDGET_PROFILE_UUID=$(grep -aA1 UUID $WIDGET_PP_PATH | grep -io "[-A-F0-9]\{36\}" | head -1)
+            if [[ -z "$WIDGET_PROFILE_UUID" ]]; then
+                echo "❌ Failed to extract UUID from widget provisioning profile"
+                exit 1
+            fi
+            cp $WIDGET_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROFILE_UUID.mobileprovision
+            echo "WIDGET_PROVISIONING_UUID=$WIDGET_PROFILE_UUID" >> $GITHUB_ENV
+
+            # Debug output to confirm identity is available
+            echo "🔍 Signing identities:"
+            security find-identity -v -p codesigning $KEYCHAIN_PATH
       
       - name: Pull Version from Tag
         uses: nowsprinting/check-version-format-action@v3
@@ -195,7 +206,35 @@ jobs:
           files: 'appsettings.json'
         env:
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
-      
+
+      - name: Update Widget API key in Info.plist
+        env:
+            BUILD_NUMBER: ${{ env.VERSION_NUMBER_WITH_OFFSET }}
+            APP_VERSION: ${{ env.VERSION }}
+            IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
+        run: |
+                WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
+
+                echo "🔐 Replacing IFPAApiKey"
+                /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$WIDGET_PLIST" || \
+                /usr/libexec/PlistBuddy -c "Add :IFPAApiKey string $IFPA_API_KEY" "$WIDGET_PLIST"
+    
+      - name: Build RankWidgetExtension
+        run: |
+            xcodebuild \
+              -project NativeIFPA/IFPA.xcodeproj \
+              -scheme RankWidgetExtension \
+              -configuration Release \
+              -sdk iphoneos \
+              -derivedDataPath NativeIFPA/DerivedData \
+              CODE_SIGN_STYLE=Manual \
+              CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
+              CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
+              DEVELOPMENT_TEAM=KH5JKUPW2Q \
+              PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" \
+              MARKETING_VERSION=${{ env.VERSION }} \
+              CURRENT_PROJECT_VERSION=${{ env.VERSION_NUMBER_WITH_OFFSET }}
+
       - name: Setup .NET 9
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
@@ -219,7 +258,7 @@ jobs:
             -p:ApplicationDisplayVersion=${VERSION} \
             -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} \
             -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
-            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
+            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}            
 
       - uses: actions/upload-artifact@v4
         with:

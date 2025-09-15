@@ -2,8 +2,6 @@
 using Ifpa.Interfaces;
 using Ifpa.Models;
 using Ifpa.ViewModels;
-using MauiIcons.Core;
-using MauiIcons.Fluent;
 using Microsoft.Maui.Layouts;
 
 namespace Ifpa.Views
@@ -135,7 +133,6 @@ namespace Ifpa.Views
             {
                 Uri = $"https://www.ifpapinball.com/player.php?p={ViewModel.PlayerId}",
                 Title = Strings.PlayerDetailPage_SharePlayer,
-
             });
         }
 
@@ -161,8 +158,20 @@ namespace Ifpa.Views
         {
             var colorDictionary = Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries.First();
             var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
-            var filledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.Heart48, IconColor = toolbarIconColor };
-            var unfilledHeartIcon = (FontImageSource)new MauiIcon() { Icon = FluentIcons.HeartBroken24, IconColor = toolbarIconColor };
+            
+            var filledHeartIcon = new FontImageSource 
+            { 
+                Glyph = (string)Application.Current.Resources["FluentIcon.Heart48"],
+                FontFamily = "FluentRegular",
+                Color = toolbarIconColor 
+            };
+            
+            var unfilledHeartIcon = new FontImageSource 
+            { 
+                Glyph = (string)Application.Current.Resources["FluentIcon.HeartBroken24"],
+                FontFamily = "FluentRegular",
+                Color = toolbarIconColor 
+            };
 
             if (isFavorite)
             {
@@ -177,13 +186,13 @@ namespace Ifpa.Views
 
         private bool isAvatarEnlarged = false;
 
-        private async void OnAvatarTapped(object sender, EventArgs e)
+        private void OnAvatarTapped(object sender, EventArgs e)
         {
             if (isAvatarEnlarged)
             {
                 // Shrink enlarged avatar back to original size and position
-                EnlargedPlayerAvatar.ScaleTo(1, 250, Easing.CubicOut);
-                EnlargedPlayerAvatar.TranslateTo(0, 0, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.ScaleTo(1, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.TranslateTo(0, 0, 250, Easing.CubicOut);
 
                 AvatarOverlay.IsVisible = false;
                 PlayerAvatar.IsVisible = true;
@@ -218,13 +227,10 @@ namespace Ifpa.Views
 
                 // Animate to the center with the new size
                 //EnlargedPlayerAvatar.TranslateTo(targetX, targetY - PlayerAvatar.Y, 250, Easing.CubicOut);
-                EnlargedPlayerAvatar.ScaleTo(targetWidth / PlayerAvatar.Width, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.ScaleTo(targetWidth / PlayerAvatar.Width, 250, Easing.CubicOut);
 
                 isAvatarEnlarged = true;
             }
         }
-
     }
-
-
 }

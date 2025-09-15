@@ -2,14 +2,15 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Controls.Chip"
+             xmlns:local="clr-namespace:Ifpa.Controls"
+             x:DataType="local:Chip"
              x:Name="this">
     <!-- TODO: Make a selectable chip control: https://medium.com/@KonstantinosK/create-a-custom-chip-control-on-net-maui-77544b55a6d6 -->
-    <Frame x:Name="MainLayout"
-           CornerRadius="6.5"
-           HasShadow="False"
-           Padding="8,5"
-           Margin="{OnPlatform Android=1}"
-           BackgroundColor="{StaticResource IconAccentColor}">
+    <Border x:Name="MainLayout"
+            StrokeShape="RoundRectangle 6.5"
+            Padding="8,5"
+            Margin="{OnPlatform Android=1}"
+            BackgroundColor="{StaticResource IconAccentColor}">
         <Label x:Name="Label"
                Text="{Binding Text}"
                FontSize="{Binding FontSize}"
@@ -17,5 +18,5 @@
                VerticalOptions="Center"
                HorizontalOptions="Center"       
                BindingContext="{x:Reference this}" />
-    </Frame>
+    </Border>
 </ContentView>

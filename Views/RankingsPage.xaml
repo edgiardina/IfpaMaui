@@ -5,7 +5,6 @@
              xmlns:controls="clr-namespace:Ifpa.Controls"
              x:Class="Ifpa.Views.RankingsPage"
              Title="{x:Static local:Strings.RankingsPage_Title}"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
              x:Name="BrowseItemsPage"
@@ -16,8 +15,13 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Filter"
                      x:Name="InfoButton"
-                     Command="{Binding ShowRankingFilterCommand}"
-                     IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
+                     Command="{Binding ShowRankingFilterCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>

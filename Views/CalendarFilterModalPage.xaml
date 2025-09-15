@@ -9,7 +9,7 @@
              xmlns:local="clr-namespace:Ifpa">
     <ContentPage.Content>
         <Grid Margin="10,10,10,10"
-              VerticalOptions="CenterAndExpand"
+              VerticalOptions="Center"
               RowSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -40,14 +40,15 @@
                    VerticalOptions="Center"
                    HeightRequest="25"
                    WidthRequest="25"
-                   HorizontalOptions="Center"
-                   Source="location.png">
+                   HorizontalOptions="Center">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="ImageButton_Clicked" />
                 </Image.GestureRecognizers>
-                <Image.Behaviors>
-                    <toolkit:IconTintColorBehavior TintColor="{StaticResource IconAccentColor}" />
-                </Image.Behaviors>
+                <Image.Source>
+                    <FontImageSource Glyph="{StaticResource FluentIcon.Location48}"
+                                     FontFamily="FluentRegular"
+                                     Color="{StaticResource IconAccentColor}" />
+                </Image.Source>
             </Image>
 
             <!-- Distance -->
@@ -60,7 +61,7 @@
                     MinimumTrackColor="#007AFF"
                     MaximumTrackColor="Gray"
                     Margin="20,0,5,0"
-                    HorizontalOptions="FillAndExpand"
+                    HorizontalOptions="Fill"
                     Maximum="1000"
                     Minimum="10"
                     Value="150"
@@ -106,21 +107,21 @@
                       x:Name="ShowLeaguesCheckBox" />
 
             <!-- Buttons -->
-            <StackLayout Orientation="Horizontal"
+            <Grid ColumnDefinitions="*,*"
                          Grid.Row="4"
                          Grid.ColumnSpan="4"
                          Margin="0, 20">
                 <Button WidthRequest="160"
                         Padding="10,0,10,0"
-                        HorizontalOptions="CenterAndExpand"
+                        Grid.Column="0"
                         Text="{x:Static local:Strings.CalendarFilterModalPage_Cancel}"
                         Clicked="CancelButton_Clicked" />
                 <Button WidthRequest="160"
                         Padding="10,0,10,0"
-                        HorizontalOptions="CenterAndExpand"
+                        Grid.Column="1"
                         Text="{x:Static local:Strings.CalendarFilterModalPage_FindEvents}"
                         Clicked="FindButton_Clicked" />
-            </StackLayout>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

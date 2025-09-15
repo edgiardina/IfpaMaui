@@ -11,9 +11,9 @@ namespace Ifpa.ViewModels
 {
     public partial class PlayerVersusPlayerViewModel : BaseViewModel
     {
-        public ObservableCollection<Grouping<char, PlayerVersusRecord>> AllResults { get; set; }
+        public ObservableCollection<PlayerVersusRecordGroup> AllResults { get; set; }
 
-        public ObservableCollection<Grouping<char, PlayerVersusRecord>> EliteResults { get; set; }
+        public ObservableCollection<PlayerVersusRecordGroup> EliteResults { get; set; }
         public Command LoadAllItemsCommand { get; set; }
 
         public Command LoadEliteItemsCommand { get; set; }
@@ -28,8 +28,8 @@ namespace Ifpa.ViewModels
         public PlayerVersusPlayerViewModel(IPinballRankingApi pinballRankingApi, ILogger<PlayerVersusPlayerViewModel> logger) : base(logger)
         {
             Title = "PVP";
-            AllResults = new ObservableCollection<Grouping<char, PlayerVersusRecord>>();
-            EliteResults = new ObservableCollection<Grouping<char, PlayerVersusRecord>>();
+            AllResults = new ObservableCollection<PlayerVersusRecordGroup>();
+            EliteResults = new ObservableCollection<PlayerVersusRecordGroup>();
             LoadAllItemsCommand = new Command(async () => await ExecuteLoadAllItemsCommand());
             LoadEliteItemsCommand = new Command(async () => await ExecuteLoadEliteItemsCommand());
             PinballRankingApi = pinballRankingApi;
@@ -49,18 +49,17 @@ namespace Ifpa.ViewModels
 
                 if (pvpResults.PlayerVersusPlayerRecords != null)
                 {
-                    var lastNames = pvpResults.PlayerVersusPlayerRecords
-                                            .OrderBy(n => n.LastName).Select(n => n.LastName).ToList();
                     var groupedResults = pvpResults.PlayerVersusPlayerRecords
-                                            .OrderBy(n => n.LastName)
-                                            .ThenBy(n => n.FirstName)
-                                            .GroupBy(c => char.ToUpper(c.LastName.FirstOrDefault()))
-                                            .Select(g => new Grouping<char, PlayerVersusRecord>(g.Key, g));
+                                                       .OrderBy(n => n.LastName)
+                                                       .ThenBy(n => n.FirstName)
+                                                       .GroupBy(c => char.ToUpper(c.LastName.FirstOrDefault()).ToString())
+                                                       .Select(g => new PlayerVersusRecordGroup(g.Key, g));
 
                     foreach (var item in groupedResults)
                     {
                         EliteResults.Add(item);
                     }
+
                 }
                 else
                 {
@@ -91,17 +90,15 @@ namespace Ifpa.ViewModels
 
                 if (pvpResults.PlayerVersusPlayerRecords != null)
                 {
-                    var lastNames = pvpResults.PlayerVersusPlayerRecords
-                                            .OrderBy(n => n.LastName).Select(n => n.LastName).ToList();
                     var groupedResults = pvpResults.PlayerVersusPlayerRecords
-                                            .OrderBy(n => n.LastName)
-                                            .ThenBy(n => n.FirstName)
-                                            .GroupBy(c => char.ToUpper(c.LastName.FirstOrDefault()))
-                                            .Select(g => new Grouping<char, PlayerVersusRecord>(g.Key, g));
+                                                        .OrderBy(n => n.LastName)
+                                                        .ThenBy(n => n.FirstName)
+                                                        .GroupBy(c => char.ToUpper(c.LastName.FirstOrDefault()).ToString())
+                                                        .Select(g => new PlayerVersusRecordGroup(g.Key, g));
 
                     foreach (var item in groupedResults)
                     {
-                        AllResults.Add(item);
+                        AllResults.Add(item); 
                     }
                 }
                 else

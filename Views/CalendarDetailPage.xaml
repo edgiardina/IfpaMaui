@@ -4,7 +4,6 @@
              xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.CalendarDetailPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              xmlns:local="clr-namespace:Ifpa"
@@ -21,6 +20,7 @@
             <toolkit:IsNotNullConverter x:Key="isNotNullConverter" />
             <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter" />
             <converters:NotEqualMultiValueConverter x:Key="NotEqualMultiValueConverter" />
+
             <Style x:Key="calendarHeader"
                    TargetType="Label">
                 <Setter Property="TextColor"
@@ -36,7 +36,6 @@
                                IsVisible="True"
                                HasBackdrop="False"
                                Padding="10"
-                               BindingContext="{Binding Source={x:Reference this}, Path=BindingContext}"
                                CornerRadius="10"
                                BackgroundColor="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}">
                 <the49:BottomSheet.Detents>
@@ -44,7 +43,7 @@
                     <the49:MediumDetent />
                 </the49:BottomSheet.Detents>
                 <ScrollView>
-                    <StackLayout HorizontalOptions="FillAndExpand"
+                    <StackLayout HorizontalOptions="Fill"
                                  Spacing="10"
                                  Margin="0,10"
                                  IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
@@ -119,7 +118,7 @@
                                     <Label Text="{Binding Tournament.EventStartDate, StringFormat='{0:d}', Mode=OneWay}"
                                            Style="{DynamicResource valueStyle}" />
                                     <Label Text="{x:Static local:Strings.Hyphen}"
-                                           HorizontalTextAlignment="Center"                  
+                                           HorizontalTextAlignment="Center"
                                            Padding="10,0,0,0"
                                            Margin="5,0,0,0">
                                         <Label.IsVisible>
@@ -223,14 +222,45 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
-                     x:Name="ShareButton"
-                     Command="{Binding ShareTournamentCommand}"
-                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_AddToCalendar}"
                      x:Name="AddToCalendarButton"
-                     Command="{Binding AddToCalendarCommand}"
-                     IconImageSource="{mi:Fluent Icon=CalendarAdd28, IconColor={StaticResource IconAccentColor}}" />
+                     Order="Secondary"
+                     Command="{Binding AddToCalendarCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.CalendarAdd28}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.RelatedTournamentsPage_Title}"
+                     x:Name="RelatedTournamentsButton"
+                     Order="Secondary"
+                     Command="{Binding ViewRelatedTournamentsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Directions}"
+                     Order="Secondary"
+                     Command="{Binding OpenMapCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Directions24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
+                     x:Name="ShareButton"
+                     Order="Secondary"
+                     Command="{Binding ShareTournamentCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid RowDefinitions="*">
         <ActivityIndicator IsVisible="{Binding IsBusy}"

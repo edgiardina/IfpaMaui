@@ -102,21 +102,28 @@ namespace Ifpa.Models
         {
             get
             {
+                // Always prefer App Group
                 var playerIdGroup = Preferences.Get(PLAYER_ID, 0, groupName);
+                if (playerIdGroup != 0)
+                    return playerIdGroup;
+
+                // Fall back to app's own store
                 var playerId = Preferences.Get(PLAYER_ID, 0);
-                if (playerId != 0 && playerIdGroup == 0)
+                if (playerId != 0)
                 {
+                    // Sync into App Group for widget
                     Preferences.Set(PLAYER_ID, playerId, groupName);
                 }
-                return Preferences.Get(PLAYER_ID, 0);
+                return playerId;
             }
             private set
             {
+                // Always write to both
                 Preferences.Set(PLAYER_ID, value);
-                //Save to group for Widget access
                 Preferences.Set(PLAYER_ID, value, groupName);
             }
         }
+
 
         public static int MyStatsCurrentWpprRank
         {

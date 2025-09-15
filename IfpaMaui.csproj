@@ -24,7 +24,7 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
         <UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Release'">
+    <PropertyGroup Condition="'$(TargetFramework)'=='net9.0-ios' and '$(Configuration)' == 'Release'">
         <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
         <CodesignKey>iPhone Distribution: Ed Giardina (KH5JKUPW2Q)</CodesignKey>
         <CodesignProvision>IFPA Companion Distribution Provisioning Profile</CodesignProvision>
@@ -32,10 +32,33 @@
         <MtouchLink>None</MtouchLink>
         <UseInterpreter>true</UseInterpreter>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios' and '$(Configuration)' == 'Debug'">
+    <PropertyGroup Condition="'$(TargetFramework)'=='net9.0-ios' and '$(Configuration)' == 'Debug'">
         <CodesignKey>Apple Development: Created via API (2QBM4V4L2D)</CodesignKey>
         <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
+    </PropertyGroup>
+    <!-- WidgetKit extension support -->
+    <ItemGroup>
+        <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/NativeIFPA">
+            <Name>RankWidgetExtension</Name>
+            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhone'">DerivedData/Build/Products/$(Configuration)-iphoneos</BuildOutput>
+            <BuildOutput Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'">DerivedData/Build/Products/$(Configuration)-iphonesimulator</BuildOutput>
+        </AdditionalAppExtensions>
+    </ItemGroup>
+
+    <!-- Pre-build: Run xcodebuild for RankWidgetExtension if net9.0-ios -->
+    <!-- For now, this is done in the github action
+    <Target Name="RunXcodeWidgetBuildBeforeMaui" BeforeTargets="PreBuildEvent" Condition="'$(TargetPlatformIdentifier)' == 'ios' Or '$(TargetPlatformIdentifier)' == 'maccatalyst'">
+        <Message Text="Running xcodebuild for RankWidgetExtension..." Importance="high" />
+        <Exec Condition="'$(ComputedPlatform)' == 'iPhoneSimulator'"
+              Command="xcodebuild -project $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj -scheme RankWidgetExtension -configuration Debug -sdk iphonesimulator -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData" />
+        <Exec Condition="'$(ComputedPlatform)' == 'iPhone'"
+              Command="xcodebuild -project $(MSBuildProjectDirectory)/NativeIFPA/IFPA.xcodeproj -scheme RankWidgetExtension -configuration Debug -sdk iphoneos -derivedDataPath $(MSBuildProjectDirectory)/NativeIFPA/DerivedData" />
+    </Target>
+    -->
 
     <PropertyGroup>
         <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
@@ -43,18 +66,18 @@
 
     <!-- Package References -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.81" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.81" />
-        <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.81" />
-        <PackageReference Include="CommunityToolkit.Maui" Version="12.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.100" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.100" />
+        <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.100" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="12.2.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="2.1.2" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc5.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />        
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />        
         <PackageReference Include="Plugin.Maui.CalendarStore" Version="4.0.0" />
         <PackageReference Include="Plugin.Maui.NativeCalendar" Version="0.9.0" />
-        <PackageReference Include="Polly" Version="8.6.1" />
+        <PackageReference Include="Polly" Version="8.6.2" />
         <PackageReference Include="Scrutor" Version="6.1.0" />
         <PackageReference Include="Shiny.Core" Version="3.3.4" />
         <PackageReference Include="Shiny.Hosting.Maui" Version="3.3.4" />
@@ -62,12 +85,12 @@
         <PackageReference Include="Shiny.Jobs" Version="3.3.4" />
         <PackageReference Include="Shiny.Notifications" Version="3.3.4" />
         <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-        <PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
+        <PackageReference Include="SQLitePCLRaw.core" Version="3.0.1" />
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
-        <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.11" />
-        <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.11" />
+        <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="3.0.1" />
+        <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="3.0.1" />
         <PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.5" />
-        <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.6" />
+        <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.8" />
         <PackageReference Include="Serilog" Version="4.3.0" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
         <PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
@@ -76,8 +99,12 @@
         <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
         <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
 
-        <PackageReference Include="PinballApi" Version="3.1.13" />
-    </ItemGroup>    
+        <PackageReference Include="PinballApi" Version="3.1.15" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+    </PropertyGroup>
 
     <!-- Maui Specifics -->
     <ItemGroup>
@@ -97,42 +124,24 @@
     </ItemGroup>
 
     <!--
-		Solves ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 	
-		https://github.com/xamarin/xamarin-macios/issues/21324#issuecomment-2382226489 
-	-->
+        Solves ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 	
+        https://github.com/xamarin/xamarin-macios/issues/21324#issuecomment-2382226489 
+    -->
     <Target Name="DoNotLinkWithBrowserEngineKit" AfterTargets="_ComputeLinkNativeExecutableInputs">
         <ItemGroup>
             <_NativeExecutableFrameworks Remove="BrowserEngineKit" />
         </ItemGroup>
     </Target>
+    <ItemGroup>
+      <AndroidResource Remove="Platforms\Android\Resources\values\strings.xml" />
+    </ItemGroup>
 
     <!-- Compile Directives / File Compile Types -->
     <ItemGroup>
         <None Remove="appsettings.json" />
-        <None Remove="Resources\Images\about.svg" />
-        <None Remove="Resources\Images\activity_feed.svg" />
-        <None Remove="Resources\Images\calendar.svg" />
-        <None Remove="Resources\Images\calendar_add.svg" />
-        <None Remove="Resources\Images\directors.svg" />
-        <None Remove="Resources\Images\favorite.svg" />
-        <None Remove="Resources\Images\favorite_outline.svg" />
-        <None Remove="Resources\Images\filter.svg" />
-        <None Remove="Resources\Images\location.svg" />
-        <None Remove="Resources\Images\map.svg" />
-        <None Remove="Resources\Images\more.svg" />
-        <None Remove="Resources\Images\mystats.svg" />
-        <None Remove="Resources\Images\news.svg" />
-        <None Remove="Resources\Images\numbered_list.svg" />
-        <None Remove="Resources\Images\rankchange.svg" />
-        <None Remove="Resources\Images\ranking_profile.svg" />
-        <None Remove="Resources\Images\ribbon.svg" />
-        <None Remove="Resources\Images\rules.svg" />
-        <None Remove="Resources\Images\search.svg" />
-        <None Remove="Resources\Images\settings.svg" />
-        <None Remove="Resources\Images\share.svg" />
-        <None Remove="Resources\Images\star.svg" />
-        <None Remove="Resources\Images\stats.svg" />
-        <None Remove="Resources\Images\trophy.svg" />
+        <None Remove="Platforms\Android\Resources\drawable\noplayerpic.png" />
+        <None Remove="Platforms\Android\Resources\drawable\profile_rounded.xml" />
+        <None Remove="Platforms\Android\Resources\xml\file_paths.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -191,6 +200,9 @@
     <ItemGroup>
         <MauiXaml Update="Controls\Chip.xaml">
             <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Resources\Styles\IconFonts.xaml">
+          <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="Views\AboutPage.xaml">
             <Generator>MSBuild:Compile</Generator>
@@ -258,6 +270,9 @@
         <MauiXaml Update="Views\PlayerDetailNoPlayerSelectedPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
+        <MauiXaml Update="Views\RelatedTournamentsPage.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
         <MauiXaml Update="Views\TournamentSearchPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
@@ -306,5 +321,15 @@
         <MauiXaml Update="Views\TournamentResultsPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include=".github\copilot-instructions.md" />
+      <None Include=".github\workflows\ci.yml" />
+      <None Include=".github\workflows\publish.yml" />
     </ItemGroup>
 </Project>

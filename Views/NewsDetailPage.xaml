@@ -7,92 +7,240 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              xmlns:local="clr-namespace:Ifpa"
-             Title="{Binding Title}"
              x:DataType="vm:NewsDetailViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:synd="clr-namespace:System.ServiceModel.Syndication;assembly=System.ServiceModel.Syndication">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <toolkit:IntToBoolConverter x:Key="IntToBoolConverter" />
             <converters:HtmlDecodeConverter x:Key="HtmlDecodeConverter" />
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+
+            <!-- Article Header Style -->
+            <Style x:Key="ArticleHeaderStyle"
+                   TargetType="StackLayout">
+                <Setter Property="Padding"
+                        Value="20,16" />
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+            </Style>
+
+            <!-- Article Title Style -->
+            <Style x:Key="ArticleTitleStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="24" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="TextColor"
+                        Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <Setter Property="LineBreakMode"
+                        Value="WordWrap" />
+                <Setter Property="Margin"
+                        Value="0,0,0,16" />
+            </Style>
+
+            <!-- Comments Container Style -->
+            <Style x:Key="CommentsContainerStyle"
+                   TargetType="ScrollView">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}" />
+                <Setter Property="Margin"
+                        Value="0,8,0,20" />
+                <Setter Property="HeightRequest"
+                        Value="300" />
+            </Style>
+
+            <!-- Comments Section Style -->
+            <Style x:Key="CommentsSectionBorder"
+                   TargetType="Border">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+                <Setter Property="Stroke"
+                        Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                <Setter Property="StrokeThickness"
+                        Value="1" />
+                <Setter Property="StrokeShape"
+                        Value="RoundRectangle 12" />
+                <Setter Property="Padding"
+                        Value="16" />
+                <Setter Property="Margin"
+                        Value="16,8" />
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="{AppThemeBinding Light=Gray, Dark=Black}"
+                                Offset="0,2"
+                                Radius="6"
+                                Opacity="0.4" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Comments Header Style -->
+            <Style x:Key="CommentsHeaderStyle"
+                   TargetType="StackLayout">
+                <Setter Property="BackgroundColor"
+                        Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+                <Setter Property="Padding"
+                        Value="20,8,20,8" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid RowDefinitions="50,*,25, Auto">
-        <Label Grid.Row="0"
-               FontAttributes="Bold"
-               HorizontalTextAlignment="Start"
-               VerticalTextAlignment="Center"
-               FontSize="Default"
-               Text="{Binding NewsItem.Title.Text}"
-               Margin="5" />
-        <WebView Grid.Row="1"
-                 Source="{Binding NewsItemContent}"
-                 VerticalOptions="Fill"                 
-                 Navigating="WebView_Navigating" />
-        <StackLayout Grid.Row="2"
-                     Orientation="Horizontal"
-                     HorizontalOptions="FillAndExpand"
-                     Padding="5">
-            <Label HorizontalTextAlignment="Start"
-                   FontSize="Small"
-                   Margin="0">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-                </Label.GestureRecognizers>
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="{Binding CommentCounts, Mode=OneWay}" />
-                            <Span Text="{x:Static local:Strings.NewsDetailPage_Comments}" />
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <StackLayout Orientation="Horizontal"
-                         HorizontalOptions="EndAndExpand"
-                         Margin="-5"
-                         Padding="5">
-                <HorizontalStackLayout BindableLayout.ItemsSource="{Binding NewsItem.Authors}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="synd:SyndicationPerson">
-                            <Label HorizontalTextAlignment="Start"
-                                   FontSize="Small"
-                                   Text="{Binding Name}"
-                                   Margin="0" />
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </HorizontalStackLayout>
-                <Label HorizontalTextAlignment="End"
-                       FontSize="Small"
-                       Text="{Binding NewsItem.PublishDate, StringFormat='{0:d}'}" />
-            </StackLayout>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Article Header -->
+        <StackLayout Grid.Row="0"
+                     Style="{StaticResource ArticleHeaderStyle}">
+            <Label Text="{Binding Title}"
+                   Style="{StaticResource ArticleTitleStyle}" />
+
+            <!-- Article Meta -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Author -->
+                <StackLayout Grid.Column="0"
+                             Orientation="Horizontal"
+                             VerticalOptions="Center">
+                    <Image WidthRequest="24"
+                           HeightRequest="24"
+                           Margin="0,0,8,0">
+                        <Image.Source>
+                            <FontImageSource Glyph="{StaticResource FluentIcon.Person48}"
+                                             FontFamily="FluentRegular"
+                                             Color="{StaticResource IconAccentColor}" />
+                        </Image.Source>
+                    </Image>
+                    <StackLayout VerticalOptions="Center">
+                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding NewsItem.Authors}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="synd:SyndicationPerson">
+                                    <Label Text="{Binding Name}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding NewsItem.PublishDate, StringFormat='{0:MMMM d, yyyy}'}"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}" />
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
         </StackLayout>
-        <ListView IsVisible="False"
-                  Grid.Row="3"
-                  Margin="15"
-                  HeightRequest="150"
-                  x:Name="ItemsListView"
-                  ItemsSource="{Binding Comments}"
-                  HasUnevenRows="true"
-                  RefreshCommand="{Binding LoadItemsCommand}"
-                  IsPullToRefreshEnabled="false"
-                  SelectionMode="None"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  CachingStrategy="RecycleElement">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="synd:SyndicationItem">
-                    <ViewCell>
-                        <StackLayout Padding="5">
-                            <Label HorizontalTextAlignment="Start"
-                                   FontSize="Small"
-                                   Text="{Binding Summary.Text, Converter={StaticResource HtmlDecodeConverter}}"
-                                   Margin="0" />
-                            <Label HorizontalTextAlignment="Start"
-                                   FontSize="Small"
-                                   Text="{Binding Title.Text}"
-                                   Margin="0" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+
+        <!-- Separator -->
+        <BoxView Grid.Row="1"
+                 Style="{StaticResource BoxSeperator}"
+                 Margin="20,0" />
+
+        <ActivityIndicator Grid.Row="2"
+                           IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           ZIndex="2" />
+
+        <!-- Article Content - WebView with defined height -->
+        <WebView Grid.Row="2"
+                 Source="{Binding NewsItemContent}"
+                 IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                 Navigating="WebView_Navigating"
+                 Margin="0,16,0,16" />
+
+        <!-- Comments Section -->
+        <StackLayout Grid.Row="3"
+                     Spacing="0">
+            <BoxView Grid.Row="1"
+                     Style="{StaticResource BoxSeperator}"
+                     Margin="20,0" />
+            <!-- Comments Header -->
+            <StackLayout Orientation="Horizontal"
+                         Spacing="10"
+                         Style="{StaticResource CommentsHeaderStyle}"
+                         IsVisible="{Binding CommentCounts, Converter={StaticResource IntToBoolConverter}}">
+                <Image HeightRequest="20">
+                    <Image.Source>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Comment24}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </Image.Source>
+                </Image>
+
+                <Label FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
+                       VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="{Binding CommentCounts, Mode=OneWay}" />
+                                <Span Text="{x:Static local:Strings.NewsDetailPage_Comments}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Image HeightRequest="20">
+                    <Image.Source>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.ArrowRight28}"
+                                         FontFamily="FluentRegular"
+                                         Color="{StaticResource IconAccentColor}" />
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+            </StackLayout>
+
+            <!-- Comments List -->
+            <ScrollView IsVisible="False"
+                        x:Name="CommentsScrollView"
+                        Style="{StaticResource CommentsContainerStyle}">
+                <CollectionView x:Name="ItemsListView"
+                                ItemsSource="{Binding Comments}"
+                                SelectionMode="None"
+                                BackgroundColor="Transparent">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="synd:SyndicationItem">
+                            <Grid>
+                                <Border Style="{StaticResource CommentsSectionBorder}">
+                                    <StackLayout Spacing="8">
+                                        <HorizontalStackLayout BindableLayout.ItemsSource="{Binding Authors}"
+                                                               Spacing="4">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="synd:SyndicationPerson">
+                                                    <Label Text="{Binding Name}"
+                                                           FontSize="14"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </HorizontalStackLayout>
+                                       
+                                        <Label Text="{Binding Summary.Text, Converter={StaticResource HtmlDecodeConverter}}"
+                                               FontSize="14"
+                                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
+                                               LineBreakMode="WordWrap" />
+                                    </StackLayout>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </StackLayout>
     </Grid>
 </ContentPage>

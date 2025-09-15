@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:Ifpa.Converters"
              x:Class="Ifpa.Views.TournamentResultsPage"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
              Title="{Binding Title}"
@@ -16,6 +15,7 @@
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
         <DataTemplate x:Name="BottomSheetTemplate"
+                      x:DataType="vm:TournamentResultsViewModel"
                       x:Key="BottomSheetTemplate">
             <Grid Padding="10,10,10,10"
                   VerticalOptions="Center"
@@ -170,14 +170,36 @@
         </DataTemplate>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
-                     x:Name="ShareButton"
-                     Command="{Binding ShareTournamentCommand}"
-                     IconImageSource="{mi:Fluent Icon=Share48, IconColor={StaticResource IconAccentColor}}" />
         <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Info}"
                      x:Name="InfoButton"
-                     Command="{Binding ViewTournamentInfoCommand}"
-                     IconImageSource="{mi:Fluent Icon=Info28, IconColor={StaticResource IconAccentColor}}" />
+                     Order="Secondary"
+                     Command="{Binding ViewTournamentInfoCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Info28}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.RelatedTournamentsPage_Title}"
+                     x:Name="RelatedTournamentsButton"
+                     Order="Secondary"
+                     Command="{Binding ViewRelatedTournamentsCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="{x:Static local:Strings.TournamentResultsPage_Share}"
+                     x:Name="ShareButton"
+                     Order="Secondary"
+                     Command="{Binding ShareTournamentCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
@@ -198,8 +220,7 @@
                                    FontSize="16"
                                    VerticalTextAlignment="Center"
                                    Text="{Binding Name}" />
-                            <StackLayout HorizontalOptions="EndAndExpand"
-                                         Grid.Column="1">
+                            <StackLayout Grid.Column="1">
                                 <Label LineBreakMode="NoWrap"
                                        HorizontalTextAlignment="End"
                                        Text="{Binding Position, Converter={StaticResource intToOrdinalString}}"

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Ifpa.Converters"
+             x:Class="Ifpa.Views.RelatedTournamentsPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:Ifpa"
+             Title="{x:Static local:Strings.RelatedTournamentsPage_Title}"
+             xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             x:DataType="vm:RelatedTournamentsViewModel"
+             xmlns:related="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Related;assembly=PinballApi">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="isNotNullOrEmptyConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
+        <CollectionView x:Name="TournamentsList"
+                        ItemsSource="{Binding RelatedTournaments}"
+                        SelectedItem="{Binding SelectedTournament}"
+                        SelectionChangedCommand="{Binding TournamentSelectedCommand}"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                        SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="related:RelatedTournament">
+                    <VerticalStackLayout Spacing="0">
+                        <Grid ColumnDefinitions="*, Auto"
+                              Margin="15,10">
+                            <StackLayout Grid.Column="0"
+                                         Spacing="2">
+                                <Label Text="{Binding TournamentName}"
+                                       FontSize="16"
+                                       LineBreakMode="WordWrap"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding EventName}"
+                                       FontSize="14"
+                                       TextColor="{DynamicResource SecondaryTextColor}"
+                                       LineBreakMode="WordWrap" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="1"
+                                         HorizontalOptions="End">
+                                <Label Text="{Binding EventStartDate, StringFormat='{0:d}'}"
+                                       FontSize="12"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="{DynamicResource SecondaryTextColor}" />
+                            </StackLayout>
+                        </Grid>
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Grid>
+                    <StackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Spacing="10">
+                        <Label Text="{x:Static local:Strings.RelatedTournamentsPage_NoTournamentsFound}"
+                               FontSize="16"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                    </StackLayout>
+                </Grid>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

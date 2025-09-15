@@ -204,7 +204,7 @@ namespace Ifpa.ViewModels
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error loading player details", PlayerId);
+                logger.LogError(ex, "Error loading player details for player {PlayerId}", PlayerId);
             }
             finally
             {

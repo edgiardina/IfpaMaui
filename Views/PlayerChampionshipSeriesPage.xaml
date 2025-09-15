@@ -7,7 +7,6 @@
              ios:Page.LargeTitleDisplay="Never"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              Title="{Binding Title}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerChampionshipSeriesViewModel"
@@ -20,8 +19,13 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.ChampionshipSeriesPage_Filter}"
-                     Command="{Binding FilterChampSeriesCommand}"
-                     IconImageSource="{mi:Fluent Icon=Filter28, IconColor={StaticResource IconAccentColor}}" />
+                     Command="{Binding FilterChampSeriesCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
+                                FontFamily="FluentRegular"
+                                Color="{StaticResource IconAccentColor}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"

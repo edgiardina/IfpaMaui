@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.PlayerDetailNoPlayerSelectedPage"
-             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerDetailNoPlayerSelectedViewModel">
@@ -26,7 +25,9 @@
                 <FormattedString>
                     <Span Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_StepOne}" />
                     <Span Text="{x:Static local:Strings.SingleSpace}" />
-                    <Span Text="{mi:Fluent Icon=Search24, IconColor={StaticResource IconAccentColor}}"
+                    <Span Text="{StaticResource FluentIcon.Search24}"
+                          FontFamily="FluentRegular"
+                          TextColor="{StaticResource IconAccentColor}"
                           FontSize="16" />
                 </FormattedString>
             </Label.FormattedText>
@@ -43,7 +44,9 @@
                 <FormattedString>
                     <Span Text="{x:Static local:Strings.PlayerDetailNoPlayerSelectedPage_StepFour}" />
                     <Span Text="{x:Static local:Strings.SingleSpace}" />
-                    <Span Text="{mi:Fluent Icon=Star24, IconColor={StaticResource IconAccentColor}}"
+                    <Span Text="{StaticResource FluentIcon.Star24}"
+                          FontFamily="FluentRegular"
+                          TextColor="{StaticResource IconAccentColor}"
                           FontSize="16" />
                 </FormattedString>
             </Label.FormattedText>

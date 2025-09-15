@@ -2,11 +2,11 @@
 using System.ServiceModel.Syndication;
 using Ifpa.Services;
 using System.Xml;
-using PinballApi;
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.Input;
+using System.Diagnostics;
 
 namespace Ifpa.ViewModels
 {
@@ -28,10 +28,8 @@ namespace Ifpa.ViewModels
 
         private BlogPostService BlogPostService { get; set; }
 
-        //TODO: convert IConfiguration to IOptions?
         public NewsDetailViewModel(BlogPostService blogPostService, ILogger<NewsDetailViewModel> logger) : base(logger)
         {
-            Title = "News";
             BlogPostService = blogPostService;
         }
 
@@ -42,15 +40,18 @@ namespace Ifpa.ViewModels
                 return;
 
             IsBusy = true;
+            Title = "Loading...";
 
             try
             {
                 Comments.Clear();
+
+                var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(30));
                 var newsItemDetails = await BlogPostService.GetBlogPosts();
+                logger.LogInformation($"GetBlogPosts() returned {newsItemDetails?.Count() ?? 0} items");
 
                 NewsItem = newsItemDetails.Single(n => n.Links.Any(m => m.Uri == NewsItemUrl));
 
-                Title = NewsItem.Title.Text;
                 //TODO: make this HTML and CSS in discrete files 
                 var articleContent = NewsItem.ElementExtensions
                       .FirstOrDefault(ext => ext.OuterName == "encoded")
@@ -58,38 +59,61 @@ namespace Ifpa.ViewModels
 
                 string webviewTheme = (Application.Current.RequestedTheme == AppTheme.Dark) ? "dark-theme" : "light-theme";
 
-                await MainThread.InvokeOnMainThreadAsync(() =>
-                {
-                    NewsItemContent = new HtmlWebViewSource();
-                    NewsItemContent.Html = @$"<html>
-                                               <head>
-                                                  <style>img {{display:block; clear:both;  margin: auto; margin-botton:10px !important;}}</style>
-                                                  <style>
-                                                    body.light-theme{{background-color: #fcfffc; color: #343434;}}
-                                                    body.dark-theme {{background-color: #333333; color: #fcfffc;}}
-                                                  </style>
-                                               </head>
-                                               <body style='font-family:sans-serif;'> 
-                                                    {articleContent} 
-                                                    <script type=""text/javascript"">
-                                                    document.body.classList.add(""{webviewTheme}"");
-                                                    </script>
-                                               </body>
-                                            </html>";
-                });
+                // Create improved HTML content with better CSS
+                var htmlContent = @$"<!DOCTYPE html>
+                                    <html>
+                                    <head>
+                                        <meta charset='utf-8'>
+                                        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                        <style>
+                                            img {{
+                                                display: block; 
+                                                clear: both; 
+                                                margin: auto; 
+                                                margin-bottom: 10px !important;
+                                                max-width: 100%;
+                                                height: auto;
+                                            }}
+                                            body.light-theme {{
+                                                background-color: #fcfffc; 
+                                                color: #343434;
+                                            }}
+                                            body.dark-theme {{
+                                                background-color: #333333; 
+                                                color: #fcfffc;
+                                            }}
+                                            body {{
+                                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                                                margin: 16px;
+                                                line-height: 1.6;
+                                            }}
+                                        </style>
+                                    </head>
+                                    <body class='{webviewTheme}'> 
+                                        {articleContent} 
+                                    </body>
+                                    </html>";
 
-                Comments = (await BlogPostService.GetCommentsForBlogPost(NewsItem.Id)).ToObservableCollection();
+                NewsItemContent = new HtmlWebViewSource
+                {
+                    Html = htmlContent
+                };
+
+                Title = NewsItem.Title.Text;
+
+                var comments = await BlogPostService.GetCommentsForBlogPost(NewsItem);
+
+                Comments = comments.ToObservableCollection();
                 CommentCounts = Comments.Count;
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error loading news item {0}", NewsItemUrl);
+                logger.LogError(ex, "Error loading news item {NewsUrl}", NewsItemUrl);
             }
             finally
             {
                 IsBusy = false;
             }
         }
-
     }
 }

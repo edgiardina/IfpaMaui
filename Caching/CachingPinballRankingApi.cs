@@ -129,10 +129,15 @@ namespace Ifpa.Caching
                 $"DirectorsBySearch:{name}:{count}",
                 () => onlineApi.GetDirectorsBySearch(name, count));
 
-        public Task<PinballApi.Models.WPPR.Universal.Tournaments.Tournament> GetDirectorTournaments(long directorId, TimePeriod timePeriod) =>
+        public Task<List<PinballApi.Models.WPPR.Universal.Tournaments.Tournament>> GetDirectorTournaments(long directorId, TimePeriod timePeriod) =>
             ExecuteWithCache(
                 $"DirectorTournaments:{directorId}:{timePeriod}",
                 () => onlineApi.GetDirectorTournaments(directorId, timePeriod));
+
+        public Task<List<PinballApi.Models.WPPR.Universal.Tournaments.Related.RelatedTournament>> GetRelatedTournaments(int tournamentId) =>
+            ExecuteWithCache(
+                $"RelatedTournaments:{tournamentId}",
+                () => onlineApi.GetRelatedTournaments(tournamentId));
 
         public Task<List<EventsByYearStatistics>> GetEventsByYearStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
             ExecuteWithCache(
@@ -228,11 +233,6 @@ namespace Ifpa.Caching
             ExecuteWithCache(
                 $"Regions:{seriesCode}:{year}",
                 () => onlineApi.GetRegions(seriesCode, year));
-
-        public Task<List<TournamentResult>> GetRelatedResults(int tournamentId) =>
-            ExecuteWithCache(
-                $"RelatedResults:{tournamentId}",
-                () => onlineApi.GetRelatedResults(tournamentId));
 
         public Task<List<Series>> GetSeries() =>
             ExecuteWithCache(

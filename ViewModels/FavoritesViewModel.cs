@@ -22,6 +22,8 @@ namespace Ifpa.ViewModels
         public FavoritesViewModel(IPinballRankingApi pinballRankingApi, ILogger<FavoritesViewModel> logger) : base(logger)
         {
             PinballRankingApi = pinballRankingApi;
+
+            
         }
 
         [RelayCommand]

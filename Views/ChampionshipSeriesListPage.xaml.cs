@@ -20,7 +20,7 @@ namespace Ifpa.Views
 
             if (ViewModel.ChampionshipSeries.Count == 0)
             {
-                ViewModel.LoadItems();
+                _ = ViewModel.LoadItems();
             }
         }
     }

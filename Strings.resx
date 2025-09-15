@@ -141,6 +141,9 @@
   <data name="CalendarDetailPage_Date" xml:space="preserve">
     <value>Date</value>
   </data>
+  <data name="CalendarDetailPage_Directions" xml:space="preserve">
+    <value>Directions</value>
+  </data>
   <data name="PlayerDetailPage_RankingStatistics" xml:space="preserve">
     <value>Ranking Statistics</value>
   </data>
@@ -477,6 +480,9 @@
   <data name="FavoritesPage_Title" xml:space="preserve">
     <value>Favorites</value>
   </data>
+  <data name="FavoritesPage_Empty" xml:space="preserve">
+    <value>You have no favorite players selected. Use the heart icon to add a player to your favorites</value>
+  </data>
   <data name="PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet" xml:space="preserve">
     <value>Player has not played against competitors yet.</value>
   </data>
@@ -752,5 +758,20 @@
   </data>
   <data name="SettingsPage_ClearCache" xml:space="preserve">
     <value>Clear Cache</value>
+  </data>
+  <data name="RelatedTournamentsPage_NoTournamentsFound" xml:space="preserve">
+    <value>No related tournaments found</value>
+  </data>
+  <data name="RelatedTournamentsPage_Title" xml:space="preserve">
+    <value>Related Tournaments</value>
+  </data>
+  <data name="NewsPage_Title" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="NewsPage_NoNewsHeader" xml:space="preserve">
+    <value>Pull down to refresh or check back later for the latest IFPA news.</value>
+  </data>
+  <data name="NewsPage_NoNewsDetail" xml:space="preserve">
+    <value>No News Available</value>
   </data>
 </root>

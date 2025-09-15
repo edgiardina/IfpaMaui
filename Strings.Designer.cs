@@ -376,6 +376,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directions.
+        /// </summary>
+        internal static string CalendarDetailPage_Directions {
+            get {
+                return ResourceManager.GetString("CalendarDetailPage_Directions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Director.
         /// </summary>
         internal static string CalendarDetailPage_Director {
@@ -709,6 +718,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have no favorite players selected. Use the heart icon to add a player to your favorites.
+        /// </summary>
+        internal static string FavoritesPage_Empty {
+            get {
+                return ResourceManager.GetString("FavoritesPage_Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Favorites.
         /// </summary>
         internal static string FavoritesPage_Title {
@@ -822,6 +840,33 @@ namespace Ifpa {
         internal static string NewsDetailPage_Comments {
             get {
                 return ResourceManager.GetString("NewsDetailPage_Comments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No News Available.
+        /// </summary>
+        internal static string NewsPage_NoNewsDetail {
+            get {
+                return ResourceManager.GetString("NewsPage_NoNewsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pull down to refresh or check back later for the latest IFPA news..
+        /// </summary>
+        internal static string NewsPage_NoNewsHeader {
+            get {
+                return ResourceManager.GetString("NewsPage_NoNewsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to News.
+        /// </summary>
+        internal static string NewsPage_Title {
+            get {
+                return ResourceManager.GetString("NewsPage_Title", resourceCulture);
             }
         }
         
@@ -1515,6 +1560,24 @@ namespace Ifpa {
         internal static string RankingsPage_Title {
             get {
                 return ResourceManager.GetString("RankingsPage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No related tournaments found.
+        /// </summary>
+        internal static string RelatedTournamentsPage_NoTournamentsFound {
+            get {
+                return ResourceManager.GetString("RelatedTournamentsPage_NoTournamentsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Related Tournaments.
+        /// </summary>
+        internal static string RelatedTournamentsPage_Title {
+            get {
+                return ResourceManager.GetString("RelatedTournamentsPage_Title", resourceCulture);
             }
         }
         

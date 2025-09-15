@@ -11,11 +11,19 @@ namespace Ifpa.Platforms.Services
 {
     public class ToolbarBadgeService : IToolbarBadgeService
     {
+        readonly IDispatcher Dispatcher;
+        public ToolbarBadgeService(IDispatcher dispatcher)
+        {
+            Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+        }
+
         public void SetBadge(Page page, ToolbarItem item, int value, Color backgroundColor, Color textColor)
         {
-            Device.BeginInvokeOnMainThread(() =>
+            Dispatcher.Dispatch(() =>
             {
+#pragma warning disable CA1422 // Validate platform compatibility
                 var rootViewController = UIApplication.SharedApplication.KeyWindow.RootViewController;
+#pragma warning restore CA1422 // Validate platform compatibility
 
                 var rightButtonItems = FindRightBarButtonItemsInViewController(rootViewController, page);
 

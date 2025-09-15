@@ -9,29 +9,49 @@
         <ShellContent Title="{x:Static local:Strings.AppShell_Rankings}"
                       x:Name="RankingsTab"
                       ContentTemplate="{DataTemplate views:RankingsPage}"
-                      Icon="numbered_list.png"
-                      Route="rankings" />
+                      Route="rankings">
+            <ShellContent.Icon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.TextNumberListLtr24}"
+                                 FontFamily="FluentRegular" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent Title="{x:Static local:Strings.AppShell_ChampSeries}"
                       x:Name="ChampionshipSeriesTab"
                       ContentTemplate="{DataTemplate views:ChampionshipSeriesListPage}"
-                      Icon="trophy.png"
-                      Route="champ-series-list" />
+                      Route="champ-series-list">
+            <ShellContent.Icon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
+                                 FontFamily="FluentRegular" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent Title="{x:Static local:Strings.AppShell_MyStats}"
                       x:Name="MyStatsTab"
                       ContentTemplate="{DataTemplate views:PlayerDetailPage}"
-                      Icon="mystats.png"
-                      Route="my-stats" />
+                      Route="my-stats">
+            <ShellContent.Icon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Person48}"
+                                 FontFamily="FluentRegular" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent Title="{x:Static local:Strings.AppShell_Calendar}"
                       x:Name="CalendarTab"
                       ContentTemplate="{DataTemplate views:CalendarPage}"
-                      Icon="calendar.png"
-                      Route="calendar" />
+                      Route="calendar">
+            <ShellContent.Icon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.CalendarLtr28}"
+                                 FontFamily="FluentRegular" />
+            </ShellContent.Icon>
+        </ShellContent>
         <!-- More Menu Items-->
         <ShellContent Title="{x:Static local:Strings.AppShell_More}"
                       x:Name="MoreTab"
                       ContentTemplate="{DataTemplate views:MoreItemsPage}"
-                      Icon="more.png"
-                      Route="more" />
+                      Route="more">
+            <ShellContent.Icon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.MoreHorizontal28}"
+                                 FontFamily="FluentRegular" />
+            </ShellContent.Icon>
+        </ShellContent>
         <!--<ShellContent Title="Favorites" ContentTemplate="{DataTemplate views:FavoritesPage}" Icon="favorite.png" Route="favorites" />
         <ShellContent Title="Custom Rankings" ContentTemplate="{DataTemplate views:CustomRankingsPage}" Icon="numbered_list.png" Route="custom-rankings" />
         <ShellContent Title="News" ContentTemplate="{DataTemplate views:NewsPage}" Icon="news.png" Route="news" />

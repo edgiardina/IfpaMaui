@@ -115,7 +115,7 @@ namespace Ifpa.Views
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            viewModel.LoadItems();
+            _ = viewModel.LoadItems();
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
