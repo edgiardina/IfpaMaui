@@ -45,6 +45,11 @@
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
             </controls:PlayerSearchHandler.QueryIcon>
+            <controls:PlayerSearchHandler.ClearIcon>
+                <FontImageSource Glyph="{StaticResource FluentIcon}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </controls:PlayerSearchHandler.ClearIcon>
             <controls:PlayerSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:Player">
                     <StackLayout Padding="10,0">
@@ -76,7 +81,7 @@
                                 </Label>
                             </StackLayout>
                             <Label VerticalTextAlignment="Center"
-                                   HorizontalOptions="EndAndExpand"
+                                   HorizontalOptions="End"
                                    Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource intToOrdinalString}}"
                                    LineBreakMode="NoWrap"
                                    FontSize="18" />

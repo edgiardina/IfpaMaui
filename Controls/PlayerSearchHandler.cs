@@ -30,6 +30,14 @@ namespace Ifpa.Controls
             }
         }
 
+        protected override void OnUnfocus()
+        {
+            base.OnUnfocus();
+
+            //TODO: Remove when https://github.com/dotnet/maui/issues/16298 is fixed
+            Platforms.KeyboardHelper.HideKeyboard();
+        }
+
         protected override async void OnItemSelected(object item)
         {
             base.OnItemSelected(item);

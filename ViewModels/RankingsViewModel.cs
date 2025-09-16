@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
+    [QueryProperty(nameof(ShowSearch), "showSearch")]
     public partial class RankingsViewModel : BaseViewModel
     {
         public ObservableCollection<BaseRanking> Players { get; set; }
@@ -19,6 +20,9 @@ namespace Ifpa.ViewModels
 
         [ObservableProperty]
         private Country countryToShow;
+
+        [ObservableProperty]
+        private bool showSearch;
 
         private int startingPosition;
         public int StartingPosition
@@ -60,6 +64,26 @@ namespace Ifpa.ViewModels
             Countries = new ObservableCollection<Country>();
 
             PinballRankingApi = pinballRankingApi;
+        }
+
+        partial void OnShowSearchChanged(bool value)
+        {
+            if (value)
+            {
+                // Activate the SearchHandler on the current page
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    var handler = Shell.GetSearchHandler(Shell.Current.CurrentPage);
+
+                    if (handler != null)
+                    {
+                       // TODO: open the search handler
+                    }
+                });
+                
+                // Reset the parameter after use
+                ShowSearch = false;
+            }
         }
 
         [RelayCommand]

@@ -1,21 +1,24 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
 
 namespace Ifpa.ViewModels
 {
     public partial class PlayerDetailNoPlayerSelectedViewModel : BaseViewModel
     {
+        private readonly IDispatcher dispatcher;
 
-        public PlayerDetailNoPlayerSelectedViewModel(ILogger<PlayerDetailNoPlayerSelectedViewModel> logger) : base(logger)
+        public PlayerDetailNoPlayerSelectedViewModel(IDispatcher dispatcher, ILogger<PlayerDetailNoPlayerSelectedViewModel> logger) : base(logger)
         {
-
+            this.dispatcher = dispatcher;
         }
 
         [RelayCommand]
         public async Task NavigateToSearch()
         {
-            await Shell.Current.GoToAsync("///rankings/player-search");
+            await dispatcher.DispatchAsync(async () =>
+            {
+                await Shell.Current.GoToAsync("///rankings?showSearch=true");
+            });
         }
     }
 }
