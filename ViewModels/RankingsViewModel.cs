@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
+    [QueryProperty(nameof(ShowSearch), "showSearch")]
     public partial class RankingsViewModel : BaseViewModel
     {
         public ObservableCollection<BaseRanking> Players { get; set; }
@@ -33,6 +34,22 @@ namespace Ifpa.ViewModels
 
         [ObservableProperty]
         private string searchText = string.Empty;
+
+        private string showSearch = string.Empty;
+        public string ShowSearch
+        {
+            get => showSearch;
+            set
+            {
+                showSearch = value;
+                if (value?.ToLower() == "true")
+                {
+                    IsSearchMode = true;
+                    OnPropertyChanged(nameof(DisplayItems));
+                    OnPropertyChanged(nameof(EmptyViewText));
+                }
+            }
+        }
 
         partial void OnSearchTextChanged(string value)
         {
@@ -183,7 +200,7 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task ShowPlayerSearch()
+        public void ShowPlayerSearch()
         {
             IsSearchMode = true;
             OnPropertyChanged(nameof(DisplayItems));
@@ -191,7 +208,7 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task CancelSearch()
+        public void CancelSearch()
         {
             IsSearchMode = false;
             SearchText = string.Empty;

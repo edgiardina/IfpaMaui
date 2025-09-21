@@ -15,7 +15,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task NavigateToSearch()
         {
-            await Shell.Current.GoToAsync("///rankings/player-search");
+            await Shell.Current.GoToAsync("///rankings?showSearch=true");
         }
     }
 }

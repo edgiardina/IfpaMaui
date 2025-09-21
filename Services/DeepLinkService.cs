@@ -34,7 +34,17 @@ namespace Ifpa.Services
             if (string.IsNullOrEmpty(actionId))
                 return;
 
-            var route = $"//{actionId}";
+            string route;
+            if (actionId == "rankings")
+            {
+                // This handles the player search app action by going to rankings with search mode
+                route = "//rankings?showSearch=true";
+            }
+            else
+            {
+                route = $"//{actionId}";
+            }
+            
             await NavigateToRoute(route);
         }
 

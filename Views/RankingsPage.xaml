@@ -4,7 +4,6 @@
              xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:controls="clr-namespace:Ifpa.Controls"
              x:Class="Ifpa.Views.RankingsPage"
-             Title="{x:Static local:Strings.RankingsPage_Title}"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
              x:Name="BrowseItemsPage"
@@ -12,26 +11,73 @@
              x:DataType="vm:RankingsViewModel"
              xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking"
              xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
-                     x:Name="SearchButton"
-                     Command="{Binding ShowPlayerSearchCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.Search48}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-        <ToolbarItem Text="Filter"
-                     x:Name="InfoButton"
-                     Command="{Binding ShowRankingFilterCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
+    
+    <Shell.TitleView>
+        <Grid>
+            <!-- Normal title view with buttons -->
+            <Grid IsVisible="{Binding IsSearchMode, Converter={StaticResource invertedBoolConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Column="0"
+                       Text="{x:Static local:Strings.RankingsPage_Title}"
+                       FontSize="24"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" />
+                
+                <Label Grid.Column="1"
+                       Text="{StaticResource FluentIcon.Search48}"
+                       FontFamily="FluentRegular"
+                       FontSize="28"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource IconAccentColor}"
+                       Padding="10,10">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowPlayerSearchCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                
+                <Label Grid.Column="2"
+                       Text="{StaticResource FluentIcon.Filter28}"
+                       FontFamily="FluentRegular"
+                       FontSize="28"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource IconAccentColor}"
+                       Padding="10,10">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowRankingFilterCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+            
+            <!-- Search view -->
+            <Grid IsVisible="{Binding IsSearchMode}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <SearchBar Grid.Column="0"
+                           Text="{Binding SearchText, Mode=TwoWay}"
+                           Placeholder="Search for players..."
+                           IsSpellCheckEnabled="False"
+                           IsTextPredictionEnabled="False"
+                           BackgroundColor="Transparent" />
+                <Button Grid.Column="1"
+                        Text="Cancel"
+                        Command="{Binding CancelSearchCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource IconAccentColor}"
+                        FontSize="16"
+                        Margin="5,0" />
+            </Grid>
+        </Grid>
+    </Shell.TitleView>
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
@@ -47,43 +93,17 @@
     </ContentPage.Resources>
     
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
         
-        <!-- Search Bar - Only visible in search mode -->
-        <Grid Grid.Row="0" IsVisible="{Binding IsSearchMode}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <SearchBar Grid.Column="0"
-                       Text="{Binding SearchText, Mode=TwoWay}"
-                       Placeholder="Search for players..."
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False" />
-            <Button Grid.Column="1"
-                    Text="Cancel"
-                    Command="{Binding CancelSearchCommand}"
-                    BackgroundColor="Transparent"
-                    TextColor="{StaticResource IconAccentColor}"
-                    Margin="5,0" />
-        </Grid>
-        
-        <Grid Grid.Row="1">
-            <ActivityIndicator IsVisible="{Binding IsBusy}"
-                               IsRunning="{Binding IsBusy}" />
-            
-            <!-- Single CollectionView for both rankings and search results -->
-            <CollectionView x:Name="PlayersListView"
-                            ItemsSource="{Binding DisplayItems}"
-                            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
-                            SelectionMode="Single"
-                            EmptyView="{Binding EmptyViewText}"
-                            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                            SelectionChangedCommand="{Binding ItemSelectedCommand}"
-                            ItemTemplate="{StaticResource RankingResultDataTemplateSelector}" />
-        </Grid>
+        <!-- Single CollectionView for both rankings and search results -->
+        <CollectionView x:Name="PlayersListView"
+                        ItemsSource="{Binding DisplayItems}"
+                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                        SelectionMode="Single"
+                        EmptyView="{Binding EmptyViewText}"
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                        ItemTemplate="{StaticResource RankingResultDataTemplateSelector}" />
     </Grid>
 </ContentPage>
