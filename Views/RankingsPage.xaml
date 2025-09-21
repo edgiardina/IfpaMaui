@@ -10,7 +10,8 @@
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:RankingsViewModel"
-             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking">
+             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking"
+             xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
                      x:Name="SearchButton"
@@ -34,23 +35,53 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
+            <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
             <datatemplates:ProRankingDataTemplate x:Key="ProRankingDataTemplate" />
             <datatemplates:RankingDataTemplate x:Key="RankingDataTemplate" />
+            <datatemplates:PlayerSearchDataTemplate x:Key="PlayerSearchDataTemplate" />
             <datatemplates:RankingResultDataTemplateSelector x:Key="RankingResultDataTemplateSelector"                                                             
                                                              ProRankingTemplate="{StaticResource ProRankingDataTemplate}"
-                                                             RankingResultTemplate="{StaticResource RankingDataTemplate}" />
+                                                             RankingResultTemplate="{StaticResource RankingDataTemplate}"
+                                                             PlayerSearchTemplate="{StaticResource PlayerSearchDataTemplate}" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    
     <Grid>
-        <ActivityIndicator IsVisible="{Binding IsBusy}"
-                           IsRunning="{Binding IsBusy}" />
-        <CollectionView x:Name="PlayersListView"
-                        ItemsSource="{Binding Players}"
-                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
-                        SelectionMode="Single"
-                        EmptyView="{x:Static local:Strings.RankingsPage_EmptyView}"
-                        SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}"
-                        SelectionChangedCommand="{Binding ShowPlayerDetailCommand}"
-                        ItemTemplate="{StaticResource RankingResultDataTemplateSelector}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!-- Search Bar - Only visible in search mode -->
+        <Grid Grid.Row="0" IsVisible="{Binding IsSearchMode}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <SearchBar Grid.Column="0"
+                       Text="{Binding SearchText, Mode=TwoWay}"
+                       Placeholder="Search for players..."
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False" />
+            <Button Grid.Column="1"
+                    Text="Cancel"
+                    Command="{Binding CancelSearchCommand}"
+                    BackgroundColor="Transparent"
+                    Margin="5,0" />
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}" />
+            
+            <!-- Single CollectionView for both rankings and search results -->
+            <CollectionView x:Name="PlayersListView"
+                            ItemsSource="{Binding DisplayItems}"
+                            SelectionMode="Single"
+                            EmptyView="{Binding EmptyViewText}"
+                            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ItemSelectedCommand}"
+                            ItemTemplate="{StaticResource RankingResultDataTemplateSelector}" />
+        </Grid>
     </Grid>
 </ContentPage>

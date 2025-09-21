@@ -1,9 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal;
+using PinballApi.Models.WPPR.Universal.Players;
+using PinballApi.Models.WPPR.Universal.Players.Search;
 using PinballApi.Models.WPPR.Universal.Rankings;
 using System.Collections.ObjectModel;
 
@@ -15,10 +17,56 @@ namespace Ifpa.ViewModels
         public ObservableCollection<Country> Countries { get; set; }
 
         [ObservableProperty]
+        private ObservableCollection<PlayerSearchResult> searchResults = new ObservableCollection<PlayerSearchResult>();
+
+        [ObservableProperty]
         private BaseRanking selectedPlayer;
 
         [ObservableProperty]
+        private PlayerSearchResult selectedSearchPlayer;
+
+        [ObservableProperty]
         private Country countryToShow;
+
+        [ObservableProperty]
+        private bool isSearchMode = false;
+
+        [ObservableProperty]
+        private string searchText = string.Empty;
+
+        partial void OnSearchTextChanged(string value)
+        {
+            // Only trigger search if we're in search mode
+            if (IsSearchMode)
+            {
+                _ = Search();
+            }
+        }
+
+        // Unified properties for single CollectionView
+        public ObservableCollection<object> DisplayItems => IsSearchMode 
+            ? new ObservableCollection<object>(SearchResults.Cast<object>()) 
+            : new ObservableCollection<object>(Players.Cast<object>());
+
+        public string EmptyViewText => IsSearchMode 
+            ? Strings.PlayerSearchPage_NoPlayersFound 
+            : Strings.RankingsPage_EmptyView;
+
+        public object SelectedItem
+        {
+            get => IsSearchMode ? SelectedSearchPlayer : SelectedPlayer;
+            set
+            {
+                if (IsSearchMode && value is PlayerSearchResult player)
+                {
+                    SelectedSearchPlayer = player;
+                }
+                else if (!IsSearchMode && value is BaseRanking ranking)
+                {
+                    SelectedPlayer = ranking;
+                }
+            }
+        }
 
         private int startingPosition;
         public int StartingPosition
@@ -51,6 +99,7 @@ namespace Ifpa.ViewModels
         public readonly Country DefaultCountry = new Country { CountryName = "United States", CountryCode = "US" };
 
         private readonly IPinballRankingApi PinballRankingApi;
+        private CancellationTokenSource searchCancellationTokenSource;
 
         public RankingsViewModel(IPinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(logger)
         {
@@ -113,6 +162,9 @@ namespace Ifpa.ViewModels
                         }
                     }
                 }
+
+                OnPropertyChanged(nameof(DisplayItems));
+                OnPropertyChanged(nameof(EmptyViewText));
             }
             catch (Exception ex)
             {
@@ -133,14 +185,91 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ShowPlayerSearch()
         {
-            await Shell.Current.GoToAsync("player-search");
+            IsSearchMode = true;
+            OnPropertyChanged(nameof(DisplayItems));
+            OnPropertyChanged(nameof(EmptyViewText));
         }
 
         [RelayCommand]
-        public async Task ShowPlayerDetail()
+        public async Task CancelSearch()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
-            SelectedPlayer = null;
+            IsSearchMode = false;
+            SearchText = string.Empty;
+            SearchResults.Clear();
+            OnPropertyChanged(nameof(DisplayItems));
+            OnPropertyChanged(nameof(EmptyViewText));
+        }
+
+        private async Task Search()
+        {
+            // Cancel any previous search
+            searchCancellationTokenSource?.Cancel();
+            searchCancellationTokenSource = new CancellationTokenSource();
+
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                SearchResults.Clear();
+                OnPropertyChanged(nameof(DisplayItems));
+                return;
+            }
+
+            // Add a small delay to avoid too many API calls while typing
+            try
+            {
+                await Task.Delay(300, searchCancellationTokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                return; // Search was cancelled
+            }
+
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                SearchResults.Clear();
+
+                if (SearchText.Trim().Length > 0)
+                {
+                    var items = await PinballRankingApi.PlayerSearch(name: SearchText.Trim());
+
+                    if (items.Results != null)
+                    {
+                        SearchResults = items.Results.ToObservableCollection();
+                        OnPropertyChanged(nameof(DisplayItems));
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Search was cancelled, ignore
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error searching for player {text}", SearchText);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        public async Task ItemSelected()
+        {
+            if (IsSearchMode && SelectedSearchPlayer != null)
+            {
+                await Shell.Current.GoToAsync($"player-details?playerId={SelectedSearchPlayer.PlayerId}");
+                SelectedSearchPlayer = null;
+            }
+            else if (!IsSearchMode && SelectedPlayer != null)
+            {
+                await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
+                SelectedPlayer = null;
+            }
         }
     }
 }
