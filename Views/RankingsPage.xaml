@@ -67,6 +67,7 @@
                     Text="Cancel"
                     Command="{Binding CancelSearchCommand}"
                     BackgroundColor="Transparent"
+                    TextColor="{StaticResource IconAccentColor}"
                     Margin="5,0" />
         </Grid>
         
@@ -77,6 +78,7 @@
             <!-- Single CollectionView for both rankings and search results -->
             <CollectionView x:Name="PlayersListView"
                             ItemsSource="{Binding DisplayItems}"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                             SelectionMode="Single"
                             EmptyView="{Binding EmptyViewText}"
                             SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
