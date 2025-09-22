@@ -277,15 +277,18 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ItemSelected()
         {
-            if (IsSearchMode && SelectedSearchPlayer != null)
+            if (SelectedItem != null)
             {
-                await Shell.Current.GoToAsync($"player-details?playerId={SelectedSearchPlayer.PlayerId}");
-                SelectedSearchPlayer = null;
-            }
-            else if (!IsSearchMode && SelectedPlayer != null)
-            {
-                await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
-                SelectedPlayer = null;
+                if (IsSearchMode && SelectedItem is PlayerSearchResult searchPlayer)
+                {
+                    await Shell.Current.GoToAsync($"player-details?playerId={searchPlayer.PlayerId}");
+                }
+                else if (!IsSearchMode && SelectedItem is BaseRanking ranking)
+                {
+                    await Shell.Current.GoToAsync($"player-details?playerId={ranking.PlayerId}");
+                }
+
+                SelectedItem = null;
             }
         }
     }

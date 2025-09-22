@@ -18,6 +18,13 @@ namespace Ifpa.Views
 
         protected override void OnAppearing()
         {
+            // Clear selections when page appears to prevent stuck selection state
+            ViewModel.SelectedPlayer = null;
+            ViewModel.SelectedSearchPlayer = null;
+            
+            // Also clear the CollectionView selection directly
+            PlayersListView.SelectedItem = null;
+            
             if (ViewModel.Players.Count == 0)
             {
                 ViewModel.CountOfItemsToFetch = Preferences.Get("PlayerCount", ViewModel.CountOfItemsToFetch);

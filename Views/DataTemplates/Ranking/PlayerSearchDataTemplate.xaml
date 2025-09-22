@@ -5,23 +5,24 @@
               x:Class="Ifpa.Views.DataTemplates.Ranking.PlayerSearchDataTemplate"
               xmlns:local="clr-namespace:Ifpa"
               x:DataType="ifpaplayers:PlayerSearchResult"
-              xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.Universal.Players.Search;assembly=PinballApi">
+              xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.Universal.Players.Search;assembly=PinballApi"
+              xmlns:fittext="clr-namespace:Plugin.Maui.FitText.Controls;assembly=Plugin.Maui.FitText">
     <StackLayout>
         <StackLayout.Resources>
             <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
             <converters:LongToOrdinalStringConverter x:Key="longToOrdinalString" />
         </StackLayout.Resources>
-        <Grid ColumnDefinitions="Auto,*,60"
+        <Grid ColumnDefinitions="70,*,60"
               RowDefinitions="*,*"
               Margin="0,5">
-            <Label Grid.Column="0"
+            <fittext:FitTextLabel Grid.Column="0"
                    Grid.RowSpan="2"
+                   Padding="5"
                    Margin="10,5"
                    VerticalTextAlignment="Center"
                    Text="{Binding WpprRank, Converter={StaticResource longToOrdinalString}}"
                    LineBreakMode="NoWrap"
-                   FontSize="24"
-                   MinimumWidthRequest="58" />
+                   WidthRequest="70" />
             <Label LineBreakMode="NoWrap"
                    FontSize="16"
                    Grid.Column="1"

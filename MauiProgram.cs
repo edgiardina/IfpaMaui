@@ -17,6 +17,7 @@ using Microsoft.Maui.Controls.Compatibility.Hosting;
 using PinballApi;
 using PinballApi.Interfaces;
 using Plugin.Maui.CalendarStore;
+using Plugin.Maui.FitText;
 using Plugin.Maui.NativeCalendar;
 using Serilog;
 using Shiny;
@@ -50,6 +51,7 @@ public static class MauiProgram
             .UseSkiaSharp()
             .UseBottomSheet()
             .UseNativeCalendar()
+            .UseFitText()
             .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
             {
@@ -68,11 +70,10 @@ public static class MauiProgram
             .ConfigureLogging(appSettings)
             .ConfigureEssentials(essentials =>
             {
-                // TODO: it's unclear whether icons must be in the Resources/Images folder or in the Platforms/{platform} folder
                 essentials
-                    .AddAppAction("calendar", Strings.AppShell_Calendar, "IFPA Tournament Calendar", "calendar")
-                    .AddAppAction("my-stats", Strings.AppShell_MyStats, "Your IFPA player data", "mystats")
-                    .AddAppAction("rankings/player-search", Strings.PlayerSearchPage_Title, "Search for other players in the IFPA database", "search")
+                    .AddAppAction("calendar", Strings.AppShell_Calendar, "IFPA Tournament Calendar", "calendar.png")
+                    .AddAppAction("my-stats", Strings.AppShell_MyStats, "Your IFPA player data", "person.png")
+                    .AddAppAction("rankings", Strings.PlayerSearchPage_Title, "Search for other players in the IFPA database", "search.png")
                     .OnAppAction(App.HandleAppActions);
 
                 essentials.UseVersionTracking();
