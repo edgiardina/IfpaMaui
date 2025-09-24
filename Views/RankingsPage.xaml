@@ -11,7 +11,8 @@
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
              x:DataType="vm:RankingsViewModel"
-             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking">
+             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking"
+             >
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Filter"
                      x:Name="InfoButton"
@@ -45,11 +46,11 @@
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
             </controls:PlayerSearchHandler.QueryIcon>
-            <controls:PlayerSearchHandler.ClearIcon>
-                <FontImageSource Glyph="{StaticResource FluentIcon}"
+            <!--<controls:PlayerSearchHandler.ClearIcon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Delete24}"
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
-            </controls:PlayerSearchHandler.ClearIcon>
+            </controls:PlayerSearchHandler.ClearIcon>-->
             <controls:PlayerSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:Player">
                     <StackLayout Padding="10,0">
