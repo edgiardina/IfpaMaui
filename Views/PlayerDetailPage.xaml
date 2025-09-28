@@ -42,7 +42,7 @@
                      x:Name="ActivityFeedButton"
                      Clicked="ActivityFeedButton_Clicked">
             <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.BroadActivityFeed24}"
+                <FontImageSource Glyph="{StaticResource FluentIcon.Alert28}"
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>

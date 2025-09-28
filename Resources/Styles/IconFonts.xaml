@@ -46,7 +46,7 @@
     <x:String x:Key="FluentIcon.Star48">&#xF711;</x:String>
 
     <!-- Activity Feed Icons -->
-    <x:String x:Key="FluentIcon.BroadActivityFeed24">&#xF223;</x:String>
+    <x:String x:Key="FluentIcon.Alert28">&#xF116;</x:String>
 
     <!-- Info -->
     <x:String x:Key="FluentIcon.Info28">&#xF4A5;</x:String>
