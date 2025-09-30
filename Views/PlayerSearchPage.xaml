@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerSearchViewModel"
-             xmlns:ifpaplayers="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi">
+             xmlns:ifpaplayersearch="clr-namespace:PinballApi.Models.WPPR.Universal.Players.Search;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />            
@@ -42,7 +42,7 @@
                             Grid.Row="1"
                             SelectionMode="Single">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="ifpaplayers:Player">
+                    <DataTemplate x:DataType="ifpaplayersearch:PlayerSearchResult">
                         <StackLayout Padding="10,0">
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout Padding="10"
