@@ -99,7 +99,7 @@
         <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
         <PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
 
-        <PackageReference Include="PinballApi" Version="3.2.1" />
+        <PackageReference Include="PinballApi" Version="3.2.2" />
     </ItemGroup>
 
     <PropertyGroup>

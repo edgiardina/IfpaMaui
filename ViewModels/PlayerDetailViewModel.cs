@@ -208,7 +208,7 @@ namespace Ifpa.ViewModels
             }
             finally
             {
-                if(PlayerRecord.PlayerId != default)
+                if(PlayerRecord?.PlayerId != default)
                 {
                     // if we don't get the user's record, keep the busy indicator up
                     IsBusy = false;
