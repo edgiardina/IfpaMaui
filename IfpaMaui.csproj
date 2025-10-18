@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net9.0-android;net9.0-ios</TargetFrameworks>
+        <TargetFrameworks>net9.0-android;net9.0-ios26</TargetFrameworks>
+        <NoWarn>$(NoWarn);XCODE_26_0_PREVIEW</NoWarn>
         <OutputType>Exe</OutputType>
         <RootNamespace>Ifpa</RootNamespace>
         <UseMaui>true</UseMaui>
