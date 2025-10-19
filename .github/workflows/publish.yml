@@ -14,9 +14,6 @@ env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
-  DOTNET_VERSION: '9.0.x'                 # .NET version to use
-  XCODE_VERSION: '26.0.1'                   # Xcode version that supports iOS 26
-  IOS_FRAMEWORK: 'net9.0-ios26'             # iOS framework target
   
 jobs:
   publish-android:
@@ -73,10 +70,10 @@ jobs:
           echo "${{ secrets.IFPA_ANDROID_KEYSTORE }}" > ifpamaui.keystore.asc
           certutil -decode ifpamaui.keystore.asc ifpa-keystore.jks
 
-      - name: Setup .NET
+      - name: Setup .NET 9
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: 9.0.x
           
       - name: Install MAUI Workload
         run: dotnet workload install maui android
@@ -112,7 +109,7 @@ jobs:
       - name: Use Xcode Version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: ${{ env.XCODE_VERSION }}
+          xcode-version: '16.4'
 
       - uses: actions/checkout@v2
 
@@ -238,14 +235,14 @@ jobs:
               MARKETING_VERSION=${{ env.VERSION }} \
               CURRENT_PROJECT_VERSION=${{ env.VERSION_NUMBER_WITH_OFFSET }}
 
-      - name: Setup .NET
+      - name: Setup .NET 9
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: 9.0.x
 
       # The following command is due to some sort of maui build bug and iOS won't accept the binary:
       # run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --version 8.0.401
-      # ITMS-91017: Invalid SDK usage - The following frameworks aren't permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 
+      # ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 
       - name: Install MAUI Workload
         run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
     
@@ -255,24 +252,24 @@ jobs:
       - name : Publish iOS App
         shell: bash
         run: |
-          dotnet publish -f ${{ env.IOS_FRAMEWORK }} -c Release \
+          dotnet publish -f net9.0-ios -c Release \
             -p:ArchiveOnBuild=true \
             -p:Version=${VERSION} \
             -p:ApplicationDisplayVersion=${VERSION} \
             -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} \
             -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
-            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
+            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}            
 
       - uses: actions/upload-artifact@v4
         with:
           name: ifpamaui-ios-signed-build
           if-no-files-found: error
           path: |
-            bin/Release/${{ env.IOS_FRAMEWORK }}/**/*.ipa
+            bin/Release/net9.0-ios/**/*.ipa
 
       - name: Upload app to App Store Connect
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
         run: |
-          xcrun altool --upload-app -t ios -f "bin/Release/${{ env.IOS_FRAMEWORK }}/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+          xcrun altool --upload-app -t ios -f "bin/Release/net9.0-ios/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
