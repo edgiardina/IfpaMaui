@@ -10,8 +10,9 @@
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
-             x:DataType="vm:CalendarDetailViewModel"
-             ios:Page.LargeTitleDisplay="Never"
+             x:DataType="vm:CalendarDetailViewModel"     
+             ios:Page.UseSafeArea="False"
+             Shell.BackgroundColor="Transparent"
              x:Name="this">
     <ContentPage.Resources>
         <ResourceDictionary>
