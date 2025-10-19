@@ -31,17 +31,7 @@ namespace Ifpa.Platforms.Renderers
             return new SecondaryToolbarMenuPageRendererTracker(this);
         }
 
-        protected override IShellItemRenderer CreateShellItemRenderer(ShellItem item)
-        {
-            var renderer = new LargeTitleShellItemRenderer(this)
-            {
-                ShellItem = item
-            };
-            return renderer;
-        }
-
     }
-
     class BadgeShellTabbarAppearanceTracker : ShellTabBarAppearanceTracker
     {
         private readonly NotificationService notificationService;
