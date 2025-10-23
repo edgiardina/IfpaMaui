@@ -9,6 +9,7 @@
              ios:Page.LargeTitleDisplay="Never"
              xmlns:local="clr-namespace:Ifpa"
              Title="{x:Static local:Strings.PlayerResultsPage_Title}"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:PlayerResultsViewModel">
     <ContentPage.ToolbarItems>
@@ -26,7 +27,7 @@
         <datatemplate:PlayerResultDataTemplate x:Key="PlayerResultDataTemplate" />
         <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
     </ContentPage.Resources>
-    <Grid>
+    <controls:PageRootGrid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
         <tabView:SfTabView Style="{StaticResource TabView}"
@@ -65,5 +66,5 @@
                 </tabView:SfTabItem.Content>
             </tabView:SfTabItem>
         </tabView:SfTabView>
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

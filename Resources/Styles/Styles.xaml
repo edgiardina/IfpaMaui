@@ -6,16 +6,31 @@
                     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                     xmlns:local="clr-namespace:Ifpa">
     <Style TargetType="TabBar">
+        <!-- iOS Liquid Glass: Transparent backgrounds for liquid glass effect -->
         <!-- Nav Bar Properties (Top) -->
         <Setter Property="Shell.ForegroundColor"
                 Value="{StaticResource IconAccentColor}" />
-        <Setter Property="Shell.BackgroundColor"
-                Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+        <Setter Property="Shell.BackgroundColor">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Color">
+                    <On Platform="iOS" Value="Transparent" />
+                    <On Platform="Android, WinUI, MacCatalyst, Tizen" 
+                        Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+                </OnPlatform>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Shell.TitleColor"
                 Value="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
         <!-- Tab Bar Properties (Bottom) -->
-        <Setter Property="Shell.TabBarBackgroundColor"
-                Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+        <Setter Property="Shell.TabBarBackgroundColor">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Color">
+                    <On Platform="iOS" Value="Transparent" />
+                    <On Platform="Android, WinUI, MacCatalyst, Tizen" 
+                        Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+                </OnPlatform>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Shell.TabBarTitleColor"
                 Value="{StaticResource IconAccentColor}" />
         <Setter Property="Shell.TabBarUnselectedColor"
@@ -23,8 +38,18 @@
     </Style>
     <Style TargetType="ContentPage"
            ApplyToDerivedTypes="True">
+        <!-- iOS Liquid Glass: Transparent Shell background and default page background -->
         <Setter Property="BackgroundColor"
                 Value="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+        <Setter Property="Shell.BackgroundColor">
+            <Setter.Value>
+                <OnPlatform x:TypeArguments="Color">
+                    <On Platform="iOS" Value="Transparent" />
+                    <On Platform="Android, WinUI, MacCatalyst, Tizen" 
+                        Value="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+                </OnPlatform>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style TargetType="Page"
            ApplyToDerivedTypes="True">

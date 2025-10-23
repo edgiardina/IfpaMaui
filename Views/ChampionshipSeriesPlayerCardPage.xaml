@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.ChampionshipSeriesPlayerCardPage"
              Title="{Binding Title}"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:ChampionshipSeriesPlayerCardViewModel"
              xmlns:ifpawppr="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi">
-    <Grid>
+    <controls:PageRootGrid>
         <CollectionView x:Name="MyListView"
                         ItemsSource="{Binding TournamentCardRecords}"
                         SelectionMode="Single"
@@ -57,5 +58,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

@@ -5,8 +5,9 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              Title="{x:Static local:Strings.RulesPage_Rules}"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:local="clr-namespace:Ifpa">
-    <Grid>
+    <controls:PageRootGrid>
         <WebView x:Name="RulesWebView" />
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

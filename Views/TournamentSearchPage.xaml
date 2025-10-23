@@ -6,13 +6,14 @@
              xmlns:datatemplate="clr-namespace:Ifpa.Views.DataTemplates"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              Title="{x:Static local:Strings.TournamentSearchPage_Title}"
              x:DataType="vm:TournamentSearchViewModel">
     <ContentPage.Resources>
         <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         <datatemplate:TournamentSearchDataTemplate x:Key="TournamentSearchDataTemplate" />
     </ContentPage.Resources>
-    <Grid>
+    <controls:PageRootGrid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
         <Grid RowDefinitions="50,*">
@@ -29,5 +30,5 @@
                             ItemTemplate="{StaticResource TournamentSearchDataTemplate}"
                             EmptyView="No active tournament results" />
         </Grid>
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

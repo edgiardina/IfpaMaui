@@ -46,7 +46,7 @@
                      IconImageSource="{Binding CurrentType, Converter={StaticResource CalendarTypeToIconConverter}}" />
     </ContentPage.ToolbarItems>
 
-    <Grid>
+    <controls:PageRootGrid>
         <Grid x:Name="MapLayout"
               IsVisible="{Binding CurrentType, Converter={StaticResource IsEqualConverter}, ConverterParameter={x:Static vm:CalendarType.MapAndList}}"
               RowDefinitions="*,*"
@@ -189,5 +189,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Grid>
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

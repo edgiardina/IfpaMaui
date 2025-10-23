@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.NewsPage"
              Title="{x:Static local:Strings.NewsPage_Title}"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -91,7 +92,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid>
+    <controls:PageRootGrid>
         <!-- Loading Indicator -->
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}"
@@ -227,5 +228,5 @@
             </CollectionView.EmptyView>
         </CollectionView>
 
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

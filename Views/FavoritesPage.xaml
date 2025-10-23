@@ -27,7 +27,7 @@
             </toolkit:MultiConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid>
+    <controls:PageRootGrid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
         <CollectionView x:Name="PlayersListView"
@@ -117,5 +117,5 @@
             </CollectionView.EmptyView>
 
         </CollectionView>
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

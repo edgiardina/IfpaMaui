@@ -6,6 +6,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="{x:Static local:Strings.ActivityFeedPage_ActivityFeed}"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              x:DataType="vm:ActivityFeedViewModel"
              xmlns:local="clr-namespace:Ifpa">
     <ContentPage.Resources>
@@ -22,7 +23,7 @@
         <!--<ToolbarItem Text="+"
                      Command="{Binding TestingShimCommand}" />-->
     </ContentPage.ToolbarItems>
-    <Grid>
+    <controls:PageRootGrid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
         <CollectionView x:Name="ActivityFeedListView"
@@ -33,5 +34,5 @@
                         SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                         ItemTemplate="{StaticResource activityFeedDataTemplateSelector}"
                         ItemsSource="{Binding ActivityFeedItems}" />
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

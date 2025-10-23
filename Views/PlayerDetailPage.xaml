@@ -75,7 +75,7 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <Grid>
+    <controls:PageRootGrid>
         <AbsoluteLayout x:Name="AvatarOverlay"
                         IsVisible="False"
                         ZIndex="2">
@@ -469,5 +469,5 @@
                 </StackLayout>
             </StackLayout>
         </ScrollView>
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

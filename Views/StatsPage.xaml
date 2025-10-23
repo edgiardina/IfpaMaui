@@ -11,6 +11,7 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:StatsViewModel"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:ifpastats="clr-namespace:PinballApi.Models.WPPR.Universal.Stats;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -28,7 +29,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
+        <controls:PageRootGrid>
             <ActivityIndicator IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />
             <tabView:SfTabView Style="{StaticResource TabView}"
@@ -229,6 +230,6 @@
                     </tabView:SfTabItem.Content>
                 </tabView:SfTabItem>-->
             </tabView:SfTabView>
-        </Grid>
+        </controls:PageRootGrid>
     </ContentPage.Content>
 </ContentPage>

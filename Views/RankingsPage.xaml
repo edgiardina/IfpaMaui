@@ -41,7 +41,7 @@
                                                              RankingResultTemplate="{StaticResource RankingDataTemplate}" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid>
+    <controls:PageRootGrid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
         <CollectionView x:Name="PlayersListView"
@@ -52,5 +52,5 @@
                         SelectedItem="{Binding SelectedPlayer, Mode=TwoWay}"
                         SelectionChangedCommand="{Binding ShowPlayerDetailCommand}"
                         ItemTemplate="{StaticResource RankingResultDataTemplateSelector}" />
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>

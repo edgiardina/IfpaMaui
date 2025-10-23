@@ -6,6 +6,7 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              ios:Page.LargeTitleDisplay="Never"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              Title="{Binding Title}"
              x:Name="PVPDetailPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
@@ -16,7 +17,7 @@
             <converters:IntToOrdinalStringConverter x:Key="intToOrdinalString" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid>
+    <controls:PageRootGrid>
         <CollectionView x:Name="MyListView"
                         ItemsSource="{Binding PlayerVersusPlayer}"
                         SelectionMode="Single"
@@ -83,5 +84,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
+    </controls:PageRootGrid>
 </ContentPage>
