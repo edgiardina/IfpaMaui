@@ -5,8 +5,8 @@
              xmlns:views="clr-namespace:Ifpa.Views"
              x:Class="Ifpa.Views.MoreItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             Title="{x:Static local:Strings.MoreItemsPage_More}"
-             >
+             Title="{x:Static local:Strings.MoreItemsPage_More}">
+             <Grid>
     <CollectionView x:Name="MoreItemsCollection"
                     x:FieldModifier="public"
                     SelectionChanged="MoreItemsCollection_SelectionChanged"
@@ -128,4 +128,5 @@
             </DataTemplate>
         </CollectionView.ItemTemplate>
     </CollectionView>
+    </Grid>
 </ContentPage>

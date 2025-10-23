@@ -8,6 +8,7 @@
              x:Name="SearchPlayersPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:CustomRankingsViewModel"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:ifparankings="clr-namespace:PinballApi.Models.WPPR.Universal.Rankings.Custom;assembly=PinballApi">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -16,7 +17,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid>
+        <controls:PageRootGrid>
             <CollectionView x:Name="RankingsListView"
                             IsVisible="{Binding IsPopulated}"
                             ItemsSource="{Binding CustomRankings}"
@@ -41,6 +42,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </Grid>
+        </controls:PageRootGrid>
     </ContentPage.Content>
 </ContentPage>

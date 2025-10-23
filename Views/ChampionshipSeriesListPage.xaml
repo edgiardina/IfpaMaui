@@ -6,23 +6,24 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:ifpacs="clr-namespace:PinballApi.Models.WPPR.Universal.Series;assembly=PinballApi"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              x:DataType="vm:ChampionshipSeriesListViewModel">
-    <!-- RefreshView doesn't size correctly in iOS so it's been removed for now
-         https://github.com/dotnet/maui/issues/7315 -->
-    <CollectionView x:Name="ChampionshipSeriesCollectionView"
-                    ItemsSource="{Binding ChampionshipSeries}"
-                    SelectionMode="Single"
-                    SelectionChangedCommand="{Binding ViewChampionshipSeriesDetailCommand}"
-                    SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="ifpacs:Series">
-                <StackLayout Orientation="Vertical">
-                    <Label FontSize="Medium"
-                           Text="{Binding Title}"
-                           Margin="10,10" />
-                    <BoxView Style="{StaticResource BoxSeperator}" />
-                </StackLayout>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <controls:PageRootGrid>
+        <CollectionView x:Name="ChampionshipSeriesCollectionView"
+                        ItemsSource="{Binding ChampionshipSeries}"
+                        SelectionMode="Single"
+                        SelectionChangedCommand="{Binding ViewChampionshipSeriesDetailCommand}"
+                        SelectedItem="{Binding SelectedChampionshipSeries, Mode=TwoWay}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="ifpacs:Series">
+                    <StackLayout Orientation="Vertical">
+                        <Label FontSize="Medium"
+                            Text="{Binding Title}"
+                            Margin="10,10" />
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </controls:PageRootGrid>
 </ContentPage>
