@@ -20,7 +20,8 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
   DOTNET_VERSION: '9.0.x'                 # .NET version to use
   XCODE_VERSION: '26.0.1'                 # Xcode version that supports iOS 26
-  IOS_FRAMEWORK: 'net9.0'                 # iOS framework target
+  IOS_FRAMEWORK: 'net9.0-ios'             # iOS framework target
+  ANDROID_FRAMEWORK: 'net9.0-android'     # Android framework target
 
 jobs:
 # MAUI Android Build
@@ -44,7 +45,7 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet build IfpaMaui.csproj -c Release -f net9.0-android --no-restore
+        run: dotnet build IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} --no-restore
 
 # MAUI iOS Build
   build-ios:

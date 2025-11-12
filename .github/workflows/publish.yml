@@ -16,7 +16,8 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
   DOTNET_VERSION: '9.0.x'                 # .NET version to use
   XCODE_VERSION: '26.0.1'                 # Xcode version that supports iOS 26
-  IOS_FRAMEWORK: 'net9.0'                 # iOS framework target
+  IOS_FRAMEWORK: 'net9.0-ios'             # iOS framework target
+  ANDROID_FRAMEWORK: 'net9.0-android'     # Android framework target
   
 jobs:
   publish-android:
@@ -85,7 +86,7 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f net9.0-android -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
+        run: dotnet publish IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
