@@ -30,9 +30,8 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
         <Label Grid.Row="0"
                IsVisible="{Binding HasNoPvpData}"
                VerticalTextAlignment="Center"
@@ -58,39 +57,42 @@
             </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:PlayerVersusRecord">
-                    <Grid ColumnDefinitions="*,*"
-                          Margin="10">
-                        <Label LineBreakMode="NoWrap"
-                               FontSize="16"
-                               HorizontalTextAlignment="Start">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span Text="{Binding FirstName}" />
-                                        <Span Text="{x:Static local:Strings.SingleSpace}" />
-                                        <Span Text="{Binding LastName}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                        <Label LineBreakMode="NoWrap"
-                               FontSize="16"
-                               Grid.Column="1"
-                               HorizontalTextAlignment="End"
-                               TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span Text="{Binding WinCount}" />
-                                        <Span Text=" - " />
-                                        <Span Text="{Binding LossCount}" />
-                                        <Span Text=" - " />
-                                        <Span Text="{Binding TieCount}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Grid>
+                    <VerticalStackLayout>
+                        <Grid ColumnDefinitions="*,*"
+                              Margin="10">
+                            <Label LineBreakMode="NoWrap"
+                                   FontSize="16"
+                                   HorizontalTextAlignment="Start">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="{Binding FirstName}" />
+                                            <Span Text="{x:Static local:Strings.SingleSpace}" />
+                                            <Span Text="{Binding LastName}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label LineBreakMode="NoWrap"
+                                   FontSize="16"
+                                   Grid.Column="1"
+                                   HorizontalTextAlignment="End"
+                                   TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span Text="{Binding WinCount}" />
+                                            <Span Text=" - " />
+                                            <Span Text="{Binding LossCount}" />
+                                            <Span Text=" - " />
+                                            <Span Text="{Binding TieCount}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
