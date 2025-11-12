@@ -21,7 +21,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.PlayerVersusPlayerPage_Filter}"
                      x:Name="InfoButton"
-                     Clicked="InfoButton_Clicked">
+                     Command="{Binding ShowPvpFilterCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
                                  FontFamily="FluentRegular"
@@ -39,67 +39,60 @@
                HorizontalTextAlignment="Center"
                FontAttributes="Italic"
                Text="{x:Static local:Strings.PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet}" />
-        <ListView x:Name="MyListView"
-                  Grid.Row="0"
-                  IsVisible="{Binding HasNoPvpData, Converter={StaticResource BoolConverter}}"
-                  ItemsSource="{Binding AllResults}"
-                  RefreshCommand="{Binding LoadAllItemsCommand}"
-                  IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  ItemTapped="Handle_ItemTapped"
-                  CachingStrategy="RecycleElement"
-                  HasUnevenRows="true"
-                  IsGroupingEnabled="True">
-            <ListView.GroupHeaderTemplate>
+        <CollectionView x:Name="MyListView"
+                        Grid.Row="0"
+                        IsVisible="{Binding HasNoPvpData, Converter={StaticResource BoolConverter}}"
+                        ItemsSource="{Binding AllResults}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPvp, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding ShowPvpDetailCommand}"
+                        IsGrouped="True">
+            <CollectionView.GroupHeaderTemplate>
                 <DataTemplate x:DataType="models:PlayerVersusRecordGroup">
-                    <ViewCell>
-                        <StackLayout Orientation="Vertical"
-                                     BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                            <Label Text="{Binding Key}"
-                                   Padding="15,10,0,10" />
-                        </StackLayout>
-                    </ViewCell>
+                    <StackLayout Orientation="Vertical"
+                                 BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                        <Label Text="{Binding Key}"
+                               Padding="15,10,0,10" />
+                    </StackLayout>
                 </DataTemplate>
-            </ListView.GroupHeaderTemplate>
-            <ListView.ItemTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:PlayerVersusRecord">
-                    <ViewCell>
-                        <Grid ColumnDefinitions="*,*"
-                              Margin="10">
-                            <Label LineBreakMode="NoWrap"
-                                   FontSize="16"
-                                   HorizontalTextAlignment="Start">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="{Binding FirstName}" />
-                                            <Span Text="{x:Static local:Strings.SingleSpace}" />
-                                            <Span Text="{Binding LastName}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                            <Label LineBreakMode="NoWrap"
-                                   FontSize="16"
-                                   Grid.Column="1"
-                                   HorizontalTextAlignment="End"
-                                   TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <FormattedString.Spans>
-                                            <Span Text="{Binding WinCount}" />
-                                            <Span Text=" - " />
-                                            <Span Text="{Binding LossCount}" />
-                                            <Span Text=" - " />
-                                            <Span Text="{Binding TieCount}" />
-                                        </FormattedString.Spans>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </Grid>
-                    </ViewCell>
+                    <Grid ColumnDefinitions="*,*"
+                          Margin="10">
+                        <Label LineBreakMode="NoWrap"
+                               FontSize="16"
+                               HorizontalTextAlignment="Start">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="{Binding FirstName}" />
+                                        <Span Text="{x:Static local:Strings.SingleSpace}" />
+                                        <Span Text="{Binding LastName}" />
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label LineBreakMode="NoWrap"
+                               FontSize="16"
+                               Grid.Column="1"
+                               HorizontalTextAlignment="End"
+                               TextColor="{Binding Path=., Converter={StaticResource pvpString}}">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="{Binding WinCount}" />
+                                        <Span Text=" - " />
+                                        <Span Text="{Binding LossCount}" />
+                                        <Span Text=" - " />
+                                        <Span Text="{Binding TieCount}" />
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>
