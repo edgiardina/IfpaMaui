@@ -5,6 +5,9 @@ using Ifpa.Caching;
 using Ifpa.Controls;
 using Ifpa.Interfaces;
 using Ifpa.Models;
+#if IOS
+using Ifpa.Platforms.Handlers;
+#endif
 using Ifpa.Platforms.Renderers;
 using Ifpa.Platforms.Services;
 using Ifpa.Services;
@@ -61,8 +64,8 @@ public static class MauiProgram
             .ConfigureMauiHandlers((handlers) =>
             {
 #if IOS
-                // Inset table view renderer is to make our settings look like native iOS settings
-                handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewRenderer));
+                // Use native iOS inset grouped table styling for settings
+                handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewHandler));
 #endif
             })
             .ConfigureLogging(appSettings)

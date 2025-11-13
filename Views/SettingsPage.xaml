@@ -10,6 +10,7 @@
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:SettingsViewModel">
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsNotNullConverter x:Key="notNullConverter" />
@@ -17,103 +18,151 @@
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.Content>
-        <VerticalStackLayout>
-            <controls:InsetTableView Intent="Settings"
-                                     HasUnevenRows="True">
-                <TableRoot>
-                    <TableSection Title="{x:Static local:Strings.SettingsPage_Notifications}"
-                                  TextColor="{StaticResource SecondaryTextColor}">
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
-                                    Text="{x:Static local:Strings.SettingsPage_IFPARankChange}"
-                                    On="{Binding NotifyOnRankChange, Mode=TwoWay}" />
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
-                                    Text="{x:Static local:Strings.SettingsPage_TournamentResultPosted}"
-                                    On="{Binding NotifyOnTournamentResult, Mode=TwoWay}" />
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
-                                    Text="{x:Static local:Strings.SettingsPage_NewsItemPosted}"
-                                    On="{Binding NotifyOnNewBlogPost, Mode=TwoWay}" />
-                        <SwitchCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
-                                    Text="{x:Static local:Strings.SettingsPage_NewTournamentOnCalendar}"
-                                    On="{Binding NotifyOnNewCalendarEntry, Mode=TwoWay}" />
-                    </TableSection>
-                    <TableSection Title="{x:Static local:Strings.SettingsPage_MyStats}"
-                                  TextColor="{StaticResource SecondaryTextColor}">
-                        <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                            <shimmer:SfShimmer x:Name="Shimmer"
-                                               VerticalOptions="Fill"                                          
-                                               IsActive="{Binding IsBusy}"
-                                               BackgroundColor="Transparent"
-                                               WaveColor="{StaticResource IconAccentColor}"
-                                               Fill="{StaticResource SecondaryTextColor}"
-                                               Type="CirclePersona">
-                                <Grid Margin="10" ColumnDefinitions="60, Auto, *">
-                                    <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
-                                                        HorizontalOptions="Start"
-                                                        Grid.Column="0"
-                                                        BackgroundColor="{StaticResource ButtonBackgroundColor}"
-                                                        BorderWidth="0"
-                                                        CornerRadius="8"
-                                                        TextColor="{StaticResource ButtonTextColor}" />
-                                    <Label
-                                           FontSize="18"
-                                           Grid.Column="1"
-                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
-                                           VerticalOptions="Center">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding PlayerRecord.FirstName}" />
-                                                <Span Text="{x:Static local:Strings.SingleSpace}" />
-                                                <Span Text="{Binding PlayerRecord.LastName}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"                                           
-                                           FontSize="18"
-                                           Grid.Column="1"
-                                           VerticalOptions="Center"
-                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource nullConverter}}" />
-                                    <Label Text="{StaticResource FluentIcon.PersonDelete24}"
-                                           Grid.Column="2"
-                                           FontFamily="FluentRegular"
-                                           TextColor="Red"
-                                           FontSize="24"
-                                           Margin="0,0,10,0"
-                                           HorizontalOptions="End"
-                                           VerticalOptions="Center"
-                                           IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}">
-                                        <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="Button_Clicked" />
-                                        </Label.GestureRecognizers>
-                                    </Label>
-                                </Grid>
-                            </shimmer:SfShimmer>
-                        </ViewCell>
-                    </TableSection>
-                    <TableSection Title="{x:Static local:Strings.SettingsPage_CacheManagement}"
-                                  TextColor="{StaticResource SecondaryTextColor}">
-                        <ViewCell ios:Cell.DefaultBackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                            <Grid Padding="15" ColumnDefinitions="*,Auto">
-                                <StackLayout Grid.Column="0">
-                                    <Label Text="{x:Static local:Strings.SettingsPage_CacheSize}" 
-                                           FontSize="16"/>
-                                    <Label Text="{Binding CacheSize}" 
-                                           TextColor="{StaticResource SecondaryTextColor}"
-                                           FontSize="14"/>
-                                </StackLayout>
-                                <Button Grid.Column="1"
-                                        Text="{x:Static local:Strings.SettingsPage_ClearCache}"
-                                        Command="{Binding ClearCacheCommand}"
-                                        BackgroundColor="{StaticResource ButtonBackgroundColor}"
-                                        TextColor="{StaticResource ButtonTextColor}"
-                                        HorizontalOptions="End"
-                                        VerticalOptions="Center"
-                                        IsEnabled="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" />
-                            </Grid>
-                        </ViewCell>
-                    </TableSection>
-                </TableRoot>
-            </controls:InsetTableView>          
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20">
+            
+            <!-- Notifications Section -->
+            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_Notifications}">
+                <VerticalStackLayout Spacing="0">
+                    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
+                          Padding="20,12" 
+                          ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0" 
+                               Text="{x:Static local:Strings.SettingsPage_IFPARankChange}"
+                               VerticalOptions="Center"
+                               FontSize="16"/>
+                        <Switch Grid.Column="1"
+                                IsToggled="{Binding NotifyOnRankChange, Mode=TwoWay}"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                    
+                    <BoxView HeightRequest="0.5" 
+                             BackgroundColor="{AppThemeBinding Light=#E5E5EA, Dark=#38383A}" 
+                             Margin="20,0" />
+                    
+                    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
+                          Padding="20,12" 
+                          ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0" 
+                               Text="{x:Static local:Strings.SettingsPage_TournamentResultPosted}"
+                               VerticalOptions="Center"
+                               FontSize="16"/>
+                        <Switch Grid.Column="1"
+                                IsToggled="{Binding NotifyOnTournamentResult, Mode=TwoWay}"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                    
+                    <BoxView HeightRequest="0.5" 
+                             BackgroundColor="{AppThemeBinding Light=#E5E5EA, Dark=#38383A}" 
+                             Margin="20,0" />
+                    
+                    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
+                          Padding="20,12" 
+                          ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0" 
+                               Text="{x:Static local:Strings.SettingsPage_NewsItemPosted}"
+                               VerticalOptions="Center"
+                               FontSize="16"/>
+                        <Switch Grid.Column="1"
+                                IsToggled="{Binding NotifyOnNewBlogPost, Mode=TwoWay}"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                    
+                    <BoxView HeightRequest="0.5" 
+                             BackgroundColor="{AppThemeBinding Light=#E5E5EA, Dark=#38383A}" 
+                             Margin="20,0" />
+                    
+                    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
+                          Padding="20,12" 
+                          ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0" 
+                               Text="{x:Static local:Strings.SettingsPage_NewTournamentOnCalendar}"
+                               VerticalOptions="Center"
+                               FontSize="16"/>
+                        <Switch Grid.Column="1"
+                                IsToggled="{Binding NotifyOnNewCalendarEntry, Mode=TwoWay}"
+                                VerticalOptions="Center"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </controls:InsetTableView>
+            
+            <!-- My Stats Section -->
+            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_MyStats}">
+                <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                    <shimmer:SfShimmer VerticalOptions="Fill"                                          
+                                       IsActive="{Binding IsBusy}"
+                                       BackgroundColor="Transparent"
+                                       WaveColor="{StaticResource IconAccentColor}"
+                                       Fill="{StaticResource SecondaryTextColor}"
+                                       Type="CirclePersona">
+                        <Grid Margin="10" ColumnDefinitions="60, Auto, *">
+                            <toolkit:AvatarView ImageSource="{Binding PlayerAvatar, Mode=OneWay}"
+                                                HorizontalOptions="Start"
+                                                Grid.Column="0"
+                                                BackgroundColor="{StaticResource ButtonBackgroundColor}"
+                                                BorderWidth="0"
+                                                CornerRadius="8"
+                                                TextColor="{StaticResource ButtonTextColor}" />
+                            <Label FontSize="18"
+                                   Grid.Column="1"
+                                   IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}"
+                                   VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding PlayerRecord.FirstName}" />
+                                        <Span Text="{x:Static local:Strings.SingleSpace}" />
+                                        <Span Text="{Binding PlayerRecord.LastName}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Text="{x:Static local:Strings.SettingsPage_NoPlayerSelected}"                                           
+                                   FontSize="18"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"
+                                   IsVisible="{Binding PlayerRecord, Converter={StaticResource nullConverter}}" />
+                            <Label Text="{StaticResource FluentIcon.PersonDelete24}"
+                                   Grid.Column="2"
+                                   FontFamily="FluentRegular"
+                                   TextColor="Red"
+                                   FontSize="24"
+                                   Margin="0,0,10,0"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center"
+                                   IsVisible="{Binding PlayerRecord, Converter={StaticResource notNullConverter}}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Button_Clicked" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </shimmer:SfShimmer>
+                </Grid>
+            </controls:InsetTableView>
+            
+            <!-- Cache Management Section -->
+            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_CacheManagement}">
+                <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
+                      Padding="15" 
+                      ColumnDefinitions="*,Auto">
+                    <StackLayout Grid.Column="0">
+                        <Label Text="{x:Static local:Strings.SettingsPage_CacheSize}" 
+                               FontSize="16"/>
+                        <Label Text="{Binding CacheSize}" 
+                               TextColor="{StaticResource SecondaryTextColor}"
+                               FontSize="14"/>
+                    </StackLayout>
+                    <Button Grid.Column="1"
+                            Text="{x:Static local:Strings.SettingsPage_ClearCache}"
+                            Command="{Binding ClearCacheCommand}"
+                            BackgroundColor="{StaticResource ButtonBackgroundColor}"
+                            TextColor="{StaticResource ButtonTextColor}"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}" />
+                </Grid>
+            </controls:InsetTableView>
+            
         </VerticalStackLayout>
-    </ContentPage.Content>
+    </ScrollView>
+
 </ContentPage>
