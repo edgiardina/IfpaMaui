@@ -30,7 +30,7 @@ namespace Ifpa.Platforms.Handlers
         protected override PlatformContentView CreatePlatformView()
         {
             // Create a wrapper view that contains the table
-            var wrapperView = new PlatformContentView();
+            var wrapperView = new InsetTableWrapperView();
             
             _tableView = new UITableView(CGRect.Empty, UITableViewStyle.InsetGrouped)
             {
@@ -39,10 +39,13 @@ namespace Ifpa.Platforms.Handlers
                 SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine,
                 SeparatorColor = UIColor.Separator,
                 AllowsSelection = false,
-                ScrollEnabled = false // Disable scrolling since it's inside a ScrollView
+                ScrollEnabled = false, // Disable scrolling since it's inside a ScrollView
+                EstimatedRowHeight = 50, // Provide an estimated height for auto-sizing
+                RowHeight = UITableView.AutomaticDimension
             };
 
             _tableView.Source = new InsetTableViewSource(VirtualView as InsetTableView);
+            wrapperView.TableView = _tableView;
             
             return wrapperView;
         }
@@ -51,7 +54,7 @@ namespace Ifpa.Platforms.Handlers
         {
             base.ConnectHandler(platformView);
             
-            if (_tableView != null && platformView != null)
+            if (_tableView != null && platformView is InsetTableWrapperView wrapperView)
             {
                 // Add table view to the platform view
                 _tableView.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -65,7 +68,17 @@ namespace Ifpa.Platforms.Handlers
                     _tableView.BottomAnchor.ConstraintEqualTo(platformView.BottomAnchor)
                 });
                 
+                // Set up the source with wrapper reference
+                if (_tableView.Source is InsetTableViewSource source)
+                {
+                    source.SetWrapperView(wrapperView);
+                }
+                
                 _tableView.ReloadData();
+                
+                // Force initial layout and invalidate intrinsic size
+                _tableView.LayoutIfNeeded();
+                wrapperView.InvalidateIntrinsicContentSize();
             }
         }
 
@@ -81,6 +94,44 @@ namespace Ifpa.Platforms.Handlers
         public static void MapSectionTitle(InsetTableViewHandler handler, InsetTableView tableView)
         {
             handler._tableView?.ReloadData();
+            
+            // Invalidate intrinsic size after data reload
+            if (handler.PlatformView is InsetTableWrapperView wrapperView)
+            {
+                handler._tableView?.LayoutIfNeeded();
+                wrapperView.InvalidateIntrinsicContentSize();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Custom wrapper view that properly reports intrinsic content size for the table view
+    /// </summary>
+    public class InsetTableWrapperView : PlatformContentView
+    {
+        public UITableView TableView { get; set; }
+
+        public override CGSize IntrinsicContentSize
+        {
+            get
+            {
+                if (TableView == null)
+                    return new CGSize(UIView.NoIntrinsicMetric, UIView.NoIntrinsicMetric);
+
+                // Force layout to get accurate size
+                TableView.LayoutIfNeeded();
+                var contentSize = TableView.ContentSize;
+                
+                return new CGSize(UIView.NoIntrinsicMetric, contentSize.Height);
+            }
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+            
+            // Invalidate intrinsic content size when layout changes
+            InvalidateIntrinsicContentSize();
         }
     }
 
@@ -90,10 +141,16 @@ namespace Ifpa.Platforms.Handlers
     public class InsetTableViewSource : UITableViewSource
     {
         private readonly InsetTableView _tableView;
+        private InsetTableWrapperView _wrapperView;
 
         public InsetTableViewSource(InsetTableView tableView)
         {
             _tableView = tableView;
+        }
+
+        public void SetWrapperView(InsetTableWrapperView wrapperView)
+        {
+            _wrapperView = wrapperView;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -146,6 +203,14 @@ namespace Ifpa.Platforms.Handlers
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
+            // Use the HeightRequest from the MAUI InsetTableView if available
+            if (_tableView != null && _tableView.HeightRequest > 0)
+            {
+                // Subtract header height to get cell height
+                var headerHeight = GetHeightForHeader(tableView, indexPath.Section);
+                return (nfloat)(_tableView.HeightRequest - headerHeight);
+            }
+            
             return UITableView.AutomaticDimension;
         }
     }
@@ -168,13 +233,20 @@ namespace Ifpa.Platforms.Handlers
                     ContentView.AddSubview(nativeView);
                     nativeView.TranslatesAutoresizingMaskIntoConstraints = false;
                     
-                    NSLayoutConstraint.ActivateConstraints(new[]
+                    // Add constraints with proper priorities for auto-sizing
+                    var constraints = new[]
                     {
                         nativeView.TopAnchor.ConstraintEqualTo(ContentView.TopAnchor),
                         nativeView.LeadingAnchor.ConstraintEqualTo(ContentView.LeadingAnchor),
                         nativeView.TrailingAnchor.ConstraintEqualTo(ContentView.TrailingAnchor),
                         nativeView.BottomAnchor.ConstraintEqualTo(ContentView.BottomAnchor)
-                    });
+                    };
+                    
+                    // Set compression resistance to ensure content doesn't get compressed
+                    nativeView.SetContentCompressionResistancePriority(750, UILayoutConstraintAxis.Vertical);
+                    nativeView.SetContentHuggingPriority(250, UILayoutConstraintAxis.Vertical);
+                    
+                    NSLayoutConstraint.ActivateConstraints(constraints);
                 }
             }
         }

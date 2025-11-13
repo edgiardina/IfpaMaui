@@ -23,11 +23,12 @@
         <VerticalStackLayout Spacing="20">
             
             <!-- Notifications Section -->
-            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_Notifications}">
-                <VerticalStackLayout Spacing="0">
+            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_Notifications}" HeightRequest="220">
+                <VerticalStackLayout Spacing="0" VerticalOptions="Fill">
                     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
                           Padding="20,12" 
-                          ColumnDefinitions="*,Auto">
+                          ColumnDefinitions="*,Auto"
+                          HeightRequest="44">
                         <Label Grid.Column="0" 
                                Text="{x:Static local:Strings.SettingsPage_IFPARankChange}"
                                VerticalOptions="Center"
@@ -43,7 +44,8 @@
                     
                     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
                           Padding="20,12" 
-                          ColumnDefinitions="*,Auto">
+                          ColumnDefinitions="*,Auto"
+                          HeightRequest="44">
                         <Label Grid.Column="0" 
                                Text="{x:Static local:Strings.SettingsPage_TournamentResultPosted}"
                                VerticalOptions="Center"
@@ -59,7 +61,8 @@
                     
                     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
                           Padding="20,12" 
-                          ColumnDefinitions="*,Auto">
+                          ColumnDefinitions="*,Auto"
+                          HeightRequest="44">
                         <Label Grid.Column="0" 
                                Text="{x:Static local:Strings.SettingsPage_NewsItemPosted}"
                                VerticalOptions="Center"
@@ -75,7 +78,8 @@
                     
                     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
                           Padding="20,12" 
-                          ColumnDefinitions="*,Auto">
+                          ColumnDefinitions="*,Auto"
+                          HeightRequest="44">
                         <Label Grid.Column="0" 
                                Text="{x:Static local:Strings.SettingsPage_NewTournamentOnCalendar}"
                                VerticalOptions="Center"
@@ -88,7 +92,7 @@
             </controls:InsetTableView>
             
             <!-- My Stats Section -->
-            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_MyStats}">
+            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_MyStats}" HeightRequest="110">
                 <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
                     <shimmer:SfShimmer VerticalOptions="Fill"                                          
                                        IsActive="{Binding IsBusy}"
@@ -140,7 +144,7 @@
             </controls:InsetTableView>
             
             <!-- Cache Management Section -->
-            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_CacheManagement}">
+            <controls:InsetTableView SectionTitle="{x:Static local:Strings.SettingsPage_CacheManagement}" HeightRequest="110">
                 <Grid BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}"
                       Padding="15" 
                       ColumnDefinitions="*,Auto">
