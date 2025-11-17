@@ -115,7 +115,8 @@ jobs:
             CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
             DEVELOPMENT_TEAM=KH5JKUPW2Q \
-            PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
+            PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" \
+            ASSETCATALOG_FILTER_FOR_DEVICE=YES
 
       - name: Build MAUI iOS
         run: dotnet build IfpaMaui.csproj -c Release -f ${{ env.IOS_FRAMEWORK }} -p:ArchiveOnBuild=true
