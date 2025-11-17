@@ -19,7 +19,8 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
   DOTNET_VERSION: '10.0.x'                # .NET version to use
-  XCODE_VERSION: '26.1'                   # Xcode version that supports iOS 26
+  XCODE_VERSION: '26.1'                   # Xcode version that supports iOS 26 for dotnet maui build
+  XCODE_VERSION_FOR_WIDGET: '26.0'        # Xcode version to build the widget extension
   IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
   ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
 
@@ -53,11 +54,6 @@ jobs:
     name: iOS Build
     environment: Release
     steps:
-
-      - name: Use Xcode Version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: ${{ env.XCODE_VERSION }}
 
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
@@ -102,6 +98,11 @@ jobs:
           fi
           cp $WIDGET_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROFILE_UUID.mobileprovision
           echo "WIDGET_PROVISIONING_UUID=$WIDGET_PROFILE_UUID" >> $GITHUB_ENV
+                   
+      - name: Use Xcode Version For Widget Build
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION_FOR_WIDGET }}
 
       - name: Build RankWidgetExtension
         run: |
@@ -115,8 +116,12 @@ jobs:
             CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
             DEVELOPMENT_TEAM=KH5JKUPW2Q \
-            PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" \
-            ASSETCATALOG_FILTER_FOR_DEVICE=YES
+            PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" 
+
+      - name: Use Xcode Version for Maui iOS Build
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
 
       - name: Build MAUI iOS
         run: dotnet build IfpaMaui.csproj -c Release -f ${{ env.IOS_FRAMEWORK }} -p:ArchiveOnBuild=true
