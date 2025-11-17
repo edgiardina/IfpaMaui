@@ -20,7 +20,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
   DOTNET_VERSION: '10.0.x'                # .NET version to use
   XCODE_VERSION: '26.1'                   # Xcode version that supports iOS 26 for dotnet maui build
-  XCODE_VERSION_FOR_WIDGET: '26.0'        # Xcode version to build the widget extension
+  XCODE_VERSION_FOR_WIDGET: '26.1'        # Xcode version to build the widget extension
   IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
   ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
 
@@ -98,6 +98,12 @@ jobs:
           fi
           cp $WIDGET_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROFILE_UUID.mobileprovision
           echo "WIDGET_PROVISIONING_UUID=$WIDGET_PROFILE_UUID" >> $GITHUB_ENV
+
+      # Download iOS platform + simulators if missing
+      - name: Install iOS platform + simulator runtime
+        run: |
+          xcodebuild -downloadPlatform iOS
+          xcrun simctl list runtimes   
                    
       - name: Use Xcode Version For Widget Build
         uses: maxim-lobanov/setup-xcode@v1
