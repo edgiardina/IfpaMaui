@@ -14,10 +14,10 @@ env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
-  DOTNET_VERSION: '9.0.x'                 # .NET version to use
-  XCODE_VERSION: '26.0.1'                 # Xcode version that supports iOS 26
-  IOS_FRAMEWORK: 'net9.0-ios'             # iOS framework target
-  ANDROID_FRAMEWORK: 'net9.0-android'     # Android framework target
+  DOTNET_VERSION: '10.0.x'                # .NET version to use
+  XCODE_VERSION: '26.1'                   # Xcode version that supports iOS 26
+  IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
+  ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
   
 jobs:
   publish-android:
