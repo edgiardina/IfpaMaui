@@ -76,7 +76,7 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />        
         <PackageReference Include="Plugin.Maui.CalendarStore" Version="4.0.0" />
-        <PackageReference Include="Plugin.Maui.NativeCalendar" Version="1.0.1" />
+        <PackageReference Include="Plugin.Maui.NativeCalendar" Version="1.0.4" />
         <PackageReference Include="Polly" Version="8.6.4" />
         <PackageReference Include="Scrutor" Version="6.1.0" />
         <PackageReference Include="Shiny.Core" Version="3.3.4" />

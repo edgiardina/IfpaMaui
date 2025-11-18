@@ -31,7 +31,8 @@ namespace Ifpa.ViewModels
         [ObservableProperty]
         private List<TournamentSearch> tournaments = new List<TournamentSearch>();
 
-        public DateTime SelectedDate { get; set; } = DateTime.Today;
+        [ObservableProperty]
+        public DateTime selectedDate;
 
         [ObservableProperty]
         private CalendarType currentType = CalendarType.MapAndList;
@@ -54,13 +55,13 @@ namespace Ifpa.ViewModels
         {
             this.pinballRankingApi = pinballRankingApi;
             this.geocoding = geocoding;
+            SelectedDate = DateTime.Today;
         }
 
         [RelayCommand]
         public async Task ChangeCalendarDisplay()
         {
             CurrentType = CurrentType == CalendarType.MapAndList ? CalendarType.Calendar : CalendarType.MapAndList;
-            await Task.CompletedTask;
         }
 
         [RelayCommand]
@@ -107,6 +108,7 @@ namespace Ifpa.ViewModels
 
                 if (items.Tournaments.Any())
                 {
+
                     Tournaments = items.Tournaments.OrderBy(n => n.EventStartDate).ToList();
 
                     Pins = Tournaments
@@ -132,6 +134,7 @@ namespace Ifpa.ViewModels
                                   .ToList();
 
                     SelectedDateChanged(new DateChangedEventArgs(SelectedDate, SelectedDate));
+
                 }
 
                 logger.LogDebug("Collections loaded at {0}", sw.ElapsedMilliseconds);
