@@ -66,7 +66,7 @@ namespace Ifpa.ViewModels
 
             var availableYears = player.Series.Select(n => n.Year).Distinct().ToList();
 
-            string action = await Shell.Current.DisplayActionSheet(Strings.PlayerChampionshipSeriesPage_YearPrompt, Strings.Cancel, null, availableYears.Select(n => n.ToString()).ToArray());
+            string action = await Shell.Current.DisplayActionSheetAsync(Strings.PlayerChampionshipSeriesPage_YearPrompt, Strings.Cancel, null, availableYears.Select(n => n.ToString()).ToArray());
 
             if (int.TryParse(action, out var yearValue))
             {

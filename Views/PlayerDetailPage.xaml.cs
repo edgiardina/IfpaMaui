@@ -2,6 +2,7 @@
 using Ifpa.Interfaces;
 using Ifpa.Models;
 using Ifpa.ViewModels;
+using Microsoft.Maui.Controls;
 using Microsoft.Maui.Layouts;
 
 namespace Ifpa.Views
@@ -94,7 +95,7 @@ namespace Ifpa.Views
                 }
                 else
                 {
-                    var result = await DisplayAlert(Strings.PlayerDetailPage_Caution, Strings.PlayerDetailPage_AlreadyConfigured, Strings.OK, Strings.Cancel);
+                    var result = await DisplayAlertAsync(Strings.PlayerDetailPage_Caution, Strings.PlayerDetailPage_AlreadyConfigured, Strings.OK, Strings.Cancel);
                     if (result)
                     {
                         await ChangePlayerAndRedirect();
@@ -103,7 +104,7 @@ namespace Ifpa.Views
             }
             catch
             {
-                await DisplayAlert(Strings.Error, Strings.PlayerDetailPage_ErrorMyStats, Strings.OK);
+                await DisplayAlertAsync(Strings.Error, Strings.PlayerDetailPage_ErrorMyStats, Strings.OK);
             }
         }
 
@@ -112,7 +113,7 @@ namespace Ifpa.Views
             await Settings.SetMyStatsPlayer(ViewModel.PlayerId, ViewModel.PlayerRecord.GetIntegerRank());
             await ViewModel.PrepopulateTourneyResults(ViewModel.PlayerId);
 
-            await DisplayAlert(Strings.PlayerDetailPage_Congratulations, Strings.PlayerDetailPage_ConfiguredStats, Strings.OK);
+            await DisplayAlertAsync(Strings.PlayerDetailPage_Congratulations, Strings.PlayerDetailPage_ConfiguredStats, Strings.OK);
 
             await Shell.Current.GoToAsync("///my-stats");
         }
@@ -191,8 +192,8 @@ namespace Ifpa.Views
             if (isAvatarEnlarged)
             {
                 // Shrink enlarged avatar back to original size and position
-                _ = EnlargedPlayerAvatar.ScaleTo(1, 250, Easing.CubicOut);
-                _ = EnlargedPlayerAvatar.TranslateTo(0, 0, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.ScaleToAsync(1, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.TranslateToAsync(0, 0, 250, Easing.CubicOut);
 
                 AvatarOverlay.IsVisible = false;
                 PlayerAvatar.IsVisible = true;
@@ -227,7 +228,7 @@ namespace Ifpa.Views
 
                 // Animate to the center with the new size
                 //EnlargedPlayerAvatar.TranslateTo(targetX, targetY - PlayerAvatar.Y, 250, Easing.CubicOut);
-                _ = EnlargedPlayerAvatar.ScaleTo(targetWidth / PlayerAvatar.Width, 250, Easing.CubicOut);
+                _ = EnlargedPlayerAvatar.ScaleToAsync(targetWidth / PlayerAvatar.Width, 250, Easing.CubicOut);
 
                 isAvatarEnlarged = true;
             }
