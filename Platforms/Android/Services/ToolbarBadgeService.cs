@@ -1,7 +1,7 @@
 ﻿using Android.Views;
 using Google.Android.Material.Badge;
 using Ifpa.Interfaces;
-using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+using Microsoft.Maui.Platform;
 using Serilog;
 
 namespace Ifpa.Platforms.Services
@@ -47,8 +47,8 @@ namespace Ifpa.Platforms.Services
                         else
                         {
                             badgeDrawable.Number = value;
-                            badgeDrawable.BackgroundColor = backgroundColor.ToAndroid();
-                            badgeDrawable.BadgeTextColor = textColor.ToAndroid();
+                            badgeDrawable.BackgroundColor = backgroundColor.ToPlatform();
+                            badgeDrawable.BadgeTextColor = textColor.ToPlatform();
                             badgeDrawable.SetVisible(true);
                         }
                     }

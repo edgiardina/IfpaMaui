@@ -16,7 +16,6 @@ using Ifpa.Views;
 using LiveChartsCore.SkiaSharpView.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls.Compatibility.Hosting;
 using PinballApi;
 using PinballApi.Interfaces;
 using Plugin.Maui.CalendarStore;
@@ -43,9 +42,6 @@ public static class MauiProgram
 
         builder
             .UseMauiApp<App>()
-            // TODO: Maui Compatibility is required for iOS App Links; remove when the below bug is resolved
-            // https://github.com/dotnet/maui/issues/12295
-            .UseMauiCompatibility()
             .UseMauiCommunityToolkit()
             .UseMauiMaps()
             .UseShiny()

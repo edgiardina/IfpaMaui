@@ -166,7 +166,7 @@ namespace Ifpa.ViewModels
                                               .Distinct()
                                               .ToList();
 
-            string action = await Shell.Current.DisplayActionSheet("Select Year", "Cancel", null, availableYears.Select(y => y.ToString()).ToArray());
+            string action = await Shell.Current.DisplayActionSheetAsync("Select Year", "Cancel", null, availableYears.Select(y => y.ToString()).ToArray());
 
             if (int.TryParse(action, out var year))
             {

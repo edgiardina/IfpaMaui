@@ -27,7 +27,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         private async Task ShowPvpFilter()
         {
-            string action = await Shell.Current.DisplayActionSheet("PVP Type", null, null, "All", "Top 250");
+            string action = await Shell.Current.DisplayActionSheetAsync("PVP Type", null, null, "All", "Top 250");
 
             if (action == "All")
             {

@@ -93,7 +93,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task RankingProfileSelect()
         {
-            string action = await Shell.Current.DisplayActionSheet(Strings.PlayerResultsPage_RankingProfile, Strings.Cancel, null, RankingTypeOptions.Select(a => a.ToString()).ToArray());
+            string action = await Shell.Current.DisplayActionSheetAsync(Strings.PlayerResultsPage_RankingProfile, Strings.Cancel, null, RankingTypeOptions.Select(a => a.ToString()).ToArray());
 
             if (action != null && action != Strings.Cancel)
             {

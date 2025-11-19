@@ -113,7 +113,7 @@ namespace Ifpa.ViewModels
                 string selectedCalendar = null;
 
                 var calendars = await CalendarStore.GetCalendars();
-                selectedCalendar = await Shell.Current.DisplayActionSheet(Strings.CalendarDetailPage_SelectCalendarPrompt, 
+                selectedCalendar = await Shell.Current.DisplayActionSheetAsync(Strings.CalendarDetailPage_SelectCalendarPrompt, 
                                                                           Strings.Cancel, 
                                                                           null, 
                                                                           calendars.Where(m => m.IsReadOnly == false)
@@ -142,13 +142,13 @@ namespace Ifpa.ViewModels
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert(Strings.Error, Strings.CalendarDetailPage_TournamentNotAdded, Strings.OK);
+                        await Shell.Current.DisplayAlertAsync(Strings.Error, Strings.CalendarDetailPage_TournamentNotAdded, Strings.OK);
                     }
                 }
             }
             else
             {
-                await Shell.Current.DisplayAlert(Strings.PermissionRequired, Strings.CalendarDetailPage_AddCalendarPermissionRequest, Strings.OK);
+                await Shell.Current.DisplayAlertAsync(Strings.PermissionRequired, Strings.CalendarDetailPage_AddCalendarPermissionRequest, Strings.OK);
             }
         }
     }

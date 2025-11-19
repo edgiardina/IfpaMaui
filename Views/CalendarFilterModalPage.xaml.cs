@@ -69,7 +69,7 @@ namespace Ifpa.Views
             }
             else
             {
-                await DisplayAlert(Strings.PermissionRequired, "IFPA Companion requires your permission before polling your location for Calendar Search", Strings.OK);
+                await DisplayAlertAsync(Strings.PermissionRequired, "IFPA Companion requires your permission before polling your location for Calendar Search", Strings.OK);
             }
         }
 

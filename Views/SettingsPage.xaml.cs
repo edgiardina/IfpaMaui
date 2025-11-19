@@ -23,11 +23,11 @@ namespace Ifpa.Views
         // TODO: this should live in the viewmodel and we should pass a IAlertService to the viewmodel
         private async void Button_Clicked(object sender, System.EventArgs e)
         {
-            var shouldClear = await DisplayAlert("Clear Selected Player", "Your 'My Stats' player selection will be cleared, are you sure you wish to do this?", "OK", "Cancel");
+            var shouldClear = await DisplayAlertAsync("Clear Selected Player", "Your 'My Stats' player selection will be cleared, are you sure you wish to do this?", Strings.OK, Strings.Cancel);
             if (shouldClear)
             {
                 await Settings.SetMyStatsPlayer(0, 0);
-                await DisplayAlert("Selected Player Cleared", "Your 'My Stats' player selection has been cleared", "OK");
+                await DisplayAlertAsync("Selected Player Cleared", "Your 'My Stats' player selection has been cleared", Strings.OK);
                 await ViewModel.LoadPlayer();
             }
         }
