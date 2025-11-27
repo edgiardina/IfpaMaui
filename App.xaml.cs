@@ -29,9 +29,9 @@ public partial class App : Application
         InitializeComponent();
 
         //TODO: this conditional compilation should be removed when this bug is fixed
-        //https://github.com/dotnet/maui/issues/12295
+        //https://github.com/dotnet/maui/issues/12295)
 #if IOS
-        (Application.Current as IApplicationController)?.SetAppIndexingProvider(new Microsoft.Maui.Controls.Compatibility.Platform.iOS.IOSAppIndexingProvider());
+        (Application.Current as IApplicationController)?.SetAppIndexingProvider(new IfpaMaui.Platforms.iOS.IOSAppIndexingProvider());
 #endif
 
         // From https://github.com/borrmann/AppThemeBindingFix

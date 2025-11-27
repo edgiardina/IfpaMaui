@@ -18,6 +18,10 @@ env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
+  DOTNET_VERSION: '10.0.x'                # .NET version to use
+  XCODE_VERSION: '26.1'                   # Xcode version that supports iOS 26 for dotnet maui build
+  IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
+  ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
 
 jobs:
 # MAUI Android Build
@@ -29,10 +33,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
-      - name: Setup .NET 9
+      - name: Setup .NET
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
           
       - name: Install MAUI Workload
         run: dotnet workload install maui --ignore-failed-sources
@@ -41,7 +45,7 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet build IfpaMaui.csproj -c Release -f net9.0-android --no-restore
+        run: dotnet build IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} --no-restore
 
 # MAUI iOS Build
   build-ios:
@@ -50,18 +54,13 @@ jobs:
     environment: Release
     steps:
 
-      - name: Use Xcode Version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '16.4'
-
       - name: Checkout
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
-      - name: Setup .NET 9
+      - name: Setup .NET
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Install MAUI Workload
         run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
@@ -98,6 +97,17 @@ jobs:
           fi
           cp $WIDGET_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROFILE_UUID.mobileprovision
           echo "WIDGET_PROVISIONING_UUID=$WIDGET_PROFILE_UUID" >> $GITHUB_ENV
+                   
+      - name: Use Xcode Version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+
+      # Download iOS platform + simulators if missing
+      - name: Install iOS platform + simulator runtime
+        run: |
+          xcodebuild -downloadPlatform iOS
+          xcrun simctl list runtimes   
 
       - name: Build RankWidgetExtension
         run: |
@@ -105,13 +115,14 @@ jobs:
             -project NativeIFPA/IFPA.xcodeproj \
             -scheme RankWidgetExtension \
             -configuration Release \
+            -destination 'generic/platform=iOS' \
             -sdk iphoneos \
             -derivedDataPath NativeIFPA/DerivedData \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
             DEVELOPMENT_TEAM=KH5JKUPW2Q \
-            PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"
+            PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"             
 
       - name: Build MAUI iOS
-        run: dotnet build IfpaMaui.csproj -c Release -f net9.0-ios -p:ArchiveOnBuild=true
+        run: dotnet build IfpaMaui.csproj -c Release -f ${{ env.IOS_FRAMEWORK }} -p:ArchiveOnBuild=true

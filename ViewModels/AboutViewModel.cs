@@ -115,7 +115,7 @@ namespace Ifpa.ViewModels
 
                 if (!logFiles.Any())
                 {
-                    await Shell.Current.DisplayAlert(
+                    await Shell.Current.DisplayAlertAsync(
                         Strings.AboutPage_NoLogsTitle,
                         Strings.AboutPage_NoLogsMessage,
                         Strings.OK);
@@ -140,7 +140,7 @@ namespace Ifpa.ViewModels
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error sending log files");
-                await Shell.Current.DisplayAlert(
+                await Shell.Current.DisplayAlertAsync(
                     Strings.AboutPage_ErrorTitle,
                     Strings.AboutPage_ErrorMessage,
                     Strings.OK);

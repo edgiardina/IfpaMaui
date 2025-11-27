@@ -14,6 +14,10 @@ env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
+  DOTNET_VERSION: '10.0.x'                # .NET version to use
+  XCODE_VERSION: '26.1'                   # Xcode version that supports iOS 26 for dotnet maui build  
+  IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
+  ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
   
 jobs:
   publish-android:
@@ -70,10 +74,10 @@ jobs:
           echo "${{ secrets.IFPA_ANDROID_KEYSTORE }}" > ifpamaui.keystore.asc
           certutil -decode ifpamaui.keystore.asc ifpa-keystore.jks
 
-      - name: Setup .NET 9
+      - name: Setup .NET
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
           
       - name: Install MAUI Workload
         run: dotnet workload install maui android
@@ -82,21 +86,21 @@ jobs:
         run: dotnet restore IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f net9.0-android -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
+        run: dotnet publish IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: ifpamaui-android-signed-build
-          path: bin/Release/net9.0-android/publish/com.edgiardina.ifpa-Signed.aab
+          path: bin/Release/${{ env.ANDROID_FRAMEWORK }}/publish/com.edgiardina.ifpa-Signed.aab
 
       - name: Deploy to Google Play (Production)
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.edgiardina.ifpa
-          releaseFiles: bin/Release/net9.0-android/publish/com.edgiardina.ifpa-Signed.aab
+          releaseFiles: bin/Release/${{ env.ANDROID_FRAMEWORK }}/publish/com.edgiardina.ifpa-Signed.aab
           releaseName: ${{ env.VERSION }}
           track: production
 
@@ -105,11 +109,6 @@ jobs:
     environment: Release
     name: iOS Build
     steps:
-
-      - name: Use Xcode Version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '16.4'
 
       - uses: actions/checkout@v2
 
@@ -219,57 +218,69 @@ jobs:
                 /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$WIDGET_PLIST" || \
                 /usr/libexec/PlistBuddy -c "Add :IFPAApiKey string $IFPA_API_KEY" "$WIDGET_PLIST"
     
+      - name: Use Xcode Version For Widget Build
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+
+      # Download iOS platform + simulators if missing
+      - name: Install iOS platform + simulator runtime
+        run: |
+          xcodebuild -downloadPlatform iOS
+          xcrun simctl list runtimes                
+
       - name: Build RankWidgetExtension
         run: |
-            xcodebuild \
-              -project NativeIFPA/IFPA.xcodeproj \
-              -scheme RankWidgetExtension \
-              -configuration Release \
-              -sdk iphoneos \
-              -derivedDataPath NativeIFPA/DerivedData \
-              CODE_SIGN_STYLE=Manual \
-              CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
-              CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
-              DEVELOPMENT_TEAM=KH5JKUPW2Q \
-              PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" \
-              MARKETING_VERSION=${{ env.VERSION }} \
-              CURRENT_PROJECT_VERSION=${{ env.VERSION_NUMBER_WITH_OFFSET }}
+          xcodebuild \
+            -project NativeIFPA/IFPA.xcodeproj \
+            -scheme RankWidgetExtension \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -sdk iphoneos \
+            -derivedDataPath NativeIFPA/DerivedData \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
+            CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
+            DEVELOPMENT_TEAM=KH5JKUPW2Q \
+            PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" \
+            MARKETING_VERSION="$VERSION" \
+            CURRENT_PROJECT_VERSION="$VERSION_NUMBER_WITH_OFFSET"  
 
-      - name: Setup .NET 9
+      - name: Setup .NET
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       # The following command is due to some sort of maui build bug and iOS won't accept the binary:
       # run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --version 8.0.401
-      # ITMS-91017: Invalid SDK usage - The following frameworks aren’t permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 
+      # ITMS-91017: Invalid SDK usage - The following frameworks aren't permitted for apps using an alternative web browser engine: [BrowserEngineKit]. 
       - name: Install MAUI Workload
         run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
     
       - name: Restore nuget packages
-        run:  dotnet restore IfpaMaui.csproj
+        run:  dotnet restore IfpaMaui.csproj        
         
       - name : Publish iOS App
         shell: bash
         run: |
-          dotnet publish -f net9.0-ios -c Release \
+          dotnet publish -f ${{ env.IOS_FRAMEWORK }} -c Release \
             -p:ArchiveOnBuild=true \
             -p:Version=${VERSION} \
             -p:ApplicationDisplayVersion=${VERSION} \
             -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} \
             -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
-            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}            
+            -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: ifpamaui-ios-signed-build
           if-no-files-found: error
           path: |
-            bin/Release/net9.0-ios/**/*.ipa
+            bin/Release/${{ env.IOS_FRAMEWORK }}/**/*.ipa
 
       - name: Upload app to App Store Connect
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
         run: |
-          xcrun altool --upload-app -t ios -f "bin/Release/net9.0-ios/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+          xcrun altool --upload-app -t ios -f "bin/Release/${{ env.IOS_FRAMEWORK }}/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"

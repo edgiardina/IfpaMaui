@@ -21,7 +21,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{x:Static local:Strings.PlayerVersusPlayerPage_Filter}"
                      x:Name="InfoButton"
-                     Clicked="InfoButton_Clicked">
+                     Command="{Binding ShowPvpFilterCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
                                  FontFamily="FluentRegular"
@@ -30,40 +30,34 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}" />
         <Label Grid.Row="0"
                IsVisible="{Binding HasNoPvpData}"
                VerticalTextAlignment="Center"
                HorizontalTextAlignment="Center"
                FontAttributes="Italic"
                Text="{x:Static local:Strings.PlayerVersusPlayerPage_PlayerHasNotPlayedAgainstCompetitorsYet}" />
-        <ListView x:Name="MyListView"
-                  Grid.Row="0"
-                  IsVisible="{Binding HasNoPvpData, Converter={StaticResource BoolConverter}}"
-                  ItemsSource="{Binding AllResults}"
-                  RefreshCommand="{Binding LoadAllItemsCommand}"
-                  IsPullToRefreshEnabled="true"
-                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                  ItemTapped="Handle_ItemTapped"
-                  CachingStrategy="RecycleElement"
-                  HasUnevenRows="true"
-                  IsGroupingEnabled="True">
-            <ListView.GroupHeaderTemplate>
+        <CollectionView x:Name="MyListView"
+                        Grid.Row="0"
+                        IsVisible="{Binding HasNoPvpData, Converter={StaticResource BoolConverter}}"
+                        ItemsSource="{Binding AllResults}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPvp, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding ShowPvpDetailCommand}"
+                        IsGrouped="True">
+            <CollectionView.GroupHeaderTemplate>
                 <DataTemplate x:DataType="models:PlayerVersusRecordGroup">
-                    <ViewCell>
-                        <StackLayout Orientation="Vertical"
-                                     BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
-                            <Label Text="{Binding Key}"
-                                   Padding="15,10,0,10" />
-                        </StackLayout>
-                    </ViewCell>
+                    <StackLayout Orientation="Vertical"
+                                 BackgroundColor="{AppThemeBinding Light={StaticResource SecondaryBackgroundColor}, Dark={StaticResource SecondaryBackgroundColorDark}}">
+                        <Label Text="{Binding Key}"
+                               Padding="15,10,0,10" />
+                    </StackLayout>
                 </DataTemplate>
-            </ListView.GroupHeaderTemplate>
-            <ListView.ItemTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:PlayerVersusRecord">
-                    <ViewCell>
+                    <VerticalStackLayout>
                         <Grid ColumnDefinitions="*,*"
                               Margin="10">
                             <Label LineBreakMode="NoWrap"
@@ -97,9 +91,10 @@
                                 </Label.FormattedText>
                             </Label>
                         </Grid>
-                    </ViewCell>
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </VerticalStackLayout>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

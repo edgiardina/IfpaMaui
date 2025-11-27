@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Players;
+using PinballApi.Models.WPPR.Universal.Players.Search;
 using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
@@ -11,13 +12,13 @@ namespace Ifpa.ViewModels
     public partial class PlayerSearchViewModel : BaseViewModel
     {
         [ObservableProperty]
-        private ObservableCollection<Player> players = new ObservableCollection<Player>();
+        private ObservableCollection<PlayerSearchResult> players = new ObservableCollection<PlayerSearchResult>();
 
         [ObservableProperty]
         private bool isLoaded = false;
 
         [ObservableProperty]
-        private Player selectedPlayer;
+        private PlayerSearchResult selectedPlayer;
 
         [ObservableProperty]
         private string text = string.Empty;

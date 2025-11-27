@@ -1,11 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using PinballApi.Models.WPPR.Universal.Players;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Ifpa.Models;
-using PinballApi;
 using Microsoft.Extensions.Logging;
-using CommunityToolkit.Mvvm.ComponentModel;
 using PinballApi.Interfaces;
+using PinballApi.Models.WPPR.Universal.Players;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
@@ -13,10 +12,32 @@ namespace Ifpa.ViewModels
     {
         public ObservableCollection<PlayerVersusRecordGroup> AllResults { get; set; }
 
-        public ObservableCollection<PlayerVersusRecordGroup> EliteResults { get; set; }
-        public Command LoadAllItemsCommand { get; set; }
 
-        public Command LoadEliteItemsCommand { get; set; }
+        [ObservableProperty]
+        private PlayerVersusRecord selectedPvp;
+
+
+        [RelayCommand]
+        public async Task ShowPvpDetail()
+        {
+            await Shell.Current.GoToAsync($"pvp-detail?playerId={PlayerId}&comparePlayerId={SelectedPvp.PlayerId}");
+            SelectedPvp = null;
+        }
+
+        [RelayCommand]
+        private async Task ShowPvpFilter()
+        {
+            string action = await Shell.Current.DisplayActionSheetAsync("PVP Type", null, null, "All", "Top 250");
+
+            if (action == "All")
+            {
+                await LoadAllItems();
+            }
+            else
+            {
+                await LoadEliteItems();
+            }
+        }
 
         public int PlayerId { get; set; }
 
@@ -29,13 +50,11 @@ namespace Ifpa.ViewModels
         {
             Title = "PVP";
             AllResults = new ObservableCollection<PlayerVersusRecordGroup>();
-            EliteResults = new ObservableCollection<PlayerVersusRecordGroup>();
-            LoadAllItemsCommand = new Command(async () => await ExecuteLoadAllItemsCommand());
-            LoadEliteItemsCommand = new Command(async () => await ExecuteLoadEliteItemsCommand());
             PinballRankingApi = pinballRankingApi;
         }
 
-        async Task ExecuteLoadEliteItemsCommand()
+        [RelayCommand]
+        public async Task LoadAllItems()
         {
             if (IsBusy)
                 return;
@@ -44,7 +63,7 @@ namespace Ifpa.ViewModels
 
             try
             {
-                EliteResults.Clear();
+                AllResults.Clear();
                 var pvpResults = await PinballRankingApi.GetPlayerVersusPlayer(PlayerId);
 
                 if (pvpResults.PlayerVersusPlayerRecords != null)
@@ -57,7 +76,7 @@ namespace Ifpa.ViewModels
 
                     foreach (var item in groupedResults)
                     {
-                        EliteResults.Add(item);
+                        AllResults.Add(item);
                     }
 
                 }
@@ -76,7 +95,8 @@ namespace Ifpa.ViewModels
             }
         }
 
-        async Task ExecuteLoadAllItemsCommand()
+        [RelayCommand]
+        public async Task LoadEliteItems()
         {
             if (IsBusy)
                 return;
@@ -98,7 +118,7 @@ namespace Ifpa.ViewModels
 
                     foreach (var item in groupedResults)
                     {
-                        AllResults.Add(item); 
+                        AllResults.Add(item);
                     }
                 }
                 else
