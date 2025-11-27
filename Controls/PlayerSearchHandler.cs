@@ -1,11 +1,13 @@
 ﻿using Ifpa.ViewModels;
 using PinballApi.Models.WPPR.Universal.Players;
+using PinballApi.Models.WPPR.Universal.Players.Search;
 
 namespace Ifpa.Controls
 {
     public class PlayerSearchHandler : SearchHandler
     {
         readonly PlayerSearchViewModel viewModel;
+        
 
         public PlayerSearchHandler()
         {
@@ -30,25 +32,17 @@ namespace Ifpa.Controls
             }
         }
 
-        protected override void OnUnfocus()
-        {
-            base.OnUnfocus();
-
-            //TODO: Remove when https://github.com/dotnet/maui/issues/16298 is fixed
-            Platforms.KeyboardHelper.HideKeyboard();
-        }
-
         protected override async void OnItemSelected(object item)
         {
             base.OnItemSelected(item);
 
-            this.Unfocus();
+            // Doesn't seem to work
+            HideSoftInputAsync();
 
-            //TODO: Remove when https://github.com/dotnet/maui/issues/16298 is fixed
             Platforms.KeyboardHelper.HideKeyboard();
 
             // The following route works because route names are unique in this app.
-            await Shell.Current.GoToAsync($"player-details?playerId={((Player)item).PlayerId}");
+            await Shell.Current.GoToAsync($"player-details?playerId={((PlayerSearchResult)item).PlayerId}");
         }
 
     }

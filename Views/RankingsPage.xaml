@@ -9,7 +9,7 @@
              xmlns:local="clr-namespace:Ifpa"
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
-             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players.Search;assembly=PinballApi"
              x:DataType="vm:RankingsViewModel"
              xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking"
              >
@@ -27,6 +27,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalStringConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <datatemplates:ProRankingDataTemplate x:Key="ProRankingDataTemplate" />
             <datatemplates:RankingDataTemplate x:Key="RankingDataTemplate" />
@@ -51,11 +52,13 @@
                                  FontFamily="FluentRegular"
                                  Color="{StaticResource IconAccentColor}" />
             </controls:PlayerSearchHandler.ClearIcon>-->
+
             <controls:PlayerSearchHandler.ItemTemplate>
-                <DataTemplate x:DataType="ifpaplayer:Player">
-                    <StackLayout Padding="10,0">
-                        <StackLayout Orientation="Horizontal">
+                <DataTemplate x:DataType="ifpaplayer:PlayerSearchResult">
+                    <VerticalStackLayout Padding="10,0">
+                        <Grid ColumnDefinitions="Auto, *">
                             <StackLayout Padding="10"
+                                         Grid.Column="0"
                                          Orientation="Vertical">
                                 <Label LineBreakMode="NoWrap"
                                        FontSize="16">
@@ -82,14 +85,15 @@
                                 </Label>
                             </StackLayout>
                             <Label VerticalTextAlignment="Center"
+                                   Grid.Column="1"
                                    HorizontalOptions="End"
-                                   Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource intToOrdinalString}}"
+                                   Text="{Binding WpprRank, Converter={StaticResource longToOrdinalStringConverter}}"
                                    LineBreakMode="NoWrap"
                                    FontSize="18" />
-                        </StackLayout>
+                        </Grid>
 
                         <BoxView Style="{StaticResource BoxSeperator}" />
-                    </StackLayout>
+                    </VerticalStackLayout>
                 </DataTemplate>
             </controls:PlayerSearchHandler.ItemTemplate>
         </controls:PlayerSearchHandler>
