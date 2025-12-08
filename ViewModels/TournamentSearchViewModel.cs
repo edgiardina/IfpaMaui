@@ -29,12 +29,23 @@ namespace Ifpa.ViewModels
             if (!IsBusy)
             {
                 IsBusy = true;
-                var search = await pinballRankingApi.TournamentSearch(name: string.IsNullOrEmpty(SearchTerm) ? null : SearchTerm,
-                                                                      tournamentSearchSortMode: TournamentSearchSortMode.StartDate, 
-                                                                      tournamentSearchSortOrder: TournamentSearchSortOrder.Descending, 
-                                                                      onlyWithResults:true);
-                Tournaments = search.Tournaments.Where(n => n.Winner.PlayerId.HasValue).ToList();
-                IsBusy = false;
+                try
+                {
+                    var search = await pinballRankingApi.TournamentSearch(name: string.IsNullOrEmpty(SearchTerm) ? null : SearchTerm,
+                                                                          tournamentSearchSortMode: TournamentSearchSortMode.StartDate,
+                                                                          tournamentSearchSortOrder: TournamentSearchSortOrder.Descending,
+                                                                          onlyWithResults: true);
+
+                    Tournaments = search.Tournaments.Where(n => n.Winner.PlayerId.HasValue).ToList();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error searching for tournaments with term {0}", SearchTerm);
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
             }
         }
 
