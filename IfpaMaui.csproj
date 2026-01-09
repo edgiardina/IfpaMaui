@@ -66,14 +66,14 @@
 
     <!-- Package References -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.11" />
-        <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="10.0.11" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
+        <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="10.0.20" />
         <PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc5.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />        
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" />        
         <PackageReference Include="Plugin.Maui.CalendarStore" Version="4.0.0" />
         <PackageReference Include="Plugin.Maui.NativeCalendar" Version="1.0.4" />
         <PackageReference Include="Polly" Version="8.6.5" />
@@ -88,8 +88,8 @@
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
         <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="3.0.2" />
         <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="3.0.2" />
-        <PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.5" />
-        <PackageReference Include="System.ServiceModel.Syndication" Version="10.0.0" />
+        <PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.8" />
+        <PackageReference Include="System.ServiceModel.Syndication" Version="10.0.1" />
         <PackageReference Include="Serilog" Version="4.3.0" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
         <PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
