@@ -34,6 +34,23 @@ namespace Ifpa.Services
             if (string.IsNullOrEmpty(actionId))
                 return;
 
+            // Handle special case for search action
+            if (actionId == "rankings/player-search")
+            {
+                await _dispatcher.DispatchAsync(async () =>
+                {
+                    try
+                    {
+                        await Shell.Current.GoToAsync("///rankings?showSearch=true");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error navigating to player search");
+                    }
+                });
+                return;
+            }
+
             var route = $"//{actionId}";
             await NavigateToRoute(route);
         }

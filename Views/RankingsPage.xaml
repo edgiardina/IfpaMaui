@@ -9,18 +9,11 @@
              xmlns:local="clr-namespace:Ifpa"
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players.Search;assembly=PinballApi"
              x:DataType="vm:RankingsViewModel"
-             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking">
+             xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking"
+             >
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
-                     x:Name="SearchButton"
-                     Command="{Binding ShowPlayerSearchCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{StaticResource FluentIcon.Search48}"
-                                FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
         <ToolbarItem Text="Filter"
                      x:Name="InfoButton"
                      Command="{Binding ShowRankingFilterCommand}">
@@ -33,14 +26,78 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
+            <converters:LongToOrdinalStringConverter x:Key="longToOrdinalStringConverter" />
             <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
             <datatemplates:ProRankingDataTemplate x:Key="ProRankingDataTemplate" />
             <datatemplates:RankingDataTemplate x:Key="RankingDataTemplate" />
-            <datatemplates:RankingResultDataTemplateSelector x:Key="RankingResultDataTemplateSelector"                                                             
+            <datatemplates:RankingResultDataTemplateSelector x:Key="RankingResultDataTemplateSelector"
                                                              ProRankingTemplate="{StaticResource ProRankingDataTemplate}"
                                                              RankingResultTemplate="{StaticResource RankingDataTemplate}" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <Shell.SearchHandler>
+        <controls:PlayerSearchHandler x:Name="searchHandler"
+                                      SearchBoxVisibility="Collapsible"
+                                      Placeholder="Type a player's name to search"
+                                      ShowsResults="true"
+                                      Keyboard="Plain">
+            <controls:PlayerSearchHandler.QueryIcon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Search48}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </controls:PlayerSearchHandler.QueryIcon>
+            <!--<controls:PlayerSearchHandler.ClearIcon>
+                <FontImageSource Glyph="{StaticResource FluentIcon.Delete24}"
+                                 FontFamily="FluentRegular"
+                                 Color="{StaticResource IconAccentColor}" />
+            </controls:PlayerSearchHandler.ClearIcon>-->
+
+            <controls:PlayerSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="ifpaplayer:PlayerSearchResult">
+                    <VerticalStackLayout Padding="10,0">
+                        <Grid ColumnDefinitions="Auto, *">
+                            <StackLayout Padding="10"
+                                         Grid.Column="0"
+                                         Orientation="Vertical">
+                                <Label LineBreakMode="NoWrap"
+                                       FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="{Binding FirstName}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding LastName}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label TextColor="{StaticResource SecondaryTextColor}"
+                                       FontSize="12">
+                                    <Label.Text>
+                                        <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                            <Binding Path="City" />
+                                            <Binding Path="Stateprov" />
+                                            <Binding Path="CountryName" />
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                            </StackLayout>
+                            <Label VerticalTextAlignment="Center"
+                                   Grid.Column="1"
+                                   HorizontalOptions="End"
+                                   Text="{Binding WpprRank, Converter={StaticResource longToOrdinalStringConverter}}"
+                                   LineBreakMode="NoWrap"
+                                   FontSize="18" />
+                        </Grid>
+
+                        <BoxView Style="{StaticResource BoxSeperator}" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </controls:PlayerSearchHandler.ItemTemplate>
+        </controls:PlayerSearchHandler>
+    </Shell.SearchHandler>
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
