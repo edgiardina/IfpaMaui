@@ -21,7 +21,7 @@
 
         <!-- Only supported on iOS 16 and greater due to NativeCalendar dependency -->
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">16.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
         <UserSecretsId>dde96872-83d8-431f-9f14-fdd8d175bcd6</UserSecretsId>
     </PropertyGroup>
     <PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios' and '$(Configuration)' == 'Release'">
@@ -66,6 +66,7 @@
 
     <!-- Package References -->
     <ItemGroup>
+        <PackageReference Include="Eightbot.MauiNativePdfView" Version="1.0.7" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
         <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="10.0.20" />
