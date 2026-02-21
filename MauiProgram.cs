@@ -26,6 +26,7 @@ using Shiny.Infrastructure;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using The49.Maui.BottomSheet;
+using MauiNativePdfView;
 
 namespace Ifpa;
 
@@ -49,6 +50,7 @@ public static class MauiProgram
             .UseSkiaSharp()
             .UseBottomSheet()
             .UseNativeCalendar()
+            .UseMauiNativePdfView()
             .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
             {

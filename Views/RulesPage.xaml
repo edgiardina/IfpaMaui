@@ -3,10 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.RulesPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:pdf="http://eightbot.com/maui/pdfview"
              ios:Page.LargeTitleDisplay="Never"
              Title="{x:Static local:Strings.RulesPage_Rules}"
              xmlns:local="clr-namespace:Ifpa">
-    <Grid>
-        <WebView x:Name="RulesWebView" />
-    </Grid>
+        
+    <pdf:PdfView Source="rules.pdf"
+                 EnableZoom="True"
+                 EnableSwipe="True"
+                 EnableLinkNavigation="True"
+                 BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColor}, Dark={StaticResource BackgroundColorDark}}" />
+
 </ContentPage>
