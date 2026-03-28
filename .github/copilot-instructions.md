@@ -16,7 +16,7 @@
 This is the **IFPA (International Flipper Pinball Association) Companion App** - a .NET MAUI cross-platform mobile application targeting iOS and Android. The app provides pinball players with tournament information, rankings, player statistics, and news from the IFPA community.
 
 ## Technology Stack
-- **.NET 9** (Primary target framework) (iOS/Android only)
+- **.NET 10** (Primary target framework) (iOS/Android only)
 - **.NET MAUI** (Multi-platform App UI)
 - **MVVM Pattern** with CommunityToolkit.Mvvm
 - **Shell Navigation** with routing
@@ -64,7 +64,7 @@ This is the **IFPA (International Flipper Pinball Association) Companion App** -
 ## Coding Standards
 
 ### C# Conventions
-- Use modern C# features (.NET 9)
+- Use modern C# features (.NET 10)
 - Follow Microsoft naming conventions
 - Use `partial` classes for source generators (MVVM)
 - Include XML documentation for public APIs
@@ -199,3 +199,19 @@ public partial class DetailViewModel : BaseViewModel
 - Follow mobile-first design principles
 - Test on both iOS and Android platforms
 - Consider accessibility in all UI implementations
+
+## 🚨 CRITICAL Development Workflow
+- **ALWAYS work in feature branches unless specifically told otherwise**
+- **ALWAYS monitor adb logcat when testing Android builds**
+- **ALWAYS take screenshots to verify UI changes**
+- **ALWAYS verify app launches successfully before marking work complete**
+- See `.github/copilot-cli-agent-instructions.md` for complete testing procedures and troubleshooting guide
+
+## Agent Instructions Reference
+For detailed development procedures, refer to `.github/copilot-cli-agent-instructions.md` which contains:
+- Complete app launch and testing workflows
+- Screenshot procedures for UI verification
+- Troubleshooting guides for common MAUI/XAML issues
+- Branch workflow requirements
+- Performance optimization tips
+- Emergency recovery procedures

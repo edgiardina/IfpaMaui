@@ -67,30 +67,30 @@
     <!-- Package References -->
     <ItemGroup>
         <PackageReference Include="Eightbot.MauiNativePdfView" Version="1.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
-        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.41" />
-        <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="10.0.41" />
-        <PackageReference Include="CommunityToolkit.Maui" Version="14.0.0" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
+        <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="10.0.51" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-rc5.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.3" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3" />        
-        <PackageReference Include="Plugin.Maui.CalendarStore" Version="4.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />        
+        <PackageReference Include="Plugin.Maui.CalendarStore" Version="4.1.0" />
         <PackageReference Include="Plugin.Maui.NativeCalendar" Version="1.0.4" />
-        <PackageReference Include="Polly" Version="8.6.5" />
+        <PackageReference Include="Polly" Version="8.6.6" />
         <PackageReference Include="Scrutor" Version="7.0.0" />
-        <PackageReference Include="Shiny.Core" Version="3.3.4" />
-        <PackageReference Include="Shiny.Hosting.Maui" Version="3.3.4" />
-        <PackageReference Include="Shiny.Extensions.Configuration" Version="3.3.4" />
-        <PackageReference Include="Shiny.Jobs" Version="3.3.4" />
-        <PackageReference Include="Shiny.Notifications" Version="3.3.4" />
+        <PackageReference Include="Shiny.Core" Version="4.0.1" />
+        <PackageReference Include="Shiny.Hosting.Maui" Version="4.0.1" />
+        <PackageReference Include="Shiny.Extensions.Configuration" Version="4.0.1" />
+        <PackageReference Include="Shiny.Jobs" Version="4.0.1" />
+        <PackageReference Include="Shiny.Notifications" Version="4.0.1" />
         <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
         <PackageReference Include="SQLitePCLRaw.core" Version="3.0.2" />
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
         <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="3.0.2" />
         <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="3.0.2" />
         <PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.9" />
-        <PackageReference Include="System.ServiceModel.Syndication" Version="10.0.3" />
+        <PackageReference Include="System.ServiceModel.Syndication" Version="10.0.5" />
         <PackageReference Include="Serilog" Version="4.3.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
         <PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
