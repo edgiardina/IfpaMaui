@@ -8,6 +8,7 @@ using System.Linq;
 using Android.Content;
 using AndroidX.Core.Content.PM;
 using AndroidX.Core.Graphics.Drawable;
+using Android.Graphics;
 
 namespace IfpaMaui.Platforms.Android
 {
@@ -123,7 +124,7 @@ namespace IfpaMaui.Platforms.Android
         /// Creates dynamic shortcuts that appear in launcher and system search.
         /// </summary>
         /// <param name="appLink">The app link entry to register</param>
-        public void RegisterLink(IAppLinkEntry appLink)
+        public async void RegisterLink(IAppLinkEntry appLink)
         {
             if (appLink?.AppLinkUri == null)
             {
@@ -158,7 +159,7 @@ namespace IfpaMaui.Platforms.Android
                 }
                 
                 // Create Android shortcut for searchability
-                CreateShortcut(appLink);
+                await CreateShortcutAsync(appLink);
                 
                 _logger?.LogInformation("Successfully registered app link: {Uri} - Total links: {Count}", 
                     appLink.AppLinkUri, _registeredLinks.Count);
@@ -199,7 +200,7 @@ namespace IfpaMaui.Platforms.Android
         /// Creates an Android dynamic shortcut for the app link entry.
         /// This makes the content searchable in launcher and system search.
         /// </summary>
-        private void CreateShortcut(IAppLinkEntry appLink)
+        private async Task CreateShortcutAsync(IAppLinkEntry appLink)
         {
             if (_context == null || appLink.AppLinkUri == null)
                 return;
@@ -230,8 +231,8 @@ namespace IfpaMaui.Platforms.Android
                     intent.AddCategory(category);
                 }
                 
-                // Set icon based on content type
-                SetShortcutIcon(shortcutBuilder, contentType);
+                // Set icon based on content type and thumbnail
+                await SetShortcutIcon(shortcutBuilder, contentType, appLink);
                 
                 var shortcut = shortcutBuilder.Build();
                 
@@ -315,15 +316,29 @@ namespace IfpaMaui.Platforms.Android
         }
 
         /// <summary>
-        /// Sets appropriate icon for the shortcut based on content type.
+        /// Sets appropriate icon for the shortcut based on content type and available images.
+        /// For players, attempts to use their profile photo; falls back to generic icons.
+        /// 
+        /// NOTE: Custom player images are currently not implemented due to platform complexity.
+        /// MAUI's GetPlatformImageAsync returns Drawable on Android, which requires conversion
+        /// to Bitmap. This can be added in future versions for enhanced user experience.
         /// </summary>
-        private void SetShortcutIcon(ShortcutInfoCompat.Builder? builder, string contentType)
+        private async Task SetShortcutIcon(ShortcutInfoCompat.Builder? builder, string contentType, IAppLinkEntry appLink)
         {
             if (builder == null || _context == null) return;
             
             try
             {
-                // Use appropriate icons for different content types
+                // TODO: Future enhancement - implement custom player images
+                // Currently using default icons due to Drawable->Bitmap conversion complexity
+                if (appLink.Thumbnail != null)
+                {
+                    _logger?.LogDebug("Custom thumbnails available but not yet implemented on Android");
+                    // await SetCustomIconFromThumbnail(builder, appLink.Thumbnail);
+                    // return;
+                }
+                
+                // Fall back to default icons based on content type
                 var iconResource = contentType switch
                 {
                     "player" => global::Android.Resource.Drawable.IcMenuShare, // Person icon alternative
@@ -331,7 +346,11 @@ namespace IfpaMaui.Platforms.Android
                     _ => global::Android.Resource.Drawable.IcMenuSearch // Generic search icon
                 };
                 
-                builder.SetIcon(IconCompat.CreateWithResource(_context, iconResource));
+                if (_context != null)
+                {
+                    builder.SetIcon(IconCompat.CreateWithResource(_context, iconResource));
+                    _logger?.LogDebug("Set default icon for {ContentType} shortcut", contentType);
+                }
             }
             catch (Exception ex)
             {
