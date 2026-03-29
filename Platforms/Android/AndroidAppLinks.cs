@@ -318,10 +318,6 @@ namespace IfpaMaui.Platforms.Android
         /// <summary>
         /// Sets appropriate icon for the shortcut based on content type and available images.
         /// For players, attempts to use their profile photo; falls back to generic icons.
-        /// 
-        /// NOTE: Custom player images are currently not implemented due to platform complexity.
-        /// MAUI's GetPlatformImageAsync returns Drawable on Android, which requires conversion
-        /// to Bitmap. This can be added in future versions for enhanced user experience.
         /// </summary>
         private async Task SetShortcutIcon(ShortcutInfoCompat.Builder? builder, string contentType, IAppLinkEntry appLink)
         {
@@ -329,13 +325,16 @@ namespace IfpaMaui.Platforms.Android
             
             try
             {
-                // TODO: Future enhancement - implement custom player images
-                // Currently using default icons due to Drawable->Bitmap conversion complexity
+                // Try to use custom image from app link thumbnail
                 if (appLink.Thumbnail != null)
                 {
-                    _logger?.LogDebug("Custom thumbnails available but not yet implemented on Android");
-                    // await SetCustomIconFromThumbnail(builder, appLink.Thumbnail);
-                    // return;
+                    var customIconSet = await SetCustomIconFromThumbnail(builder, appLink.Thumbnail);
+                    if (customIconSet)
+                    {
+                        _logger?.LogDebug("Successfully set custom thumbnail icon for {ContentType}", contentType);
+                        return;
+                    }
+                    _logger?.LogDebug("Failed to set custom icon, falling back to default for {ContentType}", contentType);
                 }
                 
                 // Fall back to default icons based on content type
@@ -346,16 +345,169 @@ namespace IfpaMaui.Platforms.Android
                     _ => global::Android.Resource.Drawable.IcMenuSearch // Generic search icon
                 };
                 
-                if (_context != null)
-                {
-                    builder.SetIcon(IconCompat.CreateWithResource(_context, iconResource));
-                    _logger?.LogDebug("Set default icon for {ContentType} shortcut", contentType);
-                }
+                builder.SetIcon(IconCompat.CreateWithResource(_context, iconResource));
+                _logger?.LogDebug("Set default icon for {ContentType} shortcut", contentType);
             }
             catch (Exception ex)
             {
                 _logger?.LogWarning(ex, "Failed to set shortcut icon for content type: {ContentType}", contentType);
                 // Continue without icon - shortcut will still work
+            }
+        }
+
+        /// <summary>
+        /// Sets a custom icon from the app link thumbnail (player image, etc.)
+        /// </summary>
+        private async Task<bool> SetCustomIconFromThumbnail(ShortcutInfoCompat.Builder builder, Microsoft.Maui.IImageSource imageSource)
+        {
+            try
+            {
+                var mauiContext = Microsoft.Maui.Controls.Application.Current?.Handler?.MauiContext;
+                if (mauiContext == null)
+                {
+                    _logger?.LogWarning("MauiContext not available for custom icon");
+                    return false;
+                }
+
+                // Get platform-specific image
+                var result = await imageSource.GetPlatformImageAsync(mauiContext);
+                if (result?.Value == null)
+                {
+                    _logger?.LogDebug("GetPlatformImageAsync returned null");
+                    return false;
+                }
+
+                using (result)
+                {
+                    _logger?.LogDebug("Platform image result type: {Type}", result.Value.GetType().Name);
+                    
+                    // Convert platform image result to bitmap
+                    // On Android, GetPlatformImageAsync typically returns a Drawable
+                    global::Android.Graphics.Bitmap? bitmap = null;
+                    
+                    try 
+                    {
+                        var drawable = result.Value as global::Android.Graphics.Drawables.Drawable;
+                        if (drawable != null)
+                        {
+                            bitmap = ConvertDrawableToBitmap(drawable);
+                            _logger?.LogDebug("Successfully converted drawable to bitmap");
+                        }
+                        else
+                        {
+                            _logger?.LogDebug("Platform image result is not a drawable");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger?.LogError(ex, "Failed to convert platform image to bitmap");
+                    }
+                    
+                    if (bitmap != null)
+                    {
+                        // Create circular bitmap for better appearance in shortcuts
+                        var circularBitmap = CreateCircularBitmap(bitmap);
+                        
+                        // Always dispose the converted bitmap since we created it
+                        bitmap.Dispose();
+                        
+                        if (circularBitmap != null)
+                        {
+                            using (circularBitmap)
+                            {
+                                builder.SetIcon(IconCompat.CreateWithBitmap(circularBitmap));
+                                _logger?.LogDebug("Set custom thumbnail icon for shortcut");
+                                return true;
+                            }
+                        }
+                    }
+                    
+                    _logger?.LogDebug("Could not process image for custom icon");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to set custom icon from thumbnail");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Converts an Android Drawable to a Bitmap
+        /// </summary>
+        private global::Android.Graphics.Bitmap? ConvertDrawableToBitmap(global::Android.Graphics.Drawables.Drawable drawable)
+        {
+            try
+            {
+                if (drawable is global::Android.Graphics.Drawables.BitmapDrawable bitmapDrawable)
+                {
+                    return bitmapDrawable.Bitmap;
+                }
+                
+                // For other drawable types, create a bitmap and draw the drawable onto it
+                int width = drawable.IntrinsicWidth > 0 ? drawable.IntrinsicWidth : 96;
+                int height = drawable.IntrinsicHeight > 0 ? drawable.IntrinsicHeight : 96;
+                
+                var bitmap = global::Android.Graphics.Bitmap.CreateBitmap(width, height, 
+                    global::Android.Graphics.Bitmap.Config.Argb8888!);
+                
+                if (bitmap == null) return null;
+                
+                using var canvas = new global::Android.Graphics.Canvas(bitmap);
+                drawable.SetBounds(0, 0, canvas.Width, canvas.Height);
+                drawable.Draw(canvas);
+                
+                return bitmap;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to convert drawable to bitmap");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates a circular bitmap from the original bitmap for better shortcut appearance.
+        /// </summary>
+        private global::Android.Graphics.Bitmap? CreateCircularBitmap(global::Android.Graphics.Bitmap originalBitmap)
+        {
+            try
+            {
+                const int targetSize = 96; // Standard shortcut icon size in dp
+                
+                // Scale bitmap to target size
+                var scaledBitmap = global::Android.Graphics.Bitmap.CreateScaledBitmap(
+                    originalBitmap, targetSize, targetSize, true);
+                
+                // Create circular bitmap
+                var circularBitmap = global::Android.Graphics.Bitmap.CreateBitmap(
+                    targetSize, targetSize, global::Android.Graphics.Bitmap.Config.Argb8888!);
+                
+                if (circularBitmap == null) return null;
+                
+                using var canvas = new global::Android.Graphics.Canvas(circularBitmap);
+                using var paint = new global::Android.Graphics.Paint();
+                using var rect = new global::Android.Graphics.Rect(0, 0, targetSize, targetSize);
+                
+                paint.AntiAlias = true;
+                canvas.DrawARGB(0, 0, 0, 0);
+                paint.Color = global::Android.Graphics.Color.White;
+                
+                // Draw circle
+                canvas.DrawCircle(targetSize / 2f, targetSize / 2f, targetSize / 2f, paint);
+                
+                // Set blend mode to show image inside circle
+                paint.SetXfermode(new global::Android.Graphics.PorterDuffXfermode(global::Android.Graphics.PorterDuff.Mode.SrcIn!));
+                canvas.DrawBitmap(scaledBitmap, rect, rect, paint);
+                
+                scaledBitmap?.Dispose();
+                return circularBitmap;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to create circular bitmap");
+                return null;
             }
         }
 
