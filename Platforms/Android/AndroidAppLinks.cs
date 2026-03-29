@@ -377,7 +377,8 @@ namespace IfpaMaui.Platforms.Android
                     return false;
                 }
 
-                using (result)
+                // Process the image immediately and then dispose
+                try 
                 {
                     _logger?.LogDebug("Platform image result type: {Type}", result.Value.GetType().Name);
                     
@@ -385,22 +386,16 @@ namespace IfpaMaui.Platforms.Android
                     // On Android, GetPlatformImageAsync typically returns a Drawable
                     global::Android.Graphics.Bitmap? bitmap = null;
                     
-                    try 
+                    var drawable = result.Value as global::Android.Graphics.Drawables.Drawable;
+                    if (drawable != null)
                     {
-                        var drawable = result.Value as global::Android.Graphics.Drawables.Drawable;
-                        if (drawable != null)
-                        {
-                            bitmap = ConvertDrawableToBitmap(drawable);
-                            _logger?.LogDebug("Successfully converted drawable to bitmap");
-                        }
-                        else
-                        {
-                            _logger?.LogDebug("Platform image result is not a drawable");
-                        }
+                        bitmap = ConvertDrawableToBitmap(drawable);
+                        _logger?.LogDebug("Successfully converted drawable to bitmap");
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        _logger?.LogError(ex, "Failed to convert platform image to bitmap");
+                        _logger?.LogDebug("Platform image result is not a drawable");
+                        return false;
                     }
                     
                     if (bitmap != null)
@@ -424,6 +419,42 @@ namespace IfpaMaui.Platforms.Android
                     
                     _logger?.LogDebug("Could not process image for custom icon");
                     return false;
+                }
+                finally
+                {
+                    // Dispose the result on the main thread to avoid threading issues
+                    if (result != null)
+                    {
+                        try
+                        {
+                            // Post disposal to main thread to avoid IllegalStateException
+                            if (global::Android.OS.Looper.MainLooper == global::Android.OS.Looper.MyLooper())
+                            {
+                                // We're already on main thread, dispose directly
+                                result.Dispose();
+                            }
+                            else
+                            {
+                                // Post to main thread using Handler
+                                var handler = new global::Android.OS.Handler(global::Android.OS.Looper.MainLooper!);
+                                handler.Post(() => 
+                                {
+                                    try
+                                    {
+                                        result.Dispose();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        _logger?.LogWarning(ex, "Error disposing image result on main thread");
+                                    }
+                                });
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger?.LogWarning(ex, "Error handling image result disposal");
+                        }
+                    }
                 }
             }
             catch (Exception ex)
