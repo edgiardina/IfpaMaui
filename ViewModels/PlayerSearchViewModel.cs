@@ -40,7 +40,7 @@ namespace Ifpa.ViewModels
 
             try
             {
-                Players.Clear();
+                Players?.Clear();
 
                 if (Text.Trim().Length > 0)
                 {

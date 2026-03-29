@@ -11,7 +11,6 @@ public partial class AppShell : Shell
         InitializeComponent();
 
         Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
-        Routing.RegisterRoute("player-search", typeof(PlayerSearchPage));
         Routing.RegisterRoute("player-details", typeof(PlayerDetailPage));
         Routing.RegisterRoute("player-details-no-player-selected", typeof(PlayerDetailNoPlayerSelectedPage));
         Routing.RegisterRoute("player-results", typeof(PlayerResultsPage));
