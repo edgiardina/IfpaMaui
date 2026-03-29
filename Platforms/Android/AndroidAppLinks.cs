@@ -4,22 +4,26 @@ using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
+using Android.Content;
+using AndroidX.Core.Content.PM;
+using AndroidX.Core.Graphics.Drawable;
 
 namespace IfpaMaui.Platforms.Android
 {
     /// <summary>
-    /// Android implementation of IAppLinks for registering and managing app links.
-    /// This implementation provides real functionality for Android app indexing
-    /// and maintains compatibility with the existing iOS implementation.
+    /// Android implementation of IAppLinks for registering and managing app links using
+    /// Android Shortcuts API to enable content searchability similar to iOS Spotlight.
     /// </summary>
     internal class AndroidAppLinks : IAppLinks
     {
         private readonly ILogger? _logger;
         private readonly List<IAppLinkEntry> _registeredLinks = new();
+        private readonly Context? _context;
 
         public AndroidAppLinks()
         {
-            // Try to get logger from service provider if available
+            // Try to get logger and context from service provider if available
             try
             {
                 var services = Microsoft.Maui.Controls.Application.Current?.Handler?.MauiContext?.Services;
@@ -28,16 +32,20 @@ namespace IfpaMaui.Platforms.Android
                     _logger = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions
                         .GetService<ILogger<AndroidAppLinks>>(services);
                 }
+
+                // Get Android context
+                _context = Platform.CurrentActivity ?? global::Android.App.Application.Context;
             }
             catch
             {
-                // Logger not available, continue without logging
+                // Logger or context not available, continue with limited functionality
                 _logger = null;
+                _context = null;
             }
         }
 
         /// <summary>
-        /// Deregisters a specific app link entry.
+        /// Deregisters a specific app link entry from Android shortcuts.
         /// </summary>
         /// <param name="appLink">The app link entry to deregister</param>
         public void DeregisterLink(IAppLinkEntry appLink)
@@ -55,8 +63,8 @@ namespace IfpaMaui.Platforms.Android
                 // Remove from our tracking list
                 _registeredLinks.RemoveAll(link => link.AppLinkUri?.ToString() == appLink.AppLinkUri.ToString());
                 
-                // Future enhancement: Remove from Android App Shortcuts or Firebase App Indexing
-                DeregisterFromAndroidSystems(appLink);
+                // Remove from Android shortcuts
+                RemoveShortcut(appLink);
                 
                 _logger?.LogInformation("Successfully deregistered app link: {Uri}", appLink.AppLinkUri);
             }
@@ -67,7 +75,7 @@ namespace IfpaMaui.Platforms.Android
         }
 
         /// <summary>
-        /// Deregisters an app link by URI.
+        /// Deregisters an app link by URI from Android shortcuts.
         /// </summary>
         /// <param name="uri">The URI to deregister</param>
         public void DeregisterLink(Uri uri)
@@ -82,13 +90,21 @@ namespace IfpaMaui.Platforms.Android
             {
                 _logger?.LogDebug("Deregistering app link by URI: {Uri}", uri);
                 
-                // Remove from our tracking list
+                // Find matching links
+                var linksToRemove = _registeredLinks.Where(link => 
+                    link.AppLinkUri?.ToString() == uri.ToString()).ToList();
+                
+                // Remove from tracking list
                 var removed = _registeredLinks.RemoveAll(link => link.AppLinkUri?.ToString() == uri.ToString());
                 
                 if (removed > 0)
                 {
-                    // Future enhancement: Remove from Android App Shortcuts or Firebase App Indexing
-                    DeregisterFromAndroidSystemsByUri(uri);
+                    // Remove shortcuts for each link
+                    foreach (var link in linksToRemove)
+                    {
+                        RemoveShortcut(link);
+                    }
+                    
                     _logger?.LogInformation("Successfully deregistered {Count} app link(s) with URI: {Uri}", removed, uri);
                 }
                 else
@@ -103,7 +119,8 @@ namespace IfpaMaui.Platforms.Android
         }
 
         /// <summary>
-        /// Registers an app link entry for Android app indexing.
+        /// Registers an app link entry for Android shortcuts to enable searchability.
+        /// Creates dynamic shortcuts that appear in launcher and system search.
         /// </summary>
         /// <param name="appLink">The app link entry to register</param>
         public void RegisterLink(IAppLinkEntry appLink)
@@ -111,6 +128,12 @@ namespace IfpaMaui.Platforms.Android
             if (appLink?.AppLinkUri == null)
             {
                 _logger?.LogWarning("Attempted to register app link with null URI");
+                return;
+            }
+
+            if (_context == null)
+            {
+                _logger?.LogWarning("Android context not available, cannot create shortcuts");
                 return;
             }
 
@@ -134,7 +157,8 @@ namespace IfpaMaui.Platforms.Android
                     _logger?.LogDebug("Added new app link: {Uri}", appLink.AppLinkUri);
                 }
                 
-                RegisterWithAndroidSystems(appLink);
+                // Create Android shortcut for searchability
+                CreateShortcut(appLink);
                 
                 _logger?.LogInformation("Successfully registered app link: {Uri} - Total links: {Count}", 
                     appLink.AppLinkUri, _registeredLinks.Count);
@@ -146,7 +170,7 @@ namespace IfpaMaui.Platforms.Android
         }
 
         /// <summary>
-        /// Deregisters all app links.
+        /// Deregisters all app links from Android shortcuts.
         /// </summary>
         public void DeregisterAll()
         {
@@ -155,10 +179,13 @@ namespace IfpaMaui.Platforms.Android
                 var count = _registeredLinks.Count;
                 _logger?.LogDebug("Deregistering all {Count} app links", count);
                 
-                _registeredLinks.Clear();
+                if (_context != null)
+                {
+                    // Remove all dynamic shortcuts
+                    ShortcutManagerCompat.RemoveAllDynamicShortcuts(_context);
+                }
                 
-                // Future enhancement: Clear all Android App Shortcuts or Firebase App Indexing entries
-                DeregisterAllFromAndroidSystems();
+                _registeredLinks.Clear();
                 
                 _logger?.LogInformation("Successfully deregistered all {Count} app links", count);
             }
@@ -169,88 +196,148 @@ namespace IfpaMaui.Platforms.Android
         }
 
         /// <summary>
-        /// Register app link with Android-specific systems.
-        /// This method can be enhanced to integrate with:
-        /// - Firebase App Indexing
-        /// - Android App Shortcuts API
-        /// - Google Play Services App Indexing
+        /// Creates an Android dynamic shortcut for the app link entry.
+        /// This makes the content searchable in launcher and system search.
         /// </summary>
-        private void RegisterWithAndroidSystems(IAppLinkEntry appLink)
+        private void CreateShortcut(IAppLinkEntry appLink)
         {
-            // Extract metadata for Android systems
-            var title = appLink.Title ?? "IFPA App Link";
-            var description = appLink.Description ?? string.Empty;
-            var uri = appLink.AppLinkUri.ToString();
-            
-            // Log the content type and app name if available in KeyValues
-            if (appLink.KeyValues != null)
+            if (_context == null || appLink.AppLinkUri == null)
+                return;
+
+            try
             {
-                if (appLink.KeyValues.TryGetValue("contentType", out var contentType))
+                // Generate shortcut ID from URI
+                var shortcutId = GenerateShortcutId(appLink.AppLinkUri);
+                
+                // Create intent to open the app link
+                var intent = new Intent(Intent.ActionView, global::Android.Net.Uri.Parse(appLink.AppLinkUri.ToString()));
+                intent.SetPackage(_context.PackageName);
+                
+                // Get content type for appropriate icon and category
+                var contentType = GetContentType(appLink);
+                var category = GetShortcutCategory(contentType);
+                
+                // Build shortcut
+                var shortcutBuilder = new ShortcutInfoCompat.Builder(_context, shortcutId)
+                    .SetShortLabel(appLink.Title ?? "IFPA Content")
+                    .SetLongLabel(appLink.Description ?? appLink.Title ?? "IFPA App Content")
+                    .SetIntent(intent);
+                
+                // Add category for better organization
+                if (!string.IsNullOrEmpty(category))
                 {
-                    _logger?.LogDebug("App link content type: {ContentType}", contentType);
-                    
-                    // Different handling based on content type
-                    switch (contentType.ToLowerInvariant())
-                    {
-                        case "player":
-                            RegisterPlayerLink(appLink);
-                            break;
-                        case "tournament":
-                            RegisterTournamentLink(appLink);
-                            break;
-                        default:
-                            RegisterGenericLink(appLink);
-                            break;
-                    }
+                    // Use Intent categories instead of capability bindings
+                    intent.AddCategory(category);
                 }
                 
-                if (appLink.KeyValues.TryGetValue("appName", out var appName))
+                // Set icon based on content type
+                SetShortcutIcon(shortcutBuilder, contentType);
+                
+                var shortcut = shortcutBuilder.Build();
+                
+                if (shortcut == null)
                 {
-                    _logger?.LogDebug("App link app name: {AppName}", appName);
+                    _logger?.LogError("Failed to build shortcut for {Uri}", appLink.AppLinkUri);
+                    return;
                 }
+                
+                // Add shortcut to system
+                ShortcutManagerCompat.PushDynamicShortcut(_context, shortcut);
+                
+                _logger?.LogDebug("Created Android shortcut for {Title} (ID: {Id})", 
+                    appLink.Title, shortcutId);
             }
-
-            // TODO: Future Android implementations:
-            // 1. Firebase App Indexing for Google Search integration
-            // 2. Android App Shortcuts for launcher shortcuts
-            // 3. Direct Share targets
-            // 4. Notification actions
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to create Android shortcut for {Uri}", appLink.AppLinkUri);
+            }
         }
 
-        private void RegisterPlayerLink(IAppLinkEntry appLink)
+        /// <summary>
+        /// Removes an Android shortcut for the app link entry.
+        /// </summary>
+        private void RemoveShortcut(IAppLinkEntry appLink)
         {
-            _logger?.LogDebug("Registering player link: {Title}", appLink.Title);
-            // TODO: Create player-specific shortcuts or indexing
+            if (_context == null || appLink.AppLinkUri == null)
+                return;
+
+            try
+            {
+                var shortcutId = GenerateShortcutId(appLink.AppLinkUri);
+                ShortcutManagerCompat.RemoveDynamicShortcuts(_context, new[] { shortcutId });
+                
+                _logger?.LogDebug("Removed Android shortcut for {Title} (ID: {Id})", 
+                    appLink.Title, shortcutId);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to remove Android shortcut for {Uri}", appLink.AppLinkUri);
+            }
         }
 
-        private void RegisterTournamentLink(IAppLinkEntry appLink)
+        /// <summary>
+        /// Generates a consistent shortcut ID from the app link URI.
+        /// </summary>
+        private static string GenerateShortcutId(Uri uri)
         {
-            _logger?.LogDebug("Registering tournament link: {Title}", appLink.Title);
-            // TODO: Create tournament-specific shortcuts or indexing
+            // Create a hash-based ID that's consistent and valid
+            var hash = uri.ToString().GetHashCode();
+            return $"ifpa_link_{Math.Abs(hash)}";
         }
 
-        private void RegisterGenericLink(IAppLinkEntry appLink)
+        /// <summary>
+        /// Extracts content type from app link metadata.
+        /// </summary>
+        private static string GetContentType(IAppLinkEntry appLink)
         {
-            _logger?.LogDebug("Registering generic link: {Title}", appLink.Title);
-            // TODO: Create generic shortcuts or indexing
+            if (appLink.KeyValues?.TryGetValue("contentType", out var contentType) == true)
+                return contentType.ToLowerInvariant();
+            
+            // Try to infer from URI
+            var uri = appLink.AppLinkUri?.ToString()?.ToLowerInvariant() ?? "";
+            if (uri.Contains("player")) return "player";
+            if (uri.Contains("tournament")) return "tournament";
+            return "generic";
         }
 
-        private void DeregisterFromAndroidSystems(IAppLinkEntry appLink)
+        /// <summary>
+        /// Gets appropriate shortcut category based on content type.
+        /// </summary>
+        private static string GetShortcutCategory(string contentType)
         {
-            // TODO: Remove from Android App Shortcuts, Firebase App Indexing, etc.
-            _logger?.LogDebug("Deregistering from Android systems: {Uri}", appLink.AppLinkUri);
+            // Use simple category strings instead of constants that don't exist
+            return contentType switch
+            {
+                "player" => "com.android.action.SEND", // People-related
+                "tournament" => "com.android.action.VIEW", // Event-related
+                _ => "android.intent.action.VIEW"
+            };
         }
 
-        private void DeregisterFromAndroidSystemsByUri(Uri uri)
+        /// <summary>
+        /// Sets appropriate icon for the shortcut based on content type.
+        /// </summary>
+        private void SetShortcutIcon(ShortcutInfoCompat.Builder? builder, string contentType)
         {
-            // TODO: Remove by URI from Android systems
-            _logger?.LogDebug("Deregistering from Android systems by URI: {Uri}", uri);
-        }
-
-        private void DeregisterAllFromAndroidSystems()
-        {
-            // TODO: Clear all from Android systems
-            _logger?.LogDebug("Clearing all registrations from Android systems");
+            if (builder == null || _context == null) return;
+            
+            try
+            {
+                // Use appropriate icons for different content types
+                var iconResource = contentType switch
+                {
+                    "player" => global::Android.Resource.Drawable.IcMenuShare, // Person icon alternative
+                    "tournament" => global::Android.Resource.Drawable.IcMenuAgenda, // Event icon alternative
+                    _ => global::Android.Resource.Drawable.IcMenuSearch // Generic search icon
+                };
+                
+                builder.SetIcon(IconCompat.CreateWithResource(_context, iconResource));
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogWarning(ex, "Failed to set shortcut icon for content type: {ContentType}", contentType);
+                // Continue without icon - shortcut will still work
+            }
         }
 
         /// <summary>
