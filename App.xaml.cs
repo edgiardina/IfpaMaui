@@ -32,6 +32,8 @@ public partial class App : Application
         //https://github.com/dotnet/maui/issues/12295)
 #if IOS
         (Application.Current as IApplicationController)?.SetAppIndexingProvider(new IfpaMaui.Platforms.iOS.IOSAppIndexingProvider());
+#elif ANDROID
+        (Application.Current as IApplicationController)?.SetAppIndexingProvider(new IfpaMaui.Platforms.Android.AndroidAppIndexingProvider());
 #endif
 
         // From https://github.com/borrmann/AppThemeBindingFix
