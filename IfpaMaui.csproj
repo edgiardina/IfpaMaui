@@ -102,6 +102,11 @@
         <PackageReference Include="PinballApi" Version="3.2.6" />
     </ItemGroup>
 
+    <!-- Android-specific packages -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+        <PackageReference Include="Xamarin.AndroidX.Core" Version="1.17.0.2" />
+    </ItemGroup>
+
     <PropertyGroup>
         <MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
     </PropertyGroup>
