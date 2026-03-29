@@ -1,16 +1,26 @@
-using Microsoft.Maui.Controls;
+using Microsoft.Extensions.Logging;
 
 namespace IfpaMaui.Platforms.Android
 {
     /// <summary>
-    /// Android implementation of IAppIndexingProvider.
-    /// Provides the AndroidAppLinks instance for app link management on Android platform.
+    /// Android no-op implementation of IAppIndexingProvider to fix dependency injection.
+    /// 
+    /// CONTEXT: iOS had IOSAppIndexingProvider but Android was missing equivalent.
+    /// Shared MAUI code calls Application.Current.AppLinks but Android had no provider,
+    /// causing NullReferenceException crashes.
     /// </summary>
     public class AndroidAppIndexingProvider : IAppIndexingProvider
     {
+        private readonly ILogger<AndroidAppLinks> logger;
+
+        public AndroidAppIndexingProvider(ILogger<AndroidAppLinks> logger = null)
+        {
+            this.logger = logger;
+        }
+
         /// <summary>
-        /// Gets the Android-specific IAppLinks implementation.
+        /// Returns no-op AndroidAppLinks instance to prevent crashes.
         /// </summary>
-        public IAppLinks AppLinks => new AndroidAppLinks();
+        public IAppLinks AppLinks => new AndroidAppLinks(logger);
     }
 }
