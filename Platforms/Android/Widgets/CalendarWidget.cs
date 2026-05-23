@@ -2,6 +2,7 @@
 using Android.Appwidget;
 using Android.Content;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Ifpa.Models;
@@ -106,9 +107,7 @@ namespace Ifpa.Platforms.Android.Widgets
 
                 foreach (var widgetId in appWidgetIds)
                 {
-                    var options = appWidgetManager.GetAppWidgetOptions(widgetId);
-                    var minHeight = options.GetInt(AppWidgetManager.OptionAppwidgetMinHeight);
-                    var tournamentsToShow = Math.Min(MaxTournaments, Math.Max(1, minHeight / 60));
+                    var tournamentsToShow = MaxTournaments;
 
                     var remoteViews = new RemoteViews(context.PackageName, Resource.Layout.calendarwidget);
 
@@ -221,6 +220,23 @@ namespace Ifpa.Platforms.Android.Widgets
             context.SendBroadcast(updateIntent);
 
             base.OnAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        }
+
+        public static void RequestUpdate(Context context)
+        {
+            var logger = IPlatformApplication.Current?.Services?.GetService<ILogger<CalendarWidget>>();
+            var appWidgetManager = AppWidgetManager.GetInstance(context);
+            var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(CalendarWidget)).Name);
+            var ids = appWidgetManager.GetAppWidgetIds(me);
+            logger?.LogDebug("CalendarWidget RequestUpdate called — {Count} widget(s) found", ids?.Length ?? 0);
+            if (ids?.Length > 0)
+            {
+                var updateIntent = new Intent(context, typeof(CalendarWidget));
+                updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+                updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, ids);
+                context.SendBroadcast(updateIntent);
+                logger?.LogDebug("CalendarWidget update broadcast sent");
+            }
         }
 
         /// <summary>

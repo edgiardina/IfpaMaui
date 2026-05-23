@@ -1,4 +1,5 @@
-﻿using Ifpa.Services;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Ifpa.Services;
 using PinballApi.Models.WPPR.Universal.Players;
 
 namespace Ifpa.Models
@@ -138,6 +139,8 @@ namespace Ifpa.Models
 
             MyStatsPlayerId = playerId;
             MyStatsCurrentWpprRank = currentWpprRank;
+
+            WeakReferenceMessenger.Default.Send(new MyStatsPlayerChangedMessage());
         }
 
         public static async Task<IEnumerable<int>> FindUnseenTournaments(IList<PlayerResult> results)

@@ -1,10 +1,11 @@
 ﻿using Android.App;
 using Android.Appwidget;
 using Android.Content;
-using Android.Util;
+using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Ifpa.Models;
+using Microsoft.Extensions.Logging;
 using PinballApi.Extensions;
 using PinballApi.Interfaces;
 using AndroidNet = Android.Net;
@@ -21,20 +22,59 @@ namespace Ifpa.Platforms.Android.Widgets
     {
         private readonly IPinballRankingApi PinballRankingApi;
         private readonly AppSettings AppSettings;
+        private readonly ILogger<RankWidget> logger;
 
         private static string BackgroundClick = "BackgroundClickTag";
 
         public RankWidget()
         {
-            // TODO: Use Dependency Injection to get the PinballRankingApi instance
-            PinballRankingApi = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<IPinballRankingApi>();
-            AppSettings = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services.GetService<AppSettings>();
+            var services = Microsoft.Maui.Controls.Application.Current.Handler.MauiContext.Services;
+            PinballRankingApi = services.GetService<IPinballRankingApi>();
+            AppSettings = services.GetService<AppSettings>();
+            logger = services.GetService<ILogger<RankWidget>>();
         }
 
         public override async void OnUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
         {
             var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(RankWidget)).Name);
             appWidgetManager.UpdateAppWidget(me, await BuildRemoteViews(context, appWidgetIds));
+        }
+
+        public override void OnEnabled(Context context)
+        {
+            base.OnEnabled(context);
+            var updateIntent = new Intent(context, typeof(RankWidget));
+            updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+            var appWidgetManager = AppWidgetManager.GetInstance(context);
+            var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(RankWidget)).Name);
+            updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, appWidgetManager.GetAppWidgetIds(me));
+            context.SendBroadcast(updateIntent);
+        }
+
+        public override void OnAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions)
+        {
+            var updateIntent = new Intent(context, typeof(RankWidget));
+            updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+            updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, new[] { appWidgetId });
+            context.SendBroadcast(updateIntent);
+            base.OnAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        }
+
+        public static void RequestUpdate(Context context)
+        {
+            var logger = IPlatformApplication.Current?.Services?.GetService<ILogger<RankWidget>>();
+            var appWidgetManager = AppWidgetManager.GetInstance(context);
+            var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(RankWidget)).Name);
+            var ids = appWidgetManager.GetAppWidgetIds(me);
+            logger?.LogDebug("RankWidget RequestUpdate called — {Count} widget(s) found", ids?.Length ?? 0);
+            if (ids?.Length > 0)
+            {
+                var updateIntent = new Intent(context, typeof(RankWidget));
+                updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+                updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, ids);
+                context.SendBroadcast(updateIntent);
+                logger?.LogDebug("RankWidget update broadcast sent");
+            }
         }
 
         private async Task<RemoteViews> BuildRemoteViews(Context context, int[] appWidgetIds)
@@ -121,7 +161,7 @@ namespace Ifpa.Platforms.Android.Widgets
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("ifpa", ex.Message);
+                    logger?.LogError(ex, "Error updating rank widget for player {PlayerId}", playerId);
                 }
             }
             else
@@ -183,7 +223,7 @@ namespace Ifpa.Platforms.Android.Widgets
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("ifpa", ex.Message);
+                    logger?.LogError(ex, "Error launching app from rank widget tap");
                 }
             }
             base.OnReceive(context, intent);

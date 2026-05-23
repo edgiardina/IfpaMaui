@@ -1,4 +1,5 @@
-﻿using Ifpa.Models;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Ifpa.Models;
 using Serilog;
 
 namespace Ifpa.Views
@@ -84,6 +85,8 @@ namespace Ifpa.Views
             Settings.LastCalendarDistance = (int)DistanceSlider.Value;
             Settings.CalendarRankingSystem = (string)RankingTypePicker.SelectedItem;
             Settings.CalendarShowLeagues = ShowLeaguesCheckBox.IsChecked;
+
+            WeakReferenceMessenger.Default.Send(new CalendarFilterChangedMessage());
 
             await Navigation.PopModalAsync();
             FilterSaved?.Invoke();
