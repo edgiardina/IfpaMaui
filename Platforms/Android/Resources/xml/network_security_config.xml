@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">api.ifpapinball.com</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="@raw/sectigo_root_r46"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
