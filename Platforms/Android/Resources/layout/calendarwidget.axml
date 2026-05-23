@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:background="@drawable/rounded_edge"
     android:padding="10dp">
     
@@ -37,7 +37,8 @@
     
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:textColor="@color/ifpaAltText"
         android:text="No upcoming tournaments found"
         android:visibility="gone"
@@ -45,7 +46,7 @@
         android:autoSizeMaxTextSize="30dp"
         android:autoSizeTextType="uniform"
         android:textAlignment="center"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:id="@+id/noTournamentsNotification" />
 
     <GridView

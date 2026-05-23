@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Appwidget;
 using Android.Content;
+using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -35,6 +36,42 @@ namespace Ifpa.Platforms.Android.Widgets
         {
             var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(RankWidget)).Name);
             appWidgetManager.UpdateAppWidget(me, await BuildRemoteViews(context, appWidgetIds));
+        }
+
+        public override void OnEnabled(Context context)
+        {
+            base.OnEnabled(context);
+            var updateIntent = new Intent(context, typeof(RankWidget));
+            updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+            var appWidgetManager = AppWidgetManager.GetInstance(context);
+            var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(RankWidget)).Name);
+            updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, appWidgetManager.GetAppWidgetIds(me));
+            context.SendBroadcast(updateIntent);
+        }
+
+        public override void OnAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions)
+        {
+            var updateIntent = new Intent(context, typeof(RankWidget));
+            updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+            updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, new[] { appWidgetId });
+            context.SendBroadcast(updateIntent);
+            base.OnAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        }
+
+        public static void RequestUpdate(Context context)
+        {
+            var appWidgetManager = AppWidgetManager.GetInstance(context);
+            var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(RankWidget)).Name);
+            var ids = appWidgetManager.GetAppWidgetIds(me);
+            Log.Debug("ifpa-widget", $"RequestUpdate called — {ids?.Length ?? 0} widget(s) found");
+            if (ids?.Length > 0)
+            {
+                var updateIntent = new Intent(context, typeof(RankWidget));
+                updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+                updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, ids);
+                context.SendBroadcast(updateIntent);
+                Log.Debug("ifpa-widget", "RankWidget update broadcast sent");
+            }
         }
 
         private async Task<RemoteViews> BuildRemoteViews(Context context, int[] appWidgetIds)

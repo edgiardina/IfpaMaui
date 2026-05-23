@@ -2,6 +2,9 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using CommunityToolkit.Mvvm.Messaging;
+using Ifpa.Models;
+using Ifpa.Platforms.Android.Widgets;
 using Ifpa.Services;
 
 namespace Ifpa;
@@ -39,7 +42,20 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
 
+        if (!WeakReferenceMessenger.Default.IsRegistered<MyStatsPlayerChangedMessage>(this))
+            WeakReferenceMessenger.Default.Register<MyStatsPlayerChangedMessage>(this, (_, _) =>
+            {
+                Android.Util.Log.Debug("ifpa-widget", "MyStatsPlayerChangedMessage received — requesting RankWidget update");
+                RankWidget.RequestUpdate(ApplicationContext);
+            });
+
         HandleIntent(Intent);
+    }
+
+    protected override void OnDestroy()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        base.OnDestroy();
     }
 
     protected override void OnNewIntent(Intent intent)

@@ -106,9 +106,7 @@ namespace Ifpa.Platforms.Android.Widgets
 
                 foreach (var widgetId in appWidgetIds)
                 {
-                    var options = appWidgetManager.GetAppWidgetOptions(widgetId);
-                    var minHeight = options.GetInt(AppWidgetManager.OptionAppwidgetMinHeight);
-                    var tournamentsToShow = Math.Min(MaxTournaments, Math.Max(1, minHeight / 60));
+                    var tournamentsToShow = MaxTournaments;
 
                     var remoteViews = new RemoteViews(context.PackageName, Resource.Layout.calendarwidget);
 
