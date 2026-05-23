@@ -2,6 +2,7 @@
 using Android.Appwidget;
 using Android.Content;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Ifpa.Models;
@@ -219,6 +220,22 @@ namespace Ifpa.Platforms.Android.Widgets
             context.SendBroadcast(updateIntent);
 
             base.OnAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        }
+
+        public static void RequestUpdate(Context context)
+        {
+            var appWidgetManager = AppWidgetManager.GetInstance(context);
+            var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(CalendarWidget)).Name);
+            var ids = appWidgetManager.GetAppWidgetIds(me);
+            Log.Debug("ifpa-widget", $"CalendarWidget RequestUpdate called — {ids?.Length ?? 0} widget(s) found");
+            if (ids?.Length > 0)
+            {
+                var updateIntent = new Intent(context, typeof(CalendarWidget));
+                updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
+                updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, ids);
+                context.SendBroadcast(updateIntent);
+                Log.Debug("ifpa-widget", "CalendarWidget update broadcast sent");
+            }
         }
 
         /// <summary>

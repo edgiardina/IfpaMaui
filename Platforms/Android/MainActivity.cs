@@ -49,6 +49,13 @@ public class MainActivity : MauiAppCompatActivity
                 RankWidget.RequestUpdate(ApplicationContext);
             });
 
+        if (!WeakReferenceMessenger.Default.IsRegistered<CalendarFilterChangedMessage>(this))
+            WeakReferenceMessenger.Default.Register<CalendarFilterChangedMessage>(this, (_, _) =>
+            {
+                Android.Util.Log.Debug("ifpa-widget", "CalendarFilterChangedMessage received — requesting CalendarWidget update");
+                CalendarWidget.RequestUpdate(ApplicationContext);
+            });
+
         HandleIntent(Intent);
     }
 
