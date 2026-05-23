@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Flurl.Http;
 using CommunityToolkit.Maui.ApplicationModel;
 using Ifpa.BackgroundJobs;
 using Ifpa.Caching;
@@ -34,6 +35,9 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+#if ANDROID
+        FlurlHttp.Clients.WithDefaults(b => b.ConfigureInnerHandler(_ => new HttpClientHandler()));
+#endif
         var builder = MauiApp.CreateBuilder();
 
         // pull in appsettings.json
