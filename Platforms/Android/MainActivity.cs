@@ -6,11 +6,12 @@ using CommunityToolkit.Mvvm.Messaging;
 using Ifpa.Models;
 using Ifpa.Platforms.Android.Widgets;
 using Ifpa.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Ifpa;
 
-[Activity(Theme = "@style/Maui.SplashTheme", 
-         MainLauncher = true, 
+[Activity(Theme = "@style/Maui.SplashTheme",
+         MainLauncher = true,
          LaunchMode = LaunchMode.SingleTop,
          ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 
@@ -38,21 +39,24 @@ namespace Ifpa;
     DataPathPrefix = "/tournaments/view.php")]
 public class MainActivity : MauiAppCompatActivity
 {
+    private ILogger<MainActivity> _logger;
+
     protected override void OnCreate(Bundle savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
+        _logger = IPlatformApplication.Current.Services.GetService<ILogger<MainActivity>>();
 
         if (!WeakReferenceMessenger.Default.IsRegistered<MyStatsPlayerChangedMessage>(this))
             WeakReferenceMessenger.Default.Register<MyStatsPlayerChangedMessage>(this, (_, _) =>
             {
-                Android.Util.Log.Debug("ifpa-widget", "MyStatsPlayerChangedMessage received — requesting RankWidget update");
+                _logger?.LogDebug("MyStatsPlayerChangedMessage received — requesting RankWidget update");
                 RankWidget.RequestUpdate(ApplicationContext);
             });
 
         if (!WeakReferenceMessenger.Default.IsRegistered<CalendarFilterChangedMessage>(this))
             WeakReferenceMessenger.Default.Register<CalendarFilterChangedMessage>(this, (_, _) =>
             {
-                Android.Util.Log.Debug("ifpa-widget", "CalendarFilterChangedMessage received — requesting CalendarWidget update");
+                _logger?.LogDebug("CalendarFilterChangedMessage received — requesting CalendarWidget update");
                 CalendarWidget.RequestUpdate(ApplicationContext);
             });
 

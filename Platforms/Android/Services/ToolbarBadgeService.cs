@@ -1,17 +1,20 @@
 ﻿using Android.Views;
 using Google.Android.Material.Badge;
 using Ifpa.Interfaces;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Platform;
-using Serilog;
 
 namespace Ifpa.Platforms.Services
 {
     public class ToolbarBadgeService : IToolbarBadgeService
     {
         readonly IDispatcher Dispatcher;
-        public ToolbarBadgeService(IDispatcher dispatcher)
+        readonly ILogger<ToolbarBadgeService> logger;
+
+        public ToolbarBadgeService(IDispatcher dispatcher, ILogger<ToolbarBadgeService> logger)
         {
             Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+            this.logger = logger;
         }
 
         public void SetBadge(Page page, ToolbarItem item, int value, Color backgroundColor, Color textColor)
@@ -55,7 +58,7 @@ namespace Ifpa.Platforms.Services
                 }
                 else
                 {
-                    Log.Warning("ToolbarBadgeService - Couldn't find toolbar");
+                    logger?.LogWarning("Toolbar not found in view hierarchy — badge update skipped for {Page}", page?.Title);
                 }
             });
         }

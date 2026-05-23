@@ -224,17 +224,18 @@ namespace Ifpa.Platforms.Android.Widgets
 
         public static void RequestUpdate(Context context)
         {
+            var logger = IPlatformApplication.Current?.Services?.GetService<ILogger<CalendarWidget>>();
             var appWidgetManager = AppWidgetManager.GetInstance(context);
             var me = new ComponentName(context, Java.Lang.Class.FromType(typeof(CalendarWidget)).Name);
             var ids = appWidgetManager.GetAppWidgetIds(me);
-            Log.Debug("ifpa-widget", $"CalendarWidget RequestUpdate called — {ids?.Length ?? 0} widget(s) found");
+            logger?.LogDebug("CalendarWidget RequestUpdate called — {Count} widget(s) found", ids?.Length ?? 0);
             if (ids?.Length > 0)
             {
                 var updateIntent = new Intent(context, typeof(CalendarWidget));
                 updateIntent.SetAction(AppWidgetManager.ActionAppwidgetUpdate);
                 updateIntent.PutExtra(AppWidgetManager.ExtraAppwidgetIds, ids);
                 context.SendBroadcast(updateIntent);
-                Log.Debug("ifpa-widget", "CalendarWidget update broadcast sent");
+                logger?.LogDebug("CalendarWidget update broadcast sent");
             }
         }
 
