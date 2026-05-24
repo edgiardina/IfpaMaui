@@ -15,6 +15,7 @@ using PinballApi.Models.WPPR.Universal.Rankings.Custom;
 using PinballApi.Models.WPPR.Universal.Series;
 using PinballApi.Models.WPPR.Universal.Stats;
 using PinballApi.Models.WPPR.Universal.Tournaments;
+using PinballApi.Models.WPPR.Universal.Other;
 using PinballApi.Models.WPPR.Universal.Tournaments.Search;
 using Polly;
 using Polly.Caching;
@@ -104,6 +105,16 @@ namespace Ifpa.Caching
             return q.Result;
         }
 
+        public Task<List<CountryDetail>> GetCountriesList() =>
+            ExecuteWithCache(
+                $"CountriesList",
+                () => onlineApi.GetCountriesList());
+
+        public Task<List<StateProvCountry>> GetStateProvList() =>
+            ExecuteWithCache(
+                $"StateProvList",
+                () => onlineApi.GetStateProvList());
+
         public Task<List<CountryDirector>> GetCountryDirectors() =>
             ExecuteWithCache(
                 $"CountryDirectors",
@@ -114,10 +125,10 @@ namespace Ifpa.Caching
                 $"CustomRankings",
                 () => onlineApi.GetCustomRankings());
 
-        public Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50) =>
+        public Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50, int startPosition = 1) =>
             ExecuteWithCache(
-                $"CustomRankingViewResult:{viewId}:{count}",
-                () => onlineApi.GetCustomRankingViewResult(viewId, count));
+                $"CustomRankingViewResult:{viewId}:{count}:{startPosition}",
+                () => onlineApi.GetCustomRankingViewResult(viewId, count, startPosition));
 
         public Task<Director> GetDirector(long directorId) =>
             ExecuteWithCache(
@@ -289,10 +300,10 @@ namespace Ifpa.Caching
                 $"TournamentsByStateStats:{playerSystem}",
                 () => onlineApi.GetTournamentsByStateStatistics(playerSystem));
 
-        public Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null) =>
+        public Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null, int? tournamentPosition = null) =>
             ExecuteWithCache(
-                $"PlayerSearch:{name}:{country}:{stateProv}:{tournamentName}",
-                () => onlineApi.PlayerSearch(name, country, stateProv, tournamentName));
+                $"PlayerSearch:{name}:{country}:{stateProv}:{tournamentName}:{tournamentPosition}",
+                () => onlineApi.PlayerSearch(name, country, stateProv, tournamentName, tournamentPosition));
 
         public Task<ProRankingSearch> ProRankingSearch(TournamentType rankingSystem) =>
             ExecuteWithCache(
