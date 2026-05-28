@@ -33,7 +33,8 @@ namespace Ifpa.Views
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            string action = await DisplayActionSheetAsync(Strings.PlayerChampionshipSeriesPage_YearPrompt, Strings.Cancel, null, ViewModel.AvailableYears.Select(n => n.ToString()).ToArray());
+            var years = ViewModel.AvailableYears ?? new List<int>();
+            string action = await DisplayActionSheetAsync(Strings.PlayerChampionshipSeriesPage_YearPrompt, Strings.Cancel, null, years.Select(n => n.ToString()).ToArray());
 
             if (int.TryParse(action, out var yearValue))
             {

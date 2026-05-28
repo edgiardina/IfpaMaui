@@ -44,7 +44,8 @@ namespace Ifpa.ViewModels
                 var stateProvinceChampionshipSeries = await PinballRankingApi.GetSeriesOverallStanding(SeriesCode, Year);
                 var seriesDetails = await PinballRankingApi.GetSeries();
 
-                AvailableYears = seriesDetails.First(n => n.Code == SeriesCode).Years;
+                var matchedSeries = seriesDetails?.FirstOrDefault(n => n.Code == SeriesCode);
+                AvailableYears = matchedSeries?.Years?.Count > 0 ? matchedSeries.Years : new List<int> { Year };
 
                 if (stateProvinceChampionshipSeries != null)
                 {
