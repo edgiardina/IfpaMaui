@@ -59,15 +59,19 @@ namespace Ifpa.Caching
                                 "Cache miss for {Key}", ctx.OperationKey);
 
                             MainThread.BeginInvokeOnMainThread(() =>
-                                Toast.Make(Strings.Toast_Offline_NoCache,
-                                           ToastDuration.Long).Show());
+                            {
+                                try { Toast.Make(Strings.Toast_Offline_NoCache, ToastDuration.Long).Show(); }
+                                catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
+                            });
 
                             throw outcome.Exception!;   // no cache -> real error
                         }
 
                         MainThread.BeginInvokeOnMainThread(() =>
-                            Toast.Make(Strings.Toast_Offline_Cache,
-                                       ToastDuration.Long).Show());
+                        {
+                            try { Toast.Make(Strings.Toast_Offline_Cache, ToastDuration.Long).Show(); }
+                            catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
+                        });
                         return (T)val!;
                     },
                     onFallbackAsync: async (outcome, ctx) =>

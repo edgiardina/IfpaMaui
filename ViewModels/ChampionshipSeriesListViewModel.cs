@@ -46,7 +46,9 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewChampionshipSeriesDetail(Series series)
         {
-            await Shell.Current.GoToAsync($"champ-series?seriesCode={SelectedChampionshipSeries.Code}&year={SelectedChampionshipSeries.Years.Max()}");
+            var years = SelectedChampionshipSeries.Years;
+            var year = years?.Count > 0 ? years.Max() : DateTime.Now.Year;
+            await Shell.Current.GoToAsync($"champ-series?seriesCode={SelectedChampionshipSeries.Code}&year={year}");
             SelectedChampionshipSeries = null;
         }
     }
