@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <!-- Preserve AccessibilityNodeInfoCompat.set_Checked, which is called by
+       MauiAccessibilityDelegateCompat but invisible to the static linker
+       since the call site is in a JNI callback. Without this, Release builds
+       strip the method and crash for users with accessibility services active. -->
+  <assembly fullname="Xamarin.AndroidX.Core">
+    <type fullname="AndroidX.Core.View.Accessibility.AccessibilityNodeInfoCompat" preserve="nothing">
+      <method name="set_Checked" />
+    </type>
+  </assembly>
+</linker>

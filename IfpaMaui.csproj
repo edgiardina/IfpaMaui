@@ -136,6 +136,11 @@
       <AndroidResource Remove="Platforms\Android\Resources\values\strings.xml" />
     </ItemGroup>
 
+    <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+      <AndroidLinkDescription Include="Platforms\Android\LinkerPreserve.xml" />
+    </ItemGroup>
+
+
     <!-- Compile Directives / File Compile Types -->
     <ItemGroup>
         <None Remove="appsettings.json" />
