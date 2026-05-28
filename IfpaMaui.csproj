@@ -137,7 +137,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
-      <AndroidLinkDescription Include="Platforms\Android\LinkerPreserve.xml" />
+      <TrimmerRootDescriptor Include="Platforms\Android\LinkerPreserve.xml" />
     </ItemGroup>
 
 

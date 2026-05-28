@@ -5,8 +5,8 @@
        since the call site is in a JNI callback. Without this, Release builds
        strip the method and crash for users with accessibility services active. -->
   <assembly fullname="Xamarin.AndroidX.Core">
-    <type fullname="AndroidX.Core.View.Accessibility.AccessibilityNodeInfoCompat" preserve="nothing">
-      <method name="set_Checked" />
+    <type fullname="AndroidX.Core.View.Accessibility.AccessibilityNodeInfoCompat">
+      <method signature="System.Void set_Checked(System.Boolean)" />
     </type>
   </assembly>
 </linker>
