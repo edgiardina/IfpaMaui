@@ -26,16 +26,29 @@ namespace Ifpa.Caching
     {
         private readonly IPinballRankingApi onlineApi;
         private readonly ILogger<CachingPinballRankingApi> logger;
+        private readonly ILoggerFactory loggerFactory;
 
-        public CachingPinballRankingApi(IPinballRankingApi onlineApi, ILogger<CachingPinballRankingApi> logger)
+        public CachingPinballRankingApi(IPinballRankingApi onlineApi, ILogger<CachingPinballRankingApi> logger, ILoggerFactory loggerFactory)
         {
             this.onlineApi = onlineApi ?? throw new ArgumentNullException(nameof(onlineApi));
             this.logger = logger;
+            this.loggerFactory = loggerFactory;
         }
 
         private async Task<T> ExecuteWithCache<T>(string cacheKey, Func<Task<T>> fetch)
         {
-            var cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath);
+            // Build the cache provider defensively. A corrupt cache self-heals inside the provider,
+            // but if it still can't be initialized (e.g. disk full) we degrade to a live-only fetch
+            // rather than letting the failure escape the pipeline and break every cached call.
+            SQLiteCacheProvider<T> cache = null;
+            try
+            {
+                cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath, loggerFactory);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to initialize cache database; serving {Key} without cache", cacheKey);
+            }
 
             // Retry on non network‐unavailable errors
             var retry = Policy<T>
@@ -48,31 +61,35 @@ namespace Ifpa.Caching
                 .FallbackAsync(
                     async (outcome, ctx, ct) =>
                     {
-                        var (hit, val) = await cache.TryGetAsync(
-                                                ctx.OperationKey!,
-                                                ct,
-                                                continueOnCapturedContext: false);
-
-                        if (!hit)
+                        if (cache != null)
                         {
-                            logger.LogWarning(outcome.Exception,
-                                "Cache miss for {Key}", ctx.OperationKey);
+                            var (hit, val) = await cache.TryGetAsync(
+                                                    ctx.OperationKey!,
+                                                    ct,
+                                                    continueOnCapturedContext: false);
 
-                            MainThread.BeginInvokeOnMainThread(() =>
+                            if (hit)
                             {
-                                try { Toast.Make(Strings.Toast_Offline_NoCache, ToastDuration.Long).Show(); }
-                                catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
-                            });
-
-                            throw outcome.Exception!;   // no cache -> real error
+                                MainThread.BeginInvokeOnMainThread(() =>
+                                {
+                                    try { Toast.Make(Strings.Toast_Offline_Cache, ToastDuration.Long).Show(); }
+                                    catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
+                                });
+                                return (T)val!;
+                            }
                         }
+
+                        // No cache (unavailable or miss) -> surface the real error.
+                        logger.LogWarning(outcome.Exception,
+                            "Cache miss for {Key}", ctx.OperationKey);
 
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
-                            try { Toast.Make(Strings.Toast_Offline_Cache, ToastDuration.Long).Show(); }
+                            try { Toast.Make(Strings.Toast_Offline_NoCache, ToastDuration.Long).Show(); }
                             catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
                         });
-                        return (T)val!;
+
+                        throw outcome.Exception!;
                     },
                     onFallbackAsync: async (outcome, ctx) =>
                     {
@@ -85,8 +102,10 @@ namespace Ifpa.Caching
             var pipeline = Policy.WrapAsync(fallback, retry);
 
             // execute: if offline, retry will see NetworkUnavailableException
-            //    and skip directly to fallback; if online, fetch runs, then we cache it
-            var q = await pipeline.ExecuteAndCaptureAsync(async (ctx) =>
+            //    and skip directly to fallback; if online, fetch runs, then we cache it.
+            // ExecuteAsync (not ExecuteAndCaptureAsync) so a fallback that rethrows the real
+            // error propagates to the caller instead of being swallowed into a null result.
+            return await pipeline.ExecuteAsync(async (ctx) =>
             {
                 // network‐unavailable check
                 var access = Connectivity.Current.NetworkAccess;
@@ -96,17 +115,28 @@ namespace Ifpa.Caching
                 // real network call
                 var result = await fetch().ConfigureAwait(false);
 
-                // write‐through cache
-                await cache.PutAsync(ctx.OperationKey!,
-                                     result,
-                                     new Ttl(90.Days()),
-                                     CancellationToken.None,
-                                     continueOnCapturedContext: false);
+                // write‐through cache (skipped if the cache could not be initialized).
+                // A cache-write failure (e.g. disk full) must never discard a successful live
+                // fetch, so swallow it here rather than let it escape and re-trigger the pipeline.
+                if (cache != null)
+                {
+                    try
+                    {
+                        await cache.PutAsync(ctx.OperationKey!,
+                                             result,
+                                             new Ttl(90.Days()),
+                                             CancellationToken.None,
+                                             continueOnCapturedContext: false);
+                    }
+                    catch (Exception cacheEx)
+                    {
+                        logger.LogWarning(cacheEx, "Failed to write cache for {Key}; returning live result", ctx.OperationKey);
+                    }
+                }
 
                 return result;
             },
             new Context(cacheKey));
-            return q.Result;
         }
 
         public Task<List<CountryDetail>> GetCountriesList() =>
