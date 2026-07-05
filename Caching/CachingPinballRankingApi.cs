@@ -35,7 +35,18 @@ namespace Ifpa.Caching
 
         private async Task<T> ExecuteWithCache<T>(string cacheKey, Func<Task<T>> fetch)
         {
-            var cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath);
+            // Build the cache provider defensively. A corrupt cache self-heals inside the provider,
+            // but if it still can't be initialized (e.g. disk full) we degrade to a live-only fetch
+            // rather than letting the failure escape the pipeline and break every cached call.
+            SQLiteCacheProvider<T> cache = null;
+            try
+            {
+                cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath, logger);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to initialize cache database; serving {Key} without cache", cacheKey);
+            }
 
             // Retry on non network‐unavailable errors
             var retry = Policy<T>
@@ -48,31 +59,35 @@ namespace Ifpa.Caching
                 .FallbackAsync(
                     async (outcome, ctx, ct) =>
                     {
-                        var (hit, val) = await cache.TryGetAsync(
-                                                ctx.OperationKey!,
-                                                ct,
-                                                continueOnCapturedContext: false);
-
-                        if (!hit)
+                        if (cache != null)
                         {
-                            logger.LogWarning(outcome.Exception,
-                                "Cache miss for {Key}", ctx.OperationKey);
+                            var (hit, val) = await cache.TryGetAsync(
+                                                    ctx.OperationKey!,
+                                                    ct,
+                                                    continueOnCapturedContext: false);
 
-                            MainThread.BeginInvokeOnMainThread(() =>
+                            if (hit)
                             {
-                                try { Toast.Make(Strings.Toast_Offline_NoCache, ToastDuration.Long).Show(); }
-                                catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
-                            });
-
-                            throw outcome.Exception!;   // no cache -> real error
+                                MainThread.BeginInvokeOnMainThread(() =>
+                                {
+                                    try { Toast.Make(Strings.Toast_Offline_Cache, ToastDuration.Long).Show(); }
+                                    catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
+                                });
+                                return (T)val!;
+                            }
                         }
+
+                        // No cache (unavailable or miss) -> surface the real error.
+                        logger.LogWarning(outcome.Exception,
+                            "Cache miss for {Key}", ctx.OperationKey);
 
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
-                            try { Toast.Make(Strings.Toast_Offline_Cache, ToastDuration.Long).Show(); }
+                            try { Toast.Make(Strings.Toast_Offline_NoCache, ToastDuration.Long).Show(); }
                             catch (Exception toastEx) { logger.LogWarning(toastEx, "Could not show offline toast"); }
                         });
-                        return (T)val!;
+
+                        throw outcome.Exception!;
                     },
                     onFallbackAsync: async (outcome, ctx) =>
                     {
@@ -96,12 +111,15 @@ namespace Ifpa.Caching
                 // real network call
                 var result = await fetch().ConfigureAwait(false);
 
-                // write‐through cache
-                await cache.PutAsync(ctx.OperationKey!,
-                                     result,
-                                     new Ttl(90.Days()),
-                                     CancellationToken.None,
-                                     continueOnCapturedContext: false);
+                // write‐through cache (skipped if the cache could not be initialized)
+                if (cache != null)
+                {
+                    await cache.PutAsync(ctx.OperationKey!,
+                                         result,
+                                         new Ttl(90.Days()),
+                                         CancellationToken.None,
+                                         continueOnCapturedContext: false);
+                }
 
                 return result;
             },
