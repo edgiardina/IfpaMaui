@@ -36,6 +36,11 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
 #if ANDROID
+        // Initialize the SQLitePCLRaw e_sqlite3 provider. This was previously handled implicitly by
+        // bundle_green's auto-init; after moving to sqlite-net-base + bundle_e_sqlite3 (patched SQLite,
+        // CVE-2025-6965) Android must init explicitly. iOS sets its own provider in AppDelegate.CreateMauiApp.
+        SQLitePCL.Batteries_V2.Init();
+
         FlurlHttp.Clients.WithDefaults(b => b.ConfigureInnerHandler(_ => new HttpClientHandler()));
 #endif
         var builder = MauiApp.CreateBuilder();
