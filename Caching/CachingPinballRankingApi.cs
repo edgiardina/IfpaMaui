@@ -26,11 +26,13 @@ namespace Ifpa.Caching
     {
         private readonly IPinballRankingApi onlineApi;
         private readonly ILogger<CachingPinballRankingApi> logger;
+        private readonly ILoggerFactory loggerFactory;
 
-        public CachingPinballRankingApi(IPinballRankingApi onlineApi, ILogger<CachingPinballRankingApi> logger)
+        public CachingPinballRankingApi(IPinballRankingApi onlineApi, ILogger<CachingPinballRankingApi> logger, ILoggerFactory loggerFactory)
         {
             this.onlineApi = onlineApi ?? throw new ArgumentNullException(nameof(onlineApi));
             this.logger = logger;
+            this.loggerFactory = loggerFactory;
         }
 
         private async Task<T> ExecuteWithCache<T>(string cacheKey, Func<Task<T>> fetch)
@@ -41,7 +43,7 @@ namespace Ifpa.Caching
             SQLiteCacheProvider<T> cache = null;
             try
             {
-                cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath, logger);
+                cache = new SQLiteCacheProvider<T>(Settings.CacheDatabasePath, loggerFactory);
             }
             catch (Exception ex)
             {
@@ -100,8 +102,10 @@ namespace Ifpa.Caching
             var pipeline = Policy.WrapAsync(fallback, retry);
 
             // execute: if offline, retry will see NetworkUnavailableException
-            //    and skip directly to fallback; if online, fetch runs, then we cache it
-            var q = await pipeline.ExecuteAndCaptureAsync(async (ctx) =>
+            //    and skip directly to fallback; if online, fetch runs, then we cache it.
+            // ExecuteAsync (not ExecuteAndCaptureAsync) so a fallback that rethrows the real
+            // error propagates to the caller instead of being swallowed into a null result.
+            return await pipeline.ExecuteAsync(async (ctx) =>
             {
                 // network‐unavailable check
                 var access = Connectivity.Current.NetworkAccess;
@@ -111,20 +115,28 @@ namespace Ifpa.Caching
                 // real network call
                 var result = await fetch().ConfigureAwait(false);
 
-                // write‐through cache (skipped if the cache could not be initialized)
+                // write‐through cache (skipped if the cache could not be initialized).
+                // A cache-write failure (e.g. disk full) must never discard a successful live
+                // fetch, so swallow it here rather than let it escape and re-trigger the pipeline.
                 if (cache != null)
                 {
-                    await cache.PutAsync(ctx.OperationKey!,
-                                         result,
-                                         new Ttl(90.Days()),
-                                         CancellationToken.None,
-                                         continueOnCapturedContext: false);
+                    try
+                    {
+                        await cache.PutAsync(ctx.OperationKey!,
+                                             result,
+                                             new Ttl(90.Days()),
+                                             CancellationToken.None,
+                                             continueOnCapturedContext: false);
+                    }
+                    catch (Exception cacheEx)
+                    {
+                        logger.LogWarning(cacheEx, "Failed to write cache for {Key}; returning live result", ctx.OperationKey);
+                    }
                 }
 
                 return result;
             },
             new Context(cacheKey));
-            return q.Result;
         }
 
         public Task<List<CountryDetail>> GetCountriesList() =>

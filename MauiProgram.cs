@@ -134,7 +134,8 @@ public static class MauiProgram
             var settings = sp.GetRequiredService<AppSettings>();
             var online = new PinballRankingApi(settings.IfpaApiKey);
             var logger = sp.GetRequiredService<ILogger<CachingPinballRankingApi>>();
-            return new CachingPinballRankingApi(online, logger);
+            var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
+            return new CachingPinballRankingApi(online, logger, loggerFactory);
         });
 
         s.AddSingleton(Geocoding.Default);

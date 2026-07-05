@@ -9,34 +9,25 @@ namespace Ifpa.Caching
     public class SQLiteCacheProvider<T> : IAsyncCacheProvider<T>, IAsyncDisposable
     {
         private readonly string _dbPath;
-        private readonly ILogger _logger;
+        private readonly ILogger<SQLiteCacheProvider<T>> _logger;
         private SQLiteAsyncConnection _db;
 
-        public SQLiteCacheProvider(string dbPath, ILogger logger = null)
+        public SQLiteCacheProvider(string dbPath, ILoggerFactory loggerFactory = null)
         {
             _dbPath = dbPath;
-            _logger = logger;
+            _logger = loggerFactory?.CreateLogger<SQLiteCacheProvider<T>>();
             _db = new SQLiteAsyncConnection(dbPath);
             // Initialize synchronously so a usable connection is guaranteed before first use.
             // A corrupt cache file self-heals here rather than throwing and bricking every cached call.
             Task.Run(InitializeAsync).GetAwaiter().GetResult();
         }
 
-        private async Task InitializeAsync()
-        {
-            try
+        private Task InitializeAsync() =>
+            RunWithRecovery(async () =>
             {
                 await _db.CreateTableAsync<CacheItem>();
                 await CleanupExpiredItems(); // Remove expired items on initialization
-            }
-            catch (Exception ex) when (IsCorruptionException(ex))
-            {
-                _logger?.LogWarning(ex,
-                    "Cache database at {Path} is corrupt; deleting and recreating it. Cached API data will be re-fetched; no user data is affected.",
-                    _dbPath);
-                await RecreateDatabaseAsync();
-            }
-        }
+            });
 
         private async Task CleanupExpiredItems()
         {
@@ -52,7 +43,8 @@ namespace Ifpa.Caching
         {
             return RunWithRecovery(async () =>
             {
-                await CleanupExpiredItems(); // Clean expired items before fetching
+                // Expired rows are purged once per provider construction (InitializeAsync); the
+                // expiration check below still guarantees an expired entry is never returned.
                 var item = await _db.FindAsync<CacheItem>(key);
 
                 if (item != null && item.Expiration > DateTime.UtcNow)
@@ -78,19 +70,18 @@ namespace Ifpa.Caching
                 Expiration = DateTime.UtcNow.Add(ttl.Timespan)
             };
 
-            return RunWithRecovery(async () =>
-            {
-                await _db.InsertOrReplaceAsync(item);
-                await CleanupExpiredItems(); // Enforce cleanup after insertion
-            });
+            return RunWithRecovery(() => _db.InsertOrReplaceAsync(item));
         }
 
-        public async Task ClearCache()
+        public Task ClearCache()
         {
-            // Delete all entries
-            await _db.DeleteAllAsync<CacheItem>();
-            // Run VACUUM to reclaim space and optimize the database
-            await _db.ExecuteAsync("VACUUM");
+            return RunWithRecovery(async () =>
+            {
+                // Delete all entries
+                await _db.DeleteAllAsync<CacheItem>();
+                // Run VACUUM to reclaim space and optimize the database
+                await _db.ExecuteAsync("VACUUM");
+            });
         }
 
         public async ValueTask DisposeAsync()
@@ -100,21 +91,8 @@ namespace Ifpa.Caching
 
         // Runs a cache operation, transparently rebuilding the database once if it is found to be
         // corrupt. The cache holds only re-fetchable API responses, so discarding it is always safe.
-        private async Task RunWithRecovery(Func<Task> operation)
-        {
-            try
-            {
-                await operation();
-            }
-            catch (Exception ex) when (IsCorruptionException(ex))
-            {
-                _logger?.LogWarning(ex,
-                    "Cache database at {Path} is corrupt; rebuilding and retrying. Cached API data will be re-fetched; no user data is affected.",
-                    _dbPath);
-                await RecreateDatabaseAsync();
-                await operation();
-            }
-        }
+        private Task RunWithRecovery(Func<Task> operation) =>
+            RunWithRecovery<object>(async () => { await operation(); return null; });
 
         private async Task<TResult> RunWithRecovery<TResult>(Func<Task<TResult>> operation)
         {
