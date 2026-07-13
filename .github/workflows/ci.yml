@@ -24,6 +24,26 @@ env:
   ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
 
 jobs:
+# Unit Tests (plain net10.0 test project — no MAUI workload required)
+  test:
+    runs-on: ubuntu-latest
+    name: Unit Tests
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Test Dependencies
+        run: dotnet restore tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj
+
+      - name: Run Unit Tests
+        run: dotnet test tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj -c Release --no-restore --verbosity normal
+
 # MAUI Android Build
   build-android:
     runs-on: windows-2022
@@ -42,10 +62,10 @@ jobs:
         run: dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
-        run: dotnet restore IfpaMaui.csproj
+        run: dotnet restore src/IfpaMaui/IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet build IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} --no-restore
+        run: dotnet build src/IfpaMaui/IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} --no-restore
 
 # MAUI iOS Build
   build-ios:
@@ -66,7 +86,7 @@ jobs:
         run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
 
       - name: Restore Dependencies
-        run: dotnet restore IfpaMaui.csproj
+        run: dotnet restore src/IfpaMaui/IfpaMaui.csproj
 
       - name: Install the Apple certificate and provisioning profile
         env:
@@ -112,12 +132,12 @@ jobs:
       - name: Build RankWidgetExtension
         run: |
           xcodebuild \
-            -project NativeIFPA/IFPA.xcodeproj \
+            -project src/IfpaMaui/NativeIFPA/IFPA.xcodeproj \
             -scheme RankWidgetExtension \
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -sdk iphoneos \
-            -derivedDataPath NativeIFPA/DerivedData \
+            -derivedDataPath src/IfpaMaui/NativeIFPA/DerivedData \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
@@ -125,4 +145,4 @@ jobs:
             PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"             
 
       - name: Build MAUI iOS
-        run: dotnet build IfpaMaui.csproj -c Release -f ${{ env.IOS_FRAMEWORK }} -p:ArchiveOnBuild=true
+        run: dotnet build src/IfpaMaui/IfpaMaui.csproj -c Release -f ${{ env.IOS_FRAMEWORK }} -p:ArchiveOnBuild=true

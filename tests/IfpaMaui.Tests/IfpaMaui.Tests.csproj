@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>Ifpa.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <!--
+    The MAUI app heads (IfpaMaui.csproj) target net10.0-android/net10.0-ios only, so a
+    desktop 'dotnet test' runner cannot ProjectReference the app. Instead we compile the
+    specific, platform-independent source files under test directly into this project and
+    restore their real dependencies (SQLite, Polly, logging) as NuGet packages that match
+    the versions the app uses. See TestSupport/Settings.cs for the one shimmed dependency.
+  -->
+  <ItemGroup>
+    <Compile Include="..\..\src\IfpaMaui\Caching\SQLiteCacheProvider.cs" Link="AppCode\Caching\SQLiteCacheProvider.cs" />
+    <Compile Include="..\..\src\IfpaMaui\Models\IntExtensions.cs" Link="AppCode\Models\IntExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+
+    <!-- Kept in lockstep with IfpaMaui.csproj so the linked source compiles and behaves identically -->
+    <PackageReference Include="sqlite-net-base" Version="1.9.172" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.3" />
+    <PackageReference Include="Polly" Version="8.6.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
+  </ItemGroup>
+
+</Project>

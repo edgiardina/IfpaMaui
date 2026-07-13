@@ -46,7 +46,9 @@ IFPA API Key https://www.ifpapinball.com/api/documentation/
 Github Actions available for build and publishing
 
 CLI build supported via
-`dotnet build IfpaMaui.csproj -c Release -f net9.0-android/ios`
+`dotnet build src/IfpaMaui/IfpaMaui.csproj -c Release -f net10.0-android` (or `net10.0-ios`)
+
+Unit tests run via `dotnet test tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj`
 
 #### Special Thanks
 
