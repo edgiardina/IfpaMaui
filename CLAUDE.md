@@ -33,6 +33,24 @@
 - `Syncfusion.Maui.Toolkit` for UI components
 - `The49.Maui.BottomSheet` for modal presentations
 
+## Repository Layout
+
+The repo is organized for side-by-side projects. The solution file (`IfpaMaui.slnx`) lives at the root; all app source lives under `src/`, tests under `tests/`.
+
+```
+IfpaMaui.slnx                  # solution (repo root)
+src/IfpaMaui/                  # the .NET MAUI app (formerly the repo root)
+  IfpaMaui.csproj
+  NativeIFPA/                  # iOS widget Xcode project (CI builds it before the iOS head)
+  Platforms/ Views/ ViewModels/ Services/ Caching/ Models/ …
+  appsettings.json
+tests/IfpaMaui.Tests/          # xUnit tests (plain net10.0 — runs on desktop and CI)
+```
+
+**Path convention:** unless a path is shown relative to the repo root (e.g. `.github/…`, `IfpaMaui.slnx`), file paths in this document are relative to `src/IfpaMaui/` — e.g. `Platforms/Android/AndroidManifest.xml` means `src/IfpaMaui/Platforms/Android/AndroidManifest.xml`.
+
+**Unit tests:** `dotnet test tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj`. The MAUI heads target `net10.0-android`/`net10.0-ios` only, so a desktop test runner cannot `ProjectReference` the app; the test project instead compiles the specific platform-independent source files under test (see its csproj for the linked files and the one shimmed dependency).
+
 ## Logging — Always Use the Structured Logger
 
 **Always prefer `ILogger<T>` (Microsoft.Extensions.Logging) over any platform-specific logging API.**
@@ -155,10 +173,10 @@ git push -u origin feature/your-feature-name
 
 ```bash
 # Correct — handles Fast Deployment
-dotnet build -t:Run -f net10.0-android -p:AndroidAttachDebugger=false
+dotnet build src/IfpaMaui/IfpaMaui.csproj -t:Run -f net10.0-android -p:AndroidAttachDebugger=false
 
 # If XA3006 typemaps error (stale artifact), add --no-incremental
-dotnet build -t:Run -f net10.0-android -p:AndroidAttachDebugger=false --no-incremental
+dotnet build src/IfpaMaui/IfpaMaui.csproj -t:Run -f net10.0-android -p:AndroidAttachDebugger=false --no-incremental
 
 # To uninstall before a clean deploy
 $env:PATH = "$env:LOCALAPPDATA\Android\Sdk\platform-tools;$env:PATH"

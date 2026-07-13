@@ -55,13 +55,13 @@ jobs:
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
-          files: 'appsettings.json'
+          files: 'src/IfpaMaui/appsettings.json'
         env:
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
       
       - name: Add Google Maps API Key to Android Manifest
         run: |
-          $pathToXml = "Platforms/Android/AndroidManifest.xml"
+          $pathToXml = "src/IfpaMaui/Platforms/Android/AndroidManifest.xml"
           $xml=[xml](Get-Content $pathToXml)
           $xml.manifest.application."meta-data".value = "${{ secrets.GOOGLE_MAPS_API_KEY }}"
           $xml.Save($pathToXml)       
@@ -83,24 +83,24 @@ jobs:
         run: dotnet workload install maui android
 
       - name: Restore Dependencies
-        run: dotnet restore IfpaMaui.csproj
+        run: dotnet restore src/IfpaMaui/IfpaMaui.csproj
 
       - name: Build MAUI Android
-        run: dotnet publish IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
+        run: dotnet publish src/IfpaMaui/IfpaMaui.csproj -c Release -f ${{ env.ANDROID_FRAMEWORK }} -p:Version=$Env:VERSION -p:ApplicationDisplayVersion=$Env:VERSION -p:ApplicationVersion=${{ env.VERSION_NUMBER_WITH_OFFSET }} --no-restore -p:AndroidKeyStore=True /p:AndroidSigningKeyStore=${{ github.workspace }}/ifpa-keystore.jks /p:AndroidSigningKeyAlias=upload /p:AndroidSigningKeyPass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" /p:AndroidSigningStorePass="${{ secrets.IFPA_ANDROID_KEYSTORE_PASSWORD }}" --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: ifpamaui-android-signed-build
-          path: bin/Release/${{ env.ANDROID_FRAMEWORK }}/publish/com.edgiardina.ifpa-Signed.aab
+          path: src/IfpaMaui/bin/Release/${{ env.ANDROID_FRAMEWORK }}/publish/com.edgiardina.ifpa-Signed.aab
 
       - name: Deploy to Google Play (Production)
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.edgiardina.ifpa
-          releaseFiles: bin/Release/${{ env.ANDROID_FRAMEWORK }}/publish/com.edgiardina.ifpa-Signed.aab
+          releaseFiles: src/IfpaMaui/bin/Release/${{ env.ANDROID_FRAMEWORK }}/publish/com.edgiardina.ifpa-Signed.aab
           releaseName: ${{ env.VERSION }}
           track: production
 
@@ -202,7 +202,7 @@ jobs:
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
-          files: 'appsettings.json'
+          files: 'src/IfpaMaui/appsettings.json'
         env:
           AppSettings.IfpaApiKey: ${{ secrets.IFPA_API_KEY }}
 
@@ -212,7 +212,7 @@ jobs:
             APP_VERSION: ${{ env.VERSION }}
             IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
         run: |
-                WIDGET_PLIST="NativeIFPA/RankWidget/Info.plist"
+                WIDGET_PLIST="src/IfpaMaui/NativeIFPA/RankWidget/Info.plist"
 
                 echo "🔐 Replacing IFPAApiKey"
                 /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$WIDGET_PLIST" || \
@@ -232,12 +232,12 @@ jobs:
       - name: Build RankWidgetExtension
         run: |
           xcodebuild \
-            -project NativeIFPA/IFPA.xcodeproj \
+            -project src/IfpaMaui/NativeIFPA/IFPA.xcodeproj \
             -scheme RankWidgetExtension \
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -sdk iphoneos \
-            -derivedDataPath NativeIFPA/DerivedData \
+            -derivedDataPath src/IfpaMaui/NativeIFPA/DerivedData \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             CODE_SIGN_ENTITLEMENTS=RankWidgetExtension.entitlements \
@@ -258,12 +258,12 @@ jobs:
         run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
     
       - name: Restore nuget packages
-        run:  dotnet restore IfpaMaui.csproj        
+        run:  dotnet restore src/IfpaMaui/IfpaMaui.csproj        
         
       - name : Publish iOS App
         shell: bash
         run: |
-          dotnet publish -f ${{ env.IOS_FRAMEWORK }} -c Release \
+          dotnet publish src/IfpaMaui/IfpaMaui.csproj -f ${{ env.IOS_FRAMEWORK }} -c Release \
             -p:ArchiveOnBuild=true \
             -p:Version=${VERSION} \
             -p:ApplicationDisplayVersion=${VERSION} \
@@ -276,11 +276,11 @@ jobs:
           name: ifpamaui-ios-signed-build
           if-no-files-found: error
           path: |
-            bin/Release/${{ env.IOS_FRAMEWORK }}/**/*.ipa
+            src/IfpaMaui/bin/Release/${{ env.IOS_FRAMEWORK }}/**/*.ipa
 
       - name: Upload app to App Store Connect
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
         run: |
-          xcrun altool --upload-app -t ios -f "bin/Release/${{ env.IOS_FRAMEWORK }}/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"
+          xcrun altool --upload-app -t ios -f "src/IfpaMaui/bin/Release/${{ env.IOS_FRAMEWORK }}/ios-arm64/publish/IfpaMaui.ipa" -u "$APP_STORE_CONNECT_USERNAME" -p "$APP_STORE_CONNECT_PASSWORD"

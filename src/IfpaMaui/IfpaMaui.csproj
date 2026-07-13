@@ -331,12 +331,4 @@
     <ItemGroup>
       <Folder Include="Resources\Images\" />
     </ItemGroup>
-
-    <ItemGroup>
-      <None Include=".github\copilot-instructions.md" />
-      <None Include=".github\workflows\android-complete-rollout.yml" />
-      <None Include=".github\workflows\android-promote.yml" />
-      <None Include=".github\workflows\ci.yml" />
-      <None Include=".github\workflows\publish.yml" />
-    </ItemGroup>
 </Project>

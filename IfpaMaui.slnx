@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="IfpaMaui.csproj">
+  <Project Path="src/IfpaMaui/IfpaMaui.csproj">
     <Deploy />
   </Project>
+  <Project Path="tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj" />
 </Solution>
