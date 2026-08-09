@@ -1,5 +1,4 @@
-﻿using CoreAnimation;
-using CoreGraphics;
+﻿using CoreGraphics;
 using Microsoft.Maui.Platform;
 using UIKit;
 
@@ -9,11 +8,6 @@ internal class BottomSheetContainer : UIView
 {
     BottomSheet _sheet;
     UIView _view;
-    CAShapeLayer _cardMask;
-
-    // At a partial detent the card's bottom corners sit inside the device's rounded display,
-    // so round them enough to hug the screen curve. Fullscreen reaches the true screen corners.
-    const double PartialBottomCornerRadius = 44;
 
     // Can't get the sheet max height with large and medium detents
     // custom detents are not supported on iOS 15
@@ -43,60 +37,23 @@ internal class BottomSheetContainer : UIView
     {
         base.LayoutSubviews();
         var h = CalculateTallestDetent(_sheet.Window.Height - BottomSheetManager.KeyboardHeight);
-        _view.Frame = new CGRect(0, 0, Bounds.Width, h);
-        _sheet.Arrange(_view.Frame.ToRectangle());
-        _sheet.Controller.Layout();
 
-        // iOS 26 renders partial-height sheets as floating cards, but on iPhone the card stays
-        // attached to the bottom edge with SQUARE corners, which the device's rounded display then
-        // clips. Round the card's bottom corners enough to sit inside that curve. Older iOS keeps
-        // its original edge-attached behavior.
+        // iOS 26 sizes (and insets) a sheet from its content's measured size. The49 sizes the
+        // content to the TALLEST detent so dragging between detents doesn't re-layout the content,
+        // but on iOS 26 that overflow makes the system present the sheet as an inset card whose
+        // square bottom corners the rounded display then clips. Fitting the content to the card
+        // lets iOS 26 render the native edge-to-edge sheet, with the bottom corners following the
+        // device curve automatically. Earlier iOS keeps the original (no-relayout) behavior.
         if (OperatingSystem.IsIOSVersionAtLeast(26))
         {
-            ApplyFloatingCardMask((nfloat)h);
+            _view.Frame = Bounds;
         }
-    }
-
-    void ApplyFloatingCardMask(nfloat tallestDetentHeight)
-    {
-        if (Bounds.Width <= 0 || Bounds.Height <= 0)
+        else
         {
-            return;
+            _view.Frame = new CGRect(0, 0, Bounds.Width, h);
         }
 
-        // The presented view is kept transparent (see BottomSheetViewController.UpdateBackground),
-        // so paint the visible card here where it will be masked to the rounded shape.
-        Microsoft.Maui.Graphics.Paint paint = _sheet.BackgroundBrush;
-        BackgroundColor = paint?.ToColor()?.ToPlatform() ?? UIColor.SystemBackground;
-
-        var isFullscreen = Bounds.Height >= tallestDetentHeight - 20;
-        var maxR = (nfloat)System.Math.Min(Bounds.Width / 2.0, Bounds.Height / 2.0);
-        var top = (nfloat)System.Math.Min(System.Math.Max(_sheet.CornerRadius, 0), (double)maxR);
-        // Only the partial (floating) detent needs the larger bottom radius; fullscreen reaches the
-        // real screen corners where the sheet's own radius is correct.
-        var bottom = isFullscreen
-            ? top
-            : (nfloat)System.Math.Min(System.Math.Max(_sheet.CornerRadius, PartialBottomCornerRadius), (double)maxR);
-
-        _cardMask ??= new CAShapeLayer();
-        _cardMask.Path = BuildCardPath(Bounds, top, bottom);
-        Layer.Mask = _cardMask;
-    }
-
-    // Rounded-rect path with independent top and bottom corner radii.
-    static CGPath BuildCardPath(CGRect r, nfloat rTop, nfloat rBottom)
-    {
-        var p = new CGPath();
-        p.MoveToPoint(r.Left + rTop, r.Top);
-        p.AddLineToPoint(r.Right - rTop, r.Top);
-        p.AddArcToPoint(r.Right, r.Top, r.Right, r.Top + rTop, rTop);
-        p.AddLineToPoint(r.Right, r.Bottom - rBottom);
-        p.AddArcToPoint(r.Right, r.Bottom, r.Right - rBottom, r.Bottom, rBottom);
-        p.AddLineToPoint(r.Left + rBottom, r.Bottom);
-        p.AddArcToPoint(r.Left, r.Bottom, r.Left, r.Bottom - rBottom, rBottom);
-        p.AddLineToPoint(r.Left, r.Top + rTop);
-        p.AddArcToPoint(r.Left, r.Top, r.Left + rTop, r.Top, rTop);
-        p.CloseSubpath();
-        return p;
+        _sheet.Arrange(_view.Frame.ToRectangle());
+        _sheet.Controller.Layout();
     }
 }

@@ -66,14 +66,6 @@ public class BottomSheetViewController : UIViewController
     }
     internal void UpdateBackground()
     {
-        // On iOS 26 the floating card background is painted by BottomSheetContainer (which is
-        // masked/lifted to clear the device corners), so keep the presented view transparent.
-        if (OperatingSystem.IsIOSVersionAtLeast(26))
-        {
-            View.BackgroundColor = UIColor.Clear;
-            return;
-        }
-
         if (_sheet?.BackgroundBrush != null)
         {
             Paint paint = _sheet.BackgroundBrush;
