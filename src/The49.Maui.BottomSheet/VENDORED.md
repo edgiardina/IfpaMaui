@@ -17,11 +17,14 @@ clips those bottom corners. See the app's calendar-event page.
   and stripped NuGet packaging metadata (this is a `ProjectReference`, not a package).
 - **`Models/ContentDetent.cs`** — `Measure(...)` now returns `Size` in .NET 10, so
   `r.Request.Height` → `r.Height`.
-- **`Platforms/iOS/BottomSheetContainer.cs`** — on iOS 26, lift the card above the
-  home-indicator curve and mask all four corners round so nothing is clipped
-  (`ApplyFloatingCardMask`). Fullscreen stays edge-to-edge; older iOS is unchanged.
+- **`Platforms/iOS/BottomSheetContainer.cs`** — on iOS 26, mask the card so its **bottom
+  corners** are rounded enough to sit inside the device's rounded display instead of being
+  clipped (`ApplyFloatingCardMask`, `BuildCardPath` with independent top/bottom radii). The
+  top corners keep the sheet's own `CornerRadius`; fullscreen is unchanged; older iOS is
+  unchanged. (An earlier attempt lifted the card off the bottom, but that exposed the system
+  sheet's shadow/material below it — rounding the corners in place avoids that.)
 - **`Platforms/iOS/BottomSheetViewController.cs`** — on iOS 26, keep the presented view
-  transparent so the lifted card floats over the content behind the sheet.
+  transparent so the rounded corner cut-outs show the content behind the sheet.
 
 The iOS behavior change is gated behind `OperatingSystem.IsIOSVersionAtLeast(26)`, so
 iOS 16–18 keep their original edge-attached rendering.
