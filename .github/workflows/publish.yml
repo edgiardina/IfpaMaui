@@ -9,13 +9,23 @@ on:
           description: 'version number'     
           required: true
           default: '0.1.1'
+        iosOnly:
+          description: 'Skip the Android job. Leave on for test builds, because the Android job deploys to Google Play production.'
+          type: boolean
+          required: false
+          default: true
+        skipStoreUpload:
+          description: 'Build and sign the iOS app but do not upload it to App Store Connect.'
+          type: boolean
+          required: false
+          default: false
 
 env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
   DOTNET_VERSION: '10.0.x'                # .NET version to use
-  XCODE_VERSION: '26.5'                   # Xcode version that supports iOS 26 for dotnet maui build
+  XCODE_VERSION: '26.6'                   # must satisfy the .NET for iOS workload, which requires 26.6
   IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
   ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
   
@@ -23,6 +33,9 @@ jobs:
   publish-android:
     runs-on: windows-2022
     name: Android Build
+    # This job ends in a Google Play production deploy. A manually dispatched
+    # test build skips it by default; a tag push is unaffected.
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.iosOnly) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -118,6 +131,8 @@ jobs:
             P12_PASSWORD: ${{ secrets.DISTRIBUTION_CERT_PW }}
             BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_PROVISION_PROFILE_BASE64 }}
             DISTRIBUTION_WIDGET_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_WIDGET_PROVISION_PROFILE_BASE64 }}
+            DISTRIBUTION_WATCH_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_WATCH_PROVISION_PROFILE_BASE64 }}
+            DISTRIBUTION_WATCH_COMPLICATION_PROVISION_PROFILE_BASE64: ${{ secrets.DISTRIBUTION_WATCH_COMPLICATION_PROVISION_PROFILE_BASE64 }}
             KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
             CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
@@ -170,6 +185,33 @@ jobs:
             fi
             cp $WIDGET_PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/$WIDGET_PROFILE_UUID.mobileprovision
             echo "WIDGET_PROVISIONING_UUID=$WIDGET_PROFILE_UUID" >> $GITHUB_ENV
+
+            # Install the two watch provisioning profiles when they exist.
+            # They are optional so that iOS releases keep working before the
+            # watch App IDs are created in the developer portal.
+            if [[ -n "$DISTRIBUTION_WATCH_PROVISION_PROFILE_BASE64" ]]; then
+                WATCH_PP_PATH=$RUNNER_TEMP/watch_pp.mobileprovision
+                COMP_PP_PATH=$RUNNER_TEMP/watch_complication_pp.mobileprovision
+                echo -n "$DISTRIBUTION_WATCH_PROVISION_PROFILE_BASE64" | base64 --decode -o $WATCH_PP_PATH
+                echo -n "$DISTRIBUTION_WATCH_COMPLICATION_PROVISION_PROFILE_BASE64" | base64 --decode -o $COMP_PP_PATH
+
+                for pair in "WATCH:$WATCH_PP_PATH" "WATCH_COMPLICATION:$COMP_PP_PATH"; do
+                    NAME="${pair%%:*}"
+                    PP="${pair#*:}"
+                    UUID=$(grep -aA1 UUID "$PP" | grep -io "[-A-F0-9]\{36\}" | head -1)
+                    if [[ -z "$UUID" ]]; then
+                        echo "❌ Failed to extract UUID from $NAME provisioning profile"
+                        exit 1
+                    fi
+                    cp "$PP" ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
+                    echo "${NAME}_PP_PATH=$PP" >> $GITHUB_ENV
+                done
+                echo "HAS_WATCH=true" >> $GITHUB_ENV
+                echo "✅ Watch provisioning profiles installed"
+            else
+                echo "HAS_WATCH=false" >> $GITHUB_ENV
+                echo "ℹ️ No watch provisioning profile secret, skipping the watch app"
+            fi
 
             # Debug output to confirm identity is available
             echo "🔍 Signing identities:"
@@ -226,8 +268,20 @@ jobs:
       # Download iOS platform + simulators if missing
       - name: Install iOS platform + simulator runtime
         run: |
-          xcodebuild -downloadPlatform iOS
-          xcrun simctl list runtimes                
+          # `xcodebuild -downloadPlatform` fails intermittently on the runners
+          # with "Unable to connect to simulator." and exit 70. The SDK needed
+          # to build ships with Xcode, so this is best effort. Fail only when
+          # the SDK is really missing.
+          for attempt in 1 2 3; do
+            if xcodebuild -downloadPlatform iOS; then break; fi
+            echo "downloadPlatform iOS attempt $attempt did not succeed"
+            sleep 15
+          done
+          xcrun simctl list runtimes || true
+          if ! xcodebuild -showsdks | grep -qi iphonesimulator; then
+            echo "No iOS simulator SDK is available"
+            exit 1
+          fi
 
       - name: Build RankWidgetExtension
         run: |
@@ -245,6 +299,52 @@ jobs:
             PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID" \
             MARKETING_VERSION="$VERSION" \
             CURRENT_PROJECT_VERSION="$VERSION_NUMBER_WITH_OFFSET"  
+
+      - name: Update watch API keys in Info.plist
+        if: env.HAS_WATCH == 'true'
+        env:
+            IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
+        run: |
+                echo "Replacing IFPAApiKey for the watch app and complication"
+                for PLIST in "src/IfpaMaui/NativeIFPA/RankComplication/Info.plist" \
+                             "src/IfpaMaui/NativeIFPA/IFPAWatch/Info.plist"; do
+                    /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$PLIST" || \
+                    /usr/libexec/PlistBuddy -c "Add :IFPAApiKey string $IFPA_API_KEY" "$PLIST"
+                done
+
+      - name: Install watchOS platform
+        if: env.HAS_WATCH == 'true'
+        run: |
+          # Same flake as the iOS platform download. The watchOS SDK ships with
+          # Xcode, so only a missing SDK is fatal.
+          for attempt in 1 2 3; do
+            if xcodebuild -downloadPlatform watchOS; then break; fi
+            echo "downloadPlatform watchOS attempt $attempt did not succeed"
+            sleep 15
+          done
+          if ! xcodebuild -showsdks | grep -qi watchos; then
+            echo "No watchOS SDK is available"
+            exit 1
+          fi
+
+      # Built unsigned on purpose. The watch app and its extension have
+      # different bundle ids, so signing them here would mean threading two
+      # provisioning profiles through one xcodebuild invocation. They are
+      # signed inside-out in the embed step instead.
+      - name: Build IFPAWatch
+        if: env.HAS_WATCH == 'true'
+        run: |
+          xcodebuild \
+            -project src/IfpaMaui/NativeIFPA/IFPA.xcodeproj \
+            -scheme IFPAWatch \
+            -configuration Release \
+            -destination 'generic/platform=watchOS' \
+            -sdk watchos \
+            -derivedDataPath src/IfpaMaui/NativeIFPA/WatchDD \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM=KH5JKUPW2Q \
+            MARKETING_VERSION="$VERSION" \
+            CURRENT_PROJECT_VERSION="$VERSION_NUMBER_WITH_OFFSET"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
@@ -271,6 +371,86 @@ jobs:
             -p:CodesignKey="iPhone Distribution: Ed Giardina (KH5JKUPW2Q)" \
             -p:ProvisioningProfileUuid=${{ env.PROVISIONING_UUID }}
 
+      # MAUI has no hook for embedding a nested watch app, so this happens
+      # after the archive is produced. Order matters: every nested bundle is
+      # signed before the bundle that contains it, and the outer app is signed
+      # last so its CodeResources covers the new Watch directory.
+      - name: Embed the watch app into the IPA
+        if: env.HAS_WATCH == 'true'
+        env:
+          SIGN_IDENTITY: "iPhone Distribution: Ed Giardina (KH5JKUPW2Q)"
+        run: |
+          set -euo pipefail
+
+          IPA="src/IfpaMaui/bin/Release/${{ env.IOS_FRAMEWORK }}/ios-arm64/publish/IfpaMaui.ipa"
+          WATCH_APP="src/IfpaMaui/NativeIFPA/WatchDD/Build/Products/Release-watchos/IFPAWatch.app"
+
+          test -f "$IPA" || { echo "❌ No IPA at $IPA"; exit 1; }
+          test -d "$WATCH_APP" || { echo "❌ No watch app at $WATCH_APP"; exit 1; }
+
+          WORK=$RUNNER_TEMP/ipa-work
+          rm -rf "$WORK"
+          mkdir -p "$WORK"
+          unzip -q "$IPA" -d "$WORK"
+
+          APP_DIR=$(find "$WORK/Payload" -maxdepth 1 -name "*.app" | head -1)
+          echo "📦 Outer app: $APP_DIR"
+
+          # Reuse the entitlements the publish step already signed with, so the
+          # re-sign cannot silently drop one.
+          codesign -d --entitlements :"$RUNNER_TEMP/ios_entitlements.plist" "$APP_DIR"
+
+          STAGED="$WORK/IFPAWatch.app"
+          cp -R "$WATCH_APP" "$STAGED"
+
+          cp "$WATCH_PP_PATH" "$STAGED/embedded.mobileprovision"
+          cp "$WATCH_COMPLICATION_PP_PATH" "$STAGED/PlugIns/RankComplication.appex/embedded.mobileprovision"
+
+          echo "🔏 Signing the complication"
+          codesign --force --timestamp=none --sign "$SIGN_IDENTITY" \
+            --entitlements src/IfpaMaui/NativeIFPA/RankComplication/RankComplication.entitlements \
+            "$STAGED/PlugIns/RankComplication.appex"
+
+          echo "🔏 Signing the watch app"
+          codesign --force --timestamp=none --sign "$SIGN_IDENTITY" \
+            --entitlements src/IfpaMaui/NativeIFPA/IFPAWatch/IFPAWatch.entitlements \
+            "$STAGED"
+
+          mkdir -p "$APP_DIR/Watch"
+          rm -rf "$APP_DIR/Watch/IFPAWatch.app"
+          mv "$STAGED" "$APP_DIR/Watch/IFPAWatch.app"
+
+          echo "🔏 Re-signing the outer app"
+          codesign --force --timestamp=none --sign "$SIGN_IDENTITY" \
+            --entitlements "$RUNNER_TEMP/ios_entitlements.plist" \
+            "$APP_DIR"
+
+          echo "✅ Verifying"
+          codesign --verify --strict "$APP_DIR/Watch/IFPAWatch.app/PlugIns/RankComplication.appex"
+          codesign --verify --strict "$APP_DIR/Watch/IFPAWatch.app"
+          codesign --verify --strict "$APP_DIR"
+
+          # App Store validation rejects a bundle whose
+          # application-identifier entitlement is missing (error 90075).
+          # Signing with an explicit entitlements file replaces the whole set,
+          # so a file that omits the key silently strips it. Catch that here
+          # rather than 13 minutes later in altool.
+          echo "✅ Checking application-identifier survived every re-sign"
+          for B in "$APP_DIR" \
+                   "$APP_DIR/PlugIns/RankWidgetExtension.appex" \
+                   "$APP_DIR/Watch/IFPAWatch.app" \
+                   "$APP_DIR/Watch/IFPAWatch.app/PlugIns/RankComplication.appex"; do
+              if ! codesign -d --entitlements :- "$B" 2>/dev/null | grep -q "application-identifier"; then
+                  echo "❌ ${B#$WORK/Payload/} has no application-identifier entitlement"
+                  exit 1
+              fi
+              echo "   ok ${B#$WORK/Payload/}"
+          done
+
+          ( cd "$WORK" && rm -f "$RUNNER_TEMP/repacked.ipa" && zip -qry "$RUNNER_TEMP/repacked.ipa" Payload )
+          mv "$RUNNER_TEMP/repacked.ipa" "$IPA"
+          echo "📦 Watch app embedded and IPA repacked"
+
       - uses: actions/upload-artifact@v4
         with:
           name: ifpamaui-ios-signed-build
@@ -279,6 +459,7 @@ jobs:
             src/IfpaMaui/bin/Release/${{ env.IOS_FRAMEWORK }}/**/*.ipa
 
       - name: Upload app to App Store Connect
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.skipStoreUpload) }}
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}

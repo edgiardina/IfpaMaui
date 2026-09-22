@@ -19,7 +19,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
   DOTNET_VERSION: '10.0.x'                # .NET version to use
-  XCODE_VERSION: '26.5'                   # Xcode version that supports iOS 26 for dotnet maui build
+  XCODE_VERSION: '26.6'                   # must satisfy the .NET for iOS workload, which requires 26.6
   IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
   ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
 
@@ -126,8 +126,20 @@ jobs:
       # Download iOS platform + simulators if missing
       - name: Install iOS platform + simulator runtime
         run: |
-          xcodebuild -downloadPlatform iOS
-          xcrun simctl list runtimes   
+          # `xcodebuild -downloadPlatform` fails intermittently on the runners
+          # with "Unable to connect to simulator." and exit 70. The SDK needed
+          # to build ships with Xcode, so this is best effort. Fail only when
+          # the SDK is really missing.
+          for attempt in 1 2 3; do
+            if xcodebuild -downloadPlatform iOS; then break; fi
+            echo "downloadPlatform iOS attempt $attempt did not succeed"
+            sleep 15
+          done
+          xcrun simctl list runtimes || true
+          if ! xcodebuild -showsdks | grep -qi iphonesimulator; then
+            echo "No iOS simulator SDK is available"
+            exit 1
+          fi
 
       - name: Build RankWidgetExtension
         run: |

@@ -1,5 +1,7 @@
 ﻿using CoreSpotlight;
 using Foundation;
+using Ifpa.Platforms.Services;
+using Microsoft.Extensions.Logging;
 using SQLitePCL;
 using UIKit;
 
@@ -14,6 +16,31 @@ public class AppDelegate : MauiUIApplicationDelegate
     {
         raw.SetProvider(new SQLite3Provider_sqlite3());
         return MauiProgram.CreateMauiApp();
+    }
+
+    // Held for the lifetime of the app. WeakReferenceMessenger keeps only a
+    // weak reference to its recipient, so letting this be collected would
+    // silently stop the watch from being told about player changes.
+    private WatchSessionService watchSession;
+
+    public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+    {
+        var finished = base.FinishedLaunching(application, launchOptions);
+
+        var logger = IPlatformApplication.Current?.Services?.GetService<ILogger<WatchSessionService>>();
+        watchSession = new WatchSessionService(logger);
+        watchSession.Start();
+
+        return finished;
+    }
+
+    // Covers the case where the watch app is installed while this app is in
+    // the background. WatchStateDidChange handles it when the app is running,
+    // and this catches the next launch or foreground either way.
+    public override void WillEnterForeground(UIApplication application)
+    {
+        base.WillEnterForeground(application);
+        watchSession?.SendPlayerId();
     }
 
     //TODO: these methods should be deprecated in favor of ConfigureLifeCycleEvents stuff
