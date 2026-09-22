@@ -407,6 +407,23 @@ jobs:
           codesign --verify --strict "$APP_DIR/Watch/IFPAWatch.app"
           codesign --verify --strict "$APP_DIR"
 
+          # App Store validation rejects a bundle whose
+          # application-identifier entitlement is missing (error 90075).
+          # Signing with an explicit entitlements file replaces the whole set,
+          # so a file that omits the key silently strips it. Catch that here
+          # rather than 13 minutes later in altool.
+          echo "✅ Checking application-identifier survived every re-sign"
+          for B in "$APP_DIR" \
+                   "$APP_DIR/PlugIns/RankWidgetExtension.appex" \
+                   "$APP_DIR/Watch/IFPAWatch.app" \
+                   "$APP_DIR/Watch/IFPAWatch.app/PlugIns/RankComplication.appex"; do
+              if ! codesign -d --entitlements :- "$B" 2>/dev/null | grep -q "application-identifier"; then
+                  echo "❌ ${B#$WORK/Payload/} has no application-identifier entitlement"
+                  exit 1
+              fi
+              echo "   ok ${B#$WORK/Payload/}"
+          done
+
           ( cd "$WORK" && rm -f "$RUNNER_TEMP/repacked.ipa" && zip -qry "$RUNNER_TEMP/repacked.ipa" Payload )
           mv "$RUNNER_TEMP/repacked.ipa" "$IPA"
           echo "📦 Watch app embedded and IPA repacked"
