@@ -1,4 +1,4 @@
-//
+﻿//
 //  IfpaPlayer.swift
 //  RankWidget
 //
@@ -363,4 +363,71 @@ enum SeriesCode: String, Codable {
     case acs  = "ACS"
     case wnasco = "WNACSO"
     case wnascw = "WNASCW"
+}
+
+// MARK: - Value formatting
+//
+// Shared by the iOS widget, the watch complication and the watch app, so
+// there is one definition of how an IFPA number or a rank is displayed.
+
+/// The API sends numbers as strings, unrounded: "1024.6100", "54.500". Format
+/// for display rather than printing the raw field.
+enum IfpaStat {
+    static let missing = "-"
+
+    /// "1024.6100" -> "1,024.61"
+    static func points(_ raw: String?) -> String {
+        guard let raw = raw, let value = Double(raw) else { return missing }
+        return value.formatted(.number.precision(.fractionLength(0...2)))
+    }
+
+    /// "54.500" -> "54.5%"
+    static func percent(_ raw: String?) -> String {
+        guard let raw = raw, let value = Double(raw) else { return missing }
+        return value.formatted(.number.precision(.fractionLength(0...1))) + "%"
+    }
+
+    /// "112" -> "112th". Missing or non-numeric yields the placeholder rather
+    /// than the old behaviour, which defaulted to 0 and displayed "0th".
+    static func ordinal(_ raw: String?) -> String {
+        guard let raw = raw, let value = Int(raw) else { return missing }
+        return value.ordinal
+    }
+
+    /// Plain integer, grouped: "338" -> "338", "12345" -> "12,345"
+    static func count(_ raw: String?) -> String {
+        guard let raw = raw, let value = Int(raw) else { return missing }
+        return value.formatted(.number)
+    }
+
+    /// Integer with no grouping separator, for places too narrow to spend
+    /// width on a comma.
+    static func ungrouped(_ raw: String?) -> String {
+        guard let raw = raw, let value = Int(raw) else { return missing }
+        return String(value)
+    }
+}
+
+// IfpaStat.ordinal depends on this, and the watch app compiles this file
+// without RankWidget.swift, so the extension lives here.
+extension Int {
+
+    var ordinal: String {
+        var suffix: String
+        let ones: Int = self % 10
+        let tens: Int = (self/10) % 10
+        if tens == 1 {
+            suffix = "th"
+        } else if ones == 1 {
+            suffix = "st"
+        } else if ones == 2 {
+            suffix = "nd"
+        } else if ones == 3 {
+            suffix = "rd"
+        } else {
+            suffix = "th"
+        }
+        return "\(self)\(suffix)"
+    }
+
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E13ACCB126BD7DD973264CB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191011D5C4A1E70591BD0547 /* ContentView.swift */; };
+		5A1AFBA8115F7CA4D1703C74 /* IfpaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6802A3699EB00336415 /* IfpaPlayer.swift */; };
 		60B1AB4E3E94F40DA9D76F20 /* RankComplicationBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E18E86B3F8A5FF36188ADC /* RankComplicationBundle.swift */; };
 		6D336EF1F02647F7BB8FE4DA /* RankWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6712A34241200336415 /* RankWidget.swift */; };
 		70756F5E0F13C83728458381 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7DEAC700E58F7FCBBB08272 /* Foundation.framework */; };
@@ -567,6 +568,7 @@
 				D4E5E5F3DA724951A371FB97 /* IFPAWatchApp.swift in Sources */,
 				2E13ACCB126BD7DD973264CB /* ContentView.swift in Sources */,
 				86EDD04C279F4614A465C341 /* PhoneSessionReceiver.swift in Sources */,
+				5A1AFBA8115F7CA4D1703C74 /* IfpaPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

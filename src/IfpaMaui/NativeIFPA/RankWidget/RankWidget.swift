@@ -1,4 +1,4 @@
-//
+﻿//
 //  RankWidget.swift
 //  RankWidget
 //
@@ -116,46 +116,6 @@ private enum Brand {
     static let tertiary = Color.white.opacity(0.52)
 }
 
-// MARK: - Value formatting
-
-/// The API sends numbers as strings, unrounded: "1024.6100", "54.500". Format
-/// for display rather than printing the raw field.
-private enum Stat {
-    static let missing = "-"
-
-    /// "1024.6100" -> "1,024.61"
-    static func points(_ raw: String?) -> String {
-        guard let raw = raw, let value = Double(raw) else { return missing }
-        return value.formatted(.number.precision(.fractionLength(0...2)))
-    }
-
-    /// "54.500" -> "54.5%"
-    static func percent(_ raw: String?) -> String {
-        guard let raw = raw, let value = Double(raw) else { return missing }
-        return value.formatted(.number.precision(.fractionLength(0...1))) + "%"
-    }
-
-    /// "112" -> "112th". Missing or non-numeric yields the placeholder rather
-    /// than the old behaviour, which defaulted to 0 and displayed "0th".
-    static func ordinal(_ raw: String?) -> String {
-        guard let raw = raw, let value = Int(raw) else { return missing }
-        return value.ordinal
-    }
-
-    /// Plain integer, grouped: "338" -> "338", "12345" -> "12,345"
-    static func count(_ raw: String?) -> String {
-        guard let raw = raw, let value = Int(raw) else { return missing }
-        return value.formatted(.number)
-    }
-
-    /// Integer with no grouping separator, for places too narrow to spend
-    /// width on a comma.
-    static func ungrouped(_ raw: String?) -> String {
-        guard let raw = raw, let value = Int(raw) else { return missing }
-        return String(value)
-    }
-}
-
 // MARK: - Entry view
 
 struct RankWidgetEntryView : View {
@@ -168,12 +128,12 @@ struct RankWidgetEntryView : View {
     private var openStats: PlayerStatsOpen? { playerRecord?.openStats }
 
     private var nameText: String { playerRecord?.displayName ?? "" }
-    private var rankText: String { Stat.ordinal(openStats?.currentRank) }
+    private var rankText: String { IfpaStat.ordinal(openStats?.currentRank) }
 
     /// Bare rank with no ordinal suffix. The circular Lock Screen family is
     /// only ~51pt across on its inscribed square, so the suffix costs width it
     /// does not have.
-    private var rankNumberText: String { Stat.ungrouped(openStats?.currentRank) }
+    private var rankNumberText: String { IfpaStat.ungrouped(openStats?.currentRank) }
 
     /// "IFPA #63251", or bare "IFPA" when the number is unknown. This is the
     /// value a player reads out to staff at tournament registration, so the
@@ -182,7 +142,7 @@ struct RankWidgetEntryView : View {
         guard let number = playerRecord?.playerID, !number.isEmpty else { return "IFPA" }
         return "IFPA #\(number)"
     }
-    private var pointsText: String { Stat.points(openStats?.currentPoints) }
+    private var pointsText: String { IfpaStat.points(openStats?.currentPoints) }
 
     private var isAccessory: Bool {
         switch family {
@@ -231,9 +191,9 @@ struct RankWidgetEntryView : View {
     private var unavailable: some View {
         switch family {
         case .accessoryInline:
-            Text("IFPA \(Stat.missing)")
+            Text("IFPA \(IfpaStat.missing)")
         case .accessoryCircular:
-            Text(Stat.missing)
+            Text(IfpaStat.missing)
                 .font(.system(.title3, design: .rounded).weight(.semibold))
         case .accessoryRectangular:
             Text("No IFPA player data")
@@ -408,12 +368,12 @@ struct RankWidgetEntryView : View {
     /// label in the right one.
     private var statsGrid: some View {
         let stats: [(String, String)] = [
-            ("Eff. Pct", Stat.percent(openStats?.efficiencyValue)),
-            ("Eff. Rank", Stat.ordinal(openStats?.efficiencyRank)),
-            ("Events", Stat.count(openStats?.totalEventsAllTime)),
-            ("Best Finish", Stat.ordinal(openStats?.bestFinish)),
-            ("Avg Finish", Stat.ordinal(openStats?.averageFinish)),
-            ("Highest Rank", Stat.ordinal(openStats?.highestRank)),
+            ("Eff. Pct", IfpaStat.percent(openStats?.efficiencyValue)),
+            ("Eff. Rank", IfpaStat.ordinal(openStats?.efficiencyRank)),
+            ("Events", IfpaStat.count(openStats?.totalEventsAllTime)),
+            ("Best Finish", IfpaStat.ordinal(openStats?.bestFinish)),
+            ("Avg Finish", IfpaStat.ordinal(openStats?.averageFinish)),
+            ("Highest Rank", IfpaStat.ordinal(openStats?.highestRank)),
         ]
 
         return LazyVGrid(
@@ -605,24 +565,3 @@ extension Color {
     }
 }
 
-extension Int {
-
-    var ordinal: String {
-        var suffix: String
-        let ones: Int = self % 10
-        let tens: Int = (self/10) % 10
-        if tens == 1 {
-            suffix = "th"
-        } else if ones == 1 {
-            suffix = "st"
-        } else if ones == 2 {
-            suffix = "nd"
-        } else if ones == 3 {
-            suffix = "rd"
-        } else {
-            suffix = "th"
-        }
-        return "\(self)\(suffix)"
-    }
-
-}

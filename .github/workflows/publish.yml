@@ -275,16 +275,17 @@ jobs:
             MARKETING_VERSION="$VERSION" \
             CURRENT_PROJECT_VERSION="$VERSION_NUMBER_WITH_OFFSET"  
 
-      - name: Update Complication API key in Info.plist
+      - name: Update watch API keys in Info.plist
         if: env.HAS_WATCH == 'true'
         env:
             IFPA_API_KEY: ${{ secrets.IFPA_API_KEY }}
         run: |
-                COMP_PLIST="src/IfpaMaui/NativeIFPA/RankComplication/Info.plist"
-
-                echo "🔐 Replacing IFPAApiKey for the watch complication"
-                /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$COMP_PLIST" || \
-                /usr/libexec/PlistBuddy -c "Add :IFPAApiKey string $IFPA_API_KEY" "$COMP_PLIST"
+                echo "Replacing IFPAApiKey for the watch app and complication"
+                for PLIST in "src/IfpaMaui/NativeIFPA/RankComplication/Info.plist" \
+                             "src/IfpaMaui/NativeIFPA/IFPAWatch/Info.plist"; do
+                    /usr/libexec/PlistBuddy -c "Set :IFPAApiKey $IFPA_API_KEY" "$PLIST" || \
+                    /usr/libexec/PlistBuddy -c "Add :IFPAApiKey string $IFPA_API_KEY" "$PLIST"
+                done
 
       - name: Install watchOS platform
         if: env.HAS_WATCH == 'true'

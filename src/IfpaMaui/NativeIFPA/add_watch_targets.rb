@@ -48,7 +48,11 @@ complication = find_or_create_target(project, :app_extension, 'RankComplication'
 # --- watch app sources and resources ----------------------------------------
 watch_group = group_for(project, 'IFPAWatch', 'IFPAWatch')
 watch_sources = %w[IFPAWatchApp.swift ContentView.swift PhoneSessionReceiver.swift]
-ensure_sources(watch_app, watch_sources.map { |n| ensure_ref(watch_group, n) })
+watch_refs = watch_sources.map { |n| ensure_ref(watch_group, n) }
+# The app fetches and formats the player itself, so it compiles the same shared
+# model file as the widget and the complication.
+watch_refs << find_ref(project, 'IfpaPlayer.swift')
+ensure_sources(watch_app, watch_refs)
 ensure_ref(watch_group, 'Info.plist')
 ensure_ref(watch_group, 'IFPAWatch.entitlements')
 
