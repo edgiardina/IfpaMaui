@@ -30,17 +30,64 @@ struct Provider {
             ?? date.addingTimeInterval(3600)
     }
 
-    /// Always produces an entry. A failed fetch yields an entry with no player,
-    /// which the view renders as the "not available" placeholder rather than
-    /// leaving the completion handler uncalled.
+    private static let cachedPayloadKey = "CachedPlayerPayload"
+    private static let cachedPlayerIdKey = "CachedPlayerPayloadId"
+
+    private var sharedDefaults: UserDefaults? {
+        return UserDefaults(suiteName: "group.com.edgiardina.ifpa")
+    }
+
+    /// Always produces an entry. A fetch that fails falls back to the last
+    /// payload that succeeded, so the widget keeps showing real numbers
+    /// instead of a placeholder.
+    ///
+    /// A watchOS extension gets very little runtime, and a timeline that does
+    /// not finish leaves the placeholder on screen. That looked like a
+    /// complication stuck on a dash, which came and went with network
+    /// conditions. The cache makes a dash mean "never loaded once" rather than
+    /// "this refresh was slow".
     func loadEntry() async -> IfpaPlayerEntry {
+        let id = playerId
+
         do {
-            let player = try await IfpaPlayer.getPlayerById(from: playerId)
-            let photoData = await fetchProfilePhotoData(from: player.firstPlayer?.profilePhoto)
-            return IfpaPlayerEntry(date: Date(), player: player, profilePhotoData: photoData)
+            let data = try await IfpaPlayer.payload(for: id)
+            let player = try IfpaPlayer.decode(data)
+
+            sharedDefaults?.set(data, forKey: Self.cachedPayloadKey)
+            sharedDefaults?.set(id, forKey: Self.cachedPlayerIdKey)
+
+            return IfpaPlayerEntry(date: Date(),
+                                   player: player,
+                                   profilePhotoData: await profilePhoto(for: player))
         } catch {
-            return IfpaPlayerEntry(date: Date())
+            guard let cached = cachedPlayer(for: id) else {
+                return IfpaPlayerEntry(date: Date())
+            }
+            return IfpaPlayerEntry(date: Date(),
+                                   player: cached,
+                                   profilePhotoData: await profilePhoto(for: cached))
         }
+    }
+
+    /// The last payload that decoded, but only when it belongs to the player
+    /// selected now. A stale id would show somebody else's rank.
+    private func cachedPlayer(for id: Int) -> IfpaPlayer? {
+        guard let defaults = sharedDefaults,
+              defaults.integer(forKey: Self.cachedPlayerIdKey) == id,
+              let data = defaults.data(forKey: Self.cachedPayloadKey) else {
+            return nil
+        }
+        return try? IfpaPlayer.decode(data)
+    }
+
+    /// The accessory families never draw the photo, and watchOS is exactly
+    /// where the extra round trip cannot be afforded.
+    private func profilePhoto(for player: IfpaPlayer) async -> Data? {
+        #if os(watchOS)
+        return nil
+        #else
+        return await fetchProfilePhotoData(from: player.firstPlayer?.profilePhoto)
+        #endif
     }
 
     private func fetchProfilePhotoData(from urlString: String?) async -> Data? {

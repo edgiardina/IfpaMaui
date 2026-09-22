@@ -83,7 +83,8 @@ struct IfpaPlayer: Decodable {
         player = container.optionalValue([Player].self, .player) ?? []
     }
 
-    static func getPlayerById(from playerId: Int) async throws -> IfpaPlayer {
+    /// Raw response bytes, so a caller can cache them and decode later.
+    static func payload(for playerId: Int) async throws -> Data {
         guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "IFPAApiKey") as? String,
               !apiKey.isEmpty else {
             throw IfpaError.missingApiKey
@@ -104,7 +105,15 @@ struct IfpaPlayer: Decodable {
             throw IfpaError.httpStatus(http.statusCode)
         }
 
+        return data
+    }
+
+    static func decode(_ data: Data) throws -> IfpaPlayer {
         return try JSONDecoder().decode(IfpaPlayer.self, from: data)
+    }
+
+    static func getPlayerById(from playerId: Int) async throws -> IfpaPlayer {
+        return try decode(try await payload(for: playerId))
     }
 }
 
