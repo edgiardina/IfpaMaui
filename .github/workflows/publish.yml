@@ -9,6 +9,16 @@ on:
           description: 'version number'     
           required: true
           default: '0.1.1'
+        iosOnly:
+          description: 'Skip the Android job. Leave on for test builds, because the Android job deploys to Google Play production.'
+          type: boolean
+          required: false
+          default: true
+        skipStoreUpload:
+          description: 'Build and sign the iOS app but do not upload it to App Store Connect.'
+          type: boolean
+          required: false
+          default: false
 
 env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
@@ -23,6 +33,9 @@ jobs:
   publish-android:
     runs-on: windows-2022
     name: Android Build
+    # This job ends in a Google Play production deploy. A manually dispatched
+    # test build skips it by default; a tag push is unaffected.
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.iosOnly) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -406,6 +419,7 @@ jobs:
             src/IfpaMaui/bin/Release/${{ env.IOS_FRAMEWORK }}/**/*.ipa
 
       - name: Upload app to App Store Connect
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.skipStoreUpload) }}
         env:
           APP_STORE_CONNECT_USERNAME: ${{ secrets.APP_STORE_CONNECT_USERNAME }}
           APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
