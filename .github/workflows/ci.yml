@@ -126,8 +126,20 @@ jobs:
       # Download iOS platform + simulators if missing
       - name: Install iOS platform + simulator runtime
         run: |
-          xcodebuild -downloadPlatform iOS
-          xcrun simctl list runtimes   
+          # `xcodebuild -downloadPlatform` fails intermittently on the runners
+          # with "Unable to connect to simulator." and exit 70. The SDK needed
+          # to build ships with Xcode, so this is best effort. Fail only when
+          # the SDK is really missing.
+          for attempt in 1 2 3; do
+            if xcodebuild -downloadPlatform iOS; then break; fi
+            echo "downloadPlatform iOS attempt $attempt did not succeed"
+            sleep 15
+          done
+          xcrun simctl list runtimes || true
+          if ! xcodebuild -showsdks | grep -qi iphonesimulator; then
+            echo "No iOS simulator SDK is available"
+            exit 1
+          fi
 
       - name: Build RankWidgetExtension
         run: |

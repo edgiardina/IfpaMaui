@@ -268,8 +268,20 @@ jobs:
       # Download iOS platform + simulators if missing
       - name: Install iOS platform + simulator runtime
         run: |
-          xcodebuild -downloadPlatform iOS
-          xcrun simctl list runtimes                
+          # `xcodebuild -downloadPlatform` fails intermittently on the runners
+          # with "Unable to connect to simulator." and exit 70. The SDK needed
+          # to build ships with Xcode, so this is best effort. Fail only when
+          # the SDK is really missing.
+          for attempt in 1 2 3; do
+            if xcodebuild -downloadPlatform iOS; then break; fi
+            echo "downloadPlatform iOS attempt $attempt did not succeed"
+            sleep 15
+          done
+          xcrun simctl list runtimes || true
+          if ! xcodebuild -showsdks | grep -qi iphonesimulator; then
+            echo "No iOS simulator SDK is available"
+            exit 1
+          fi
 
       - name: Build RankWidgetExtension
         run: |
@@ -302,7 +314,18 @@ jobs:
 
       - name: Install watchOS platform
         if: env.HAS_WATCH == 'true'
-        run: xcodebuild -downloadPlatform watchOS
+        run: |
+          # Same flake as the iOS platform download. The watchOS SDK ships with
+          # Xcode, so only a missing SDK is fatal.
+          for attempt in 1 2 3; do
+            if xcodebuild -downloadPlatform watchOS; then break; fi
+            echo "downloadPlatform watchOS attempt $attempt did not succeed"
+            sleep 15
+          done
+          if ! xcodebuild -showsdks | grep -qi watchos; then
+            echo "No watchOS SDK is available"
+            exit 1
+          fi
 
       # Built unsigned on purpose. The watch app and its extension have
       # different bundle ids, so signing them here would mean threading two
