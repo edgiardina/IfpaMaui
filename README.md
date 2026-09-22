@@ -20,11 +20,13 @@
 - Calendar to view upcoming tournaments including integration to add tournaments to your device's calendar
 - Notifications for Rank Change, Tournament Results posted, and new IFPA blog posts
 - Widgets available for iOS and Android
-    - iOS Rank Widget
+    - iOS Rank Widget, in the small, medium and large sizes
 
-      <img src="https://github.com/user-attachments/assets/2fc13c82-ca57-4f68-881d-7d7804d60c10" width="300" />
+      <img src="docs/screenshots/ios-rank-widget.png" width="300" />
 
     - iOS Lock Screen Rank Widgets, in the circular, rectangular and inline sizes
+
+      <img src="docs/screenshots/ios-lock-screen-widgets.png" width="340" />
 
     - Android Rank Widget
 
@@ -43,6 +45,8 @@
   that number. Below it the app shows rank, points, efficiency, events played, finishes and peak rank.
 
     - Rank Complications for the watch face, in the circular, corner, rectangular and inline sizes
+
+  <img src="docs/screenshots/apple-watch.png" width="460" />
 
   The watch app needs the iPhone app. Choose your player in "My Stats" on the phone, and the phone
   sends it to the watch. The watch keeps its own copy, so the complication works when the phone is
