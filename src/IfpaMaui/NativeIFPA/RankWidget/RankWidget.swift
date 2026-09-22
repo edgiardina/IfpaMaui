@@ -9,38 +9,31 @@ import WidgetKit
 import SwiftUI
 import Intents
 
-struct Provider: IntentTimelineProvider {
+/// Shared timeline state and loading. The timeline protocol itself differs by
+/// platform, so the conformances live in the extensions below: iOS keeps the
+/// configurable intent, and watchOS uses a static configuration because the
+/// player arrives from the phone over WatchConnectivity and there is nothing
+/// to configure on a watch face.
+///
+/// On the watch the app-group suite is the watch's own container, written by
+/// the watch app when it receives the id from the phone. App groups are
+/// per-device, so this is deliberately not the phone's container.
+struct Provider {
 
     @AppStorage("PlayerId", store: UserDefaults(suiteName: "group.com.edgiardina.ifpa")) private var playerId = 2
 
-    func placeholder(in context: Context) -> IfpaPlayerEntry {
-        return IfpaPlayerEntry(date: Date())
-    }
-
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (IfpaPlayerEntry) -> ()) {
-        Task {
-            completion(await loadEntry())
-        }
-    }
-
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        Task {
-            let entry = await loadEntry()
-
-            // A single entry with `.atEnd` leaves the next refresh undefined, so a
-            // failed fetch can stay on screen until something else wakes the
-            // widget. Ask for a refresh an hour out instead.
-            let nextRefresh = Calendar.current.date(byAdding: .hour, value: 1, to: entry.date)
-                ?? entry.date.addingTimeInterval(3600)
-
-            completion(Timeline(entries: [entry], policy: .after(nextRefresh)))
-        }
+    /// A single entry with `.atEnd` leaves the next refresh undefined, so a
+    /// failed fetch can stay on screen until something else wakes the widget.
+    /// Ask for a refresh an hour out instead.
+    func nextRefresh(after date: Date) -> Date {
+        return Calendar.current.date(byAdding: .hour, value: 1, to: date)
+            ?? date.addingTimeInterval(3600)
     }
 
     /// Always produces an entry. A failed fetch yields an entry with no player,
     /// which the view renders as the "not available" placeholder rather than
     /// leaving the completion handler uncalled.
-    private func loadEntry() async -> IfpaPlayerEntry {
+    func loadEntry() async -> IfpaPlayerEntry {
         do {
             let player = try await IfpaPlayer.getPlayerById(from: playerId)
             let photoData = await fetchProfilePhotoData(from: player.firstPlayer?.profilePhoto)
@@ -60,6 +53,50 @@ struct Provider: IntentTimelineProvider {
         }
     }
 }
+
+#if os(watchOS)
+
+extension Provider: TimelineProvider {
+    func placeholder(in context: Context) -> IfpaPlayerEntry {
+        return IfpaPlayerEntry(date: Date())
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (IfpaPlayerEntry) -> ()) {
+        Task {
+            completion(await loadEntry())
+        }
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<IfpaPlayerEntry>) -> ()) {
+        Task {
+            let entry = await loadEntry()
+            completion(Timeline(entries: [entry], policy: .after(nextRefresh(after: entry.date))))
+        }
+    }
+}
+
+#else
+
+extension Provider: IntentTimelineProvider {
+    func placeholder(in context: Context) -> IfpaPlayerEntry {
+        return IfpaPlayerEntry(date: Date())
+    }
+
+    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (IfpaPlayerEntry) -> ()) {
+        Task {
+            completion(await loadEntry())
+        }
+    }
+
+    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        Task {
+            let entry = await loadEntry()
+            completion(Timeline(entries: [entry], policy: .after(nextRefresh(after: entry.date))))
+        }
+    }
+}
+
+#endif
 
 struct IfpaPlayerEntry: TimelineEntry {
     let date: Date
@@ -137,6 +174,14 @@ struct RankWidgetEntryView : View {
     /// only ~51pt across on its inscribed square, so the suffix costs width it
     /// does not have.
     private var rankNumberText: String { Stat.ungrouped(openStats?.currentRank) }
+
+    /// "IFPA #63251", or bare "IFPA" when the number is unknown. This is the
+    /// value a player reads out to staff at tournament registration, so the
+    /// compact families lead with it rather than with the player's own name.
+    private var numberLabel: String {
+        guard let number = playerRecord?.playerID, !number.isEmpty else { return "IFPA" }
+        return "IFPA #\(number)"
+    }
     private var pointsText: String { Stat.points(openStats?.currentPoints) }
 
     private var isAccessory: Bool {
@@ -170,6 +215,10 @@ struct RankWidgetEntryView : View {
                 rectangularLayout
             case .accessoryInline:
                 Text("IFPA \(rankText)")
+            #if os(watchOS)
+            case .accessoryCorner:
+                cornerLayout
+            #endif
             @unknown default:
                 smallLayout
             }
@@ -200,6 +249,11 @@ struct RankWidgetEntryView : View {
 
     // MARK: Brand mark
 
+    /// Wordmark plus the player's IFPA number. Players read that number aloud
+    /// to registration staff at events, so it is set for legibility rather
+    /// than as chrome: brighter than the wordmark, monospaced digits, and no
+    /// letter spacing. Sitting in the header keeps it at every system size
+    /// without taking room from the rank.
     private func brandMark(size: CGFloat) -> some View {
         HStack(spacing: 5) {
             Image("ifpa_icon")
@@ -210,6 +264,14 @@ struct RankWidgetEntryView : View {
                 .font(.system(.caption2, design: .rounded).weight(.semibold))
                 .tracking(1.1)
                 .foregroundStyle(Brand.tertiary)
+            if let number = playerRecord?.playerID, !number.isEmpty {
+                Text("#\(number)")
+                    .font(.system(.caption, design: .rounded).weight(.semibold))
+                    .monospacedDigit()
+                    .foregroundStyle(Brand.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
         }
         // No negative padding. The previous layout pulled the mark 8pt outside
         // the content area, where the widget's corner radius clipped it.
@@ -399,10 +461,27 @@ struct RankWidgetEntryView : View {
         .widgetAccentable()
     }
 
+    #if os(watchOS)
+    /// Watch-face corner. The curved label is where the IFPA number goes,
+    /// since that is the thing a player needs to read out at a registration
+    /// desk and the corner has no room for it inline.
+    private var cornerLayout: some View {
+        Text(rankNumberText)
+            .font(.system(.title3, design: .rounded).weight(.heavy))
+            .lineLimit(1)
+            .minimumScaleFactor(0.4)
+            .widgetLabel(numberLabel)
+    }
+    #endif
+
     private var rectangularLayout: some View {
         VStack(alignment: .center, spacing: 1) {
-            Text("IFPA \u{00B7} \(nameText)")
+            // The number, not the player's own name. This is the family with
+            // room for it, and reading it out at a registration desk is the
+            // reason it is on a wrist at all.
+            Text(numberLabel)
                 .font(.system(.caption2, design: .rounded).weight(.semibold))
+                .monospacedDigit()
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .widgetAccentable()
@@ -429,7 +508,7 @@ private struct LegacyContentMargins: ViewModifier {
     let isAccessory: Bool
 
     func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
+        if #available(iOS 17.0, watchOS 10.0, *) {
             content
         } else if isAccessory {
             content
@@ -449,7 +528,7 @@ private struct WidgetGround: ViewModifier {
     let family: WidgetFamily
 
     func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
+        if #available(iOS 17.0, watchOS 10.0, *) {
             if family == .accessoryCircular {
                 content.containerBackground(for: .widget) { AccessoryWidgetBackground() }
             } else if isAccessory {
@@ -481,6 +560,22 @@ struct RankWidget: Widget {
     let kind: String = "RankWidget"
 
     var body: some WidgetConfiguration {
+        #if os(watchOS)
+        // Static rather than intent-configured: the watch takes its player
+        // from the phone over WatchConnectivity, so a watch-face picker would
+        // have nothing to offer.
+        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+            RankWidgetEntryView(entry: entry)
+        }
+        .configurationDisplayName("IFPA Rank")
+        .description("Show Current My Stats Player's Rank")
+        .supportedFamilies([
+            .accessoryCircular,
+            .accessoryRectangular,
+            .accessoryInline,
+            .accessoryCorner,
+        ])
+        #else
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             RankWidgetEntryView(entry: entry)
         }
@@ -494,6 +589,7 @@ struct RankWidget: Widget {
             .accessoryRectangular,
             .accessoryInline,
         ])
+        #endif
     }
 }
 
