@@ -98,7 +98,10 @@ watch_settings = common.merge(
 )
 
 comp_settings = common.merge(
-  'PRODUCT_BUNDLE_IDENTIFIER' => 'com.edgiardina.ifpa.watchkitapp.complication',
+  # Apple rejects 'com.edgiardina.ifpa.watchkitapp.complication' as an
+  # unavailable identifier, so the suffix is rankcomplication. An app
+  # extension id must still be prefixed by its containing app's id.
+  'PRODUCT_BUNDLE_IDENTIFIER' => 'com.edgiardina.ifpa.watchkitapp.rankcomplication',
   'PRODUCT_NAME' => '$(TARGET_NAME)',
   'INFOPLIST_FILE' => 'RankComplication/Info.plist',
   'CODE_SIGN_ENTITLEMENTS' => 'RankComplication/RankComplication.entitlements',
