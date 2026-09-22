@@ -36,7 +36,11 @@ namespace Ifpa.ViewModels
                                                                           tournamentSearchSortOrder: TournamentSearchSortOrder.Descending,
                                                                           onlyWithResults: true);
 
-                    Tournaments = search.Tournaments.Where(n => n.Winner.PlayerId.HasValue).ToList();
+                    // A suppressed winner comes back with an empty player_id, which deserializes to a
+                    // null PlayerId, and a search with no matches omits the array entirely. Neither is
+                    // a reason to hide a tournament: the row renders "Suppressed Player" and navigation
+                    // uses the tournament id, not the winner.
+                    Tournaments = search.Tournaments?.ToList() ?? new List<Tournament>();
                 }
                 catch (Exception ex)
                 {
