@@ -90,6 +90,14 @@ struct ContentView: View {
     private var identity: some View {
         VStack(alignment: .leading, spacing: 1) {
             HStack(alignment: .firstTextBaseline, spacing: 5) {
+                // The same mark the iPhone widget shows. Inline, so it costs
+                // horizontal room the header has and no vertical room it does not.
+                Image("ifpa_icon")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 13, height: 13)
+                    .alignmentGuide(.firstTextBaseline) { $0[.bottom] - 1 }
+
                 Text("IFPA")
                     .font(.system(size: 10, weight: .semibold, design: .rounded))
                     .tracking(1.2)
@@ -127,6 +135,7 @@ struct ContentView: View {
                 .font(.system(.title2, design: .rounded).weight(.heavy))
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
+            Spacer(minLength: 4)
             Text("\(IfpaStat.points(stats?.currentPoints)) pts")
                 .font(.system(size: 12, design: .rounded))
                 .foregroundStyle(.secondary)
@@ -153,9 +162,9 @@ struct ContentView: View {
         return VStack(alignment: .leading, spacing: 4) {
             ForEach(Array(stride(from: 0, to: cells.count, by: 2)), id: \.self) { index in
                 HStack(alignment: .top, spacing: 10) {
-                    cell(cells[index])
+                    cell(cells[index], alignment: .leading)
                     if index + 1 < cells.count {
-                        cell(cells[index + 1])
+                        cell(cells[index + 1], alignment: .trailing)
                     }
                 }
             }
@@ -164,8 +173,8 @@ struct ContentView: View {
 
     /// Label above value, so a long ordinal like 18943rd has the full column
     /// width rather than competing with its own label on one line.
-    private func cell(_ stat: (String, String)) -> some View {
-        VStack(alignment: .leading, spacing: -3) {
+    private func cell(_ stat: (String, String), alignment: HorizontalAlignment) -> some View {
+        VStack(alignment: alignment, spacing: -3) {
             Text(stat.0)
                 .font(.system(size: 11))
                 .foregroundStyle(.secondary)
@@ -177,7 +186,8 @@ struct ContentView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity,
+               alignment: alignment == .trailing ? .trailing : .leading)
     }
 
     // MARK: Loading
