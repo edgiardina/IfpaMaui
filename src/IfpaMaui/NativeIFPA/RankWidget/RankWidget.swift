@@ -10,7 +10,7 @@ import SwiftUI
 import Intents
 
 struct Provider: IntentTimelineProvider {
-    
+
     @AppStorage("PlayerId", store: UserDefaults(suiteName: "group.com.edgiardina.ifpa")) private var playerId = 2
 
     func placeholder(in context: Context) -> IfpaPlayerEntry {
@@ -19,21 +19,34 @@ struct Provider: IntentTimelineProvider {
 
     func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (IfpaPlayerEntry) -> ()) {
         Task {
-            guard let player = try? await IfpaPlayer.getPlayerById(from: playerId) else { return }
-            let photoData = await fetchProfilePhotoData(from: player.player.first?.profilePhoto)
-            let entry = IfpaPlayerEntry(date: Date(), player: player, profilePhotoData: photoData)
-            completion(entry)
+            completion(await loadEntry())
         }
     }
 
     func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         Task {
-            guard let player = try? await IfpaPlayer.getPlayerById(from: playerId) else { return }
-            let photoData = await fetchProfilePhotoData(from: player.player.first?.profilePhoto)
-            let entry = IfpaPlayerEntry(date: Date(), player: player, profilePhotoData: photoData)
-            
-            let timeline = Timeline(entries: [entry], policy: .atEnd)
-            completion(timeline)
+            let entry = await loadEntry()
+
+            // A single entry with `.atEnd` leaves the next refresh undefined, so a
+            // failed fetch can stay on screen until something else wakes the
+            // widget. Ask for a refresh an hour out instead.
+            let nextRefresh = Calendar.current.date(byAdding: .hour, value: 1, to: entry.date)
+                ?? entry.date.addingTimeInterval(3600)
+
+            completion(Timeline(entries: [entry], policy: .after(nextRefresh)))
+        }
+    }
+
+    /// Always produces an entry. A failed fetch yields an entry with no player,
+    /// which the view renders as the "not available" placeholder rather than
+    /// leaving the completion handler uncalled.
+    private func loadEntry() async -> IfpaPlayerEntry {
+        do {
+            let player = try await IfpaPlayer.getPlayerById(from: playerId)
+            let photoData = await fetchProfilePhotoData(from: player.firstPlayer?.profilePhoto)
+            return IfpaPlayerEntry(date: Date(), player: player, profilePhotoData: photoData)
+        } catch {
+            return IfpaPlayerEntry(date: Date())
         }
     }
 
@@ -54,161 +67,415 @@ struct IfpaPlayerEntry: TimelineEntry {
     var profilePhotoData: Data?
 }
 
+// MARK: - Brand
+
+/// The widget commits to IFPA navy in both light and dark rather than adapting,
+/// the way most team and league widgets do. Text tints are derived for that
+/// ground, so they only need to hold contrast against one colour.
+private enum Brand {
+    static let ground = Color(hex: 0x062C53)
+    static let primary = Color.white
+    static let secondary = Color.white.opacity(0.68)
+    static let tertiary = Color.white.opacity(0.52)
+}
+
+// MARK: - Value formatting
+
+/// The API sends numbers as strings, unrounded: "1024.6100", "54.500". Format
+/// for display rather than printing the raw field.
+private enum Stat {
+    static let missing = "-"
+
+    /// "1024.6100" -> "1,024.61"
+    static func points(_ raw: String?) -> String {
+        guard let raw = raw, let value = Double(raw) else { return missing }
+        return value.formatted(.number.precision(.fractionLength(0...2)))
+    }
+
+    /// "54.500" -> "54.5%"
+    static func percent(_ raw: String?) -> String {
+        guard let raw = raw, let value = Double(raw) else { return missing }
+        return value.formatted(.number.precision(.fractionLength(0...1))) + "%"
+    }
+
+    /// "112" -> "112th". Missing or non-numeric yields the placeholder rather
+    /// than the old behaviour, which defaulted to 0 and displayed "0th".
+    static func ordinal(_ raw: String?) -> String {
+        guard let raw = raw, let value = Int(raw) else { return missing }
+        return value.ordinal
+    }
+
+    /// Plain integer, grouped: "338" -> "338", "12345" -> "12,345"
+    static func count(_ raw: String?) -> String {
+        guard let raw = raw, let value = Int(raw) else { return missing }
+        return value.formatted(.number)
+    }
+
+    /// Integer with no grouping separator, for places too narrow to spend
+    /// width on a comma.
+    static func ungrouped(_ raw: String?) -> String {
+        guard let raw = raw, let value = Int(raw) else { return missing }
+        return String(value)
+    }
+}
+
+// MARK: - Entry view
+
 struct RankWidgetEntryView : View {
     let entry: IfpaPlayerEntry
     @Environment(\.widgetFamily) var family
 
+    private var playerRecord: Player? { entry.player?.firstPlayer }
+
+    /// Open-system stats. Absent for a player who is not ranked in that system.
+    private var openStats: PlayerStatsOpen? { playerRecord?.openStats }
+
+    private var nameText: String { playerRecord?.displayName ?? "" }
+    private var rankText: String { Stat.ordinal(openStats?.currentRank) }
+
+    /// Bare rank with no ordinal suffix. The circular Lock Screen family is
+    /// only ~51pt across on its inscribed square, so the suffix costs width it
+    /// does not have.
+    private var rankNumberText: String { Stat.ungrouped(openStats?.currentRank) }
+    private var pointsText: String { Stat.points(openStats?.currentPoints) }
+
+    private var isAccessory: Bool {
+        switch family {
+        case .accessoryCircular, .accessoryRectangular, .accessoryInline: return true
+        default: return false
+        }
+    }
+
     var body: some View {
-        Group {
-            if #available(iOS 17.0, *) {
-                contentForFamily()
-                    .containerBackground(Color(hex: 0x062C53), for: .widget)
-            } else {
-                ZStack {
-                    ContainerRelativeShape()
-                        .fill(Color(hex: 0x062C53))
-                    contentForFamily()
+        layout
+            .modifier(LegacyContentMargins(isAccessory: isAccessory))
+            .modifier(WidgetGround(isAccessory: isAccessory, family: family))
+    }
+
+    @ViewBuilder
+    private var layout: some View {
+        if playerRecord == nil {
+            unavailable
+        } else {
+            switch family {
+            case .systemSmall:
+                smallLayout
+            case .systemMedium:
+                mediumLayout
+            case .systemLarge, .systemExtraLarge:
+                largeLayout
+            case .accessoryCircular:
+                circularLayout
+            case .accessoryRectangular:
+                rectangularLayout
+            case .accessoryInline:
+                Text("IFPA \(rankText)")
+            @unknown default:
+                smallLayout
+            }
+        }
+    }
+
+    // MARK: Unavailable
+
+    @ViewBuilder
+    private var unavailable: some View {
+        switch family {
+        case .accessoryInline:
+            Text("IFPA \(Stat.missing)")
+        case .accessoryCircular:
+            Text(Stat.missing)
+                .font(.system(.title3, design: .rounded).weight(.semibold))
+        case .accessoryRectangular:
+            Text("No IFPA player data")
+                .font(.system(.caption, design: .rounded))
+        default:
+            Text("Player data not available.")
+                .font(.system(.footnote, design: .rounded))
+                .foregroundStyle(Brand.secondary)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+    }
+
+    // MARK: Brand mark
+
+    private func brandMark(size: CGFloat) -> some View {
+        HStack(spacing: 5) {
+            Image("ifpa_icon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: size, height: size)
+            Text("IFPA")
+                .font(.system(.caption2, design: .rounded).weight(.semibold))
+                .tracking(1.1)
+                .foregroundStyle(Brand.tertiary)
+        }
+        // No negative padding. The previous layout pulled the mark 8pt outside
+        // the content area, where the widget's corner radius clipped it.
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    // MARK: Hero stack
+
+    /// Name, rank and points. `minimumScaleFactor` lets a long name shrink
+    /// instead of truncating, and the semantic fonts track Dynamic Type.
+    private func hero(nameFont: Font, rankFont: Font, pointsFont: Font, alignment: HorizontalAlignment) -> some View {
+        let textAlignment: TextAlignment = alignment == .center ? .center : .leading
+
+        return VStack(alignment: alignment, spacing: 3) {
+            Text(nameText.uppercased())
+                .font(nameFont.weight(.semibold))
+                .tracking(0.7)
+                .foregroundStyle(Brand.secondary)
+                // Two lines, so an unusually long name wraps and shrinks
+                // rather than being cut off mid-surname. Ordinary names still
+                // occupy one line.
+                .lineLimit(2)
+                .minimumScaleFactor(0.55)
+                .multilineTextAlignment(textAlignment)
+
+            Text(rankText)
+                .font(rankFont.weight(.heavy))
+                .foregroundStyle(Brand.primary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+
+            Text("\(pointsText) pts")
+                .font(pointsFont)
+                .foregroundStyle(Brand.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+    }
+
+    // MARK: Photo
+
+    private var photoImage: UIImage? {
+        guard let data = entry.profilePhotoData else { return nil }
+        return UIImage(data: data)
+    }
+
+    @ViewBuilder
+    private func photo(side: CGFloat) -> some View {
+        if let image = photoImage {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: side, height: side)
+                .clipShape(RoundedRectangle(cornerRadius: side * 0.18, style: .continuous))
+        }
+    }
+
+    // MARK: System layouts
+
+    /// Mark pinned top, hero centred in the space that remains, so the widget
+    /// no longer leaves its bottom third empty.
+    private var smallLayout: some View {
+        VStack(spacing: 0) {
+            brandMark(size: 14)
+            Spacer(minLength: 2)
+            hero(nameFont: .system(.caption2, design: .rounded),
+                 rankFont: .system(.largeTitle, design: .rounded),
+                 pointsFont: .system(.caption2, design: .rounded),
+                 alignment: .center)
+            Spacer(minLength: 2)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.vertical, 2)
+    }
+
+    private var mediumLayout: some View {
+        VStack(spacing: 0) {
+            brandMark(size: 14)
+            Spacer(minLength: 4)
+            // Two equal columns, each centring its own content. Giving the
+            // photo a fixed width instead made it hug the leading edge while
+            // the hero absorbed all the remaining space.
+            HStack(spacing: 12) {
+                if photoImage != nil {
+                    photo(side: 96)
+                        .frame(maxWidth: .infinity)
+                }
+                hero(nameFont: .system(.footnote, design: .rounded),
+                     rankFont: .system(.largeTitle, design: .rounded),
+                     pointsFont: .system(.footnote, design: .rounded),
+                     alignment: .center)
+                .frame(maxWidth: .infinity)
+            }
+            Spacer(minLength: 4)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.vertical, 2)
+    }
+
+    private var largeLayout: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            brandMark(size: 16)
+
+            Spacer(minLength: 8)
+
+            // Two equal columns, matching the medium layout.
+            HStack(spacing: 12) {
+                if photoImage != nil {
+                    photo(side: 112)
+                        .frame(maxWidth: .infinity)
+                }
+                hero(nameFont: .system(.subheadline, design: .rounded),
+                     rankFont: .system(.largeTitle, design: .rounded),
+                     pointsFont: .system(.subheadline, design: .rounded),
+                     alignment: .center)
+                .frame(maxWidth: .infinity)
+            }
+
+            Spacer(minLength: 12)
+
+            Divider().overlay(Brand.tertiary)
+
+            Spacer(minLength: 8)
+
+            statsGrid
+
+            Spacer(minLength: 4)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+    }
+
+    /// Two columns with a real gutter. The previous grid gave the columns no
+    /// horizontal spacing, so a value in the left column butted against the
+    /// label in the right one.
+    private var statsGrid: some View {
+        let stats: [(String, String)] = [
+            ("Eff. Pct", Stat.percent(openStats?.efficiencyValue)),
+            ("Eff. Rank", Stat.ordinal(openStats?.efficiencyRank)),
+            ("Events", Stat.count(openStats?.totalEventsAllTime)),
+            ("Best Finish", Stat.ordinal(openStats?.bestFinish)),
+            ("Avg Finish", Stat.ordinal(openStats?.averageFinish)),
+            ("Highest Rank", Stat.ordinal(openStats?.highestRank)),
+        ]
+
+        return LazyVGrid(
+            columns: [
+                GridItem(.flexible(), spacing: 18, alignment: .leading),
+                GridItem(.flexible(), spacing: 18, alignment: .leading),
+            ],
+            alignment: .leading,
+            spacing: 10
+        ) {
+            ForEach(stats, id: \.0) { stat in
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(stat.0)
+                        .font(.system(.caption, design: .rounded))
+                        .foregroundStyle(Brand.secondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                    Spacer(minLength: 4)
+                    Text(stat.1)
+                        .font(.system(.caption, design: .rounded).weight(.semibold))
+                        .foregroundStyle(Brand.primary)
+                        .monospacedDigit()
+                        .lineLimit(1)
                 }
             }
         }
     }
 
-    @ViewBuilder
-    private func contentForFamily() -> some View {
-        if entry.player == nil {
-            VStack {
-                Text("Player data not available.")
-                    .foregroundColor(.gray)
-                    .font(.headline)
-            }.padding()
+    // MARK: Lock Screen layouts
+    //
+    // Accessory widgets are rendered monochrome by the system, so these carry
+    // no colour of their own and rely on shape and weight instead.
+
+    private var circularLayout: some View {
+        VStack(spacing: -2) {
+            Text("IFPA")
+                .font(.system(size: 9, weight: .semibold, design: .rounded))
+                .tracking(0.6)
+            Text(rankNumberText)
+                .font(.system(.title2, design: .rounded).weight(.heavy))
+                .lineLimit(1)
+                .minimumScaleFactor(0.35)
+        }
+        .padding(.horizontal, 7)
+        .widgetAccentable()
+    }
+
+    private var rectangularLayout: some View {
+        VStack(alignment: .center, spacing: 1) {
+            Text("IFPA \u{00B7} \(nameText)")
+                .font(.system(.caption2, design: .rounded).weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .widgetAccentable()
+            Text(rankText)
+                .font(.system(.title3, design: .rounded).weight(.heavy))
+                .lineLimit(1)
+            Text("\(pointsText) pts")
+                .font(.system(.caption2, design: .rounded))
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+// MARK: - Content margins
+
+/// iOS 17 insets widget content automatically. iOS 16 does not, and the
+/// deployment target is 16.2, so supply the inset ourselves on the older OS
+/// only — otherwise content sits flush against the corner radius there, which
+/// clipped the profile photo and the brand mark.
+private struct LegacyContentMargins: ViewModifier {
+    let isAccessory: Bool
+
+    func body(content: Content) -> some View {
+        if #available(iOS 17.0, *) {
+            content
+        } else if isAccessory {
+            content
         } else {
-            switch family {
-            case .systemSmall:
-                ZStack(alignment: .topLeading) {
-                    Image("ifpa_icon")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .padding([.top, .leading], -8)
-                    VStack(alignment: .center, spacing: 4) {
-                        Spacer().frame(height: 16)
-                        Text("# \(entry.player?.player.first?.playerID ?? "-")")
-                            .foregroundColor(.gray)
-                            .font(.caption2)
-                        Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
-                            .foregroundColor(.gray)
-                            .font(.caption)
-                        Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
-                            .foregroundColor(.white)
-                            .bold()
-                            .font(.system(size: 28))
-                        Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
-                            .foregroundColor(.gray)
-                            .font(.caption2)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                    .padding([.top, .leading], 0)
+            content.padding(16)
+        }
+    }
+}
+
+// MARK: - Container background
+
+/// System families keep the navy ground. Accessory families must stay
+/// transparent so the Lock Screen shows through, and the circular family gets
+/// the standard translucent platter.
+private struct WidgetGround: ViewModifier {
+    let isAccessory: Bool
+    let family: WidgetFamily
+
+    func body(content: Content) -> some View {
+        if #available(iOS 17.0, *) {
+            if family == .accessoryCircular {
+                content.containerBackground(for: .widget) { AccessoryWidgetBackground() }
+            } else if isAccessory {
+                content.containerBackground(for: .widget) { Color.clear }
+            } else {
+                content.containerBackground(for: .widget) { Brand.ground }
+            }
+        } else {
+            if family == .accessoryCircular {
+                ZStack {
+                    AccessoryWidgetBackground()
+                    content
                 }
-            case .systemMedium:
-                ZStack(alignment: .topLeading) {
-                    Image("ifpa_icon")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .padding([.top, .leading], -8)
-                    HStack(alignment: .center, spacing: 16) {
-                        if let photoData = entry.profilePhotoData, let uiImage = UIImage(data: photoData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 120, height: 120)
-                                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                        }
-                        VStack(alignment: .center, spacing: 4) {
-                            Text("# \(entry.player?.player.first?.playerID ?? "-")")
-                                .foregroundColor(.gray)
-                                .font(.caption2)
-                            Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
-                                .foregroundColor(.gray)
-                                .font(.headline)
-                            Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
-                                .foregroundColor(.white)
-                                .bold()
-                                .font(.system(size: 36))
-                            Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                    .padding([.top, .leading], 0)
+            } else if isAccessory {
+                content
+            } else {
+                ZStack {
+                    ContainerRelativeShape().fill(Brand.ground)
+                    content
                 }
-            case .systemLarge:
-                ZStack(alignment: .topLeading) {
-                    Image("ifpa_icon")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .padding([.top, .leading], -8)
-                    VStack(alignment: .leading, spacing: 16) {
-                        // Top half: image, id, name, rank, points in a row
-                        HStack(alignment: .center, spacing: 16) {
-                            if let photoData = entry.profilePhotoData, let uiImage = UIImage(data: photoData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 120, height: 120)
-                                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                            }
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("# \(entry.player?.player.first?.playerID ?? "-")")
-                                    .foregroundColor(.gray)
-                                    .font(.caption2)
-                                Text("\(entry.player?.player.first?.firstName ?? "") \(entry.player?.player.first?.lastName ?? "")")
-                                    .foregroundColor(.gray)
-                                    .font(.title2)
-                                Text(Int(entry.player?.player.first?.playerStats.system.open.currentRank ?? "0")?.ordinal ?? "")
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .font(.system(size: 44))
-                                Text(entry.player?.player.first?.playerStats.system.open.currentPoints ?? "")
-                                    .foregroundColor(.gray)
-                                    .font(.title3)
-                            }
-                        }
-                        // Bottom half: two-column grid of stats/info
-                        let stats: [(String, String)] = [
-                            ("Eff. Prct", entry.player?.player.first?.playerStats.system.open.efficiencyValue ?? "-"),
-                            ("Eff. Rank", Int(entry.player?.player.first?.playerStats.system.open.efficiencyRank ?? "0")?.ordinal ?? "-"),
-                            ("Events Played", entry.player?.player.first?.playerStats.system.open.totalEventsAllTime ?? "-"),
-                            ("Best Finish", entry.player?.player.first?.playerStats.system.open.bestFinish ?? "-"),
-                            ("Avg Finish", entry.player?.player.first?.playerStats.system.open.averageFinish ?? "-"),
-                            ("Highest Rank", Int(entry.player?.player.first?.playerStats.system.open.highestRank ?? "0")?.ordinal ?? "-"),
-                        ]
-                        LazyVGrid(columns: [GridItem(.flexible(), alignment: .top), GridItem(.flexible(), alignment: .top)], spacing: 8) {
-                            ForEach(stats, id: \.0) { stat in
-                                HStack(alignment: .top) {
-                                    Text(stat.0)
-                                        .foregroundColor(.gray)
-                                        .font(.body)
-                                    Spacer(minLength: 8)
-                                    Text(stat.1)
-                                        .foregroundColor(.white)
-                                        .font(.body)
-                                }
-                            }
-                        }
-                    }
-                    .frame(maxHeight: .infinity, alignment: .top)
-                    .padding()
-                }
-            default:
-                // Fallback for other families
-                VStack {
-                    Text("IFPA Rank")
-                        .foregroundColor(.white)
-                }.padding()
             }
         }
     }
 }
+
+// MARK: - Widget
 
 struct RankWidget: Widget {
     let kind: String = "RankWidget"
@@ -217,19 +484,18 @@ struct RankWidget: Widget {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             RankWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("IFPA Rank") // Changed title
+        .configurationDisplayName("IFPA Rank")
         .description("Show Current My Stats Player's Rank")
+        .supportedFamilies([
+            .systemSmall,
+            .systemMedium,
+            .systemLarge,
+            .accessoryCircular,
+            .accessoryRectangular,
+            .accessoryInline,
+        ])
     }
 }
-
-/*
-struct RankWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        RankWidgetEntryView(entry: IfpaPlayerEntry(date: Date(), player: IfpaPlayer(player: <#[Player]#>)))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
-    }
-}*/
-
 
 extension Color {
     init(hex: UInt, alpha: Double = 1) {
