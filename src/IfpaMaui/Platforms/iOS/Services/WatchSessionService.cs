@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Foundation;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
@@ -77,6 +77,14 @@ namespace Ifpa.Platforms.Services
                 return;
             }
 
+            if (!session.WatchAppInstalled)
+            {
+                // Nothing can be delivered yet. WatchStateDidChange fires when
+                // the watch app is installed, and sends then.
+                logger?.LogDebug("Watch app is not installed, deferring send of player {PlayerId}", playerId);
+                return;
+            }
+
             var context = new NSDictionary<NSString, NSObject>(
                 new NSString(PlayerIdKey),
                 NSNumber.FromInt32(playerId));
@@ -90,6 +98,38 @@ namespace Ifpa.Platforms.Services
                 logger?.LogError("Could not send player {PlayerId} to the watch: {Error}",
                     playerId, error?.LocalizedDescription);
             }
+
+            // The application context waits for the watch app to run. A
+            // complication transfer additionally wakes the extension, so the
+            // face updates without the user opening the watch app. It has a
+            // daily budget, so it complements the context rather than
+            // replacing it.
+            if (session.ComplicationEnabled)
+            {
+                session.TransferCurrentComplicationUserInfo(context);
+                logger?.LogDebug("Also sent player {PlayerId} over the complication channel", playerId);
+            }
+        }
+
+        /// <summary>
+        /// Fires when the watch is paired or unpaired, when the watch app is
+        /// installed or removed, and when a complication is added to a face.
+        /// </summary>
+        /// <remarks>
+        /// This is the fix for a player that was already chosen before the
+        /// watch app existed. Installing the watch app raises neither
+        /// activation nor a player change, so without this the id was never
+        /// sent and the watch sat empty until the player was changed.
+        /// </remarks>
+        // The binding keeps the Session prefix here, unlike
+        // DidBecomeInactive and DidDeactivate.
+        public override void SessionWatchStateDidChange(WCSession session)
+        {
+            logger?.LogDebug(
+                "Watch state changed — paired={Paired}, appInstalled={Installed}, complication={Complication}",
+                session.Paired, session.WatchAppInstalled, session.ComplicationEnabled);
+
+            SendPlayerId();
         }
 
         public override void ActivationDidComplete(WCSession session,

@@ -34,6 +34,15 @@ public class AppDelegate : MauiUIApplicationDelegate
         return finished;
     }
 
+    // Covers the case where the watch app is installed while this app is in
+    // the background. WatchStateDidChange handles it when the app is running,
+    // and this catches the next launch or foreground either way.
+    public override void WillEnterForeground(UIApplication application)
+    {
+        base.WillEnterForeground(application);
+        watchSession?.SendPlayerId();
+    }
+
     //TODO: these methods should be deprecated in favor of ConfigureLifeCycleEvents stuff
     //https://github.com/dotnet/maui/issues/14671
     public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
