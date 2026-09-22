@@ -32,6 +32,7 @@
 		D76CA67B2A34241800336415 /* RankWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D76CA6662A34241100336415 /* RankWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D76CA6812A3699EB00336415 /* IfpaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6802A3699EB00336415 /* IfpaPlayer.swift */; };
 		E01F293E4D6954BF38BB9FFE /* IfpaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6802A3699EB00336415 /* IfpaPlayer.swift */; };
+		E96047486689BF9CCE7FC74F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77919AB622D625C113F6DCA6 /* Assets.xcassets */; };
 		F5BD1856AD62C2A4739D96C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7DEAC700E58F7FCBBB08272 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +97,7 @@
 		191011D5C4A1E70591BD0547 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		54E7ADD6AEBE3BD39FB0993E /* IFPAWatch.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = IFPAWatch.entitlements; sourceTree = "<group>"; };
 		66E18E86B3F8A5FF36188ADC /* RankComplicationBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RankComplicationBundle.swift; sourceTree = "<group>"; };
+		77919AB622D625C113F6DCA6 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		94D6CB6A5D2911F5C5B8E9B7 /* PhoneSessionReceiver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhoneSessionReceiver.swift; sourceTree = "<group>"; };
 		B8D641E32EB6E4A29864E444 /* IFPAWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IFPAWatchApp.swift; sourceTree = "<group>"; };
 		CB00630F0FCEF12B02DA9EF1 /* IFPAWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IFPAWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +187,7 @@
 				94D6CB6A5D2911F5C5B8E9B7 /* PhoneSessionReceiver.swift */,
 				FCAE12364D088664B787C7E2 /* Info.plist */,
 				54E7ADD6AEBE3BD39FB0993E /* IFPAWatch.entitlements */,
+				77919AB622D625C113F6DCA6 /* Assets.xcassets */,
 			);
 			name = IFPAWatch;
 			path = IFPAWatch;
@@ -463,6 +466,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E96047486689BF9CCE7FC74F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -619,7 +623,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = IFPAWatch/IFPAWatch.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KH5JKUPW2Q;
@@ -642,7 +646,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = IFPAWatch/IFPAWatch.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KH5JKUPW2Q;

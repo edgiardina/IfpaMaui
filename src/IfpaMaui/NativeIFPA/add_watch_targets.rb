@@ -1,5 +1,13 @@
-# Adds the watchOS app and its complication extension to IFPA.xcodeproj.
-# Idempotent: re-running is a no-op once the targets exist.
+# Adds (or repairs) the watchOS app and its complication extension in
+# IFPA.xcodeproj.
+#
+# Every step is find-or-create, so running this against a project that already
+# has the targets only fills in whatever is missing. That matters because the
+# project file is generated rather than hand-edited: if it is ever clobbered,
+# re-running this restores the exact same layout.
+#
+#   GEM_HOME=/opt/homebrew/Cellar/cocoapods/<version>/libexec \
+#     /opt/homebrew/opt/ruby/bin/ruby add_watch_targets.rb NativeIFPA/IFPA.xcodeproj
 
 require 'xcodeproj'
 
@@ -9,39 +17,57 @@ WATCH_DEPLOYMENT = '10.0'
 
 project = Xcodeproj::Project.open(PROJECT_PATH)
 
-if project.targets.any? { |t| t.name == 'IFPAWatch' }
-  puts 'IFPAWatch already present, nothing to do'
-  exit 0
-end
-
 def find_ref(project, basename)
   ref = project.files.find { |f| f.path && File.basename(f.path) == basename }
   abort "could not find file reference for #{basename}" if ref.nil?
   ref
 end
 
-main_group = project.main_group
-
-watch_app = project.new_target(:application, 'IFPAWatch', :watchos, WATCH_DEPLOYMENT)
-complication = project.new_target(:app_extension, 'RankComplication', :watchos, WATCH_DEPLOYMENT)
-
-# --- watch app sources -------------------------------------------------------
-watch_group = main_group.new_group('IFPAWatch', 'IFPAWatch')
-%w[IFPAWatchApp.swift ContentView.swift PhoneSessionReceiver.swift].each do |name|
-  watch_app.add_file_references([watch_group.new_reference(name)])
+def group_for(project, name, path)
+  project.main_group.find_subpath(name, true).tap { |g| g.set_path(path) }
 end
-watch_group.new_reference('Info.plist')
-watch_group.new_reference('IFPAWatch.entitlements')
+
+# Adds a reference to the group unless one with that path already exists.
+def ensure_ref(group, name)
+  group.files.find { |f| f.path == name } || group.new_reference(name)
+end
+
+def ensure_sources(target, refs)
+  existing = target.source_build_phase.files.map { |bf| bf.file_ref }
+  target.add_file_references(refs.reject { |r| existing.include?(r) })
+end
+
+def find_or_create_target(project, type, name, deployment)
+  project.targets.find { |t| t.name == name } ||
+    project.new_target(type, name, :watchos, deployment)
+end
+
+watch_app = find_or_create_target(project, :application, 'IFPAWatch', WATCH_DEPLOYMENT)
+complication = find_or_create_target(project, :app_extension, 'RankComplication', WATCH_DEPLOYMENT)
+
+# --- watch app sources and resources ----------------------------------------
+watch_group = group_for(project, 'IFPAWatch', 'IFPAWatch')
+watch_sources = %w[IFPAWatchApp.swift ContentView.swift PhoneSessionReceiver.swift]
+ensure_sources(watch_app, watch_sources.map { |n| ensure_ref(watch_group, n) })
+ensure_ref(watch_group, 'Info.plist')
+ensure_ref(watch_group, 'IFPAWatch.entitlements')
+
+# The app icon is the IFPA mark, rasterised from the same appicon.svg the MAUI
+# app uses, on the #062C53 the csproj declares for MauiIcon.
+assets = ensure_ref(watch_group, 'Assets.xcassets')
+unless watch_app.resources_build_phase.files.map(&:file_ref).include?(assets)
+  watch_app.resources_build_phase.add_file_reference(assets, true)
+end
 
 # --- complication sources ----------------------------------------------------
 # The model and the views are the SAME file references the iOS extension uses,
 # so there is one copy of that code, compiled twice.
-comp_group = main_group.new_group('RankComplication', 'RankComplication')
-comp_bundle = comp_group.new_reference('RankComplicationBundle.swift')
-comp_group.new_reference('Info.plist')
-comp_group.new_reference('RankComplication.entitlements')
+comp_group = group_for(project, 'RankComplication', 'RankComplication')
+comp_bundle = ensure_ref(comp_group, 'RankComplicationBundle.swift')
+ensure_ref(comp_group, 'Info.plist')
+ensure_ref(comp_group, 'RankComplication.entitlements')
 
-complication.add_file_references([
+ensure_sources(complication, [
   find_ref(project, 'IfpaPlayer.swift'),
   find_ref(project, 'RankWidget.swift'),
   comp_bundle
@@ -66,6 +92,8 @@ watch_settings = common.merge(
   'INFOPLIST_FILE' => 'IFPAWatch/Info.plist',
   'CODE_SIGN_ENTITLEMENTS' => 'IFPAWatch/IFPAWatch.entitlements',
   'INFOPLIST_KEY_CFBundleDisplayName' => 'IFPA',
+  'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
+  'ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME' => '',
   'SKIP_INSTALL' => 'NO'
 )
 
@@ -87,14 +115,18 @@ complication.build_configurations.each do |config|
 end
 
 # --- embed the complication inside the watch app -----------------------------
-watch_app.add_dependency(complication)
-embed = watch_app.new_copy_files_build_phase('Embed Foundation Extensions')
+unless watch_app.dependencies.any? { |d| d.target == complication }
+  watch_app.add_dependency(complication)
+end
+
+embed = watch_app.copy_files_build_phases.find { |p| p.name == 'Embed Foundation Extensions' } ||
+        watch_app.new_copy_files_build_phase('Embed Foundation Extensions')
 embed.symbol_dst_subfolder_spec = :plug_ins
 embed.add_file_reference(complication.product_reference, true)
 
 project.save
 
-puts 'created targets:'
+puts 'targets:'
 project.targets.each do |t|
   puts "  #{t.name} (#{t.product_type.to_s.split('.').last})"
 end
