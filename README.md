@@ -4,7 +4,7 @@
 
 ### A cross-platform mobile app for the International Flipper Pinball Association's rankings
 
-[TiltForums Discussion Thread](http://tiltforums.com/t/ifpa-app-now-available-on-the-app-store)
+[Archived TiltForums Discussion Thread](https://tiltforums.com/t/ifpa-mobile-app-available-on-android-and-ios-community-discussion-bug-reporting-etc/4543/)
 
 
 [![appstore](https://github-production-user-asset-6210df.s3.amazonaws.com/3627193/262177214-a3733780-6e43-4f75-aa5f-dd48750fd375.svg)](https://apps.apple.com/us/app/ifpa-companion/id1441736303?itsct=apps_box_badge&amp;itscg=30200)
