@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E13ACCB126BD7DD973264CB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191011D5C4A1E70591BD0547 /* ContentView.swift */; };
+		60B1AB4E3E94F40DA9D76F20 /* RankComplicationBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E18E86B3F8A5FF36188ADC /* RankComplicationBundle.swift */; };
+		6D336EF1F02647F7BB8FE4DA /* RankWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6712A34241200336415 /* RankWidget.swift */; };
+		70756F5E0F13C83728458381 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7DEAC700E58F7FCBBB08272 /* Foundation.framework */; };
+		86EDD04C279F4614A465C341 /* PhoneSessionReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D6CB6A5D2911F5C5B8E9B7 /* PhoneSessionReceiver.swift */; };
+		D4E5E5F3DA724951A371FB97 /* IFPAWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D641E32EB6E4A29864E444 /* IFPAWatchApp.swift */; };
+		D6412BB79925B9F45E3F82D8 /* RankComplication.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0F950233A50A5DB19BF2DA29 /* RankComplication.appex */; };
 		D76CA6392A34202C00336415 /* NativeIFPAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6382A34202C00336415 /* NativeIFPAApp.swift */; };
 		D76CA63B2A34202C00336415 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA63A2A34202C00336415 /* ContentView.swift */; };
 		D76CA63D2A34202F00336415 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D76CA63C2A34202F00336415 /* Assets.xcassets */; };
@@ -24,9 +31,18 @@
 		D76CA6782A34241800336415 /* RankWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6732A34241200336415 /* RankWidget.intentdefinition */; };
 		D76CA67B2A34241800336415 /* RankWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D76CA6662A34241100336415 /* RankWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D76CA6812A3699EB00336415 /* IfpaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6802A3699EB00336415 /* IfpaPlayer.swift */; };
+		E01F293E4D6954BF38BB9FFE /* IfpaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6802A3699EB00336415 /* IfpaPlayer.swift */; };
+		F5BD1856AD62C2A4739D96C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7DEAC700E58F7FCBBB08272 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BF9AD4929087D44CBDD3FCB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D76CA62D2A34202C00336415 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EDEB6E822127A1A992EC1F6;
+			remoteInfo = RankComplication;
+		};
 		D76CA6462A34202F00336415 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D76CA62D2A34202C00336415 /* Project object */;
@@ -51,6 +67,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		3D1D7A781ACB52FEDEDA5B2D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D6412BB79925B9F45E3F82D8 /* RankComplication.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D76CA67F2A34241800336415 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -65,6 +92,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0F950233A50A5DB19BF2DA29 /* RankComplication.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RankComplication.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		191011D5C4A1E70591BD0547 /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		54E7ADD6AEBE3BD39FB0993E /* IFPAWatch.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = IFPAWatch.entitlements; sourceTree = "<group>"; };
+		66E18E86B3F8A5FF36188ADC /* RankComplicationBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RankComplicationBundle.swift; sourceTree = "<group>"; };
+		94D6CB6A5D2911F5C5B8E9B7 /* PhoneSessionReceiver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhoneSessionReceiver.swift; sourceTree = "<group>"; };
+		B8D641E32EB6E4A29864E444 /* IFPAWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IFPAWatchApp.swift; sourceTree = "<group>"; };
+		CB00630F0FCEF12B02DA9EF1 /* IFPAWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IFPAWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD9CCBDCEA478D33993C7006 /* RankComplication.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = RankComplication.entitlements; sourceTree = "<group>"; };
 		D76CA6352A34202C00336415 /* IFPA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IFPA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D76CA6382A34202C00336415 /* NativeIFPAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeIFPAApp.swift; sourceTree = "<group>"; };
 		D76CA63A2A34202C00336415 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,9 +122,20 @@
 		D76CA6802A3699EB00336415 /* IfpaPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IfpaPlayer.swift; sourceTree = "<group>"; };
 		D76CA6822A3BEB2100336415 /* RankWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RankWidgetExtension.entitlements; sourceTree = "<group>"; };
 		D76CA6832A3C0D5600336415 /* NativeIFPA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NativeIFPA.entitlements; sourceTree = "<group>"; };
+		D7DEAC700E58F7FCBBB08272 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS11.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		F3F1A336CB8EB8B0167492A5 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FCAE12364D088664B787C7E2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		041EE6272C47B070941318DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				70756F5E0F13C83728458381 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D76CA6322A34202C00336415 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -120,9 +166,41 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D7F7CCC213204207146BE1E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5BD1856AD62C2A4739D96C8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		946098A6613572FF56E68E48 /* IFPAWatch */ = {
+			isa = PBXGroup;
+			children = (
+				B8D641E32EB6E4A29864E444 /* IFPAWatchApp.swift */,
+				191011D5C4A1E70591BD0547 /* ContentView.swift */,
+				94D6CB6A5D2911F5C5B8E9B7 /* PhoneSessionReceiver.swift */,
+				FCAE12364D088664B787C7E2 /* Info.plist */,
+				54E7ADD6AEBE3BD39FB0993E /* IFPAWatch.entitlements */,
+			);
+			name = IFPAWatch;
+			path = IFPAWatch;
+			sourceTree = "<group>";
+		};
+		C9F38B32226FE8C185D240BC /* RankComplication */ = {
+			isa = PBXGroup;
+			children = (
+				66E18E86B3F8A5FF36188ADC /* RankComplicationBundle.swift */,
+				F3F1A336CB8EB8B0167492A5 /* Info.plist */,
+				CD9CCBDCEA478D33993C7006 /* RankComplication.entitlements */,
+			);
+			name = RankComplication;
+			path = RankComplication;
+			sourceTree = "<group>";
+		};
 		D76CA62C2A34202C00336415 = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +211,8 @@
 				D76CA66C2A34241200336415 /* RankWidget */,
 				D76CA6672A34241100336415 /* Frameworks */,
 				D76CA6362A34202C00336415 /* Products */,
+				946098A6613572FF56E68E48 /* IFPAWatch */,
+				C9F38B32226FE8C185D240BC /* RankComplication */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,6 +223,8 @@
 				D76CA6452A34202F00336415 /* IFPATests.xctest */,
 				D76CA64F2A34202F00336415 /* IFPAUITests.xctest */,
 				D76CA6662A34241100336415 /* RankWidgetExtension.appex */,
+				CB00630F0FCEF12B02DA9EF1 /* IFPAWatch.app */,
+				0F950233A50A5DB19BF2DA29 /* RankComplication.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,6 +271,7 @@
 			children = (
 				D76CA6682A34241100336415 /* WidgetKit.framework */,
 				D76CA66A2A34241200336415 /* SwiftUI.framework */,
+				EB3DAF347BF8E5C2493601A5 /* watchOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -207,9 +290,53 @@
 			path = RankWidget;
 			sourceTree = "<group>";
 		};
+		EB3DAF347BF8E5C2493601A5 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				D7DEAC700E58F7FCBBB08272 /* Foundation.framework */,
+			);
+			name = watchOS;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1EDEB6E822127A1A992EC1F6 /* RankComplication */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE1F709F5216D8F0E8BD99C9 /* Build configuration list for PBXNativeTarget "RankComplication" */;
+			buildPhases = (
+				471B1079F36ECB6C409CC9E0 /* Sources */,
+				041EE6272C47B070941318DF /* Frameworks */,
+				DA26C1596AF148A4A33FC356 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RankComplication;
+			productName = RankComplication;
+			productReference = 0F950233A50A5DB19BF2DA29 /* RankComplication.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		AA3909E582047EA1E8102990 /* IFPAWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60293E9BDD559255E40AA012 /* Build configuration list for PBXNativeTarget "IFPAWatch" */;
+			buildPhases = (
+				FA70E8B5E43F2214A48781B6 /* Sources */,
+				D7F7CCC213204207146BE1E3 /* Frameworks */,
+				193E8DFE4CB46DE3B80117D1 /* Resources */,
+				3D1D7A781ACB52FEDEDA5B2D /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A558710D72C3F523CC903D6C /* PBXTargetDependency */,
+			);
+			name = IFPAWatch;
+			productName = IFPAWatch;
+			productReference = CB00630F0FCEF12B02DA9EF1 /* IFPAWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D76CA6342A34202C00336415 /* IFPA */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D76CA6592A34202F00336415 /* Build configuration list for PBXNativeTarget "IFPA" */;
@@ -325,11 +452,20 @@
 				D76CA6442A34202F00336415 /* IFPATests */,
 				D76CA64E2A34202F00336415 /* IFPAUITests */,
 				D76CA6652A34241100336415 /* RankWidgetExtension */,
+				AA3909E582047EA1E8102990 /* IFPAWatch */,
+				1EDEB6E822127A1A992EC1F6 /* RankComplication */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		193E8DFE4CB46DE3B80117D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D76CA6332A34202C00336415 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -361,9 +497,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA26C1596AF148A4A33FC356 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		471B1079F36ECB6C409CC9E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E01F293E4D6954BF38BB9FFE /* IfpaPlayer.swift in Sources */,
+				6D336EF1F02647F7BB8FE4DA /* RankWidget.swift in Sources */,
+				60B1AB4E3E94F40DA9D76F20 /* RankComplicationBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D76CA6312A34202C00336415 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -403,9 +556,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FA70E8B5E43F2214A48781B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4E5E5F3DA724951A371FB97 /* IFPAWatchApp.swift in Sources */,
+				2E13ACCB126BD7DD973264CB /* ContentView.swift in Sources */,
+				86EDD04C279F4614A465C341 /* PhoneSessionReceiver.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A558710D72C3F523CC903D6C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RankComplication;
+			target = 1EDEB6E822127A1A992EC1F6 /* RankComplication */;
+			targetProxy = BF9AD4929087D44CBDD3FCB0 /* PBXContainerItemProxy */;
+		};
 		D76CA6472A34202F00336415 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D76CA6342A34202C00336415 /* IFPA */;
@@ -424,6 +593,96 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		19839B1D51B532FED2F8C3EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RankComplication/RankComplication.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KH5JKUPW2Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RankComplication/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "IFPA Rank";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edgiardina.ifpa.watchkitapp.complication;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		8563EC40C4B7B97087876B5E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IFPAWatch/IFPAWatch.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KH5JKUPW2Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IFPAWatch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = IFPA;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edgiardina.ifpa.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		8D0BBE95DF55908B9EF2F652 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = IFPAWatch/IFPAWatch.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KH5JKUPW2Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IFPAWatch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = IFPA;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edgiardina.ifpa.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		CBCC97DA31A63D37B7CD369E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RankComplication/RankComplication.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KH5JKUPW2Q;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RankComplication/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "IFPA Rank";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edgiardina.ifpa.watchkitapp.complication;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
 		D76CA6572A34202F00336415 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -731,6 +990,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		60293E9BDD559255E40AA012 /* Build configuration list for PBXNativeTarget "IFPAWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D0BBE95DF55908B9EF2F652 /* Release */,
+				8563EC40C4B7B97087876B5E /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE1F709F5216D8F0E8BD99C9 /* Build configuration list for PBXNativeTarget "RankComplication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19839B1D51B532FED2F8C3EF /* Release */,
+				CBCC97DA31A63D37B7CD369E /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D76CA6302A34202C00336415 /* Build configuration list for PBXProject "IFPA" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
