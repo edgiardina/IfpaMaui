@@ -1,4 +1,4 @@
-//
+﻿//
 //  ContentView.swift
 //  IFPAWatch
 //
@@ -16,16 +16,22 @@ struct ContentView: View {
     @State private var isLoading = false
     @State private var failed = false
 
+    /// watchOS gives a ScrollView no side inset of its own, so values ended up
+    /// against the bezel where the curved display clips them.
+    private let sideInset: CGFloat = 8
+
     var body: some View {
         ScrollView {
             if session.playerId == 0 {
                 noPlayer
             } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    numberHeader
-                    body(for: player)
+                VStack(alignment: .leading, spacing: 5) {
+                    identity
+                    content(for: player)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, sideInset)
+                .padding(.bottom, 6)
             }
         }
         .task(id: session.playerId) {
@@ -36,9 +42,11 @@ struct ContentView: View {
     // MARK: States
 
     @ViewBuilder
-    private func body(for player: Player?) -> some View {
+    private func content(for player: Player?) -> some View {
         if let player = player {
-            details(for: player)
+            rank(for: player)
+            Divider().padding(.vertical, -1)
+            stats(for: player)
         } else if isLoading {
             ProgressView()
                 .frame(maxWidth: .infinity)
@@ -77,77 +85,99 @@ struct ContentView: View {
 
     // MARK: Pieces
 
-    /// One line, so it reads the way a player says it at a desk and leaves the
-    /// rank detail below the fold less often.
-    private var numberHeader: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 5) {
-            Text("IFPA")
-                .font(.system(size: 10, weight: .semibold, design: .rounded))
-                .tracking(1.2)
-                .foregroundStyle(.secondary)
-
-            // `verbatim:` on purpose. Text's LocalizedStringKey initialiser
-            // locale-formats an interpolated Int, which turned IFPA number
-            // 63251 into "63,251". It is an identifier, not a quantity, and a
-            // player has to read the digits aloud.
-            Text(verbatim: "#\(session.playerId)")
-                .font(.system(.title3, design: .rounded).weight(.heavy))
-                .monospacedDigit()
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
-        }
-    }
-
-    @ViewBuilder
-    private func details(for player: Player) -> some View {
-        let stats = player.openStats
-
-        VStack(alignment: .leading, spacing: 8) {
-            if !player.displayName.isEmpty {
-                Text(player.displayName.uppercased())
-                    .font(.system(.caption2, design: .rounded).weight(.semibold))
-                    .tracking(0.6)
+    /// Number and name. One line for the number so it reads the way a player
+    /// says it out loud.
+    private var identity: some View {
+        VStack(alignment: .leading, spacing: 1) {
+            HStack(alignment: .firstTextBaseline, spacing: 5) {
+                Text("IFPA")
+                    .font(.system(size: 10, weight: .semibold, design: .rounded))
+                    .tracking(1.2)
                     .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.7)
-            }
 
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text(IfpaStat.ordinal(stats?.currentRank))
-                    .font(.system(.title, design: .rounded).weight(.heavy))
+                // `verbatim:` on purpose. Text's LocalizedStringKey initialiser
+                // locale-formats an interpolated Int, which turned IFPA number
+                // 63251 into "63,251". It is an identifier, not a quantity, and
+                // a player has to read the digits aloud.
+                Text(verbatim: "#\(session.playerId)")
+                    .font(.system(.title3, design: .rounded).weight(.heavy))
+                    .monospacedDigit()
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
-                Text("\(IfpaStat.points(stats?.currentPoints)) pts")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
             }
 
-            Divider()
-
-            // The same six figures the large iPhone widget shows.
-            row("Eff. Pct", IfpaStat.percent(stats?.efficiencyValue))
-            row("Eff. Rank", IfpaStat.ordinal(stats?.efficiencyRank))
-            row("Events", IfpaStat.count(stats?.totalEventsAllTime))
-            row("Best Finish", IfpaStat.ordinal(stats?.bestFinish))
-            row("Avg Finish", IfpaStat.ordinal(stats?.averageFinish))
-            row("Highest Rank", IfpaStat.ordinal(stats?.highestRank))
+            if let name = player?.displayName, !name.isEmpty {
+                Text(name.uppercased())
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .tracking(0.5)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+            }
         }
     }
 
-    private func row(_ label: String, _ value: String) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 6) {
-            Text(label)
-                .font(.caption2)
+    /// Rank and points share a line. That was cramped while the stats were six
+    /// full-width rows, but the two-column grid leaves the rank only about half
+    /// the width, and reclaiming the line is what lets every stat fit on screen.
+    private func rank(for player: Player) -> some View {
+        let stats = player.openStats
+        return HStack(alignment: .firstTextBaseline, spacing: 7) {
+            Text(IfpaStat.ordinal(stats?.currentRank))
+                .font(.system(.title2, design: .rounded).weight(.heavy))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+            Text("\(IfpaStat.points(stats?.currentPoints)) pts")
+                .font(.system(size: 12, design: .rounded))
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
-            Spacer(minLength: 6)
-            Text(value)
-                .font(.system(.caption, design: .rounded).weight(.semibold))
+                .minimumScaleFactor(0.7)
+        }
+    }
+
+    /// The same six figures the large iPhone widget shows, paired into two
+    /// columns like that widget's grid. Six single rows overflowed the screen
+    /// and left the last of them sliced by the bottom edge; three paired rows
+    /// fit without scrolling.
+    private func stats(for player: Player) -> some View {
+        let stats = player.openStats
+        let cells: [(String, String)] = [
+            ("Efficiency", IfpaStat.percent(stats?.efficiencyValue)),
+            ("Eff. rank", IfpaStat.ordinal(stats?.efficiencyRank)),
+            ("Events", IfpaStat.count(stats?.totalEventsAllTime)),
+            ("Best", IfpaStat.ordinal(stats?.bestFinish)),
+            ("Average", IfpaStat.ordinal(stats?.averageFinish)),
+            ("Peak rank", IfpaStat.ordinal(stats?.highestRank)),
+        ]
+
+        return VStack(alignment: .leading, spacing: 4) {
+            ForEach(Array(stride(from: 0, to: cells.count, by: 2)), id: \.self) { index in
+                HStack(alignment: .top, spacing: 10) {
+                    cell(cells[index])
+                    if index + 1 < cells.count {
+                        cell(cells[index + 1])
+                    }
+                }
+            }
+        }
+    }
+
+    /// Label above value, so a long ordinal like 18943rd has the full column
+    /// width rather than competing with its own label on one line.
+    private func cell(_ stat: (String, String)) -> some View {
+        VStack(alignment: .leading, spacing: -3) {
+            Text(stat.0)
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+            Text(stat.1)
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
                 .monospacedDigit()
                 .lineLimit(1)
+                .minimumScaleFactor(0.6)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     // MARK: Loading
