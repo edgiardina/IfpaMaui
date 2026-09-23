@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rank widget, large: the medium layout and six more statistics. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background">
+    <LinearLayout android:id="@+id/content" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:padding="16dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ifpa_logo"
+                android:importantForAccessibility="no" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5dp"
+                android:text="IFPA" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.1"
+                android:textColor="@color/widgetOnSurfaceVariant" />
+            <TextView android:id="@+id/ifpaNumber" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginStart="5dp" android:maxLines="1" android:textSize="12sp" android:textStyle="bold"
+                android:fontFeatureSettings="tnum" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <ImageView android:id="@+id/profilePhoto" android:layout_width="104dp" android:layout_height="104dp"
+                android:layout_marginEnd="16dp" android:scaleType="centerCrop" android:importantForAccessibility="no" />
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:orientation="vertical" android:gravity="start">
+                <TextView android:id="@+id/playerName" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:maxLines="2" android:ellipsize="end" android:gravity="start" android:textAllCaps="true"
+                    android:textSize="13sp" android:textStyle="bold" android:letterSpacing="0.06"
+                    android:textColor="@color/widgetOnSurfaceVariant" />
+                <TextView android:id="@+id/rank" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:maxLines="1" android:includeFontPadding="false" android:fontFamily="sans-serif-black"
+                    android:textSize="40sp" android:textColor="@color/widgetOnSurface" />
+                <TextView android:id="@+id/points" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:maxLines="1" android:textSize="14sp" android:textColor="@color/widgetOnSurfaceVariant" />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- A FrameLayout, because RemoteViews does not inflate a plain View. -->
+        <FrameLayout android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginBottom="12dp"
+            android:background="@color/widgetOutline" />
+        
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="0dp" android:orientation="horizontal">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="0dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:maxLines="1" android:text="Eff. Pct" android:textSize="12sp"
+                        android:textColor="@color/widgetOnSurfaceVariant" />
+                    <TextView android:id="@+id/statEffPct" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="1" android:textSize="12sp" android:textStyle="bold" android:fontFeatureSettings="tnum"
+                        android:textColor="@color/widgetOnSurface" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="18dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:maxLines="1" android:text="Eff. Rank" android:textSize="12sp"
+                        android:textColor="@color/widgetOnSurfaceVariant" />
+                    <TextView android:id="@+id/statEffRank" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="1" android:textSize="12sp" android:textStyle="bold" android:fontFeatureSettings="tnum"
+                        android:textColor="@color/widgetOnSurface" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:orientation="horizontal">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="0dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:maxLines="1" android:text="Events" android:textSize="12sp"
+                        android:textColor="@color/widgetOnSurfaceVariant" />
+                    <TextView android:id="@+id/statEvents" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="1" android:textSize="12sp" android:textStyle="bold" android:fontFeatureSettings="tnum"
+                        android:textColor="@color/widgetOnSurface" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="18dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:maxLines="1" android:text="Best Finish" android:textSize="12sp"
+                        android:textColor="@color/widgetOnSurfaceVariant" />
+                    <TextView android:id="@+id/statBestFinish" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="1" android:textSize="12sp" android:textStyle="bold" android:fontFeatureSettings="tnum"
+                        android:textColor="@color/widgetOnSurface" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:orientation="horizontal">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="0dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:maxLines="1" android:text="Avg Finish" android:textSize="12sp"
+                        android:textColor="@color/widgetOnSurfaceVariant" />
+                    <TextView android:id="@+id/statAvgFinish" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="1" android:textSize="12sp" android:textStyle="bold" android:fontFeatureSettings="tnum"
+                        android:textColor="@color/widgetOnSurface" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="18dp" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                        android:maxLines="1" android:text="Highest Rank" android:textSize="12sp"
+                        android:textColor="@color/widgetOnSurfaceVariant" />
+                    <TextView android:id="@+id/statHighestRank" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="1" android:textSize="12sp" android:textStyle="bold" android:fontFeatureSettings="tnum"
+                        android:textColor="@color/widgetOnSurface" />
+                </LinearLayout>
+            </LinearLayout>
+    </LinearLayout>
+    <TextView android:id="@+id/noPlayer" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:gravity="center" android:visibility="gone" android:textSize="13sp"
+        android:text="Choose a player in My Stats to see a rank here."
+        android:textColor="@color/widgetOnSurfaceVariant" />
+</FrameLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Corner radius of the widget background. Android 12 and later use the
+         launcher's own radius (values-v31). -->
+    <dimen name="widgetCornerRadius">16dp</dimen>
+</resources>

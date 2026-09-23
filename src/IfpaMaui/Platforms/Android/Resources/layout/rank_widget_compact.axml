@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rank widget, one row: the shape of the original 3x1 widget, so a widget
+     that is already on a Home Screen keeps working. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background">
+    <LinearLayout android:id="@+id/content" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="horizontal" android:padding="12dp">
+        <ImageView android:id="@+id/profilePhoto" android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_gravity="center_vertical" android:layout_marginEnd="12dp" android:scaleType="centerCrop"
+            android:importantForAccessibility="no" />
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+            android:layout_gravity="center_vertical" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:gravity="center_vertical">
+            <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ifpa_logo"
+                android:importantForAccessibility="no" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="5dp"
+                android:text="IFPA" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.1"
+                android:textColor="@color/widgetOnSurfaceVariant" />
+            <TextView android:id="@+id/ifpaNumber" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginStart="5dp" android:maxLines="1" android:textSize="12sp" android:textStyle="bold"
+                android:fontFeatureSettings="tnum" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+            <TextView android:id="@+id/playerName" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:maxLines="1" android:ellipsize="end" android:textSize="13sp" android:textStyle="bold"
+                android:textColor="@color/widgetOnSurfaceVariant" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" android:layout_marginStart="8dp" android:orientation="vertical"
+            android:gravity="end">
+            <TextView android:id="@+id/rank" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:maxLines="1" android:includeFontPadding="false" android:fontFamily="sans-serif-black"
+                android:textSize="24sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/points" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:maxLines="1" android:textSize="11sp" android:textColor="@color/widgetOnSurfaceVariant" />
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:id="@+id/noPlayer" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:gravity="center" android:visibility="gone" android:textSize="13sp"
+        android:text="Choose a player in My Stats to see a rank here."
+        android:textColor="@color/widgetOnSurfaceVariant" />
+</FrameLayout>
