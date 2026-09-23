@@ -87,7 +87,6 @@
                                  States="Medium,Large"
                                  CurrentState="Medium"
                                  Padding="10"
-                                 CornerRadius="10"
                                  BackgroundColor="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}">
             <bottomsheet:BottomSheetContent>
                 <bottomsheet:BottomSheetContent.ContentTemplate>
