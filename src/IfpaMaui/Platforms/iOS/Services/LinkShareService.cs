@@ -31,11 +31,13 @@ namespace Ifpa.Platforms.Services
                 Title = title,
             };
 
-            var image = await LoadImageAsync(imageUrl);
-            if (image != null)
+            if (!string.IsNullOrWhiteSpace(imageUrl))
             {
-                metadata.ImageProvider = new NSItemProvider(image);
-                metadata.IconProvider = new NSItemProvider(image);
+                // The sheet opens right away. iOS asks the providers for the image
+                // and shows it in the header when the download completes.
+                var image = new Lazy<Task<UIImage>>(() => LoadImageAsync(imageUrl));
+                metadata.ImageProvider = CreateImageProvider(image);
+                metadata.IconProvider = CreateImageProvider(image);
             }
 
             await MainThread.InvokeOnMainThreadAsync(() =>
@@ -61,6 +63,21 @@ namespace Ifpa.Platforms.Services
 
                 presenter.PresentViewController(activityController, true, null);
             });
+        }
+
+        static NSItemProvider CreateImageProvider(Lazy<Task<UIImage>> image)
+        {
+            var provider = new NSItemProvider();
+            provider.RegisterObject(new ObjCRuntime.Class(typeof(UIImage)), NSItemProviderRepresentationVisibility.All, completion =>
+            {
+                image.Value.ContinueWith(t =>
+                {
+                    var result = t.IsCompletedSuccessfully ? t.Result : null;
+                    completion(result, result == null ? new NSError(NSError.CocoaErrorDomain, 0) : null);
+                });
+                return null;
+            });
+            return provider;
         }
 
         async Task<UIImage> LoadImageAsync(string imageUrl)

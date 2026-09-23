@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Interfaces;
@@ -24,10 +25,13 @@ namespace Ifpa.ViewModels
 
         private readonly IPinballRankingApi UniversalPinballRankingApi;
 
+        private readonly ILinkShareService LinkShareService;
 
-        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, IPinballRankingApi pinballRankingApi, ILogger<CalendarDetailViewModel> logger) : base(logger)
+
+        public CalendarDetailViewModel(ICalendarStore calendarStore, IMap map, IPinballRankingApi pinballRankingApi, ILinkShareService linkShareService, ILogger<CalendarDetailViewModel> logger) : base(logger)
         {
             UniversalPinballRankingApi = pinballRankingApi;
+            LinkShareService = linkShareService;
             CalendarStore = calendarStore;
             Map = map;
         }
@@ -71,11 +75,10 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ShareTournament()
         {
-            await Share.RequestAsync(new ShareTextRequest
-            {
-                Uri = $"https://www.ifpapinball.com/tournaments/view.php?t={TournamentId}",
-                Title = Strings.CalendarDetailPage_SharePrompt
-            });
+            await LinkShareService.ShareLinkAsync(
+                $"https://www.ifpapinball.com/tournaments/view.php?t={TournamentId}",
+                Tournament?.TournamentName ?? Strings.CalendarDetailPage_SharePrompt,
+                null);
         }
 
         [RelayCommand]

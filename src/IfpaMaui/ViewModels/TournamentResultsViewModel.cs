@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Ifpa.Interfaces;
 using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Interfaces;
@@ -23,8 +24,11 @@ namespace Ifpa.ViewModels
 
         private readonly IPinballRankingApi PinballRankingApi;
 
-        public TournamentResultsViewModel(IPinballRankingApi pinballRankingApi, ILogger<TournamentResultsViewModel> logger) : base(logger)
+        private readonly ILinkShareService LinkShareService;
+
+        public TournamentResultsViewModel(IPinballRankingApi pinballRankingApi, ILinkShareService linkShareService, ILogger<TournamentResultsViewModel> logger) : base(logger)
         {
+            LinkShareService = linkShareService;
             Title = "Tournament Results";
             Results = new ObservableCollection<TournamentResult>();
             PinballRankingApi = pinballRankingApi;
@@ -64,11 +68,10 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ShareTournament()
         {
-            await Share.RequestAsync(new ShareTextRequest
-            {
-                Uri = $"https://www.ifpapinball.com/tournaments/view.php?t={TournamentId}",
-                Title = "Share Tournament Results"
-            });
+            await LinkShareService.ShareLinkAsync(
+                $"https://www.ifpapinball.com/tournaments/view.php?t={TournamentId}",
+                TournamentDetails?.TournamentName ?? "Share Tournament Results",
+                null);
         }
 
         [RelayCommand]
