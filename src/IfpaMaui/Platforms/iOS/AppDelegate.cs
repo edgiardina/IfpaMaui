@@ -1,6 +1,5 @@
 ﻿using CoreSpotlight;
 using Foundation;
-using Ifpa.Models;
 using Ifpa.Platforms.Services;
 using Microsoft.Extensions.Logging;
 using SQLitePCL;
@@ -31,8 +30,6 @@ public class AppDelegate : MauiUIApplicationDelegate
         var logger = IPlatformApplication.Current?.Services?.GetService<ILogger<WatchSessionService>>();
         watchSession = new WatchSessionService(logger);
         watchSession.Start();
-
-        Settings.MoveCalendarFilterToAppGroup();
 
         return finished;
     }

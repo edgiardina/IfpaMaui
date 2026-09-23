@@ -69,58 +69,49 @@ namespace Ifpa.Models
         // match CalendarFilter in the NativeIFPA project.
         public static string LastCalendarLocation
         {
-            get => GetFromAppGroup(nameof(LastCalendarLocation), "Chicago, Il");
+            get => Preferences.Default.Get(nameof(LastCalendarLocation), "Chicago, Il", groupName);
             set => Preferences.Default.Set(nameof(LastCalendarLocation), value, groupName);
         }
 
         public static int LastCalendarDistance
         {
-            get => GetFromAppGroup(nameof(LastCalendarDistance), 150);
+            get => Preferences.Default.Get(nameof(LastCalendarDistance), 150, groupName);
             set => Preferences.Default.Set(nameof(LastCalendarDistance), value, groupName);
         }
 
         public static string CalendarRankingSystem
         {
-            get => GetFromAppGroup(nameof(CalendarRankingSystem), "All");
+            get => Preferences.Default.Get(nameof(CalendarRankingSystem), "All", groupName);
             set => Preferences.Default.Set(nameof(CalendarRankingSystem), value, groupName);
         }
 
         public static bool CalendarShowLeagues
         {
-            get => GetFromAppGroup(nameof(CalendarShowLeagues), false);
+            get => Preferences.Default.Get(nameof(CalendarShowLeagues), false, groupName);
             set => Preferences.Default.Set(nameof(CalendarShowLeagues), value, groupName);
         }
 
         /// <summary>
-        /// Moves a calendar filter saved by an earlier version into the app
-        /// group. Call at launch, so the widget has the filter before the
-        /// Calendar tab is opened.
+        /// Earlier versions kept the calendar filter in the app's own store.
+        /// Move it to the app group once, and remove the old copy. Runs at
+        /// every process start, so the filter has moved before the Calendar
+        /// tab, the notification job or the widget reads it.
         /// </summary>
         public static void MoveCalendarFilterToAppGroup()
         {
-            MoveToAppGroup(nameof(LastCalendarLocation), "Chicago, Il");
-            MoveToAppGroup(nameof(LastCalendarDistance), 150);
-            MoveToAppGroup(nameof(CalendarRankingSystem), "All");
-            MoveToAppGroup(nameof(CalendarShowLeagues), false);
-        }
+            Move(nameof(LastCalendarLocation), "Chicago, Il");
+            Move(nameof(LastCalendarDistance), 150);
+            Move(nameof(CalendarRankingSystem), "All");
+            Move(nameof(CalendarShowLeagues), false);
 
-        private static T GetFromAppGroup<T>(string key, T defaultValue)
-        {
-            MoveToAppGroup(key, defaultValue);
-            return Preferences.Default.Get(key, defaultValue, groupName);
-        }
+            static void Move<T>(string key, T defaultValue)
+            {
+                if (!Preferences.Default.ContainsKey(key))
+                    return;
 
-        /// <summary>
-        /// Earlier versions kept the value in the app's own store. Move it
-        /// once, and remove the old copy so the two cannot disagree.
-        /// </summary>
-        private static void MoveToAppGroup<T>(string key, T defaultValue)
-        {
-            if (Preferences.Default.ContainsKey(key, groupName) || !Preferences.Default.ContainsKey(key))
-                return;
-
-            Preferences.Default.Set(key, Preferences.Default.Get(key, defaultValue), groupName);
-            Preferences.Default.Remove(key);
+                Preferences.Default.Set(key, Preferences.Default.Get(key, defaultValue), groupName);
+                Preferences.Default.Remove(key);
+            }
         }
 
         public static long LastCalendarIdSeen

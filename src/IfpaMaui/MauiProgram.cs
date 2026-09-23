@@ -97,7 +97,11 @@ public static class MauiProgram
             .RegisterIfpaServices();
 
 
-        return builder.Build();
+        var app = builder.Build();
+
+        Settings.MoveCalendarFilterToAppGroup();
+
+        return app;
     }
 
     static MauiAppBuilder RegisterIfpaModels(this MauiAppBuilder builder)
