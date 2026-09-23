@@ -12,6 +12,7 @@
              xmlns:bottomsheet="http://pluginmauibottomsheet.com"
              x:DataType="vm:CalendarDetailViewModel"
              ios:Page.LargeTitleDisplay="Never"
+             Shell.TabBarIsVisible="False"
              x:Name="this">
     <ContentPage.Resources>
         <ResourceDictionary>
