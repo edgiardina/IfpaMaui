@@ -28,6 +28,15 @@
 
       <img src="docs/screenshots/ios-lock-screen-widgets.png" width="340" />
 
+    - iOS Calendar Widget, in the small, medium and large sizes. The widget shows upcoming tournaments
+      on a month calendar, with the same filter as the Calendar tab. A gold day has a tournament.
+
+      <img src="docs/screenshots/ios-calendar-widget.png" width="300" />
+
+    - iOS Lock Screen Calendar Widget, in the rectangular size. It shows the next tournament.
+
+      <img src="docs/screenshots/ios-calendar-lock-screen-widget.png" width="280" />
+
     - Android Rank Widget
 
       <img src="https://github.com/edgiardina/IfpaMaui/assets/3627193/d20a6283-37cc-4be1-aaa6-75f607d7aaba" width="300" />

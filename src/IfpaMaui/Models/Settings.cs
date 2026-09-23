@@ -64,28 +64,54 @@ namespace Ifpa.Models
             set => Preferences.Set(nameof(LastBlogPostGuid), value);
         }
 
+        // The calendar filter lives in the app group, so the iOS calendar
+        // widget reads the same values as the Calendar tab. The key names
+        // match CalendarFilter in the NativeIFPA project.
         public static string LastCalendarLocation
         {
-            get => Preferences.Get(nameof(LastCalendarLocation), "Chicago, Il");
-            set => Preferences.Set(nameof(LastCalendarLocation), value);
+            get => Preferences.Default.Get(nameof(LastCalendarLocation), "Chicago, Il", groupName);
+            set => Preferences.Default.Set(nameof(LastCalendarLocation), value, groupName);
         }
 
         public static int LastCalendarDistance
         {
-            get => Preferences.Get(nameof(LastCalendarDistance), 150);
-            set => Preferences.Set(nameof(LastCalendarDistance), value);
+            get => Preferences.Default.Get(nameof(LastCalendarDistance), 150, groupName);
+            set => Preferences.Default.Set(nameof(LastCalendarDistance), value, groupName);
         }
 
         public static string CalendarRankingSystem
         {
-            get => Preferences.Get(nameof(CalendarRankingSystem), "All");
-            set => Preferences.Set(nameof(CalendarRankingSystem), value);
+            get => Preferences.Default.Get(nameof(CalendarRankingSystem), "All", groupName);
+            set => Preferences.Default.Set(nameof(CalendarRankingSystem), value, groupName);
         }
 
         public static bool CalendarShowLeagues
         {
-            get => Preferences.Get(nameof(CalendarShowLeagues), false);
-            set => Preferences.Set(nameof(CalendarShowLeagues), value);
+            get => Preferences.Default.Get(nameof(CalendarShowLeagues), false, groupName);
+            set => Preferences.Default.Set(nameof(CalendarShowLeagues), value, groupName);
+        }
+
+        /// <summary>
+        /// Earlier versions kept the calendar filter in the app's own store.
+        /// Move it to the app group once, and remove the old copy. Runs at
+        /// every process start, so the filter has moved before the Calendar
+        /// tab, the notification job or the widget reads it.
+        /// </summary>
+        public static void MoveCalendarFilterToAppGroup()
+        {
+            Move(nameof(LastCalendarLocation), "Chicago, Il");
+            Move(nameof(LastCalendarDistance), 150);
+            Move(nameof(CalendarRankingSystem), "All");
+            Move(nameof(CalendarShowLeagues), false);
+
+            static void Move<T>(string key, T defaultValue)
+            {
+                if (!Preferences.Default.ContainsKey(key))
+                    return;
+
+                Preferences.Default.Set(key, Preferences.Default.Get(key, defaultValue), groupName);
+                Preferences.Default.Remove(key);
+            }
         }
 
         public static long LastCalendarIdSeen

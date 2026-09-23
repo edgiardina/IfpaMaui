@@ -77,6 +77,11 @@ namespace Ifpa.Services
                     }
                 }
             }
+            else if (uri.AbsolutePath.TrimEnd('/') == "/calendar")
+            {
+                // The iOS calendar widget opens the Calendar tab with this link.
+                return "//calendar";
+            }
 
             return null;
         }

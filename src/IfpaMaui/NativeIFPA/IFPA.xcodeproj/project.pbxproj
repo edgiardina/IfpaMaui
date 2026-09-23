@@ -27,6 +27,8 @@
 		D76CA66E2A34241200336415 /* RankWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA66D2A34241200336415 /* RankWidgetBundle.swift */; };
 		D76CA6702A34241200336415 /* RankWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA66F2A34241200336415 /* RankWidgetLiveActivity.swift */; };
 		D76CA6722A34241200336415 /* RankWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6712A34241200336415 /* RankWidget.swift */; };
+		C7A1D0E12F10A00100CA1E02 /* CalendarWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A1D0E12F10A00100CA1E01 /* CalendarWidget.swift */; };
+		C7A1D0E12F10A00100CA1E04 /* IfpaTournament.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A1D0E12F10A00100CA1E03 /* IfpaTournament.swift */; };
 		D76CA6752A34241800336415 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D76CA6742A34241800336415 /* Assets.xcassets */; };
 		D76CA6772A34241800336415 /* RankWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6732A34241200336415 /* RankWidget.intentdefinition */; };
 		D76CA6782A34241800336415 /* RankWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = D76CA6732A34241200336415 /* RankWidget.intentdefinition */; };
@@ -119,6 +121,8 @@
 		D76CA66D2A34241200336415 /* RankWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankWidgetBundle.swift; sourceTree = "<group>"; };
 		D76CA66F2A34241200336415 /* RankWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankWidgetLiveActivity.swift; sourceTree = "<group>"; };
 		D76CA6712A34241200336415 /* RankWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RankWidget.swift; sourceTree = "<group>"; };
+		C7A1D0E12F10A00100CA1E01 /* CalendarWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarWidget.swift; sourceTree = "<group>"; };
+		C7A1D0E12F10A00100CA1E03 /* IfpaTournament.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IfpaTournament.swift; sourceTree = "<group>"; };
 		D76CA6732A34241200336415 /* RankWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = RankWidget.intentdefinition; sourceTree = "<group>"; };
 		D76CA6742A34241800336415 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D76CA6762A34241800336415 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -290,6 +294,8 @@
 				D76CA6742A34241800336415 /* Assets.xcassets */,
 				D76CA6762A34241800336415 /* Info.plist */,
 				D76CA6802A3699EB00336415 /* IfpaPlayer.swift */,
+				C7A1D0E12F10A00100CA1E01 /* CalendarWidget.swift */,
+				C7A1D0E12F10A00100CA1E03 /* IfpaTournament.swift */,
 			);
 			path = RankWidget;
 			sourceTree = "<group>";
@@ -558,6 +564,8 @@
 				D76CA66E2A34241200336415 /* RankWidgetBundle.swift in Sources */,
 				D76CA6722A34241200336415 /* RankWidget.swift in Sources */,
 				D76CA6812A3699EB00336415 /* IfpaPlayer.swift in Sources */,
+				C7A1D0E12F10A00100CA1E02 /* CalendarWidget.swift in Sources */,
+				C7A1D0E12F10A00100CA1E04 /* IfpaTournament.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
