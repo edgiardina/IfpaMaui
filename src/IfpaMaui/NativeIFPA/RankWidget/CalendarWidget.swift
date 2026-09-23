@@ -328,11 +328,20 @@ struct CalendarWidgetEntryView: View {
             .lineLimit(1)
     }
 
-    private var icon: some View {
-        Image("ifpa_icon")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 14, height: 14)
+    /// Logo and wordmark, as on the rank widget, so the widget reads as
+    /// IFPA at a glance and not as a generic calendar.
+    private var brandMark: some View {
+        HStack(spacing: 4) {
+            Image("ifpa_icon")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 14, height: 14)
+            Text("IFPA")
+                .font(.system(.caption2, design: .rounded).weight(.semibold))
+                .tracking(1.1)
+                .foregroundStyle(CalendarBrand.secondary)
+        }
+        .fixedSize()
     }
 
     private func grid(dayFont: Font, weekdayFont: Font) -> some View {
@@ -384,7 +393,7 @@ struct CalendarWidgetEntryView: View {
             HStack(spacing: 4) {
                 monthTitle(.dateTime.month(.wide))
                 Spacer(minLength: 0)
-                icon
+                brandMark
             }
             grid(dayFont: .system(size: 10, design: .rounded),
                  weekdayFont: .system(size: 8, design: .rounded))
@@ -413,7 +422,7 @@ struct CalendarWidgetEntryView: View {
                         .tracking(0.8)
                         .foregroundStyle(CalendarBrand.tertiary)
                     Spacer(minLength: 0)
-                    icon
+                    brandMark
                 }
                 list(limit: 3,
                      nameFont: .system(.caption, design: .rounded),
@@ -428,7 +437,8 @@ struct CalendarWidgetEntryView: View {
     private var largeLayout: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 5) {
-                icon
+                brandMark
+                    .padding(.trailing, 5)
                 monthTitle(.dateTime.month(.wide).year())
                 Spacer(minLength: 4)
                 Text(filterText)
@@ -462,7 +472,7 @@ struct CalendarWidgetEntryView: View {
     private var rectangularLayout: some View {
         if let next = upcoming.first {
             VStack(alignment: .leading, spacing: 0) {
-                Text(next.startDay.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()))
+                Text("IFPA · " + next.startDay.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()))
                     .font(.system(.caption2, design: .rounded).weight(.semibold))
                     .widgetAccentable()
                     .lineLimit(1)
