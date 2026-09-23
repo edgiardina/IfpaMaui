@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home Screen widget colours, named for the Material colour roles. The
+     widgets use the IFPA navy and gold on every Android version, so they
+     match the iOS widgets and the app icon. -->
+<resources>
+    <color name="widgetSurface">#062C53</color>
+    <color name="widgetOnSurface">#FFFFFF</color>
+    <color name="widgetOnSurfaceVariant">#ADFFFFFF</color>
+    <color name="widgetOutline">#66FFFFFF</color>
+    <color name="widgetPrimary">#F2B233</color>
+    <color name="widgetPrimaryContainer">#F2B233</color>
+    <color name="widgetOnPrimaryContainer">#062C53</color>
+    <color name="widgetToday">#00000000</color>
+    <color name="widgetTodayRing">#FFFFFF</color>
+    <color name="widgetOnToday">#FFFFFF</color>
+    <color name="widgetEventToday">#F2B233</color>
+    <color name="widgetOnEventToday">#062C53</color>
+</resources>

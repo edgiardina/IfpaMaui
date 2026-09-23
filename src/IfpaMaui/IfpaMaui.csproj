@@ -145,7 +145,6 @@
     <ItemGroup>
         <None Remove="appsettings.json" />
         <None Remove="Platforms\Android\Resources\drawable\noplayerpic.png" />
-        <None Remove="Platforms\Android\Resources\drawable\profile_rounded.xml" />
         <None Remove="Platforms\Android\Resources\xml\file_paths.xml" />
     </ItemGroup>
 

@@ -19,6 +19,8 @@
   <ItemGroup>
     <Compile Include="..\..\src\IfpaMaui\Caching\SQLiteCacheProvider.cs" Link="AppCode\Caching\SQLiteCacheProvider.cs" />
     <Compile Include="..\..\src\IfpaMaui\Models\IntExtensions.cs" Link="AppCode\Models\IntExtensions.cs" />
+    <Compile Include="..\..\src\IfpaMaui\Models\CalendarWidgetModel.cs" Link="AppCode\Models\CalendarWidgetModel.cs" />
+    <Compile Include="..\..\src\IfpaMaui\Models\WidgetFormat.cs" Link="AppCode\Models\WidgetFormat.cs" />
   </ItemGroup>
 
   <ItemGroup>

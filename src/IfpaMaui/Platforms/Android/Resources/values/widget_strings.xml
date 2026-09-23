@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Shown under each widget in the launcher's widget picker. -->
+    <string name="calendar_widget_description">Upcoming tournaments near your Calendar location.</string>
+    <string name="rank_widget_description">The rank of your My Stats player.</string>
+</resources>

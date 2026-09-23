@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Calendar widget, small: the month with the IFPA mark. Generated with the
+     medium and large layouts, so the day cells keep the same ids. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:orientation="vertical"
+    android:padding="12dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:gravity="center_vertical" android:paddingBottom="4dp">
+        <TextView android:id="@+id/monthTitle" android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:maxLines="1" android:textSize="11sp" android:textStyle="bold"
+            android:letterSpacing="0.08" android:textColor="@color/widgetPrimary" />
+        <ImageView android:layout_width="14dp" android:layout_height="14dp" android:src="@drawable/ifpa_logo"
+            android:importantForAccessibility="no" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp"
+            android:text="IFPA" android:textSize="10sp" android:textStyle="bold" android:letterSpacing="0.1"
+            android:textColor="@color/widgetOnSurfaceVariant" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingBottom="2dp">
+            <TextView android:id="@+id/weekday0" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:gravity="center" android:textSize="8sp"
+                android:textStyle="bold" android:textColor="@color/widgetOutline" />
+            <TextView android:id="@+id/weekday1" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:gravity="center" android:textSize="8sp"
+                android:textStyle="bold" android:textColor="@color/widgetOutline" />
+            <TextView android:id="@+id/weekday2" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:gravity="center" android:textSize="8sp"
+                android:textStyle="bold" android:textColor="@color/widgetOutline" />
+            <TextView android:id="@+id/weekday3" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:gravity="center" android:textSize="8sp"
+                android:textStyle="bold" android:textColor="@color/widgetOutline" />
+            <TextView android:id="@+id/weekday4" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:gravity="center" android:textSize="8sp"
+                android:textStyle="bold" android:textColor="@color/widgetOutline" />
+            <TextView android:id="@+id/weekday5" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:gravity="center" android:textSize="8sp"
+                android:textStyle="bold" android:textColor="@color/widgetOutline" />
+            <TextView android:id="@+id/weekday6" android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:gravity="center" android:textSize="8sp"
+                android:textStyle="bold" android:textColor="@color/widgetOutline" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/week0" android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1" android:orientation="horizontal">
+            <TextView android:id="@+id/day0" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day1" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day2" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day3" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day4" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day5" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day6" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/week1" android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1" android:orientation="horizontal">
+            <TextView android:id="@+id/day7" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day8" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day9" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day10" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day11" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day12" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day13" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/week2" android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1" android:orientation="horizontal">
+            <TextView android:id="@+id/day14" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day15" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day16" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day17" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day18" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day19" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day20" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/week3" android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1" android:orientation="horizontal">
+            <TextView android:id="@+id/day21" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day22" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day23" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day24" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day25" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day26" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day27" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/week4" android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1" android:orientation="horizontal">
+            <TextView android:id="@+id/day28" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day29" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day30" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day31" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day32" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day33" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day34" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/week5" android:layout_width="match_parent" android:layout_height="0dp"
+            android:layout_weight="1" android:orientation="horizontal">
+            <TextView android:id="@+id/day35" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day36" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day37" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day38" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day39" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day40" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+            <TextView android:id="@+id/day41" android:layout_width="0dp" android:layout_height="match_parent"
+                android:layout_weight="1" android:gravity="center" android:maxLines="1" android:includeFontPadding="false"
+                android:textSize="11sp" android:textColor="@color/widgetOnSurface" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
