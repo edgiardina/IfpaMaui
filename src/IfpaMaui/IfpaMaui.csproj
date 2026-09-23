@@ -37,9 +37,6 @@
         <CodesignProvision>VS: com.edgiardina.ifpa Development</CodesignProvision>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <ShinyVersion>3.0.0-alpha-0496</ShinyVersion>
-    </PropertyGroup>
     <!-- WidgetKit extension support -->
     <ItemGroup>
         <AdditionalAppExtensions Include="$(MSBuildProjectDirectory)/NativeIFPA">
@@ -70,7 +67,7 @@
         <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.12" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
         <PackageReference Include="Microsoft.Maui.Controls.Maps" Version="10.0.100" />
-        <PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.5" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.12" />
