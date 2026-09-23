@@ -64,28 +64,65 @@ namespace Ifpa.Models
             set => Preferences.Set(nameof(LastBlogPostGuid), value);
         }
 
+        // The calendar filter is also mirrored into the app group, where the
+        // iOS calendar widget reads it. Keys match CalendarFilter in the
+        // NativeIFPA project.
+        private const string WidgetCalendarLocation = "CalendarLocation";
+        private const string WidgetCalendarDistance = "CalendarDistance";
+        private const string WidgetCalendarRankingSystem = "CalendarRankingSystem";
+        private const string WidgetCalendarShowLeagues = "CalendarShowLeagues";
+
         public static string LastCalendarLocation
         {
             get => Preferences.Get(nameof(LastCalendarLocation), "Chicago, Il");
-            set => Preferences.Set(nameof(LastCalendarLocation), value);
+            set
+            {
+                Preferences.Set(nameof(LastCalendarLocation), value);
+                Preferences.Set(WidgetCalendarLocation, value, groupName);
+            }
         }
 
         public static int LastCalendarDistance
         {
             get => Preferences.Get(nameof(LastCalendarDistance), 150);
-            set => Preferences.Set(nameof(LastCalendarDistance), value);
+            set
+            {
+                Preferences.Set(nameof(LastCalendarDistance), value);
+                Preferences.Set(WidgetCalendarDistance, value, groupName);
+            }
         }
 
         public static string CalendarRankingSystem
         {
             get => Preferences.Get(nameof(CalendarRankingSystem), "All");
-            set => Preferences.Set(nameof(CalendarRankingSystem), value);
+            set
+            {
+                Preferences.Set(nameof(CalendarRankingSystem), value);
+                Preferences.Set(WidgetCalendarRankingSystem, value, groupName);
+            }
         }
 
         public static bool CalendarShowLeagues
         {
             get => Preferences.Get(nameof(CalendarShowLeagues), false);
-            set => Preferences.Set(nameof(CalendarShowLeagues), value);
+            set
+            {
+                Preferences.Set(nameof(CalendarShowLeagues), value);
+                Preferences.Set(WidgetCalendarShowLeagues, value, groupName);
+            }
+        }
+
+        /// <summary>
+        /// Copies the calendar filter into the app group. The setters keep it
+        /// current, and this covers a filter that was saved before the widget
+        /// existed.
+        /// </summary>
+        public static void SyncCalendarFilterToAppGroup()
+        {
+            Preferences.Set(WidgetCalendarLocation, LastCalendarLocation, groupName);
+            Preferences.Set(WidgetCalendarDistance, LastCalendarDistance, groupName);
+            Preferences.Set(WidgetCalendarRankingSystem, CalendarRankingSystem, groupName);
+            Preferences.Set(WidgetCalendarShowLeagues, CalendarShowLeagues, groupName);
         }
 
         public static long LastCalendarIdSeen

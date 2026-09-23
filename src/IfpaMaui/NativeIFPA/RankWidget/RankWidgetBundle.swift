@@ -12,6 +12,7 @@ import SwiftUI
 struct RankWidgetBundle: WidgetBundle {
     var body: some Widget {
         RankWidget()
+        CalendarWidget()
         RankWidgetLiveActivity()
     }
 }

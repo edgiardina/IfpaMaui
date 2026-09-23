@@ -1,5 +1,6 @@
 ﻿using CoreSpotlight;
 using Foundation;
+using Ifpa.Models;
 using Ifpa.Platforms.Services;
 using Microsoft.Extensions.Logging;
 using SQLitePCL;
@@ -31,7 +32,25 @@ public class AppDelegate : MauiUIApplicationDelegate
         watchSession = new WatchSessionService(logger);
         watchSession.Start();
 
+        Settings.SyncCalendarFilterToAppGroup();
+
         return finished;
+    }
+
+    // A tap on a widget opens the app with the widget's URL. Those URLs use
+    // the same ifpapinball.com links as a shared tournament, so they go
+    // through the app-link handler.
+    public override bool OpenUrl(UIApplication application, NSUrl url, NSDictionary options)
+    {
+        var handled = base.OpenUrl(application, url, options);
+
+        if (url?.Host?.EndsWith("ifpapinball.com", StringComparison.OrdinalIgnoreCase) == true)
+        {
+            App.Current.SendOnAppLinkRequestReceived(new Uri(url.AbsoluteString));
+            return true;
+        }
+
+        return handled;
     }
 
     // Covers the case where the watch app is installed while this app is in
