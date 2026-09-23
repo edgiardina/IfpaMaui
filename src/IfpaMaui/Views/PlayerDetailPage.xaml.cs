@@ -19,12 +19,15 @@ namespace Ifpa.Views
 
         private readonly IToolbarBadgeService toolbarBadgeService;
 
-        public PlayerDetailPage(PlayerDetailViewModel viewModel, IToolbarBadgeService toolbarBadgeService)
+        private readonly ILinkShareService linkShareService;
+
+        public PlayerDetailPage(PlayerDetailViewModel viewModel, IToolbarBadgeService toolbarBadgeService, ILinkShareService linkShareService)
         {
             InitializeComponent();
 
             BindingContext = this.ViewModel = viewModel;
             this.toolbarBadgeService = toolbarBadgeService;
+            this.linkShareService = linkShareService;
         }
 
         protected async override void OnNavigatedTo(NavigatedToEventArgs args)
@@ -130,11 +133,14 @@ namespace Ifpa.Views
 
         private async void ShareButton_Clicked(object sender, EventArgs e)
         {
-            await Share.RequestAsync(new ShareTextRequest
-            {
-                Uri = $"https://www.ifpapinball.com/player.php?p={ViewModel.PlayerId}",
-                Title = Strings.PlayerDetailPage_SharePlayer,
-            });
+            var playerName = ViewModel.PlayerRecord is { } player
+                ? $"{player.FirstName} {player.LastName}".Trim()
+                : Strings.PlayerDetailPage_SharePlayer;
+
+            await linkShareService.ShareLinkAsync(
+                $"https://www.ifpapinball.com/player.php?p={ViewModel.PlayerId}",
+                playerName,
+                ViewModel.PlayerAvatar);
         }
 
         private async void FavoriteButton_Clicked(object sender, EventArgs e)

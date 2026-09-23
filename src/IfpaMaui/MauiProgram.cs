@@ -133,6 +133,7 @@ public static class MauiProgram
 
         s.AddSingleton<NotificationService>();
         s.AddSingleton<IToolbarBadgeService, ToolbarBadgeService>();
+        s.AddSingleton<ILinkShareService, LinkShareService>();
         s.AddSingleton<IDeepLinkService, DeepLinkService>();
 
         // IPinballRankingApi that uses AppSettings injected directly
