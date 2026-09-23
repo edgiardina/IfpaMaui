@@ -38,6 +38,21 @@ namespace Ifpa.Platforms.Handlers
                 }
             });
 
+            // Some third-party containers (Syncfusion's SfView, which hosts the SfTabView content)
+            // only implement the legacy ISafeAreaView, so SafeAreaEdges does not reach them.
+            ViewHandler.ViewMapper.AppendToMapping(nameof(GlassTabBarContentMappings), (handler, view) =>
+            {
+                // MAUI's own containers read SafeAreaEdges instead, and Layout is handled above.
+                if (view is ISafeAreaView legacyView
+                    && view is not (Layout or ContentView or ScrollView or Page)
+                    && !legacyView.IgnoreSafeArea
+                    && view is Element element
+                    && IsOnTabHostedPage(element))
+                {
+                    IgnoreLegacySafeArea(element, handler.PlatformView as UIView);
+                }
+            });
+
             CollectionViewHandler2.Mapper.AppendToMapping(nameof(GlassTabBarContentMappings), (handler, view) =>
             {
                 if (view is not VisualElement element || !IsOnTabHostedPage(element))
@@ -94,6 +109,32 @@ namespace Ifpa.Platforms.Handlers
 
             var edges = layout.SafeAreaEdges;
             layout.SafeAreaEdges = new SafeAreaEdges(edges.Left, edges.Top, edges.Right, SafeAreaRegions.None);
+        }
+
+        private static void IgnoreLegacySafeArea(Element element, UIView platformView)
+        {
+            // Syncfusion keeps the flag behind an internal setter, with no public way to change it.
+            // If a later version renames it, leave the view alone: it keeps the old padding, no crash.
+            try
+            {
+                var property = element.GetType().GetProperty(
+                    nameof(ISafeAreaView.IgnoreSafeArea),
+                    System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+
+                if (property is null || !property.CanWrite || property.PropertyType != typeof(bool))
+                {
+                    return;
+                }
+
+                property.SetValue(element, true);
+            }
+            catch (System.Reflection.AmbiguousMatchException)
+            {
+                return;
+            }
+
+            (element as IView)?.InvalidateMeasure();
+            platformView?.SetNeedsLayout();
         }
 
         private static void InsetForTabBar(UIView platformView)
