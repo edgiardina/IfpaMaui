@@ -73,6 +73,9 @@ public static class MauiProgram
 #if IOS
                 // Use native iOS inset grouped table styling for settings
                 handlers.AddHandler(typeof(InsetTableView), typeof(InsetTableViewHandler));
+
+                // Let page content scroll under the iOS 26 Liquid Glass tab bar
+                GlassTabBarContentMappings.Register();
 #endif
             })
             .ConfigureLogging(appSettings)
