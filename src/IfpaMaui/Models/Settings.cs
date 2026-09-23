@@ -64,65 +64,63 @@ namespace Ifpa.Models
             set => Preferences.Set(nameof(LastBlogPostGuid), value);
         }
 
-        // The calendar filter is also mirrored into the app group, where the
-        // iOS calendar widget reads it. Keys match CalendarFilter in the
-        // NativeIFPA project.
-        private const string WidgetCalendarLocation = "CalendarLocation";
-        private const string WidgetCalendarDistance = "CalendarDistance";
-        private const string WidgetCalendarRankingSystem = "CalendarRankingSystem";
-        private const string WidgetCalendarShowLeagues = "CalendarShowLeagues";
-
+        // The calendar filter lives in the app group, so the iOS calendar
+        // widget reads the same values as the Calendar tab. The key names
+        // match CalendarFilter in the NativeIFPA project.
         public static string LastCalendarLocation
         {
-            get => Preferences.Get(nameof(LastCalendarLocation), "Chicago, Il");
-            set
-            {
-                Preferences.Set(nameof(LastCalendarLocation), value);
-                Preferences.Set(WidgetCalendarLocation, value, groupName);
-            }
+            get => GetFromAppGroup(nameof(LastCalendarLocation), "Chicago, Il");
+            set => Preferences.Default.Set(nameof(LastCalendarLocation), value, groupName);
         }
 
         public static int LastCalendarDistance
         {
-            get => Preferences.Get(nameof(LastCalendarDistance), 150);
-            set
-            {
-                Preferences.Set(nameof(LastCalendarDistance), value);
-                Preferences.Set(WidgetCalendarDistance, value, groupName);
-            }
+            get => GetFromAppGroup(nameof(LastCalendarDistance), 150);
+            set => Preferences.Default.Set(nameof(LastCalendarDistance), value, groupName);
         }
 
         public static string CalendarRankingSystem
         {
-            get => Preferences.Get(nameof(CalendarRankingSystem), "All");
-            set
-            {
-                Preferences.Set(nameof(CalendarRankingSystem), value);
-                Preferences.Set(WidgetCalendarRankingSystem, value, groupName);
-            }
+            get => GetFromAppGroup(nameof(CalendarRankingSystem), "All");
+            set => Preferences.Default.Set(nameof(CalendarRankingSystem), value, groupName);
         }
 
         public static bool CalendarShowLeagues
         {
-            get => Preferences.Get(nameof(CalendarShowLeagues), false);
-            set
-            {
-                Preferences.Set(nameof(CalendarShowLeagues), value);
-                Preferences.Set(WidgetCalendarShowLeagues, value, groupName);
-            }
+            get => GetFromAppGroup(nameof(CalendarShowLeagues), false);
+            set => Preferences.Default.Set(nameof(CalendarShowLeagues), value, groupName);
         }
 
         /// <summary>
-        /// Copies the calendar filter into the app group. The setters keep it
-        /// current, and this covers a filter that was saved before the widget
-        /// existed.
+        /// Moves a calendar filter saved by an earlier version into the app
+        /// group. Call at launch, so the widget has the filter before the
+        /// Calendar tab is opened.
         /// </summary>
-        public static void SyncCalendarFilterToAppGroup()
+        public static void MoveCalendarFilterToAppGroup()
         {
-            Preferences.Set(WidgetCalendarLocation, LastCalendarLocation, groupName);
-            Preferences.Set(WidgetCalendarDistance, LastCalendarDistance, groupName);
-            Preferences.Set(WidgetCalendarRankingSystem, CalendarRankingSystem, groupName);
-            Preferences.Set(WidgetCalendarShowLeagues, CalendarShowLeagues, groupName);
+            MoveToAppGroup(nameof(LastCalendarLocation), "Chicago, Il");
+            MoveToAppGroup(nameof(LastCalendarDistance), 150);
+            MoveToAppGroup(nameof(CalendarRankingSystem), "All");
+            MoveToAppGroup(nameof(CalendarShowLeagues), false);
+        }
+
+        private static T GetFromAppGroup<T>(string key, T defaultValue)
+        {
+            MoveToAppGroup(key, defaultValue);
+            return Preferences.Default.Get(key, defaultValue, groupName);
+        }
+
+        /// <summary>
+        /// Earlier versions kept the value in the app's own store. Move it
+        /// once, and remove the old copy so the two cannot disagree.
+        /// </summary>
+        private static void MoveToAppGroup<T>(string key, T defaultValue)
+        {
+            if (Preferences.Default.ContainsKey(key, groupName) || !Preferences.Default.ContainsKey(key))
+                return;
+
+            Preferences.Default.Set(key, Preferences.Default.Get(key, defaultValue), groupName);
+            Preferences.Default.Remove(key);
         }
 
         public static long LastCalendarIdSeen

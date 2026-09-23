@@ -6,8 +6,8 @@
 //  calendar widget.
 //
 //  The search runs with the same filter as the app's Calendar tab. The app
-//  mirrors that filter into the shared app group (see Settings.cs), so the
-//  widget and the tab show the same events.
+//  keeps that filter in the shared app group (see Settings.cs), so the
+//  widget and the tab read the same values.
 //
 
 import Foundation
@@ -15,14 +15,15 @@ import CoreLocation
 
 // MARK: - Filter
 
-/// The Calendar tab's filter, as the app writes it into the app group.
+/// The Calendar tab's filter, read from the app group where the app keeps it.
 struct CalendarFilter: Equatable {
     static let suiteName = "group.com.edgiardina.ifpa"
 
-    // Keys match Settings.cs. The app writes them with MAUI Preferences,
-    // which stores plain NSUserDefaults values under the key as given.
-    private static let locationKey = "CalendarLocation"
-    private static let distanceKey = "CalendarDistance"
+    // The app's own setting names from Settings.cs. The app keeps these
+    // settings in the app group, and MAUI Preferences stores plain
+    // NSUserDefaults values under the key as given.
+    private static let locationKey = "LastCalendarLocation"
+    private static let distanceKey = "LastCalendarDistance"
     private static let rankingSystemKey = "CalendarRankingSystem"
     private static let showLeaguesKey = "CalendarShowLeagues"
 

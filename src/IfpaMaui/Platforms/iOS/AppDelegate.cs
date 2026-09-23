@@ -32,7 +32,7 @@ public class AppDelegate : MauiUIApplicationDelegate
         watchSession = new WatchSessionService(logger);
         watchSession.Start();
 
-        Settings.SyncCalendarFilterToAppGroup();
+        Settings.MoveCalendarFilterToAppGroup();
 
         return finished;
     }
