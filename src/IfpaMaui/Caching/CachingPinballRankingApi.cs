@@ -52,12 +52,12 @@ namespace Ifpa.Caching
 
             // Retry on non network‐unavailable errors
             var retry = Policy<T>
-                .Handle<Exception>(ex => ex is not NetworkUnavailableException)
+                .Handle<Exception>(ex => ex is not NetworkUnavailableException and not OperationCanceledException)
                 .WaitAndRetryAsync(3, i => TimeSpan.FromMilliseconds(250 * (1 << (i - 1))));
 
             // Fallback to cache if the network is unavailable or if the fetch fails
             var fallback = Policy<T>
-                .Handle<Exception>()
+                .Handle<Exception>(ex => ex is not OperationCanceledException)
                 .FallbackAsync(
                     async (outcome, ctx, ct) =>
                     {
@@ -139,215 +139,215 @@ namespace Ifpa.Caching
             new Context(cacheKey));
         }
 
-        public Task<List<CountryDetail>> GetCountriesList() =>
+        public Task<List<CountryDetail>> GetCountriesList(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"CountriesList",
-                () => onlineApi.GetCountriesList());
+                () => onlineApi.GetCountriesList(cancellationToken));
 
-        public Task<List<StateProvCountry>> GetStateProvList() =>
+        public Task<List<StateProvCountry>> GetStateProvList(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"StateProvList",
-                () => onlineApi.GetStateProvList());
+                () => onlineApi.GetStateProvList(cancellationToken));
 
-        public Task<List<CountryDirector>> GetCountryDirectors() =>
+        public Task<List<CountryDirector>> GetCountryDirectors(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"CountryDirectors",
-                () => onlineApi.GetCountryDirectors());
+                () => onlineApi.GetCountryDirectors(cancellationToken));
 
-        public Task<List<CustomRankingView>> GetCustomRankings() =>
+        public Task<List<CustomRankingView>> GetCustomRankings(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"CustomRankings",
-                () => onlineApi.GetCustomRankings());
+                () => onlineApi.GetCustomRankings(cancellationToken));
 
-        public Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50, int startPosition = 1) =>
+        public Task<CustomRankingViewResult> GetCustomRankingViewResult(int viewId, int count = 50, int startPosition = 1, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"CustomRankingViewResult:{viewId}:{count}:{startPosition}",
-                () => onlineApi.GetCustomRankingViewResult(viewId, count, startPosition));
+                () => onlineApi.GetCustomRankingViewResult(viewId, count, startPosition, cancellationToken));
 
-        public Task<Director> GetDirector(long directorId) =>
+        public Task<Director> GetDirector(long directorId, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"Director:{directorId}",
-                () => onlineApi.GetDirector(directorId));
+                () => onlineApi.GetDirector(directorId, cancellationToken));
 
-        public Task<List<Director>> GetDirectorsBySearch(string name, int count = 50) =>
+        public Task<List<Director>> GetDirectorsBySearch(string name, int count = 50, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"DirectorsBySearch:{name}:{count}",
-                () => onlineApi.GetDirectorsBySearch(name, count));
+                () => onlineApi.GetDirectorsBySearch(name, count, cancellationToken));
 
-        public Task<List<PinballApi.Models.WPPR.Universal.Tournaments.Tournament>> GetDirectorTournaments(long directorId, TimePeriod timePeriod) =>
+        public Task<List<PinballApi.Models.WPPR.Universal.Tournaments.Tournament>> GetDirectorTournaments(long directorId, TimePeriod timePeriod, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"DirectorTournaments:{directorId}:{timePeriod}",
-                () => onlineApi.GetDirectorTournaments(directorId, timePeriod));
+                () => onlineApi.GetDirectorTournaments(directorId, timePeriod, cancellationToken));
 
-        public Task<List<PinballApi.Models.WPPR.Universal.Tournaments.Related.RelatedTournament>> GetRelatedTournaments(int tournamentId) =>
+        public Task<List<PinballApi.Models.WPPR.Universal.Tournaments.Related.RelatedTournament>> GetRelatedTournaments(int tournamentId, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"RelatedTournaments:{tournamentId}",
-                () => onlineApi.GetRelatedTournaments(tournamentId));
+                () => onlineApi.GetRelatedTournaments(tournamentId, cancellationToken));
 
-        public Task<List<EventsByYearStatistics>> GetEventsByYearStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
+        public Task<List<EventsByYearStatistics>> GetEventsByYearStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"EventsByYearStats:{playerSystem}",
-                () => onlineApi.GetEventsByYearStatistics(playerSystem));
+                () => onlineApi.GetEventsByYearStatistics(playerSystem, cancellationToken));
 
-        public Task<List<LargestTournamentStatistics>> GetLargestTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
+        public Task<List<LargestTournamentStatistics>> GetLargestTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"LargestTournamentStats:{playerSystem}",
-                () => onlineApi.GetLargestTournamentStatistics(playerSystem));
+                () => onlineApi.GetLargestTournamentStatistics(playerSystem, cancellationToken));
 
-        public Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod) =>
+        public Task<List<League>> GetLeagues(LeagueTimePeriod timePeriod, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"Leagues:{timePeriod}",
-                () => onlineApi.GetLeagues(timePeriod));
+                () => onlineApi.GetLeagues(timePeriod, cancellationToken));
 
-        public Task<List<LucrativeTournamentStatistics>> GetLucrativeTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
+        public Task<List<LucrativeTournamentStatistics>> GetLucrativeTournamentStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"LucrativeTournamentStats:{playerSystem}",
-                () => onlineApi.GetLucrativeTournamentStatistics(playerSystem));
+                () => onlineApi.GetLucrativeTournamentStatistics(playerSystem, cancellationToken));
 
-        public Task<OverallStatistics> GetOverallStatistics() =>
+        public Task<OverallStatistics> GetOverallStatistics(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"OverallStatistics",
-                () => onlineApi.GetOverallStatistics());
+                () => onlineApi.GetOverallStatistics(cancellationToken));
 
-        public Task<Player> GetPlayer(int playerId) =>
+        public Task<Player> GetPlayer(int playerId, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"Player:{playerId}",
-                () => onlineApi.GetPlayer(playerId));
+                () => onlineApi.GetPlayer(playerId, cancellationToken));
 
-        public Task<PlayerHistory> GetPlayerHistory(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, bool activeResultsOnly = false) =>
+        public Task<PlayerHistory> GetPlayerHistory(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, bool activeResultsOnly = false, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayerHistory:{playerId}:{playerSystem}:{activeResultsOnly}",
-                () => onlineApi.GetPlayerHistory(playerId, playerSystem, activeResultsOnly));
+                () => onlineApi.GetPlayerHistory(playerId, playerSystem, activeResultsOnly, cancellationToken));
 
-        public Task<PlayerResults> GetPlayerResults(int playerId, PlayerRankingSystem rankingSystem = PlayerRankingSystem.Main, ResultType resultType = ResultType.Active) =>
+        public Task<PlayerResults> GetPlayerResults(int playerId, PlayerRankingSystem rankingSystem = PlayerRankingSystem.Main, ResultType resultType = ResultType.Active, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayerResults:{playerId}:{rankingSystem}:{resultType}",
-                () => onlineApi.GetPlayerResults(playerId, rankingSystem, resultType));
+                () => onlineApi.GetPlayerResults(playerId, rankingSystem, resultType, cancellationToken));
 
-        public Task<List<Player>> GetPlayers(List<int> playerIds) =>
+        public Task<List<Player>> GetPlayers(List<int> playerIds, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"Players:{string.Join(",", playerIds)}",
-                () => onlineApi.GetPlayers(playerIds));
+                () => onlineApi.GetPlayers(playerIds, cancellationToken));
 
-        public Task<List<PlayersByCountryStatistics>> GetPlayersByCountryStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
+        public Task<List<PlayersByCountryStatistics>> GetPlayersByCountryStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayersByCountryStats:{playerSystem}",
-                () => onlineApi.GetPlayersByCountryStatistics(playerSystem));
+                () => onlineApi.GetPlayersByCountryStatistics(playerSystem, cancellationToken));
 
-        public Task<List<PlayersByStateStatistics>> GetPlayersByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
+        public Task<List<PlayersByStateStatistics>> GetPlayersByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayersByStateStats:{playerSystem}",
-                () => onlineApi.GetPlayersByStateStatistics(playerSystem));
+                () => onlineApi.GetPlayersByStateStatistics(playerSystem, cancellationToken));
 
-        public Task<List<PlayersByYearStatistics>> GetPlayersByYearStatistics() =>
+        public Task<List<PlayersByYearStatistics>> GetPlayersByYearStatistics(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayersByYearStats",
-                () => onlineApi.GetPlayersByYearStatistics());
+                () => onlineApi.GetPlayersByYearStatistics(cancellationToken));
 
-        public Task<List<PlayersEventsAttendedByGivenPeriodStatistics>> GetPlayersEventsAttendedByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25) =>
+        public Task<List<PlayersEventsAttendedByGivenPeriodStatistics>> GetPlayersEventsAttendedByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayersEvents:{startDate:o}:{endDate:o}:{playerSystem}:{limit}",
-                () => onlineApi.GetPlayersEventsAttendedByGivenPeriod(startDate, endDate, playerSystem, limit));
+                () => onlineApi.GetPlayersEventsAttendedByGivenPeriod(startDate, endDate, playerSystem, limit, cancellationToken));
 
-        public Task<List<PlayersPointsByGivenPeriodStatistics>> GetPlayersPointsByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25) =>
+        public Task<List<PlayersPointsByGivenPeriodStatistics>> GetPlayersPointsByGivenPeriod(DateOnly startDate, DateOnly endDate, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, int limit = 25, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayersPoints:{startDate:o}:{endDate:o}:{playerSystem}:{limit}",
-                () => onlineApi.GetPlayersPointsByGivenPeriod(startDate, endDate, playerSystem, limit));
+                () => onlineApi.GetPlayersPointsByGivenPeriod(startDate, endDate, playerSystem, limit, cancellationToken));
 
-        public Task<PlayerVersusPlayer> GetPlayerVersusPlayer(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
+        public Task<PlayerVersusPlayer> GetPlayerVersusPlayer(int playerId, PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayerVersusPlayer:{playerId}:{playerSystem}",
-                () => onlineApi.GetPlayerVersusPlayer(playerId, playerSystem));
+                () => onlineApi.GetPlayerVersusPlayer(playerId, playerSystem, cancellationToken));
 
-        public Task<PlayerVersusPlayerComparison> GetPlayerVersusPlayerComparison(int playerId, int comparisonPlayerId) =>
+        public Task<PlayerVersusPlayerComparison> GetPlayerVersusPlayerComparison(int playerId, int comparisonPlayerId, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayerVersusComparison:{playerId}:{comparisonPlayerId}",
-                () => onlineApi.GetPlayerVersusPlayerComparison(playerId, comparisonPlayerId));
+                () => onlineApi.GetPlayerVersusPlayerComparison(playerId, comparisonPlayerId, cancellationToken));
 
-        public Task<RankingCountries> GetRankingCountries() =>
+        public Task<RankingCountries> GetRankingCountries(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"RankingCountries",
-                () => onlineApi.GetRankingCountries());
+                () => onlineApi.GetRankingCountries(cancellationToken));
 
-        public Task<List<RegionRepresentative>> GetRegionReps(string seriesCode) =>
+        public Task<List<RegionRepresentative>> GetRegionReps(string seriesCode, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"RegionReps:{seriesCode}",
-                () => onlineApi.GetRegionReps(seriesCode));
+                () => onlineApi.GetRegionReps(seriesCode, cancellationToken));
 
-        public Task<List<PinballApi.Models.WPPR.Universal.Series.Region>> GetRegions(string seriesCode, int year) =>
+        public Task<List<PinballApi.Models.WPPR.Universal.Series.Region>> GetRegions(string seriesCode, int year, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"Regions:{seriesCode}:{year}",
-                () => onlineApi.GetRegions(seriesCode, year));
+                () => onlineApi.GetRegions(seriesCode, year, cancellationToken));
 
-        public Task<List<Series>> GetSeries() =>
+        public Task<List<Series>> GetSeries(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"Series",
-                () => onlineApi.GetSeries());
+                () => onlineApi.GetSeries(cancellationToken));
 
-        public Task<SeriesOverallResults> GetSeriesOverallStanding(string seriesCode, int? year = null) =>
+        public Task<SeriesOverallResults> GetSeriesOverallStanding(string seriesCode, int? year = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"SeriesOverall:{seriesCode}:{year}",
-                () => onlineApi.GetSeriesOverallStanding(seriesCode, year));
+                () => onlineApi.GetSeriesOverallStanding(seriesCode, year, cancellationToken));
 
-        public Task<SeriesPlayerCard> GetSeriesPlayerCard(int playerId, string seriesCode, string region, int? year = null) =>
+        public Task<SeriesPlayerCard> GetSeriesPlayerCard(int playerId, string seriesCode, string region, int? year = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"SeriesPlayerCard:{playerId}:{seriesCode}:{region}:{year}",
-                () => onlineApi.GetSeriesPlayerCard(playerId, seriesCode, region, year));
+                () => onlineApi.GetSeriesPlayerCard(playerId, seriesCode, region, year, cancellationToken));
 
-        public Task<RegionStandings> GetSeriesStandingsForRegion(string seriesCode, string region, int? year = null) =>
+        public Task<RegionStandings> GetSeriesStandingsForRegion(string seriesCode, string region, int? year = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"SeriesStandings:{seriesCode}:{region}:{year}",
-                () => onlineApi.GetSeriesStandingsForRegion(seriesCode, region, year));
+                () => onlineApi.GetSeriesStandingsForRegion(seriesCode, region, year, cancellationToken));
 
-        public Task<SeriesStats> GetSeriesStats(string seriesCode, string region, int? year = null) =>
+        public Task<SeriesStats> GetSeriesStats(string seriesCode, string region, int? year = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"SeriesStats:{seriesCode}:{region}:{year}",
-                () => onlineApi.GetSeriesStats(seriesCode, region, year));
+                () => onlineApi.GetSeriesStats(seriesCode, region, year, cancellationToken));
 
-        public Task<SeriesTournaments> GetSeriesTournamentsForRegion(string seriesCode, string region, int? year = null) =>
+        public Task<SeriesTournaments> GetSeriesTournamentsForRegion(string seriesCode, string region, int? year = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"SeriesTournaments:{seriesCode}:{region}:{year}",
-                () => onlineApi.GetSeriesTournamentsForRegion(seriesCode, region, year));
+                () => onlineApi.GetSeriesTournamentsForRegion(seriesCode, region, year, cancellationToken));
 
-        public Task<SeriesWinners> GetSeriesWinners(string seriesCode, string region = null) =>
+        public Task<SeriesWinners> GetSeriesWinners(string seriesCode, string region = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"SeriesWinners:{seriesCode}:{region}",
-                () => onlineApi.GetSeriesWinners(seriesCode, region));
+                () => onlineApi.GetSeriesWinners(seriesCode, region, cancellationToken));
 
-        public Task<PinballApi.Models.WPPR.Universal.Tournaments.Tournament> GetTournament(int tournamentId) =>
+        public Task<PinballApi.Models.WPPR.Universal.Tournaments.Tournament> GetTournament(int tournamentId, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"Tournament:{tournamentId}",
-                () => onlineApi.GetTournament(tournamentId));
+                () => onlineApi.GetTournament(tournamentId, cancellationToken));
 
-        public Task<TournamentFormats> GetTournamentFormats() =>
+        public Task<TournamentFormats> GetTournamentFormats(CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"TournamentFormats",
-                () => onlineApi.GetTournamentFormats());
+                () => onlineApi.GetTournamentFormats(cancellationToken));
 
-        public Task<TournamentResults> GetTournamentResults(int tournamentId) =>
+        public Task<TournamentResults> GetTournamentResults(int tournamentId, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"TournamentResults:{tournamentId}",
-                () => onlineApi.GetTournamentResults(tournamentId));
+                () => onlineApi.GetTournamentResults(tournamentId, cancellationToken));
 
-        public Task<List<TournamentsByStateStatistics>> GetTournamentsByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main) =>
+        public Task<List<TournamentsByStateStatistics>> GetTournamentsByStateStatistics(PlayerRankingSystem playerSystem = PlayerRankingSystem.Main, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"TournamentsByStateStats:{playerSystem}",
-                () => onlineApi.GetTournamentsByStateStatistics(playerSystem));
+                () => onlineApi.GetTournamentsByStateStatistics(playerSystem, cancellationToken));
 
-        public Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null, int? tournamentPosition = null) =>
+        public Task<PlayerSearch> PlayerSearch(string name = null, string country = null, string stateProv = null, string tournamentName = null, int? tournamentPosition = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"PlayerSearch:{name}:{country}:{stateProv}:{tournamentName}:{tournamentPosition}",
-                () => onlineApi.PlayerSearch(name, country, stateProv, tournamentName, tournamentPosition));
+                () => onlineApi.PlayerSearch(name, country, stateProv, tournamentName, tournamentPosition, cancellationToken));
 
-        public Task<ProRankingSearch> ProRankingSearch(TournamentType rankingSystem) =>
+        public Task<ProRankingSearch> ProRankingSearch(TournamentType rankingSystem, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"ProRankingSearch:{rankingSystem}",
-                () => onlineApi.ProRankingSearch(rankingSystem));
+                () => onlineApi.ProRankingSearch(rankingSystem, cancellationToken));
 
-        public Task<RankingSearch> RankingSearch(RankingType rankingType, RankingSystem rankingSystem = RankingSystem.Open, int count = 100, int startPosition = 1, string countryCode = null) =>
+        public Task<RankingSearch> RankingSearch(RankingType rankingType, RankingSystem rankingSystem = RankingSystem.Open, int count = 100, int startPosition = 1, string countryCode = null, CancellationToken cancellationToken = default) =>
             ExecuteWithCache(
                 $"RankingSearch:{rankingType}:{rankingSystem}:{count}:{startPosition}:{countryCode}",
-                () => onlineApi.RankingSearch(rankingType, rankingSystem, count, startPosition, countryCode));
+                () => onlineApi.RankingSearch(rankingType, rankingSystem, count, startPosition, countryCode, cancellationToken));
 
         public Task<TournamentSearch> TournamentSearch(
             double? latitude = null,
@@ -370,7 +370,8 @@ namespace Ifpa.Caching
             double? minimumPoints = null,
             double? maximumPoints = null,
             bool? pointFilter = null,
-            TournamentEventType? tournamentEventType = null)
+            TournamentEventType? tournamentEventType = null,
+            CancellationToken cancellationToken = default)
         {
             var key = $"TournamentSearch:" +
                       $"{latitude}:{longitude}:{radius}:{distanceType}:" +
@@ -387,7 +388,7 @@ namespace Ifpa.Caching
                 startPosition, totalReturn, tournamentSearchSortMode,
                 tournamentSearchSortOrder, directorName,
                 preRegistration, onlyWithResults, minimumPoints,
-                maximumPoints, pointFilter, tournamentEventType));
+                maximumPoints, pointFilter, tournamentEventType, cancellationToken));
         }
     }
 }
