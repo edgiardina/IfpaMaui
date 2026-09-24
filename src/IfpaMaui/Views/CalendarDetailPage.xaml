@@ -21,6 +21,7 @@
             <toolkit:IsNotNullConverter x:Key="isNotNullConverter" />
             <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter" />
             <converters:NotEqualMultiValueConverter x:Key="NotEqualMultiValueConverter" />
+            <converters:AddressFormatConverter x:Key="AddressFormatConverter" />
 
             <Style x:Key="calendarHeader"
                    TargetType="Label">
@@ -102,6 +103,18 @@
                                            TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
                                            FontSize="18"
                                            FontAttributes="Bold" />
+                                    <Label HorizontalTextAlignment="Center"
+                                           FontSize="14"
+                                           TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColor}, Dark={StaticResource SecondaryTextColor}}"
+                                           Margin="0,-5,0,0">
+                                        <Label.Text>
+                                            <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                                <Binding Path="Tournament.City" />
+                                                <Binding Path="Tournament.Stateprov" />
+                                                <Binding Path="Tournament.CountryName" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
                                     <StackLayout>
                                         <!-- Tournament Details Chips -->
                                         <FlexLayout Direction="Row"
