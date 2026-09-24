@@ -17,8 +17,13 @@ using Ifpa.Views;
 using LiveChartsCore.SkiaSharpView.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 using PinballApi;
 using PinballApi.Interfaces;
+using Plugin.Maui.BottomSheet.Hosting;
+#if ANDROID
+using Plugin.Maui.BottomSheet.LifecycleEvents;
+#endif
 using Plugin.Maui.CalendarStore;
 using Plugin.Maui.NativeCalendar;
 using Serilog;
@@ -26,7 +31,6 @@ using Shiny;
 using Shiny.Infrastructure;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
-using The49.Maui.BottomSheet;
 using MauiNativePdfView;
 
 namespace Ifpa;
@@ -58,6 +62,15 @@ public static class MauiProgram
             .UseLiveCharts()
             .UseSkiaSharp()
             .UseBottomSheet()
+            .ConfigureLifecycleEvents(events =>
+            {
+#if ANDROID
+                // A non-cancelable bottom sheet consumes the Android back press. Pass it to Shell
+                // so that back leaves the page, as the toolbar back arrow does.
+                events.AddAndroid(android => android.OnBottomSheetBackPressed(_ =>
+                    MainThread.BeginInvokeOnMainThread(() => Shell.Current?.SendBackButtonPressed())));
+#endif
+            })
             .UseNativeCalendar()
             .UseMauiNativePdfView()
             .ConfigureSyncfusionToolkit()

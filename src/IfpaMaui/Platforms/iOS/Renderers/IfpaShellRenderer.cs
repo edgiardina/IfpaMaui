@@ -44,6 +44,32 @@ namespace Ifpa.Platforms.Renderers
             {
                 controller.TraitOverrides.HorizontalSizeClass = UIUserInterfaceSizeClass.Compact;
             }
+
+            if (OperatingSystem.IsIOSVersionAtLeast(26))
+            {
+                RestoreGlassBackground(controller);
+            }
+        }
+
+        /// <summary>
+        /// Since MAUI 10.0.90, Shell.TabBarBackgroundColor also sets UITabBar.BackgroundColor on iOS 26,
+        /// which draws an opaque rectangle behind the Liquid Glass tab bar
+        /// (https://github.com/dotnet/maui/issues/37423). Put back the system glass background after
+        /// MAUI applies the Shell appearance. The item title and icon colors stay as MAUI set them.
+        /// </summary>
+        private static void RestoreGlassBackground(UITabBarController controller)
+        {
+            var tabBar = controller.TabBar;
+            var tabBarAppearance = tabBar.StandardAppearance;
+
+            tabBarAppearance.ConfigureWithDefaultBackground();
+            tabBarAppearance.ShadowColor = UIColor.Clear;
+
+            tabBar.StandardAppearance = tabBarAppearance;
+            tabBar.ScrollEdgeAppearance = tabBarAppearance;
+            tabBar.BackgroundColor = UIColor.Clear;
+            tabBar.BarTintColor = UIColor.Clear;
+            tabBar.Translucent = true;
         }
 
         public override void UpdateLayout(UITabBarController controller)

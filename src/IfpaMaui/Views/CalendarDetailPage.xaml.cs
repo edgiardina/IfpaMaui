@@ -20,9 +20,7 @@ namespace Ifpa.Views
         {
             base.OnAppearing();
 
-            // TODO: should this be in the XAML?
-            sheet.BindingContext = ViewModel;
-            _ = sheet.ShowAsync();
+            sheet.IsOpen = true;
 
             try
             {               
@@ -65,7 +63,7 @@ namespace Ifpa.Views
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            sheet.DismissAsync();
+            sheet.IsOpen = false;
         }
     }
 }
