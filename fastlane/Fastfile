@@ -1,10 +1,9 @@
-# App Store release lane. Only .github/workflows/release-to-app-store.yml runs it (workflow_dispatch).
-# The tag build (publish.yml) already uploads the iOS build to TestFlight. This lane takes that build
-# to the App Store: it creates the App Store version, attaches the build, sets "What's New", and
+# App Store release lane. The submit-app-store job in .github/workflows/publish.yml runs it on a
+# release tag, after the iOS job of the same run uploads the build to TestFlight. The lane takes that
+# build to the App Store: it creates the App Store version, attaches the build, sets "What's New", and
 # submits for review when SUBMIT_FOR_REVIEW=true.
 #
-# The release notes come in at dispatch time (RELEASE_NOTES), never from a committed file, so a run
-# always ships the notes it was given.
+# The release notes (RELEASE_NOTES) are the body of the GitHub Release for the tag.
 #
 # Credentials are the App Store Connect API key in the ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_P8
 # (base64 of the .p8 file) repository secrets. No Apple ID sign-in is necessary.
