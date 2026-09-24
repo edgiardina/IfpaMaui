@@ -1,0 +1,69 @@
+# App Store release lane. Only .github/workflows/release-to-app-store.yml runs it (workflow_dispatch).
+# The tag build (publish.yml) already uploads the iOS build to TestFlight. This lane takes that build
+# to the App Store: it creates the App Store version, attaches the build, sets "What's New", and
+# submits for review when SUBMIT_FOR_REVIEW=true.
+#
+# The release notes come in at dispatch time (RELEASE_NOTES), never from a committed file, so a run
+# always ships the notes it was given.
+#
+# Credentials are the App Store Connect API key in the ASC_KEY_ID, ASC_ISSUER_ID and ASC_KEY_P8
+# (base64 of the .p8 file) repository secrets. No Apple ID sign-in is necessary.
+
+APP_ID = "com.edgiardina.ifpa"
+
+platform :ios do
+  desc "Create or update the App Store version for an uploaded build. " \
+       "Submits for review only when SUBMIT_FOR_REVIEW=true."
+  lane :appstore_release do |options|
+    version = (options[:version] || ENV["RELEASE_VERSION"]).to_s.strip
+    UI.user_error!("version is required (pass version:X.Y.Z)") if version.empty?
+    build = ENV["IOS_BUILD_NUMBER"].to_s.strip   # 1000 + publish.yml run_number
+    UI.user_error!("buildNumber is required") if build.empty?
+    notes = ENV["RELEASE_NOTES"].to_s.strip
+    UI.user_error!("releaseNotes is required") if notes.empty?
+    submit = ENV["SUBMIT_FOR_REVIEW"] == "true"
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_KEY_P8"),
+      is_key_content_base64: true
+    )
+
+    # The tag build uploads the binary a few minutes before this lane can run, and Apple must finish
+    # processing it before a version can use it. Wait until the build is VALID.
+    app = Spaceship::ConnectAPI::App.find(APP_ID)
+    UI.user_error!("App #{APP_ID} not found in App Store Connect") if app.nil?
+    deadline = Time.now + (60 * 60)
+    loop do
+      found = Spaceship::ConnectAPI::Build.all(app_id: app.id, version: version, build_number: build, limit: 1).first
+      state = found&.processing_state
+      break if state == "VALID"
+      UI.user_error!("Build #{version} (#{build}) processing ended as #{state}") if %w[FAILED INVALID].include?(state)
+      UI.user_error!("Timed out waiting for build #{version} (#{build})") if Time.now > deadline
+      UI.message("Waiting for build #{version} (#{build}): #{state || 'not in App Store Connect yet'}")
+      sleep 60
+    end
+
+    # Notes-only update: the binary is already on TestFlight, and there are no screenshots to send.
+    # skip_metadata stays false so that the inline release_notes upload.
+    deliver(
+      api_key: api_key,
+      app_identifier: APP_ID,
+      app_version: version,
+      build_number: build,
+      release_notes: { "en-US" => notes },
+      submit_for_review: submit,
+      automatic_release: true,      # goes live when Apple approves it
+      force: true,                  # no interactive HTML preview
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      skip_metadata: false,
+      # Info.plist declares ITSAppUsesNonExemptEncryption=false. The app has no ad SDK.
+      submission_information: { add_id_info_uses_idfa: false },
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false
+    )
+    UI.success("App Store version #{version} (build #{build}) updated. Submitted for review: #{submit}")
+  end
+end
