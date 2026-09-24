@@ -1,4 +1,4 @@
-﻿using Ifpa.ViewModels;
+using Ifpa.ViewModels;
 using Ifpa.Models;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
@@ -26,7 +26,11 @@ namespace Ifpa.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            _ = UpdateCalendarData();
+
+            if (ViewModel.Tournaments.Count == 0)
+            {
+                _ = UpdateCalendarData();
+            }
         }
 
         private async void MyLocation_Clicked(object sender, EventArgs e)
