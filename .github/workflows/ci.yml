@@ -72,6 +72,12 @@ jobs:
     runs-on: macos-26
     name: iOS Build
     environment: Release
+    env:
+      # Fork PRs receive no repository or environment secrets, so the signing
+      # material below arrives empty for them. Those runs build unsigned against
+      # the simulator instead: enough to catch compile errors without exposing
+      # the distribution cert to code that has not been reviewed yet.
+      IS_FORK: ${{ github.event.pull_request.head.repo.fork == true }}
     steps:
 
       - name: Checkout
@@ -89,6 +95,7 @@ jobs:
         run: dotnet restore src/IfpaMaui/IfpaMaui.csproj
 
       - name: Install the Apple certificate and provisioning profile
+        if: env.IS_FORK != 'true'
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.DISTRIBUTION_CERT_BASE64 }}
           P12_PASSWORD: ${{ secrets.DISTRIBUTION_CERT_PW }}
@@ -142,6 +149,7 @@ jobs:
           fi
 
       - name: Build RankWidgetExtension
+        if: env.IS_FORK != 'true'
         run: |
           xcodebuild \
             -project src/IfpaMaui/NativeIFPA/IFPA.xcodeproj \
@@ -156,5 +164,31 @@ jobs:
             DEVELOPMENT_TEAM=KH5JKUPW2Q \
             PROVISIONING_PROFILE="$WIDGET_PROVISIONING_UUID"             
 
+      - name: Build RankWidgetExtension (unsigned, simulator)
+        if: env.IS_FORK == 'true'
+        run: |
+          xcodebuild \
+            -project src/IfpaMaui/NativeIFPA/IFPA.xcodeproj \
+            -scheme RankWidgetExtension \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -sdk iphonesimulator \
+            -derivedDataPath src/IfpaMaui/NativeIFPA/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO
+
       - name: Build MAUI iOS
+        if: env.IS_FORK != 'true'
         run: dotnet build src/IfpaMaui/IfpaMaui.csproj -c Release -f ${{ env.IOS_FRAMEWORK }} -p:ArchiveOnBuild=true
+
+      # IfpaMaui.csproj pins RuntimeIdentifier=ios-arm64 and ArchiveOnBuild for
+      # the iOS Release configuration. Override both so the build targets the
+      # simulator, where no signing identity is needed. That also flips
+      # ComputedPlatform to iPhoneSimulator, so AdditionalAppExtensions reads the
+      # widget from DerivedData/Build/Products/Release-iphonesimulator above.
+      - name: Build MAUI iOS (unsigned, simulator)
+        if: env.IS_FORK == 'true'
+        run: >
+          dotnet build src/IfpaMaui/IfpaMaui.csproj -c Release -f ${{ env.IOS_FRAMEWORK }}
+          -p:RuntimeIdentifier=iossimulator-arm64
+          -p:ArchiveOnBuild=false
