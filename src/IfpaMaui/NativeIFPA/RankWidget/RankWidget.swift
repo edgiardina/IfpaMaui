@@ -289,7 +289,14 @@ struct RankWidgetEntryView : View {
 
     /// Name, rank and points. `minimumScaleFactor` lets a long name shrink
     /// instead of truncating, and the semantic fonts track Dynamic Type.
-    private func hero(nameFont: Font, rankFont: Font, pointsFont: Font, alignment: HorizontalAlignment) -> some View {
+    ///
+    /// The rank is a fixed point size, as it was before the redesign, because
+    /// `.largeTitle` tops out at 34pt. A shrinkable `Text` also tells its
+    /// stack that it can give up space, and the stack took that offer: the
+    /// rank rendered at its 0.5 floor (about 17pt) with room to spare. The
+    /// layout priority and vertical fixed size keep it at full size, and the
+    /// scale factor now only applies to a rank too wide for its column.
+    private func hero(nameFont: Font, rankSize: CGFloat, pointsFont: Font, alignment: HorizontalAlignment) -> some View {
         let textAlignment: TextAlignment = alignment == .center ? .center : .leading
 
         return VStack(alignment: alignment, spacing: 3) {
@@ -305,10 +312,12 @@ struct RankWidgetEntryView : View {
                 .multilineTextAlignment(textAlignment)
 
             Text(rankText)
-                .font(rankFont.weight(.heavy))
+                .font(.system(size: rankSize, weight: .heavy, design: .rounded))
                 .foregroundStyle(Brand.primary)
                 .lineLimit(1)
-                .minimumScaleFactor(0.5)
+                .minimumScaleFactor(0.6)
+                .fixedSize(horizontal: false, vertical: true)
+                .layoutPriority(1)
 
             Text("\(pointsText) pts")
                 .font(pointsFont)
@@ -344,9 +353,9 @@ struct RankWidgetEntryView : View {
         VStack(spacing: 0) {
             brandMark(size: 14)
             Spacer(minLength: 2)
-            hero(nameFont: .system(.caption2, design: .rounded),
-                 rankFont: .system(.largeTitle, design: .rounded),
-                 pointsFont: .system(.caption2, design: .rounded),
+            hero(nameFont: .system(.caption, design: .rounded),
+                 rankSize: 30,
+                 pointsFont: .system(.caption, design: .rounded),
                  alignment: .center)
             Spacer(minLength: 2)
         }
@@ -366,9 +375,9 @@ struct RankWidgetEntryView : View {
                     photo(side: 96)
                         .frame(maxWidth: .infinity)
                 }
-                hero(nameFont: .system(.footnote, design: .rounded),
-                     rankFont: .system(.largeTitle, design: .rounded),
-                     pointsFont: .system(.footnote, design: .rounded),
+                hero(nameFont: .system(.subheadline, design: .rounded),
+                     rankSize: 38,
+                     pointsFont: .system(.subheadline, design: .rounded),
                      alignment: .center)
                 .frame(maxWidth: .infinity)
             }
@@ -390,8 +399,8 @@ struct RankWidgetEntryView : View {
                     photo(side: 112)
                         .frame(maxWidth: .infinity)
                 }
-                hero(nameFont: .system(.subheadline, design: .rounded),
-                     rankFont: .system(.largeTitle, design: .rounded),
+                hero(nameFont: .system(.headline, design: .rounded),
+                     rankSize: 44,
                      pointsFont: .system(.subheadline, design: .rounded),
                      alignment: .center)
                 .frame(maxWidth: .infinity)
