@@ -291,11 +291,14 @@ struct RankWidgetEntryView : View {
     /// instead of truncating, and the semantic fonts track Dynamic Type.
     ///
     /// The rank is a fixed point size, as it was before the redesign, because
-    /// `.largeTitle` tops out at 34pt. A shrinkable `Text` also tells its
-    /// stack that it can give up space, and the stack took that offer: the
-    /// rank rendered at its 0.5 floor (about 17pt) with room to spare. The
-    /// layout priority and vertical fixed size keep it at full size, and the
-    /// scale factor now only applies to a rank too wide for its column.
+    /// `.largeTitle` tops out at 34pt.
+    ///
+    /// The stack is proposed less height than it needs, and a `Text` with a
+    /// `minimumScaleFactor` gives up height by shrinking: the rank rendered
+    /// at its 0.5 floor (about 17pt), and with only the rank protected the
+    /// name shrank instead. A vertical fixed size on the whole stack gives
+    /// every line its natural height, so the scale factors only apply to a
+    /// line too wide for its column.
     private func hero(nameFont: Font, rankSize: CGFloat, pointsFont: Font, alignment: HorizontalAlignment) -> some View {
         let textAlignment: TextAlignment = alignment == .center ? .center : .leading
 
@@ -316,8 +319,6 @@ struct RankWidgetEntryView : View {
                 .foregroundStyle(Brand.primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
-                .fixedSize(horizontal: false, vertical: true)
-                .layoutPriority(1)
 
             Text("\(pointsText) pts")
                 .font(pointsFont)
@@ -325,6 +326,7 @@ struct RankWidgetEntryView : View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
         }
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: Photo
@@ -354,7 +356,7 @@ struct RankWidgetEntryView : View {
             brandMark(size: 14)
             Spacer(minLength: 2)
             hero(nameFont: .system(.caption, design: .rounded),
-                 rankSize: 30,
+                 rankSize: 34,
                  pointsFont: .system(.caption, design: .rounded),
                  alignment: .center)
             Spacer(minLength: 2)
