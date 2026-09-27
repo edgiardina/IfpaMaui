@@ -144,19 +144,19 @@ struct ContentView: View {
         }
     }
 
-    /// The same six figures the large iPhone widget shows, paired into two
-    /// columns like that widget's grid. Six single rows overflowed the screen
+    /// The same six figures and labels the large iPhone widget shows, paired
+    /// into two columns like that widget's grid. Six single rows overflowed the screen
     /// and left the last of them sliced by the bottom edge; three paired rows
     /// fit without scrolling.
     private func stats(for player: Player) -> some View {
         let stats = player.openStats
         let cells: [(String, String)] = [
-            ("Efficiency", IfpaStat.percent(stats?.efficiencyValue)),
-            ("Eff. rank", IfpaStat.ordinal(stats?.efficiencyRank)),
+            ("Eff. Pct", IfpaStat.percent(stats?.efficiencyValue)),
+            ("Eff. Rank", IfpaStat.ordinal(stats?.efficiencyRank)),
             ("Events", IfpaStat.count(stats?.totalEventsAllTime)),
-            ("Best", IfpaStat.ordinal(stats?.bestFinish)),
-            ("Average", IfpaStat.ordinal(stats?.averageFinish)),
-            ("Peak rank", IfpaStat.ordinal(stats?.highestRank)),
+            ("Best Finish", IfpaStat.ordinal(stats?.bestFinish)),
+            ("Avg Finish", IfpaStat.ordinal(stats?.averageFinish)),
+            ("Highest Rank", IfpaStat.ordinal(stats?.highestRank)),
         ]
 
         return VStack(alignment: .leading, spacing: 4) {
