@@ -135,7 +135,7 @@ namespace Ifpa.Platforms.Android.Widgets
                         if (!string.IsNullOrEmpty(localPath) && File.Exists(localPath))
                         {
                             var context = Application.Context;
-                            contentUri = AndroidX.Core.Content.FileProvider.GetUriForFile(context, "com.edgiardina.ifpa.fileprovider", new Java.IO.File(localPath));
+                            contentUri = AndroidX.Core.Content.FileProvider.GetUriForFile(context, $"{context.PackageName}.fileprovider", new Java.IO.File(localPath));
                         }
                     }
 
@@ -213,8 +213,7 @@ namespace Ifpa.Platforms.Android.Widgets
                 var pm = context.PackageManager;
                 try
                 {
-                    var packageName = "com.edgiardina.ifpa";
-                    var launchIntent = pm.GetLaunchIntentForPackage(packageName);
+                    var launchIntent = pm.GetLaunchIntentForPackage(context.PackageName);
                     if (launchIntent != null)
                     {
                         launchIntent.AddFlags(ActivityFlags.NewTask);
