@@ -1,4 +1,6 @@
-﻿using Ifpa.Views;
+using CommunityToolkit.Maui.Behaviors;
+using CommunityToolkit.Maui.Core;
+using Ifpa.Views;
 using Ifpa.Models;
 using Serilog;
 
@@ -9,6 +11,19 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
+
+#if ANDROID
+        Behaviors.Add(new StatusBarBehavior
+        {
+            StatusBarStyle = AppInfo.RequestedTheme == AppTheme.Dark
+                ? StatusBarStyle.LightContent
+                : StatusBarStyle.DarkContent,
+            StatusBarColor = AppInfo.RequestedTheme == AppTheme.Dark
+                ? (Color)Application.Current!.Resources["BarBackgroundColorDark"]
+                : (Color)Application.Current!.Resources["BarBackgroundColor"],
+        });
+#endif
+
 
         Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
         Routing.RegisterRoute("player-search", typeof(PlayerSearchPage));
