@@ -4,7 +4,18 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:Ifpa"
        xmlns:views="clr-namespace:Ifpa.Views"
+       xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
        Shell.FlyoutBehavior="Disabled">
+    <Shell.Behaviors>
+        <!-- Workaround: MAUI 10.0.100 sets Android status bar icons to the wrong contrast. Android only. -->
+        <OnPlatform x:TypeArguments="Behavior">
+            <On Platform="Android">
+                <toolkit:StatusBarBehavior
+                    StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}"
+                    StatusBarColor="{AppThemeBinding Light={StaticResource BarBackgroundColor}, Dark={StaticResource BarBackgroundColorDark}}" />
+            </On>
+        </OnPlatform>
+    </Shell.Behaviors>
     <TabBar x:Name="MainTabBar">
         <ShellContent Title="{x:Static local:Strings.AppShell_Rankings}"
                       x:Name="RankingsTab"
