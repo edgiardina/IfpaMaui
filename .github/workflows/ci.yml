@@ -20,6 +20,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
   DOTNET_VERSION: '10.0.x'                # .NET version to use
   XCODE_VERSION: '26.6'                   # must satisfy the .NET for iOS workload, which requires 26.6
+  WORKLOAD_VERSION: '10.0.401'            # pin: 10.0.401.1 brings iOS SDK 27, which requires Xcode 27
   IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
   ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
 
@@ -59,7 +60,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           
       - name: Install MAUI Workload
-        run: dotnet workload install maui --ignore-failed-sources
+        run: dotnet workload install maui --ignore-failed-sources --version ${{ env.WORKLOAD_VERSION }}
 
       - name: Restore Dependencies
         run: dotnet restore src/IfpaMaui/IfpaMaui.csproj
@@ -89,7 +90,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Install MAUI Workload
-        run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json
+        run: dotnet workload install ios maui --source https://api.nuget.org/v3/index.json --version ${{ env.WORKLOAD_VERSION }}
 
       - name: Restore Dependencies
         run: dotnet restore src/IfpaMaui/IfpaMaui.csproj
