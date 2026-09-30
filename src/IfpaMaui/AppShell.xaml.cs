@@ -1,5 +1,7 @@
 ﻿using Ifpa.Views;
 using Ifpa.Models;
+using CommunityToolkit.Maui.Behaviors;
+using CommunityToolkit.Maui.Core;
 using Serilog;
 
 namespace Ifpa;
@@ -9,6 +11,8 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
+
+        AddAndroidStatusBarBehavior();
 
         Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
         Routing.RegisterRoute("player-search", typeof(PlayerSearchPage));
@@ -43,6 +47,22 @@ public partial class AppShell : Shell
 
         // modals
         Routing.RegisterRoute("tournament-info", typeof(TournamentInfoPage));
+    }
+
+    // Workaround: MAUI 10.0.100 sets Android status bar icons to the wrong contrast. Android only.
+    // Added in code, not XAML: an Android-only <OnPlatform x:TypeArguments="Behavior"> has no
+    // value on iOS, and Release (compiled) XAML then tries to create the abstract Behavior
+    // type and crashes AppShell at launch.
+    private void AddAndroidStatusBarBehavior()
+    {
+        if (DeviceInfo.Platform != DevicePlatform.Android)
+            return;
+
+        var resources = Application.Current!.Resources;
+        var behavior = new StatusBarBehavior();
+        behavior.SetAppTheme(StatusBarBehavior.StatusBarStyleProperty, StatusBarStyle.DarkContent, StatusBarStyle.LightContent);
+        behavior.SetAppTheme(StatusBarBehavior.StatusBarColorProperty, (Color)resources["BarBackgroundColor"], (Color)resources["BarBackgroundColorDark"]);
+        Behaviors.Add(behavior);
     }
 
     protected override async void OnNavigating(ShellNavigatingEventArgs args)
