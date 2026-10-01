@@ -13,6 +13,9 @@ namespace Ifpa.Views
     {
         public int PlayerId { get; set; }
 
+        /// <summary>The player this page is showing, including the My Stats player when no id was passed.</summary>
+        public int DisplayedPlayerId => ViewModel.PlayerId;
+
         private bool LoadMyStats = false;
 
         private readonly PlayerDetailViewModel ViewModel;

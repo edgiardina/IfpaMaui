@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Rankings.Custom;
 using PinballApi.Models.WPPR.Universal.Tournaments;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -78,7 +79,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task SelectPlayerDetails()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectedViewResult.PlayerId}");
+            await Shell.Current.GoToPlayerDetailsAsync(SelectedViewResult.PlayerId);
             SelectedViewResult = null;
         }
 

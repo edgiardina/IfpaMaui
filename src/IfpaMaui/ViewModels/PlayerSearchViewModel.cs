@@ -6,6 +6,7 @@ using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Players;
 using PinballApi.Models.WPPR.Universal.Players.Search;
 using System.Collections.ObjectModel;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -63,7 +64,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewPlayer()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
+            await Shell.Current.GoToPlayerDetailsAsync(SelectedPlayer.PlayerId);
             SelectedPlayer = null;
         }
     }

@@ -7,6 +7,7 @@ using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Tournaments;
 using System.Collections.ObjectModel;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -95,7 +96,7 @@ namespace Ifpa.ViewModels
             // Player may be suppressed and not have a player id
             if (SelectedPlayer.PlayerId.HasValue)
             {
-                await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId.Value}");
+                await Shell.Current.GoToPlayerDetailsAsync(SelectedPlayer.PlayerId.Value);
             }
 
             SelectedPlayer = null;

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Directors;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -52,7 +53,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewDirectorDetail()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectedDirector.PlayerProfile.PlayerId}");
+            await Shell.Current.GoToPlayerDetailsAsync(SelectedDirector.PlayerProfile.PlayerId);
         }
     }
 }
