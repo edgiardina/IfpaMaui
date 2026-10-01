@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Stats;
 using System.Collections.ObjectModel;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -180,7 +181,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task SelectedMostPointsPlayerChanged()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectededMostPointsPlayer.PlayerId}");
+            await Shell.Current.GoToPlayerDetailsAsync(SelectededMostPointsPlayer.PlayerId);
 
             // Manually deselect item.
             SelectededMostPointsPlayer = null;
@@ -189,7 +190,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task SelectedMostEventsPlayerChanged()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectededMostEventsPlayer.PlayerId}");
+            await Shell.Current.GoToPlayerDetailsAsync(SelectededMostEventsPlayer.PlayerId);
             // Manually deselect item.
             SelectededMostEventsPlayer = null;
         }

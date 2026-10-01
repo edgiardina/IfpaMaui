@@ -6,6 +6,7 @@ using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal;
 using PinballApi.Models.WPPR.Universal.Rankings;
 using System.Collections.ObjectModel;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -139,7 +140,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ShowPlayerDetail()
         {
-            await Shell.Current.GoToAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
+            await Shell.Current.GoToPlayerDetailsAsync(SelectedPlayer.PlayerId);
             SelectedPlayer = null;
         }
     }

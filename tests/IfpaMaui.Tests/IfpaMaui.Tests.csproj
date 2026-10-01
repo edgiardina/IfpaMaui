@@ -19,6 +19,7 @@
   <ItemGroup>
     <Compile Include="..\..\src\IfpaMaui\Caching\SQLiteCacheProvider.cs" Link="AppCode\Caching\SQLiteCacheProvider.cs" />
     <Compile Include="..\..\src\IfpaMaui\Models\IntExtensions.cs" Link="AppCode\Models\IntExtensions.cs" />
+    <Compile Include="..\..\src\IfpaMaui\Models\PlayerNavigationStack.cs" Link="AppCode\Models\PlayerNavigationStack.cs" />
   </ItemGroup>
 
   <ItemGroup>
