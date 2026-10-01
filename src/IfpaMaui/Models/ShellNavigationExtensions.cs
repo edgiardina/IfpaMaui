@@ -11,28 +11,25 @@ namespace Ifpa.Models
         public static async Task GoToPlayerDetailsAsync(this Shell shell, long playerId)
         {
             var section = shell.CurrentItem?.CurrentItem;
-            var stack = section?.Navigation.NavigationStack;
 
-            if (stack != null && playerId <= int.MaxValue)
+            if (section != null)
             {
-                // Shell keeps a null placeholder for the section's root page; resolve it so a root
-                // player page (e.g. My Stats) can be matched too.
-                var rootPage = (section.CurrentItem as IShellContentController)?.Page;
+                var stack = section.Navigation.NavigationStack;
 
-                var stackPlayerIds = stack
-                    .Select((page, index) => index == 0 && page == null ? rootPage : page)
-                    .Select(page => page is PlayerDetailPage playerPage ? playerPage.DisplayedPlayerId : (int?)null)
-                    .ToList();
-
-                var pagesToPop = PlayerNavigationStack.PagesToPopTo(stackPlayerIds, (int)playerId);
-
-                if (pagesToPop == 0)
-                    return;
-
-                if (pagesToPop.HasValue)
+                for (int i = stack.Count - 1; i >= 0; i--)
                 {
-                    await shell.GoToAsync(string.Join("/", Enumerable.Repeat("..", pagesToPop.Value)));
-                    return;
+                    // Shell keeps a null placeholder for the section's root page; resolve it so a root
+                    // player page (e.g. My Stats) can be matched too.
+                    var page = stack[i] ?? (i == 0 ? (section.CurrentItem as IShellContentController)?.Page : null);
+
+                    if (page is PlayerDetailPage playerPage && playerPage.DisplayedPlayerId == playerId)
+                    {
+                        var pagesToPop = stack.Count - 1 - i;
+                        if (pagesToPop > 0)
+                            await shell.GoToAsync(string.Join("/", Enumerable.Repeat("..", pagesToPop)));
+
+                        return;
+                    }
                 }
             }
 
