@@ -114,6 +114,14 @@ namespace Ifpa.Models
             }
         }
 
+        // The view the Calendar tab last showed (a CalendarType name). Only
+        // the app reads it, so it stays in the app's own store.
+        public static string LastCalendarViewType
+        {
+            get => Preferences.Get(nameof(LastCalendarViewType), "MapAndList");
+            set => Preferences.Set(nameof(LastCalendarViewType), value);
+        }
+
         public static long LastCalendarIdSeen
         {
             get => Preferences.Get(nameof(LastCalendarIdSeen), 0L);

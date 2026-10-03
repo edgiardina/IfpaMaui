@@ -35,7 +35,9 @@ namespace Ifpa.ViewModels
         public DateTime selectedDate;
 
         [ObservableProperty]
-        private CalendarType currentType = CalendarType.MapAndList;
+        private CalendarType currentType = Enum.TryParse<CalendarType>(Settings.LastCalendarViewType, out var lastType) ? lastType : CalendarType.MapAndList;
+
+        partial void OnCurrentTypeChanged(CalendarType value) => Settings.LastCalendarViewType = value.ToString();
 
         [ObservableProperty]
         private List<Pin> pins = new List<Pin>();
