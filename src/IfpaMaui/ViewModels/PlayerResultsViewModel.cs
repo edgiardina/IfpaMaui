@@ -6,6 +6,7 @@ using PinballApi.Interfaces;
 using PinballApi.Models.WPPR;
 using PinballApi.Models.WPPR.Universal.Players;
 using System.Collections.ObjectModel;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -86,7 +87,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewTournamentResults()
         {
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}");
+            await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}", popToExisting: true);
             SelectedResult = null;
         }
 

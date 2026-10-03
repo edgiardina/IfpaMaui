@@ -79,14 +79,14 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task SelectPlayerDetails()
         {
-            await Shell.Current.GoToPlayerDetailsAsync(SelectedViewResult.PlayerId);
+            await Shell.Current.NavigateToAsync($"player-details?playerId={SelectedViewResult.PlayerId}", popToExisting: true);
             SelectedViewResult = null;
         }
 
         [RelayCommand]
         public async Task SelectTournament()
         {
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}");
+            await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}", popToExisting: true);
             SelectedTournament = null;
         }
 

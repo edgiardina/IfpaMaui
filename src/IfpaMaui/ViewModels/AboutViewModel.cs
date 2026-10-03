@@ -91,7 +91,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewPlayer(long playerId)
         {
-            await Shell.Current.GoToPlayerDetailsAsync(playerId);
+            await Shell.Current.NavigateToAsync($"player-details?playerId={playerId}", popToExisting: true);
         }
 
         [RelayCommand]

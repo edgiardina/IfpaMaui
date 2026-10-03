@@ -96,7 +96,7 @@ namespace Ifpa.ViewModels
             // Player may be suppressed and not have a player id
             if (SelectedPlayer.PlayerId.HasValue)
             {
-                await Shell.Current.GoToPlayerDetailsAsync(SelectedPlayer.PlayerId.Value);
+                await Shell.Current.NavigateToAsync($"player-details?playerId={SelectedPlayer.PlayerId.Value}", popToExisting: true);
             }
 
             SelectedPlayer = null;

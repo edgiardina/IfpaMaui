@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Tournaments.Related;
 using System.Collections.ObjectModel;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -68,7 +69,7 @@ namespace Ifpa.ViewModels
             if (SelectedTournament.Winner is not null)
             {
                 // Tournament is completed, navigate to tournament results
-                await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}");
+                await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}", popToExisting: true);
             }
             else
             {

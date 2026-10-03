@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PinballApi;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Series;
+using Ifpa.Models;
 
 namespace Ifpa.ViewModels
 {
@@ -58,7 +59,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task SelectPlayerCard()
         {
-            await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedTournamentCard.TournamentId}");
+            await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedTournamentCard.TournamentId}", popToExisting: true);
             SelectedTournamentCard = null;
         }
     }
