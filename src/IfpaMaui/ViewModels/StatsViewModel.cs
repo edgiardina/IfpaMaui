@@ -181,7 +181,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task SelectedMostPointsPlayerChanged()
         {
-            await Shell.Current.GoToPlayerDetailsAsync(SelectededMostPointsPlayer.PlayerId);
+            await Shell.Current.NavigateToAsync($"player-details?playerId={SelectededMostPointsPlayer.PlayerId}", popToExisting: true);
 
             // Manually deselect item.
             SelectededMostPointsPlayer = null;
@@ -190,7 +190,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task SelectedMostEventsPlayerChanged()
         {
-            await Shell.Current.GoToPlayerDetailsAsync(SelectededMostEventsPlayer.PlayerId);
+            await Shell.Current.NavigateToAsync($"player-details?playerId={SelectededMostEventsPlayer.PlayerId}", popToExisting: true);
             // Manually deselect item.
             SelectededMostEventsPlayer = null;
         }

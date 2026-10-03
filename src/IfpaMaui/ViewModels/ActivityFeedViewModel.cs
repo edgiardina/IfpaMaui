@@ -33,7 +33,7 @@ namespace Ifpa.ViewModels
 
             if (SelectedItem.ActivityType == ActivityFeedType.TournamentResult)
             {
-                await Shell.Current.GoToAsync($"tournament-results?tournamentId={SelectedItem.RecordID.Value}");
+                await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedItem.RecordID.Value}", popToExisting: true);
             }
 
             SelectedItem = null;
