@@ -140,7 +140,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ShowPlayerDetail()
         {
-            await Shell.Current.NavigateToAsync($"player-details?playerId={SelectedPlayer.PlayerId}", popToExisting: true);
+            await Shell.Current.GoToAndPopExistingAsync($"player-details?playerId={SelectedPlayer.PlayerId}");
             SelectedPlayer = null;
         }
     }

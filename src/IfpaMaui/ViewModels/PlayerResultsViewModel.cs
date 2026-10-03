@@ -87,7 +87,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewTournamentResults()
         {
-            await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}", popToExisting: true);
+            await Shell.Current.GoToAndPopExistingAsync($"tournament-results?tournamentId={SelectedResult.TournamentId}");
             SelectedResult = null;
         }
 
