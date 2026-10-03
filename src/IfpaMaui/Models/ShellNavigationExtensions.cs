@@ -8,22 +8,18 @@ namespace Ifpa.Models
     public static class ShellNavigationExtensions
     {
         /// <summary>
-        /// Navigates to a relative route. When <paramref name="popToExisting"/> is true and a page for the
-        /// same route and query is already in the current navigation stack, pops back to it instead of
-        /// pushing a duplicate.
+        /// Navigates to a relative route. If a page for the same route and query is already in the current
+        /// navigation stack, pops back to it instead of pushing a duplicate.
         /// </summary>
-        public static Task NavigateToAsync(this Shell shell, string route, bool popToExisting)
+        public static Task GoToAndPopExistingAsync(this Shell shell, string route)
         {
-            if (popToExisting)
-            {
-                var pagesToPop = PagesAboveExisting(shell, route);
+            var pagesToPop = PagesAboveExisting(shell, route);
 
-                if (pagesToPop == 0)
-                    return Task.CompletedTask;
+            if (pagesToPop == 0)
+                return Task.CompletedTask;
 
-                if (pagesToPop > 0)
-                    return shell.GoToAsync(string.Join("/", Enumerable.Repeat("..", pagesToPop.Value)));
-            }
+            if (pagesToPop > 0)
+                return shell.GoToAsync(string.Join("/", Enumerable.Repeat("..", pagesToPop.Value)));
 
             return shell.GoToAsync(route);
         }

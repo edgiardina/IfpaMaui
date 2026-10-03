@@ -69,7 +69,7 @@ namespace Ifpa.ViewModels
             if (SelectedTournament.Winner is not null)
             {
                 // Tournament is completed, navigate to tournament results
-                await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}", popToExisting: true);
+                await Shell.Current.GoToAndPopExistingAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}");
             }
             else
             {

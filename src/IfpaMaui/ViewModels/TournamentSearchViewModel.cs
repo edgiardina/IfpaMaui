@@ -57,7 +57,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task TournamentSelected()
         {
-            await Shell.Current.NavigateToAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}", popToExisting: true);
+            await Shell.Current.GoToAndPopExistingAsync($"tournament-results?tournamentId={SelectedTournament.TournamentId}");
         }
 
         public TournamentSearchViewModel(IPinballRankingApi pinballRankingApi, ILogger<TournamentSearchViewModel> logger)

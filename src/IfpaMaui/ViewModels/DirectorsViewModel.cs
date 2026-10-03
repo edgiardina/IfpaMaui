@@ -53,7 +53,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task ViewDirectorDetail()
         {
-            await Shell.Current.NavigateToAsync($"player-details?playerId={SelectedDirector.PlayerProfile.PlayerId}", popToExisting: true);
+            await Shell.Current.GoToAndPopExistingAsync($"player-details?playerId={SelectedDirector.PlayerProfile.PlayerId}");
         }
     }
 }
