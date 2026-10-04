@@ -122,7 +122,7 @@
                                          Grid.Row="0"
                                          HeightRequest="{OnPlatform iOS=456, Android=340}"
                                          HorizontalOptions="{OnPlatform Android=Center}"
-                                         MinimumDate="{Binding Source={x:Static sys:DateTime.Now}}"
+                                         MinimumDate="{x:Static sys:DateTime.Today}"
                                          SelectedDate="{Binding SelectedDate, Mode=TwoWay}"
                                          Events="{Binding TournamentCalendarItems}"
                                          TintColor="{StaticResource IconAccentColor}"
