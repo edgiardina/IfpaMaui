@@ -54,6 +54,26 @@
         <string>processing</string>
         <string>fetch</string>
     </array>
+	<!-- Other names that Siri accepts for the app in App Shortcut phrases -->
+	<key>INAlternativeAppNames</key>
+	<array>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>IFPA</string>
+			<key>INAlternativeAppNamePronunciationHint</key>
+			<string>if pa</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>IFPA Pinball</string>
+			<key>INAlternativeAppNamePronunciationHint</key>
+			<string>if pa pinball</string>
+		</dict>
+		<dict>
+			<key>INAlternativeAppName</key>
+			<string>Pinball</string>
+		</dict>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>
