@@ -11,6 +11,10 @@ namespace Ifpa.AppFunctions;
     Description = "Gets the current IFPA world rank and WPPR points of the player selected in My Stats")]
 [AppShortcut("What's my ${applicationName} rank", ShortTitle = "My Rank", SystemImage = "trophy")]
 [AppShortcut("${applicationName} rank")]
+[AppShortcut("My ${applicationName} rank")]
+[AppShortcut("Check my ${applicationName} rank")]
+[AppShortcut("Get my rank in ${applicationName}")]
+[AppShortcut("Show my rank in ${applicationName}")]
 public record GetMyRank() : IAppFunction<MyRankResult>;
 
 public record MyRankResult(string PlayerName, long Rank, double WpprPoints);
