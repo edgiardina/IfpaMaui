@@ -29,6 +29,7 @@ using Plugin.Maui.NativeCalendar;
 using Serilog;
 using Shiny;
 using Shiny.Infrastructure;
+using Shiny.Jobs;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using MauiNativePdfView;
@@ -171,13 +172,12 @@ public static class MauiProgram
     {
         var s = builder.Services;
 
-        s.AddJobs();
         s.AddShinyCoreServices();
 
-        s.AddJob(typeof(NotificationJob), requiredNetwork: Shiny.Jobs.InternetAccess.Any);
+        s.AddJob<NotificationJob>(r => r.WithInternet(InternetAccess.Any));
 
         // shiny.notifications
-        s.AddNotifications(typeof(NotificationDelegate));
+        s.AddNotifications<NotificationDelegate>();
 
         return builder;
     }
