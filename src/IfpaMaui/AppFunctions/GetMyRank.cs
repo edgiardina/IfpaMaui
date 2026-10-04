@@ -19,7 +19,7 @@ public record GetMyRank() : IAppFunction<MyRankResult>;
 
 public record MyRankResult(string PlayerName, long Rank, double WpprPoints);
 
-public class GetMyRankHandler(IPinballRankingApi pinballRankingApi, ILogger<GetMyRankHandler> logger)
+public class GetMyRankHandler(IPinballRankingApi pinballRankingApi, PendingAssistantRoute pendingRoute, ILogger<GetMyRankHandler> logger)
     : IAppFunctionHandler<GetMyRank, MyRankResult>
 {
     // An assistant can start the app with no UI. Do not touch Shell or pages here.
@@ -41,6 +41,10 @@ public class GetMyRankHandler(IPinballRankingApi pinballRankingApi, ILogger<GetM
                 playerName,
                 stats.CurrentRank,
                 Convert.ToDouble(stats.CurrentPoints));
+
+            // The app is in the background. If the user opens it from the answer, show My Stats.
+            if (!context.IsForeground)
+                pendingRoute.Set("my-stats");
 
             context.Say(string.Format(Strings.AppFunctions_MyRank_Dialog, result.PlayerName, stats.CurrentRank.OrdinalSuffix(), result.WpprPoints));
 
