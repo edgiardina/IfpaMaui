@@ -106,6 +106,7 @@ public class GetUpcomingTournamentsHandler(
         if (date == DateTime.Today.AddDays(1))
             return Strings.AppFunctions_Tomorrow;
 
-        return date.ToString("dddd, MMMM d");
+        // "M" is the month and day pattern of the device culture: "October 4" in the US, "4 October" in the UK.
+        return $"{date:dddd} {date:M}";
     }
 }
