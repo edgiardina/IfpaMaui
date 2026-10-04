@@ -179,6 +179,9 @@ public static class MauiProgram
         // shiny.notifications
         s.AddNotifications<NotificationDelegate>();
 
+        // source-generated from the [AppFunction] records in AppFunctions/
+        s.AddAppFunctions();
+
         return builder;
     }
 
