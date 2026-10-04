@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Flurl.Http;
 using CommunityToolkit.Maui.ApplicationModel;
+using Ifpa.AppFunctions;
 using Ifpa.BackgroundJobs;
 using Ifpa.Caching;
 using Ifpa.Controls;
@@ -181,6 +182,7 @@ public static class MauiProgram
 
         // source-generated from the [AppFunction] records in AppFunctions/
         s.AddAppFunctions();
+        s.AddSingleton<PendingAssistantRoute>();
 
         return builder;
     }

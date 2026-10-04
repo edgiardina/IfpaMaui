@@ -1,5 +1,7 @@
-﻿using Ifpa.Exceptions;
+﻿using Ifpa.AppFunctions;
+using Ifpa.Exceptions;
 using Ifpa.Services;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Shiny.Notifications;
 
@@ -10,10 +12,15 @@ public partial class App : Application
     protected INotificationManager NotificationManager { get; set; }
     protected readonly NotificationService NotificationService;
     protected readonly IDeepLinkService DeepLinkService;
+    private readonly PendingAssistantRoute pendingAssistantRoute;
+    private readonly ILogger<App> logger;
+    private readonly TaskCompletionSource shellReady = new();
 
     public App(INotificationManager notificationManager,
               NotificationService notificationService,
-              IDeepLinkService deepLinkService)
+              IDeepLinkService deepLinkService,
+              PendingAssistantRoute pendingAssistantRoute,
+              ILogger<App> logger)
     {
         // Try not to crash the app when an unexpected exception is thrown
         MauiExceptions.UnhandledException += (sender, e) =>
@@ -25,6 +32,8 @@ public partial class App : Application
         NotificationManager = notificationManager;
         NotificationService = notificationService;
         DeepLinkService = deepLinkService;
+        this.pendingAssistantRoute = pendingAssistantRoute;
+        this.logger = logger;
 
         InitializeComponent();
 
@@ -49,7 +58,33 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState activationState)
     {
-        return new Window(new AppShell());
+        var shell = new AppShell();
+        shell.Navigated += (s, e) => shellReady.TrySetResult();
+
+        var window = new Window(shell);
+        window.Activated += OnWindowActivated;
+        return window;
+    }
+
+    // An assistant function can leave a page to show, for example My Stats after a rank answer.
+    private async void OnWindowActivated(object sender, EventArgs e)
+    {
+        var route = pendingAssistantRoute.Take();
+        if (route == null)
+            return;
+
+        try
+        {
+            // On a cold start the window can become active before the Shell is ready.
+            await shellReady.Task;
+
+            logger.LogInformation("Opening {Route} after an assistant answer", route);
+            await Shell.Current.GoToAsync($"//{route}");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error opening {Route} after an assistant answer", route);
+        }
     }
 
     protected override async void OnStart()
