@@ -69,6 +69,8 @@ platform :ios do
   # On-demand only. No workflow runs this lane on a release. Run it before the release for the same
   # version: Apple accepts screenshots only on a version that is not yet in review. The lane creates
   # the App Store version if it does not exist, and appstore_release then attaches the build to it.
+  # The lane removes every screenshot on the version before the upload. Thus the folder must hold the
+  # full set, and that includes the Apple Watch image. App Review refuses a version with no Watch image.
   desc "Replace the App Store screenshots for a version with the images in fastlane/screenshots."
   lane :screenshots do |options|
     version = (options[:version] || ENV["RELEASE_VERSION"]).to_s.strip
