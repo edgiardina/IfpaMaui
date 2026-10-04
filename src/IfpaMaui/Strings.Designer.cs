@@ -115,6 +115,69 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The next tournaments within {0} miles of {1}: {2}.
+        /// </summary>
+        internal static string AppFunctions_Tournaments_Dialog {
+            get {
+                return ResourceManager.GetString("AppFunctions_Tournaments_Dialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not get the tournaments. Try again later.
+        /// </summary>
+        internal static string AppFunctions_Tournaments_Error {
+            get {
+                return ResourceManager.GetString("AppFunctions_Tournaments_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, {1} in {2}.
+        /// </summary>
+        internal static string AppFunctions_Tournaments_Item {
+            get {
+                return ResourceManager.GetString("AppFunctions_Tournaments_Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find the location {0}. Set the location in the Calendar tab of the IFPA app.
+        /// </summary>
+        internal static string AppFunctions_Tournaments_NoLocation {
+            get {
+                return ResourceManager.GetString("AppFunctions_Tournaments_NoLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no tournaments within {0} miles of {1}.
+        /// </summary>
+        internal static string AppFunctions_Tournaments_None {
+            get {
+                return ResourceManager.GetString("AppFunctions_Tournaments_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to today.
+        /// </summary>
+        internal static string AppFunctions_Today {
+            get {
+                return ResourceManager.GetString("AppFunctions_Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tomorrow.
+        /// </summary>
+        internal static string AppFunctions_Tomorrow {
+            get {
+                return ResourceManager.GetString("AppFunctions_Tomorrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select your player in My Stats in the IFPA app first.
         /// </summary>
         internal static string AppFunctions_NoPlayerSelected {
