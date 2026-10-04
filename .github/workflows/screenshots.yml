@@ -1,0 +1,32 @@
+name: update App Store screenshots
+# Manual only. A release never runs this workflow. Run it before the release for the same version:
+# Apple accepts screenshots only on a version that is not yet in review. The lane creates the App
+# Store version if it does not exist, and the release then attaches the build to that version.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "App Store version that gets the screenshots (X.Y.Z, the next release)"
+        required: true
+        type: string
+
+jobs:
+  upload-screenshots:
+    runs-on: ubuntu-latest
+    name: Upload Screenshots
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - name: Install fastlane
+        run: gem install fastlane --no-document
+      - name: Replace the screenshots for ${{ inputs.version }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: fastlane ios screenshots version:"$RELEASE_VERSION"

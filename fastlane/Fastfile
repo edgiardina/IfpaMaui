@@ -65,4 +65,35 @@ platform :ios do
     )
     UI.success("App Store version #{version} (build #{build}) updated. Submitted for review: #{submit}")
   end
+
+  # On-demand only. No workflow runs this lane on a release. Run it before the release for the same
+  # version: Apple accepts screenshots only on a version that is not yet in review. The lane creates
+  # the App Store version if it does not exist, and appstore_release then attaches the build to it.
+  desc "Replace the App Store screenshots for a version with the images in fastlane/screenshots."
+  lane :screenshots do |options|
+    version = (options[:version] || ENV["RELEASE_VERSION"]).to_s.strip
+    UI.user_error!("version is required (pass version:X.Y.Z)") if version.empty?
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_KEY_P8"),
+      is_key_content_base64: true
+    )
+
+    deliver(
+      api_key: api_key,
+      app_identifier: APP_ID,
+      app_version: version,
+      screenshots_path: "./fastlane/screenshots",
+      overwrite_screenshots: true,  # remove the old set, then upload the new one
+      skip_screenshots: false,
+      skip_metadata: true,
+      skip_binary_upload: true,
+      submit_for_review: false,
+      force: true,                  # no interactive HTML preview
+      run_precheck_before_submit: false
+    )
+    UI.success("Screenshots for App Store version #{version} replaced.")
+  end
 end
