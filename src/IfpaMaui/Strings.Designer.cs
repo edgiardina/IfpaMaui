@@ -61,6 +61,42 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is ranked {1} in the world with {2:N2} WPPR points.
+        /// </summary>
+        internal static string AppFunctions_MyRank_Dialog {
+            get {
+                return ResourceManager.GetString("AppFunctions_MyRank_Dialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not get your IFPA rank. Try again later.
+        /// </summary>
+        internal static string AppFunctions_MyRank_Error {
+            get {
+                return ResourceManager.GetString("AppFunctions_MyRank_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} does not have an IFPA rank yet.
+        /// </summary>
+        internal static string AppFunctions_MyRank_NotRanked {
+            get {
+                return ResourceManager.GetString("AppFunctions_MyRank_NotRanked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select your player in My Stats in the IFPA app first.
+        /// </summary>
+        internal static string AppFunctions_NoPlayerSelected {
+            get {
+                return ResourceManager.GetString("AppFunctions_NoPlayerSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         internal static string AboutPage_About {

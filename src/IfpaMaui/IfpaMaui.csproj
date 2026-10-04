@@ -80,6 +80,7 @@
         <PackageReference Include="Shiny.Hosting.Maui" Version="5.8.1" />
         <PackageReference Include="Shiny.Extensions.Configuration" Version="5.8.1" />
         <PackageReference Include="Shiny.Jobs" Version="5.8.1" />
+        <PackageReference Include="Shiny.AppFunctions" Version="5.8.1" />
         <PackageReference Include="Shiny.Notifications" Version="5.8.1" />
         <PackageReference Include="sqlite-net-base" Version="1.9.172" />
         <PackageReference Include="SQLitePCLRaw.core" Version="3.0.5" />
@@ -98,6 +99,12 @@
 
         <PackageReference Include="PinballApi" Version="4.0.0" />
     </ItemGroup>
+
+    <!-- Shiny.AppFunctions compiles its Swift App Intents with xcrun, which is only on macOS. An iOS build
+         on a Windows host skips that step, so that build has no Siri or Shortcuts support. -->
+    <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' and $([MSBuild]::IsOSPlatform('Windows'))">
+        <ShinyAppFunctionsEnabled>false</ShinyAppFunctionsEnabled>
+    </PropertyGroup>
 
     <!-- Shiny.Extensions.DependencyInjection adds a global using for Shiny. Its ServiceAttribute and
          Distance types collide with Android.App and Microsoft.Maui.Maps. -->

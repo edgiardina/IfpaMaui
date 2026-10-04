@@ -774,4 +774,16 @@
   <data name="NewsPage_NoNewsDetail" xml:space="preserve">
     <value>No News Available</value>
   </data>
+  <data name="AppFunctions_MyRank_Dialog" xml:space="preserve">
+    <value>{0} is ranked {1} in the world with {2:N2} WPPR points.</value>
+  </data>
+  <data name="AppFunctions_MyRank_Error" xml:space="preserve">
+    <value>Could not get your IFPA rank. Try again later.</value>
+  </data>
+  <data name="AppFunctions_MyRank_NotRanked" xml:space="preserve">
+    <value>{0} does not have an IFPA rank yet.</value>
+  </data>
+  <data name="AppFunctions_NoPlayerSelected" xml:space="preserve">
+    <value>Select your player in My Stats in the IFPA app first.</value>
+  </data>
 </root>
