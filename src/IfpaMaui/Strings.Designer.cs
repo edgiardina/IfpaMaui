@@ -88,6 +88,33 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} in {1} {2}.
+        /// </summary>
+        internal static string AppFunctions_MyRank_StandingItem {
+            get {
+                return ResourceManager.GetString("AppFunctions_MyRank_StandingItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In the {0} championship series: {1}.
+        /// </summary>
+        internal static string AppFunctions_MyRank_Standings {
+            get {
+                return ResourceManager.GetString("AppFunctions_MyRank_Standings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to and {0} more.
+        /// </summary>
+        internal static string AppFunctions_MyRank_StandingsMore {
+            get {
+                return ResourceManager.GetString("AppFunctions_MyRank_StandingsMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select your player in My Stats in the IFPA app first.
         /// </summary>
         internal static string AppFunctions_NoPlayerSelected {

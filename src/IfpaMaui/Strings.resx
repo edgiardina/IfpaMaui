@@ -783,6 +783,15 @@
   <data name="AppFunctions_MyRank_NotRanked" xml:space="preserve">
     <value>{0} does not have an IFPA rank yet.</value>
   </data>
+  <data name="AppFunctions_MyRank_StandingItem" xml:space="preserve">
+    <value>{0} in {1} {2}</value>
+  </data>
+  <data name="AppFunctions_MyRank_Standings" xml:space="preserve">
+    <value>In the {0} championship series: {1}.</value>
+  </data>
+  <data name="AppFunctions_MyRank_StandingsMore" xml:space="preserve">
+    <value>and {0} more</value>
+  </data>
   <data name="AppFunctions_NoPlayerSelected" xml:space="preserve">
     <value>Select your player in My Stats in the IFPA app first.</value>
   </data>
