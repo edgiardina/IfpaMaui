@@ -17,6 +17,13 @@ namespace Ifpa.Views
         {
             InitializeComponent();
 
+            // On iPad the native month does not grow with the view, and the adjacent months show
+            // in the extra width. Keep the view as wide as one month.
+            if (DeviceInfo.Platform == DevicePlatform.iOS && DeviceInfo.Idiom == DeviceIdiom.Tablet)
+            {
+                nativeCalendar.MaximumWidthRequest = 400;
+            }
+
             this.logger = logger;
 
             BindingContext = ViewModel = viewModel;
