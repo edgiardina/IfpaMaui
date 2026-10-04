@@ -795,4 +795,25 @@
   <data name="AppFunctions_NoPlayerSelected" xml:space="preserve">
     <value>Select your player in My Stats in the IFPA app first.</value>
   </data>
+  <data name="AppFunctions_Tournaments_Dialog" xml:space="preserve">
+    <value>The next tournaments within {0} miles of {1}: {2}.</value>
+  </data>
+  <data name="AppFunctions_Tournaments_Error" xml:space="preserve">
+    <value>Could not get the tournaments. Try again later.</value>
+  </data>
+  <data name="AppFunctions_Tournaments_Item" xml:space="preserve">
+    <value>{0}, {1} in {2}</value>
+  </data>
+  <data name="AppFunctions_Tournaments_NoLocation" xml:space="preserve">
+    <value>Could not find the location {0}. Set the location in the Calendar tab of the IFPA app.</value>
+  </data>
+  <data name="AppFunctions_Tournaments_None" xml:space="preserve">
+    <value>There are no tournaments within {0} miles of {1}.</value>
+  </data>
+  <data name="AppFunctions_Today" xml:space="preserve">
+    <value>today</value>
+  </data>
+  <data name="AppFunctions_Tomorrow" xml:space="preserve">
+    <value>tomorrow</value>
+  </data>
 </root>
