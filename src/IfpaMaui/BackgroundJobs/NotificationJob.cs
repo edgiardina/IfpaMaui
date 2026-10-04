@@ -12,7 +12,7 @@ namespace Ifpa.BackgroundJobs
             this.notificationService = notificationService;
         }
 
-        public async Task Run(JobInfo jobInfo, CancellationToken cancelToken)
+        public async Task Run(CancellationToken cancelToken)
         {
             await notificationService.NotifyIfUsersRankChanged();
             await notificationService.NotifyIfUserHasNewlySubmittedTourneyResults();

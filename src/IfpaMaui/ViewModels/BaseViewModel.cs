@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;

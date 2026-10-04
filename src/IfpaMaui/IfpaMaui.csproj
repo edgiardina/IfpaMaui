@@ -76,11 +76,11 @@
         <PackageReference Include="Plugin.Maui.NativeCalendar" Version="2.0.0" />
         <PackageReference Include="Polly" Version="8.8.0" />
         <PackageReference Include="Scrutor" Version="7.0.0" />
-        <PackageReference Include="Shiny.Core" Version="4.0.1" />
-        <PackageReference Include="Shiny.Hosting.Maui" Version="4.0.1" />
-        <PackageReference Include="Shiny.Extensions.Configuration" Version="4.0.1" />
-        <PackageReference Include="Shiny.Jobs" Version="4.0.1" />
-        <PackageReference Include="Shiny.Notifications" Version="4.0.1" />
+        <PackageReference Include="Shiny.Core" Version="5.8.1" />
+        <PackageReference Include="Shiny.Hosting.Maui" Version="5.8.1" />
+        <PackageReference Include="Shiny.Extensions.Configuration" Version="5.8.1" />
+        <PackageReference Include="Shiny.Jobs" Version="5.8.1" />
+        <PackageReference Include="Shiny.Notifications" Version="5.8.1" />
         <PackageReference Include="sqlite-net-base" Version="1.9.172" />
         <PackageReference Include="SQLitePCLRaw.core" Version="3.0.5" />
         <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5" />
@@ -97,6 +97,12 @@
         <PackageReference Include="Plugin.Maui.BottomSheet" Version="10.0.7" />
 
         <PackageReference Include="PinballApi" Version="4.0.0" />
+    </ItemGroup>
+
+    <!-- Shiny.Extensions.DependencyInjection adds a global using for Shiny. Its ServiceAttribute and
+         Distance types collide with Android.App and Microsoft.Maui.Maps. -->
+    <ItemGroup>
+        <Using Remove="Shiny" />
     </ItemGroup>
 
     <PropertyGroup>
