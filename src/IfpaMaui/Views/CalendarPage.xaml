@@ -10,6 +10,7 @@
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
              xmlns:views="clr-namespace:Ifpa.Views"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:cm="clr-namespace:Plugin.Maui.NativeContextMenus;assembly=Plugin.Maui.NativeContextMenus"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              xmlns:models="clr-namespace:Ifpa.Models"
              xmlns:ifpatournamentsearch="clr-namespace:PinballApi.Models.WPPR.Universal.Tournaments.Search;assembly=PinballApi"
@@ -33,14 +34,15 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.CalendarPage_MyLocation}"
-                     Clicked="MyLocation_Clicked">
-            <ToolbarItem.IconImageSource>
+        <!-- The menu items are built in the code-behind -->
+        <cm:NativeContextMenuToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
+                                         x:Name="FilterMenu">
+            <cm:NativeContextMenuToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Location48}"
                                 FontFamily="FluentRegular"
                                 Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
+            </cm:NativeContextMenuToolbarItem.IconImageSource>
+        </cm:NativeContextMenuToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarPage_ToggleView}"
                      Command="{Binding ChangeCalendarDisplayCommand}"
                      IconImageSource="{Binding CurrentType, Converter={StaticResource CalendarTypeToIconConverter}}" />

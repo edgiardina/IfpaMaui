@@ -229,9 +229,6 @@
         <MauiXaml Update="Views\CalendarDetailPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
-        <MauiXaml Update="Views\CalendarFilterModalPage.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
         <MauiXaml Update="Views\CalendarPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
