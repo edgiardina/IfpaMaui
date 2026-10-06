@@ -19,33 +19,26 @@ namespace Ifpa.ViewModels
         private BaseRanking selectedPlayer;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(SelectedCountryName))]
         private Country countryToShow;
 
-        partial void OnCountryToShowChanged(Country value) => OnPropertyChanged(nameof(SelectedCountryName));
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(StartingRankTitle))]
+        private int startingPosition = 1;
 
-        private int startingPosition;
-        public int StartingPosition
-        {
-            get { return startingPosition; }
-            set
-            {
-                if (SetProperty(ref startingPosition, value))
-                    OnFilterChanged();
-            }
-        }
-
-        private int countOfItemsToFetch;
-        public int CountOfItemsToFetch
-        {
-            get { return countOfItemsToFetch; }
-            set
-            {
-                if (SetProperty(ref countOfItemsToFetch, value))
-                    OnFilterChanged();
-            }
-        }
+        partial void OnStartingPositionChanged(int value) => OnFilterChanged();
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(PlayerCountTitle))]
+        private int countOfItemsToFetch = 100;
+
+        partial void OnCountOfItemsToFetchChanged(int value) => OnFilterChanged();
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsWomenRanking))]
+        [NotifyPropertyChangedFor(nameof(IsProRanking))]
+        [NotifyPropertyChangedFor(nameof(IsCountryRanking))]
+        [NotifyPropertyChangedFor(nameof(HasPaging))]
         private RankingType currentRankingType;
 
         partial void OnCurrentRankingTypeChanged(RankingType value) => OnFilterChanged();
@@ -56,6 +49,7 @@ namespace Ifpa.ViewModels
         partial void OnCurrentRankingSystemChanged(RankingSystem value) => OnFilterChanged();
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(SelectedProRankingType))]
         private TournamentType currentProRankingType;
 
         partial void OnCurrentProRankingTypeChanged(TournamentType value) => OnFilterChanged();
@@ -117,9 +111,6 @@ namespace Ifpa.ViewModels
 
         public RankingsViewModel(IPinballRankingApi pinballRankingApi, ILogger<RankingsViewModel> logger) : base(logger)
         {
-            // Set the fields, because the properties save the filter and load the list
-            countOfItemsToFetch = 100;
-            startingPosition = 1;
             Players = new ObservableCollection<BaseRanking>();
             Countries = new ObservableCollection<Country>();
 
@@ -220,14 +211,6 @@ namespace Ifpa.ViewModels
         // Saves the filter and loads the list again
         private void OnFilterChanged()
         {
-            OnPropertyChanged(nameof(IsWomenRanking));
-            OnPropertyChanged(nameof(IsProRanking));
-            OnPropertyChanged(nameof(IsCountryRanking));
-            OnPropertyChanged(nameof(HasPaging));
-            OnPropertyChanged(nameof(PlayerCountTitle));
-            OnPropertyChanged(nameof(StartingRankTitle));
-            OnPropertyChanged(nameof(SelectedProRankingType));
-
             if (!isFilterRestored)
                 return;
 
@@ -267,7 +250,7 @@ namespace Ifpa.ViewModels
                 isReloading = false;
             }
 
-            // The first load gets the country list
+            // The first load gets the country list. An attribute cannot watch the list, so raise the change here.
             OnPropertyChanged(nameof(IsCountryRanking));
         }
 
