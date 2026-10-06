@@ -1609,6 +1609,78 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string Ranking_All {
+            get {
+                return ResourceManager.GetString("Ranking_All", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Main.
+        /// </summary>
+        internal static string Ranking_Main {
+            get {
+                return ResourceManager.GetString("Ranking_Main", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        internal static string Ranking_Open {
+            get {
+                return ResourceManager.GetString("Ranking_Open", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pro.
+        /// </summary>
+        internal static string Ranking_Pro {
+            get {
+                return ResourceManager.GetString("Ranking_Pro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Restricted.
+        /// </summary>
+        internal static string Ranking_Restricted {
+            get {
+                return ResourceManager.GetString("Ranking_Restricted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Women.
+        /// </summary>
+        internal static string Ranking_Women {
+            get {
+                return ResourceManager.GetString("Ranking_Women", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to WPPR.
+        /// </summary>
+        internal static string Ranking_Wppr {
+            get {
+                return ResourceManager.GetString("Ranking_Wppr", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Youth.
+        /// </summary>
+        internal static string Ranking_Youth {
+            get {
+                return ResourceManager.GetString("Ranking_Youth", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>
         internal static string RankingsPage_Filter {

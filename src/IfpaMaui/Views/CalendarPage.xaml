@@ -34,14 +34,40 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <!-- The menu items are built in the code-behind -->
-        <cm:NativeContextMenuToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
-                                         x:Name="FilterMenu">
+        <cm:NativeContextMenuToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}">
             <cm:NativeContextMenuToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Location48}"
                                 FontFamily="FluentRegular"
                                 Color="{StaticResource IconAccentColor}" />
             </cm:NativeContextMenuToolbarItem.IconImageSource>
+
+            <cm:MenuNode>
+                <cm:MenuNode Title="{Binding FilterLocationTitle}"
+                             Command="{Binding PromptForLocationCommand}" />
+                <cm:MenuNode Title="{x:Static local:Strings.CalendarPage_MyLocation}"
+                             Command="{Binding UseMyLocationCommand}" />
+                <!-- The distances are in miles. 250 is the maximum, because a large radius loads hundreds of events. -->
+                <cm:MenuNode Title="{Binding FilterDistanceTitle}"
+                             SelectedValue="{Binding FilterDistance}">
+                    <cm:MenuNode Title="25" Value="25" />
+                    <cm:MenuNode Title="50" Value="50" />
+                    <cm:MenuNode Title="100" Value="100" />
+                    <cm:MenuNode Title="150" Value="150" />
+                    <cm:MenuNode Title="250" Value="250" />
+                </cm:MenuNode>
+            </cm:MenuNode>
+
+            <cm:MenuNode SelectedValue="{Binding FilterRankingSystem}">
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_All}" Value="All" />
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Main}" Value="Main" />
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Women}" Value="Women" />
+            </cm:MenuNode>
+
+            <cm:MenuNode>
+                <cm:MenuNode Title="{x:Static local:Strings.CalendarFilterModalPage_ShowLeagues}"
+                             IsCheckable="True"
+                             IsChecked="{Binding FilterShowLeagues}" />
+            </cm:MenuNode>
         </cm:NativeContextMenuToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarPage_ToggleView}"
                      Command="{Binding ChangeCalendarDisplayCommand}"

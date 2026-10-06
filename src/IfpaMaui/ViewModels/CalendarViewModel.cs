@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Maps;
@@ -58,6 +59,128 @@ namespace Ifpa.ViewModels
             this.pinballRankingApi = pinballRankingApi;
             this.geocoding = geocoding;
             SelectedDate = DateTime.Today;
+
+            // Earlier versions let the distance go to 1000 miles, which loads hundreds of events
+            if (Settings.LastCalendarDistance > MaximumFilterDistance)
+            {
+                Settings.LastCalendarDistance = MaximumFilterDistance;
+            }
+        }
+
+        // The filter menu on the Calendar page binds to the members below. The values are in Settings,
+        // because the widgets and the notification job read them too.
+
+        private const int MaximumFilterDistance = 250;
+
+        /// <summary>
+        /// Raised after a filter value changes. The page loads the calendar again.
+        /// </summary>
+        public event EventHandler FilterChanged;
+
+        public string FilterLocationTitle => $"{Strings.CalendarFilterModalPage_Location}: {Settings.LastCalendarLocation}";
+
+        public string FilterDistanceTitle => $"{Strings.CalendarFilterModalPage_Distance}: {Settings.LastCalendarDistance} {Strings.Miles_Abbreviation}";
+
+        public int FilterDistance
+        {
+            get => Settings.LastCalendarDistance;
+            set
+            {
+                if (Settings.LastCalendarDistance == value)
+                    return;
+
+                Settings.LastCalendarDistance = value;
+                OnFilterChanged();
+            }
+        }
+
+        public string FilterRankingSystem
+        {
+            get => Settings.CalendarRankingSystem;
+            set
+            {
+                if (Settings.CalendarRankingSystem == value)
+                    return;
+
+                Settings.CalendarRankingSystem = value;
+                OnFilterChanged();
+            }
+        }
+
+        public bool FilterShowLeagues
+        {
+            get => Settings.CalendarShowLeagues;
+            set
+            {
+                if (Settings.CalendarShowLeagues == value)
+                    return;
+
+                Settings.CalendarShowLeagues = value;
+                OnFilterChanged();
+            }
+        }
+
+        private void SetFilterLocation(string location)
+        {
+            Settings.LastCalendarLocation = location;
+            OnFilterChanged();
+        }
+
+        private void OnFilterChanged()
+        {
+            OnPropertyChanged(nameof(FilterLocationTitle));
+            OnPropertyChanged(nameof(FilterDistanceTitle));
+            OnPropertyChanged(nameof(FilterDistance));
+            OnPropertyChanged(nameof(FilterRankingSystem));
+            OnPropertyChanged(nameof(FilterShowLeagues));
+
+            WeakReferenceMessenger.Default.Send(new CalendarFilterChangedMessage());
+            FilterChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        [RelayCommand]
+        public async Task PromptForLocation()
+        {
+            var location = await Shell.Current.DisplayPromptAsync(
+                Strings.CalendarFilterModalPage_SetCalendarLocation,
+                null,
+                Strings.OK,
+                Strings.Cancel,
+                placeholder: "Chicago, Illinois",
+                initialValue: Settings.LastCalendarLocation);
+
+            if (!string.IsNullOrWhiteSpace(location))
+            {
+                SetFilterLocation(location.Trim());
+            }
+        }
+
+        [RelayCommand]
+        public async Task UseMyLocation()
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (status != PermissionStatus.Granted)
+            {
+                status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            }
+
+            if (status != PermissionStatus.Granted)
+            {
+                await Shell.Current.DisplayAlertAsync(Strings.PermissionRequired, Strings.CalendarPage_LocationPermissionMessage, Strings.OK);
+                return;
+            }
+
+            try
+            {
+                var location = await Geolocation.GetLastKnownLocationAsync();
+                var placemark = (await geocoding.GetPlacemarksAsync(location)).First();
+
+                SetFilterLocation(placemark.Locality + ", " + placemark.AdminArea);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error finding the current location for the calendar filter");
+            }
         }
 
         [RelayCommand]
