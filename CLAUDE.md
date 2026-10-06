@@ -142,7 +142,7 @@ Console.WriteLine("message");               // ❌
 
 ## Platform Specifics
 
-- iOS 16.0+, Android API 21+
+- iOS 17.4+, Android API 21+
 - Conditional compilation: `#if IOS`, `#if ANDROID` — only use in `Platforms/` folders, not shared Views
 - iOS widgets: Swift (NativeIFPA project)
 - Android widgets: C# (`Platforms/Android/Widgets/`)

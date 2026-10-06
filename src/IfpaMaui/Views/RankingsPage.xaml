@@ -22,14 +22,50 @@
                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <!-- The menu items are built in the code-behind -->
-        <cm:NativeContextMenuToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
-                                         x:Name="FilterMenu">
+        <cm:NativeContextMenuToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}">
             <cm:NativeContextMenuToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
                                 FontFamily="FluentRegular"
                                 Color="{StaticResource IconAccentColor}" />
             </cm:NativeContextMenuToolbarItem.IconImageSource>
+
+            <cm:MenuNode SelectedValue="{Binding CurrentRankingType}">
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Pro}" Value="Pro" />
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Wppr}" Value="Wppr" />
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Women}" Value="Women" />
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Youth}" Value="Youth" />
+                <cm:MenuNode Title="{x:Static local:Strings.RankingsFilterModalPage_Country}" Value="Country" />
+            </cm:MenuNode>
+
+            <cm:MenuNode SelectedValue="{Binding CurrentRankingSystem}"
+                         IsVisible="{Binding IsWomenRanking}">
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Open}" Value="Open" />
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Restricted}" Value="Restricted" />
+            </cm:MenuNode>
+
+            <cm:MenuNode SelectedValue="{Binding SelectedProRankingType}"
+                         IsVisible="{Binding IsProRanking}">
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Open}" Value="Open" />
+                <cm:MenuNode Title="{x:Static local:Strings.Ranking_Women}" Value="Women" />
+            </cm:MenuNode>
+
+            <!-- The country items come from the API. The code-behind adds them. -->
+            <cm:MenuNode x:Name="CountryMenu"
+                         Title="{Binding SelectedCountryName}"
+                         SelectedValue="{Binding SelectedCountryName}"
+                         IsVisible="{Binding IsCountryRanking}" />
+
+            <cm:MenuNode IsVisible="{Binding HasPaging}">
+                <cm:MenuNode Title="{Binding PlayerCountTitle}"
+                             SelectedValue="{Binding CountOfItemsToFetch}">
+                    <cm:MenuNode Title="50" Value="50" />
+                    <cm:MenuNode Title="100" Value="100" />
+                    <cm:MenuNode Title="250" Value="250" />
+                    <cm:MenuNode Title="500" Value="500" />
+                </cm:MenuNode>
+                <cm:MenuNode Title="{Binding StartingRankTitle}"
+                             Command="{Binding PromptForStartingRankCommand}" />
+            </cm:MenuNode>
         </cm:NativeContextMenuToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
