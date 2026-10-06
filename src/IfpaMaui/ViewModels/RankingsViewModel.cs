@@ -126,12 +126,6 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task ShowRankingFilter()
-        {
-            await Shell.Current.GoToAsync("rankings-filter");
-        }
-
-        [RelayCommand]
         public async Task ShowPlayerSearch()
         {
             await Shell.Current.GoToAsync("player-search");

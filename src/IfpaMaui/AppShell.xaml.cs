@@ -14,7 +14,6 @@ public partial class AppShell : Shell
 
         AddAndroidStatusBarBehavior();
 
-        Routing.RegisterRoute("rankings-filter", typeof(RankingsFilterModalPage));
         Routing.RegisterRoute("player-search", typeof(PlayerSearchPage));
         Routing.RegisterRoute("player-details", typeof(PlayerDetailPage));
         Routing.RegisterRoute("player-details-no-player-selected", typeof(PlayerDetailNoPlayerSelectedPage));
