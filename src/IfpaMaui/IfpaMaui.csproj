@@ -96,6 +96,7 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
         <PackageReference Include="Plugin.Maui.BottomSheet" Version="10.0.7" />
+        <PackageReference Include="Plugin.Maui.NativeContextMenus" Version="1.1.0" />
 
         <PackageReference Include="PinballApi" Version="4.0.0" />
     </ItemGroup>
@@ -313,9 +314,6 @@
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="Views\PlayerVersusPlayerPage.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-        <MauiXaml Update="Views\RankingsFilterModalPage.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="Views\RankingsPage.xaml">

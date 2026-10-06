@@ -7,12 +7,13 @@
              Title="{x:Static local:Strings.RankingsPage_Title}"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:cm="clr-namespace:Plugin.Maui.NativeContextMenus;assembly=Plugin.Maui.NativeContextMenus"
              x:Name="BrowseItemsPage"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:RankingsViewModel"
              xmlns:datatemplates="clr-namespace:Ifpa.Views.DataTemplates.Ranking">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
+        <ToolbarItem Text="{x:Static local:Strings.PlayerSearchPage_Title}"
                      x:Name="SearchButton"
                      Command="{Binding ShowPlayerSearchCommand}">
             <ToolbarItem.IconImageSource>
@@ -21,15 +22,15 @@
                                 Color="{StaticResource IconAccentColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Filter"
-                     x:Name="InfoButton"
-                     Command="{Binding ShowRankingFilterCommand}">
-            <ToolbarItem.IconImageSource>
+        <!-- The menu items are built in the code-behind -->
+        <cm:NativeContextMenuToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}"
+                                         x:Name="FilterMenu">
+            <cm:NativeContextMenuToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
                                 FontFamily="FluentRegular"
                                 Color="{StaticResource IconAccentColor}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
+            </cm:NativeContextMenuToolbarItem.IconImageSource>
+        </cm:NativeContextMenuToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
