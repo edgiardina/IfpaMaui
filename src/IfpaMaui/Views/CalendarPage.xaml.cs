@@ -153,7 +153,7 @@ namespace Ifpa.Views
 
             if (status != PermissionStatus.Granted)
             {
-                await DisplayAlertAsync(Strings.PermissionRequired, "IFPA Companion requires your permission before polling your location for Calendar Search", Strings.OK);
+                await DisplayAlertAsync(Strings.PermissionRequired, Strings.CalendarPage_LocationPermissionMessage, Strings.OK);
                 return;
             }
 

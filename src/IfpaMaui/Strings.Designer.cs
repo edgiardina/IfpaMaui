@@ -646,6 +646,15 @@ namespace Ifpa {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IFPA Companion requires your permission before polling your location for Calendar Search.
+        /// </summary>
+        internal static string CalendarPage_LocationPermissionMessage {
+            get {
+                return ResourceManager.GetString("CalendarPage_LocationPermissionMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to My Location.
         /// </summary>
         internal static string CalendarPage_MyLocation {

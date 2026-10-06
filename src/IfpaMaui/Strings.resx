@@ -273,6 +273,9 @@
   <data name="CalendarDetailPage_Director" xml:space="preserve">
     <value>Director</value>
   </data>
+  <data name="CalendarPage_LocationPermissionMessage" xml:space="preserve">
+    <value>IFPA Companion requires your permission before polling your location for Calendar Search</value>
+  </data>
   <data name="CalendarPage_MyLocation" xml:space="preserve">
     <value>My Location</value>
   </data>
