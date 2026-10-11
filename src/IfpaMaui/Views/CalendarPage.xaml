@@ -160,6 +160,7 @@
                      Grid.Row="1" />
             <CollectionView ItemsSource="{Binding SelectedDateCalendarItems}"
                             Grid.Row="2"
+                            IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                             SelectionMode="Single"
                             SelectedItem="{Binding SelectedCalendarItem, Mode=TwoWay}"
                             SelectionChangedCommand="{Binding ShowCalendarDetailCommand}"
@@ -216,6 +217,11 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <ActivityIndicator Grid.Row="2"
+                               VerticalOptions="Start"
+                               Margin="0,20,0,0"
+                               IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}" />
         </Grid>
     </Grid>
 </ContentPage>
