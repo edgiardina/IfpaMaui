@@ -6,6 +6,7 @@
              x:Class="Ifpa.Views.PlayerVersusPlayerPage"
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              ios:Page.LargeTitleDisplay="Never"
              Title="{Binding Title}"
              xmlns:ifpaplayer="clr-namespace:PinballApi.Models.WPPR.Universal.Players;assembly=PinballApi"
@@ -25,7 +26,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

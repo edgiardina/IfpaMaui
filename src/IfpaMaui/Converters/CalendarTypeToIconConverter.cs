@@ -14,13 +14,13 @@ namespace Ifpa.Converters
                     { 
                         Glyph = (string)Application.Current.Resources["FluentIcon.CalendarLtr28"],
                         FontFamily = "FluentRegular",
-                        Color = (Color)Application.Current.Resources["IconAccentColor"]
+                        Color = Controls.ToolbarIconColorExtension.Value
                     }
                     : new FontImageSource 
                     { 
                         Glyph = (string)Application.Current.Resources["FluentIcon.Map24"],
                         FontFamily = "FluentRegular",
-                        Color = (Color)Application.Current.Resources["IconAccentColor"]
+                        Color = Controls.ToolbarIconColorExtension.Value
                     };
             }
 
