@@ -163,8 +163,7 @@ namespace Ifpa.Views
 
         private void SetCorrectFavoriteIcon(bool isFavorite = true)
         {
-            var colorDictionary = Microsoft.Maui.Controls.Application.Current.Resources.MergedDictionaries.First();
-            var toolbarIconColor = (Color)colorDictionary["IconAccentColor"];
+            var toolbarIconColor = Controls.ToolbarIconColorExtension.Value;
             
             var filledHeartIcon = new FontImageSource 
             { 

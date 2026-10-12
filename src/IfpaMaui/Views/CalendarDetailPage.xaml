@@ -40,7 +40,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.CalendarAdd28}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.RelatedTournamentsPage_Title}"
@@ -50,7 +50,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Trophy24}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Directions}"
@@ -59,7 +59,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Directions24}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.CalendarDetailPage_Share}"
@@ -69,7 +69,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

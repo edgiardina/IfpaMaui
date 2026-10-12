@@ -38,7 +38,7 @@
             <cm:NativeContextMenuToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Location48}"
                                 FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                Color="{controls:ToolbarIconColor}" />
             </cm:NativeContextMenuToolbarItem.IconImageSource>
 
             <cm:MenuNode>

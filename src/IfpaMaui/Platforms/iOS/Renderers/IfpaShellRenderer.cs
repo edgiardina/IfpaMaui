@@ -1,4 +1,5 @@
 ﻿using Ifpa.Platforms.iOS.Utils;
+using Ifpa.Platforms.Services;
 using Ifpa.Services;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 using Microsoft.Maui.Controls.Platform.Compatibility;
@@ -19,6 +20,28 @@ namespace Ifpa.Platforms.Renderers
         protected override IShellTabBarAppearanceTracker CreateTabBarAppearanceTracker()
         {
             return new BadgeShellTabbarAppearanceTracker();
+        }
+
+        /// <summary>
+        /// Create a custom ShellPageRendererTracker to keep badges on the toolbar buttons
+        /// </summary>
+        /// <returns></returns>
+        protected override IShellPageRendererTracker CreatePageRendererTracker()
+        {
+            return new BadgeShellPageRendererTracker(this);
+        }
+    }
+    class BadgeShellPageRendererTracker : ShellPageRendererTracker
+    {
+        public BadgeShellPageRendererTracker(IShellContext context) : base(context)
+        {
+        }
+
+        protected override void UpdateToolbarItems()
+        {
+            base.UpdateToolbarItems();
+
+            ToolbarBadgeService.ApplyBadges(Page, ViewController?.NavigationItem?.RightBarButtonItems);
         }
     }
     class BadgeShellTabbarAppearanceTracker : ShellTabBarAppearanceTracker

@@ -9,6 +9,7 @@
              ios:Page.LargeTitleDisplay="Never"
              Title="{x:Static local:Strings.StatsPage_Stats}"
              xmlns:local="clr-namespace:Ifpa"
+             xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
              x:DataType="vm:StatsViewModel"
              xmlns:ifpastats="clr-namespace:PinballApi.Models.WPPR.Universal.Stats;assembly=PinballApi">
@@ -23,7 +24,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

@@ -19,14 +19,14 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Search48}"
                                 FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <cm:NativeContextMenuToolbarItem Text="{x:Static local:Strings.RankingsPage_Filter}">
             <cm:NativeContextMenuToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Filter28}"
                                 FontFamily="FluentRegular"
-                                Color="{StaticResource IconAccentColor}" />
+                                Color="{controls:ToolbarIconColor}" />
             </cm:NativeContextMenuToolbarItem.IconImageSource>
 
             <cm:MenuNode SelectedValue="{Binding CurrentRankingType}">

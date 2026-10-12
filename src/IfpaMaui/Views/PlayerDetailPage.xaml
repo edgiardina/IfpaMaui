@@ -44,7 +44,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Alert28}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Favorite}"
@@ -53,7 +53,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Heart24}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_SetToMyStats}"
@@ -62,7 +62,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Star48}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="{x:Static local:Strings.PlayerDetailPage_Share}"
@@ -71,7 +71,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{StaticResource FluentIcon.Share48}"
                                  FontFamily="FluentRegular"
-                                 Color="{StaticResource IconAccentColor}" />
+                                 Color="{controls:ToolbarIconColor}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>

@@ -11,6 +11,25 @@ namespace Ifpa.Platforms.Utils
     {
         public static void AddBadge(this UIBarButtonItem barButtonItem, int value, UIColor backgroundColor = null, UIColor textColor = null)
         {
+            // iOS 26 draws bar buttons inside a glass capsule and does not show a subview added to the button's view.
+            // Use the system badge there.
+            if (OperatingSystem.IsIOSVersionAtLeast(26))
+            {
+                if (value > 0)
+                {
+                    var systemBadge = UIBarButtonItemBadge.Create((nuint)value);
+                    systemBadge.BackgroundColor = backgroundColor ?? UIColor.Red;
+                    systemBadge.ForegroundColor = textColor ?? UIColor.White;
+                    barButtonItem.Badge = systemBadge;
+                }
+                else
+                {
+                    barButtonItem.Badge = null;
+                }
+
+                return;
+            }
+
             // Remove any existing badge
             RemoveBadge(barButtonItem);
 
