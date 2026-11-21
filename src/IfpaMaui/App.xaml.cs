@@ -42,18 +42,6 @@ public partial class App : Application
 #if IOS
         (Application.Current as IApplicationController)?.SetAppIndexingProvider(new IfpaMaui.Platforms.iOS.IOSAppIndexingProvider());
 #endif
-
-        // From https://github.com/borrmann/AppThemeBindingFix
-        // This git issue summarizes the bug with bottomsheets and AppTheme issues; 
-        // if the user dismisses the app to the background with a bottomsheet open,
-        // when restored the app switches themes unexpectedly
-        // https://github.com/the49ltd/The49.Maui.BottomSheet/issues/89
-        DeviceThemeService.Instance.ReloadRequestedTheme();
-
-        Current.RequestedThemeChanged += (sender, args) =>
-        {
-            DeviceThemeService.Instance.ReloadRequestedTheme();
-        };
     }
 
     protected override Window CreateWindow(IActivationState activationState)
