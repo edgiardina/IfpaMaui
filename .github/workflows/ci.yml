@@ -39,6 +39,9 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Show .NET SDK
+        run: dotnet --info
+
       - name: Restore Test Dependencies
         run: dotnet restore tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj
 
