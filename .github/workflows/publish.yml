@@ -24,11 +24,11 @@ env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
-  DOTNET_VERSION: '10.0.x'                # .NET version to use
-  XCODE_VERSION: '26.6'                   # must satisfy the .NET for iOS workload, which requires 26.6
-  WORKLOAD_VERSION: '10.0.401'            # pin: 10.0.401.1 brings iOS SDK 27, which requires Xcode 27
-  IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
-  ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
+  DOTNET_VERSION: '11.0.x'                # .NET version to use
+  XCODE_VERSION: '27.2'                   # the .NET 11 iOS workload (iOS SDK 27.2) requires Xcode 27.2
+  WORKLOAD_VERSION: '11.0.100.1'          # pin the workload set so a new iOS SDK can't demand a newer Xcode
+  IOS_FRAMEWORK: 'net11.0-ios'            # iOS framework target
+  ANDROID_FRAMEWORK: 'net11.0-android'    # Android framework target
   
 jobs:
   publish-android:
@@ -119,7 +119,7 @@ jobs:
           track: production
 
   publish-ios: 
-    runs-on: macos-26
+    runs-on: xcode-27
     environment: Release
     name: iOS Build
     steps:

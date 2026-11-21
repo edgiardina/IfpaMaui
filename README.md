@@ -77,7 +77,7 @@ The iOS widget, the watch app and the watch complication each read the API key f
 Github Actions available for build and publishing
 
 CLI build supported via
-`dotnet build src/IfpaMaui/IfpaMaui.csproj -c Release -f net10.0-android` (or `net10.0-ios`)
+`dotnet build src/IfpaMaui/IfpaMaui.csproj -c Release -f net11.0-android` (or `net11.0-ios`)
 
 Unit tests run via `dotnet test tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj`
 
