@@ -85,7 +85,7 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task LearnMore()
         {
-            await Browser.OpenAsync("http://tiltforums.com/t/ifpa-app-now-available-on-the-app-store/4543", BrowserLaunchMode.External);
+            await Browser.OpenAsync("https://www.ifpapinball.com/", BrowserLaunchMode.External);
         }
 
         [RelayCommand]
