@@ -89,7 +89,7 @@ jobs:
           certutil -decode ifpamaui.keystore.asc ifpa-keystore.jks
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           
@@ -348,7 +348,7 @@ jobs:
             CURRENT_PROJECT_VERSION="$VERSION_NUMBER_WITH_OFFSET"
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
