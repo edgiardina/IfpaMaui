@@ -1,12 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ifpa.Views.FavoritesPage"
              xmlns:converters="clr-namespace:Ifpa.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:controls="clr-namespace:Ifpa.Controls"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:swipe="clr-namespace:Plugin.Maui.NativeSwipeMenu;assembly=Plugin.Maui.NativeSwipeMenu"
              Title="{x:Static local:Strings.FavoritesPage_Title}"
              xmlns:local="clr-namespace:Ifpa"
              x:Name="thisPage"
@@ -30,72 +29,71 @@
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
-        <CollectionView x:Name="PlayersListView"
-                        IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
-                        ItemsSource="{Binding Players}"
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
+        <swipe:SwipeCollectionView x:Name="PlayersListView"
+                                   IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
+                                   ItemsSource="{Binding Players}"
+                                   SelectionMode="None">
+            <!-- Native swipe actions: UIContextualAction on iOS, ItemTouchHelper on Android.
+                 The action's BindingContext is this page's view model and the swiped Player is the parameter. -->
+            <swipe:SwipeCollectionView.TrailingActions>
+                <swipe:SwipeAction Text="{x:Static local:Strings.FavoritesPage_Delete}"
+                                   Style="Destructive"
+                                   SystemImage="trash"
+                                   Command="{Binding DeletePlayerCommand}">
+                    <swipe:SwipeAction.IconImageSource>
+                        <FontImageSource Glyph="{StaticResource FluentIcon.Delete24}"
+                                         FontFamily="FluentRegular"
+                                         Color="White" />
+                    </swipe:SwipeAction.IconImageSource>
+                </swipe:SwipeAction>
+            </swipe:SwipeCollectionView.TrailingActions>
+            <swipe:SwipeCollectionView.ItemTemplate>
                 <DataTemplate x:DataType="ifpaplayer:Player">
-                    <SwipeView ios:SwipeView.SwipeTransitionMode="Drag"
-                               android:SwipeView.SwipeTransitionMode="Drag">
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="{x:Static local:Strings.FavoritesPage_Delete}"
-                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, Path=DeletePlayerCommand, x:DataType=vm:FavoritesViewModel}"
-                                           CommandParameter="{Binding PlayerId}"
-                                           BackgroundColor="{StaticResource DeleteBackgroundColor}">
-                                    <SwipeItem.IconImageSource>
-                                        <FontImageSource Glyph="{StaticResource FluentIcon.Delete24}"
-                                                         FontFamily="FluentRegular"
-                                                         Color="White" />
-                                    </SwipeItem.IconImageSource>
-                                </SwipeItem>
-                            </SwipeItems>
-                        </SwipeView.RightItems>
-                        <VerticalStackLayout>
-                            <Grid Padding="15,10"
-                                  ColumnDefinitions="*, 100">
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, Path=SelectPlayerCommand, x:DataType=vm:FavoritesViewModel}"
-                                                          CommandParameter="{Binding PlayerId}" />
-                                </Grid.GestureRecognizers>
-                                <StackLayout Orientation="Vertical">
-                                    <Label LineBreakMode="NoWrap"
-                                           FontSize="16">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <FormattedString.Spans>
-                                                    <Span Text="{Binding FirstName}" />
-                                                    <Span Text="{x:Static local:Strings.SingleSpace}" />
-                                                    <Span Text="{Binding LastName}" />
-                                                </FormattedString.Spans>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                    <Label TextColor="{DynamicResource SecondaryTextColor}">
-                                        <Label.Text>
-                                            <MultiBinding Converter="{StaticResource AddressFormatConverter}">
-                                                <Binding Path="City" />
-                                                <Binding Path="Stateprov" />
-                                                <Binding Path="CountryName" />
-                                            </MultiBinding>
-                                        </Label.Text>
-                                    </Label>
-                                </StackLayout>
-                                <Label Grid.Column="1"
-                                       VerticalTextAlignment="Center"
-                                       HorizontalTextAlignment="End"
-                                       Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource longToOrdinalString}}"
-                                       LineBreakMode="NoWrap"
-                                       FontSize="18" />
-                            </Grid>
-                            <BoxView Style="{StaticResource BoxSeperator}" />
-                        </VerticalStackLayout>
-                    </SwipeView>
+                    <VerticalStackLayout>
+                        <Grid Padding="15,10"
+                              ColumnDefinitions="*, 100">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:FavoritesViewModel}}, Path=SelectPlayerCommand, x:DataType=vm:FavoritesViewModel}"
+                                                      CommandParameter="{Binding PlayerId}" />
+                            </Grid.GestureRecognizers>
+                            <StackLayout Orientation="Vertical">
+                                <Label LineBreakMode="NoWrap"
+                                       FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="{Binding FirstName}" />
+                                                <Span Text="{x:Static local:Strings.SingleSpace}" />
+                                                <Span Text="{Binding LastName}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label TextColor="{DynamicResource SecondaryTextColor}">
+                                    <Label.Text>
+                                        <MultiBinding Converter="{StaticResource AddressFormatConverter}">
+                                            <Binding Path="City" />
+                                            <Binding Path="Stateprov" />
+                                            <Binding Path="CountryName" />
+                                        </MultiBinding>
+                                    </Label.Text>
+                                </Label>
+                            </StackLayout>
+                            <Label Grid.Column="1"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="End"
+                                   Text="{Binding PlayerStats.System[0].CurrentRank, Converter={StaticResource longToOrdinalString}}"
+                                   LineBreakMode="NoWrap"
+                                   FontSize="18" />
+                        </Grid>
+                        <!-- iOS draws native list separators; Android's RecyclerView has none -->
+                        <BoxView Style="{StaticResource BoxSeperator}"
+                                 IsVisible="{OnPlatform iOS=False, Default=True}" />
+                    </VerticalStackLayout>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
+            </swipe:SwipeCollectionView.ItemTemplate>
 
-            <CollectionView.EmptyView>
+            <swipe:SwipeCollectionView.EmptyView>
                 <StackLayout Padding="40"
                              VerticalOptions="Center"
                              HorizontalOptions="Center">
@@ -113,9 +111,7 @@
                            VerticalOptions="Center"
                            TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}" />
                 </StackLayout>
-
-            </CollectionView.EmptyView>
-
-        </CollectionView>
+            </swipe:SwipeCollectionView.EmptyView>
+        </swipe:SwipeCollectionView>
     </Grid>
 </ContentPage>
