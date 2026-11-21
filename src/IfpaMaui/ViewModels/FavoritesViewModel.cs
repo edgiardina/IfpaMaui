@@ -4,13 +4,15 @@ using Ifpa.Models;
 using Microsoft.Extensions.Logging;
 using PinballApi.Interfaces;
 using PinballApi.Models.WPPR.Universal.Players;
+using System.Collections.ObjectModel;
 
 namespace Ifpa.ViewModels
 {
     public partial class FavoritesViewModel : BaseViewModel
     {
+        // Observable so a swipe-to-delete removes the row in place instead of needing a reload
         [ObservableProperty]
-        private List<Player> players = new List<Player>();
+        private ObservableCollection<Player> players = new ObservableCollection<Player>();
 
         [ObservableProperty]
         private bool isPopulated;
@@ -48,7 +50,7 @@ namespace Ifpa.ViewModels
                         tempList.AddRange(await PinballRankingApi.GetPlayers(favoritesChunk.Select(n => n.PlayerID).ToList()));                        
                     }
 
-                    Players = tempList.OrderBy(i => i.PlayerStats.Open.CurrentRank).ToList();
+                    Players = new ObservableCollection<Player>(tempList.OrderBy(i => i.PlayerStats.Open.CurrentRank));
                 }
 
                 IsPopulated = Players.Count > 0 || dataNotLoaded;
@@ -64,13 +66,14 @@ namespace Ifpa.ViewModels
         }
 
         [RelayCommand]
-        public async Task DeletePlayer(long playerId)
+        public async Task DeletePlayer(Player player)
         {
             try
             {
-                await Settings.LocalDatabase.RemoveFavorite((int)playerId);
+                await Settings.LocalDatabase.RemoveFavorite((int)player.PlayerId);
 
-                Players.Remove(Players.Single(n => n.PlayerId == playerId));
+                Players.Remove(player);
+                IsPopulated = Players.Count > 0;
             }
             catch (Exception ex)
             {
