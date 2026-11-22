@@ -28,9 +28,10 @@ namespace Ifpa.Platforms.Services
 
             Dispatcher.Dispatch(() =>
             {
-#pragma warning disable CA1422 // Validate platform compatibility
-                var rootViewController = UIApplication.SharedApplication.KeyWindow.RootViewController;
-#pragma warning restore CA1422 // Validate platform compatibility
+                // UIApplication.KeyWindow is deprecated and unreliable under the UIScene
+                // lifecycle, so go through the MAUI window's platform view instead.
+                var window = page.Window ?? Application.Current?.Windows.FirstOrDefault();
+                var rootViewController = (window?.Handler?.PlatformView as UIWindow)?.RootViewController;
 
                 var rightButtonItems = FindRightBarButtonItemsInViewController(rootViewController, page);
 

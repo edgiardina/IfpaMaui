@@ -27,7 +27,7 @@ adb devices
 dotnet clean
 
 # Build and run on Android
-dotnet run --framework net10.0-android
+dotnet run --framework net11.0-android
 
 # Expected output: "deployed successfully" with process ID
 ```
@@ -121,7 +121,7 @@ adb logcat -s *:E
 
 # Force stop and retry
 adb shell am force-stop com.companyname.ifpamaui
-dotnet run --framework net10.0-android
+dotnet run --framework net11.0-android
 ```
 
 ### App Crashes
@@ -220,7 +220,7 @@ adb shell am force-stop com.companyname.ifpamaui
 adb uninstall com.companyname.ifpamaui
 dotnet clean
 dotnet build
-dotnet run --framework net10.0-android
+dotnet run --framework net11.0-android
 ```
 
 Remember: **Screenshot everything, monitor logs always, work in branches.**

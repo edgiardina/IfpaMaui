@@ -1,4 +1,4 @@
-﻿name: continuous integration build
+name: continuous integration build
 
 on:
   push:
@@ -18,14 +18,14 @@ env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true # Disable the .NET first time experience
   DOTNET_CLI_TELEMETRY_OPTOUT: true       # Disable sending .NET CLI telemetry
-  DOTNET_VERSION: '10.0.x'                # .NET version to use
-  XCODE_VERSION: '26.6'                   # must satisfy the .NET for iOS workload, which requires 26.6
-  WORKLOAD_VERSION: '10.0.401'            # pin: 10.0.401.1 brings iOS SDK 27, which requires Xcode 27
-  IOS_FRAMEWORK: 'net10.0-ios'            # iOS framework target
-  ANDROID_FRAMEWORK: 'net10.0-android'    # Android framework target
+  DOTNET_VERSION: '11.0.x'                # .NET version to use
+  XCODE_VERSION: '27.2'                   # the .NET 11 iOS workload (iOS SDK 27.2) requires Xcode 27.2
+  WORKLOAD_VERSION: '11.0.100.1'          # pin the workload set so a new iOS SDK can't demand a newer Xcode
+  IOS_FRAMEWORK: 'net11.0-ios'            # iOS framework target
+  ANDROID_FRAMEWORK: 'net11.0-android'    # Android framework target
 
 jobs:
-# Unit Tests (plain net10.0 test project — no MAUI workload required)
+# Unit Tests (plain net11.0 test project — no MAUI workload required)
   test:
     runs-on: ubuntu-latest
     name: Unit Tests
@@ -35,9 +35,12 @@ jobs:
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Show .NET SDK
+        run: dotnet --info
 
       - name: Restore Test Dependencies
         run: dotnet restore tests/IfpaMaui.Tests/IfpaMaui.Tests.csproj
@@ -55,7 +58,7 @@ jobs:
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           
@@ -70,7 +73,7 @@ jobs:
 
 # MAUI iOS Build
   build-ios:
-    runs-on: macos-26
+    runs-on: xcode-27
     name: iOS Build
     environment: Release
     env:
@@ -85,7 +88,7 @@ jobs:
         uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@4d4a70f4a5b2a5a5329f13be4ac933f2c9206ac0
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 

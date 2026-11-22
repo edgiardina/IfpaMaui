@@ -95,6 +95,16 @@ public static class MauiProgram
                 GlassTabBarContentMappings.Register();
 #endif
             })
+#if IOS
+            // WORKAROUND for https://github.com/dotnet/maui/issues/40494: MAUI 10.0.120+ draws our Fluent
+            // FontImageSource toolbar icons ~3.8 pt above center on iOS 26+. Restore the 10.0.110 glyph
+            // drawing. Remove once #40494 is fixed. Registered for Controls' concrete FontImageSource: Controls
+            // maps that exact type to its own service, which wins over an IFontImageSource registration.
+            .ConfigureImageSources(services => services.AddService<FontImageSource>(sp =>
+                new Ifpa.Platforms.Services.UncenteredFontImageSourceService(
+                    sp.GetRequiredService<IFontManager>(),
+                    sp.GetService<ILogger<FontImageSourceService>>())))
+#endif
             .ConfigureLogging(appSettings)
             .ConfigureEssentials(essentials =>
             {

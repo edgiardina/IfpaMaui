@@ -41,7 +41,29 @@ namespace Ifpa.Platforms.Renderers
         {
             base.UpdateToolbarItems();
 
-            ToolbarBadgeService.ApplyBadges(Page, ViewController?.NavigationItem?.RightBarButtonItems);
+            var rightItems = ViewController?.NavigationItem?.RightBarButtonItems;
+            MatchOverflowButtonTint(rightItems);
+            ToolbarBadgeService.ApplyBadges(Page, rightItems);
+        }
+
+        /// <summary>
+        /// WORKAROUND for https://github.com/dotnet/maui/issues/40495 (MAUI 10.0.120+, caused by
+        /// dotnet/maui#36821): the "..." overflow button for Secondary toolbar
+        /// items is now a UIButton custom view. MAUI sets its tint to null, so it inherits the nav bar's
+        /// blue Shell.ForegroundColor, while the glass bar buttons next to it draw in the label color.
+        /// Pin custom views to the label color so they match. Remove once #40495 is fixed.
+        /// MAUI resets these tints if Shell.ForegroundColor changes at runtime; the app never does that.
+        /// </summary>
+        static void MatchOverflowButtonTint(UIBarButtonItem[] rightItems)
+        {
+            if (!OperatingSystem.IsIOSVersionAtLeast(26) || rightItems is null)
+                return;
+
+            foreach (var item in rightItems)
+            {
+                if (item.CustomView is { } customView)
+                    customView.TintColor = UIColor.Label;
+            }
         }
     }
     class BadgeShellTabbarAppearanceTracker : ShellTabBarAppearanceTracker
