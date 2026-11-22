@@ -5,6 +5,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:datatemplate="clr-namespace:Ifpa.Views.DataTemplates"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:nsb="clr-namespace:Plugin.Maui.NativeSearchBar;assembly=Plugin.Maui.NativeSearchBar"
              xmlns:local="clr-namespace:Ifpa"
              Title="{x:Static local:Strings.TournamentSearchPage_Title}"
              x:DataType="vm:TournamentSearchViewModel">
@@ -15,11 +16,11 @@
     <Grid>
         <ActivityIndicator IsVisible="{Binding IsBusy}"
                            IsRunning="{Binding IsBusy}" />
-        <Grid RowDefinitions="50,*">
-            <SearchBar Grid.Row="0" Text="{Binding SearchTerm, Mode=TwoWay}"
-                       Placeholder="{x:Static local:Strings.TournamentSearchPage_Placeholder}"
-                       PlaceholderColor="{StaticResource SecondaryTextColor}"
-                       SearchCommand="{Binding TournamentSearchCommand}" />
+        <Grid RowDefinitions="Auto,*">
+            <nsb:NativeSearchBar Grid.Row="0"
+                                 Text="{Binding SearchTerm, Mode=TwoWay}"
+                                 Placeholder="{x:Static local:Strings.TournamentSearchPage_Placeholder}"
+                                 SearchCommand="{Binding TournamentSearchCommand}" />
             <CollectionView Grid.Row="1" x:Name="ActiveListView"
                             IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}"
                             ItemsSource="{Binding Tournaments}"

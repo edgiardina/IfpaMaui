@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:Ifpa.Controls"
              xmlns:local="clr-namespace:Ifpa"
              xmlns:vm="clr-namespace:Ifpa.ViewModels"
+             xmlns:nsb="clr-namespace:Plugin.Maui.NativeSearchBar;assembly=Plugin.Maui.NativeSearchBar"
              x:DataType="vm:PlayerSearchViewModel"
              xmlns:ifpaplayersearch="clr-namespace:PinballApi.Models.WPPR.Universal.Players.Search;assembly=PinballApi">
     <ContentPage.Resources>
@@ -17,20 +18,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="60, *">
-            <SearchBar Grid.Row="0"
-                       x:Name="SearchBar"
-                       SearchCommand="{Binding SearchCommand}"
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False"
-                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColor}, Dark={StaticResource PrimaryTextColorDark}}"
-                       PlaceholderColor="{StaticResource SecondaryTextColor}"
-                       CancelButtonColor="{StaticResource SecondaryTextColor}"
-                       MaxLength="100"
-                       HeightRequest="60"
-                       Keyboard="Text"
-                       Text="{Binding Text, Mode=TwoWay}"
-                       Placeholder="Type a player's name to search" />
+        <Grid RowDefinitions="Auto, *">
+            <nsb:NativeSearchBar Grid.Row="0"
+                                 SearchCommand="{Binding SearchCommand}"
+                                 IsTextPredictionEnabled="False"
+                                 ActivatesOnAppearing="True"
+                                 Text="{Binding Text, Mode=TwoWay}"
+                                 Placeholder="Type a player's name to search" />
             <ActivityIndicator Grid.Row="1"
                                IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />

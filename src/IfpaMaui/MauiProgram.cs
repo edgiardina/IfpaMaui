@@ -27,6 +27,7 @@ using Plugin.Maui.BottomSheet.LifecycleEvents;
 #endif
 using Plugin.Maui.CalendarStore;
 using Plugin.Maui.NativeCalendar;
+using Plugin.Maui.NativeSearchBar;
 using Plugin.Maui.NativeSwipeMenu;
 using Serilog;
 using Shiny;
@@ -76,6 +77,7 @@ public static class MauiProgram
             })
             .UseNativeCalendar()
             .UseNativeSwipeMenu()
+            .UseNativeSearchBar()
             .UseMauiNativePdfView()
             .ConfigureSyncfusionToolkit()
             .ConfigureFonts(fonts =>
