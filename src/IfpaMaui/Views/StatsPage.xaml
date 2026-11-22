@@ -32,8 +32,16 @@
         <Grid>
             <ActivityIndicator IsVisible="{Binding IsBusy}"
                                IsRunning="{Binding IsBusy}" />
-            <tabView:SfTabView Style="{StaticResource TabView}"
-                               IsVisible="{Binding IsBusy, Converter={StaticResource invertedBoolConverter}}">
+            <tabView:SfTabView Style="{StaticResource TabView}">
+                <!-- Hide with Opacity, not IsVisible: showing the tab view only once its CollectionView has data
+                     makes SfTabView lay the tabs out 10,000 pt wide on iOS, so later tabs show up empty.
+                     https://github.com/syncfusion/maui-toolkit/issues/438 (fix: maui-toolkit PR 439) -->
+                <tabView:SfTabView.Triggers>
+                    <DataTrigger TargetType="tabView:SfTabView" Binding="{Binding IsBusy}" Value="True">
+                        <Setter Property="Opacity" Value="0" />
+                        <Setter Property="InputTransparent" Value="True" />
+                    </DataTrigger>
+                </tabView:SfTabView.Triggers>
                 <tabView:SfTabItem Header="Aggregates">
                     <tabView:SfTabItem.Content>
                         <ScrollView>
