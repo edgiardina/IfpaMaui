@@ -1,5 +1,4 @@
-﻿using Ifpa.Platforms.iOS.Utils;
-using Ifpa.Platforms.Services;
+﻿using Ifpa.Platforms.Services;
 using Ifpa.Services;
 using Microsoft.Maui.Controls.Handlers.Compatibility;
 using Microsoft.Maui.Controls.Platform.Compatibility;
