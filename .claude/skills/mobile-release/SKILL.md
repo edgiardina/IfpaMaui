@@ -80,6 +80,19 @@ gh run view $RUN --log | grep -m1 -o 'ApplicationVersion=[0-9]*'    # the build 
 - After the run, `python .claude/skills/mobile-release/asc_status.py` shows the new version as `WAITING_FOR_REVIEW`.
 - If a job fails, get the log (`gh run view $RUN --log-failed`), find the cause, and tell Ed. To retry only the failed jobs after a fix: `gh run rerun $RUN --failed`. Android can be on Google Play already if only an iOS job failed.
 
+## Android-only release
+
+Use this when a fix affects only Android. It does not use the macOS runner, which costs many GitHub Actions minutes.
+
+```bash
+gh workflow run publish.yml --ref main -f versionNumber=X.Y.Z -f androidOnly=true
+```
+
+- `androidOnly=true` skips the iOS job and runs the Android job, which sends the app to Google Play **production**. Thus the approval gate applies.
+- Ed approves the version only. Google Play gets no release notes, so you write none.
+- This makes no tag and no GitHub Release. The next full release can use the same version or a higher one, because the stores keep versions apart.
+- Watch the run with `gh run list --workflow=publish.yml --event workflow_dispatch --limit 1`.
+
 ## Report
 
 Tell Ed:

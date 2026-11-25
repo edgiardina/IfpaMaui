@@ -19,6 +19,11 @@ on:
           type: boolean
           required: false
           default: false
+        androidOnly:
+          description: 'Skip the iOS job and ship only Android to Google Play production. Overrides iosOnly.'
+          type: boolean
+          required: false
+          default: false
 
 env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
@@ -36,7 +41,7 @@ jobs:
     name: Android Build
     # This job ends in a Google Play production deploy. A manually dispatched
     # test build skips it by default; a tag push is unaffected.
-    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.iosOnly) }}
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.iosOnly && !inputs.androidOnly) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -120,6 +125,8 @@ jobs:
 
   publish-ios: 
     runs-on: xcode-27
+    # An Android-only dispatch skips the (expensive) macOS runner entirely.
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.androidOnly) }}
     environment: Release
     name: iOS Build
     steps:
