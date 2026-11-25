@@ -1,0 +1,8 @@
+<Project>
+  <!-- Keep these in step with src/IfpaMaui/IfpaMaui.csproj so the app and the plugin resolve the same versions. -->
+  <ItemGroup>
+    <PackageVersion Include="AsyncAwaitBestPractices" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="11.0.10" />
+    <PackageVersion Include="Xamarin.Google.Android.Material" Version="1.14.0.5" />
+  </ItemGroup>
+</Project>

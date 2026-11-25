@@ -1,0 +1,15 @@
+<Project>
+  <!-- Vendored build settings. Replaces the upstream repo's props: net11 only, no analyzers, no packing. -->
+  <PropertyGroup>
+    <NETVersion>net11.0</NETVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <IsPackable>false</IsPackable>
+    <RunAnalyzers>false</RunAnalyzers>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591;CA1416;CA1422;XA0141</NoWarn>
+  </PropertyGroup>
+</Project>
