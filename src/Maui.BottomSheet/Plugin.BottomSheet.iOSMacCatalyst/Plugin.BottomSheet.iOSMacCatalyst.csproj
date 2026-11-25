@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>$(NETVersion)-ios</TargetFrameworks>
+
+        <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+
+        <AssemblyName>Plugin.BottomSheet.iOSMacCatalyst</AssemblyName>
+        <RootNamespace>Plugin.BottomSheet.iOSMacCatalyst</RootNamespace>
+    </PropertyGroup>
+	
+    <ItemGroup>
+        <PackageReference Include="AsyncAwaitBestPractices" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Plugin.BottomSheet\Plugin.BottomSheet.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Plugin.Maui.BottomSheet</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+</Project>

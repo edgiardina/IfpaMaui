@@ -105,6 +105,19 @@ namespace Ifpa.ViewModels
         [RelayCommand]
         public async Task AddToCalendar()
         {
+            try
+            {
+                await AddToCalendarCore();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error adding tournament {TournamentId} to the calendar", TournamentId);
+                await Shell.Current.DisplayAlertAsync(Strings.Error, Strings.CalendarDetailPage_TournamentNotAdded, Strings.OK);
+            }
+        }
+
+        private async Task AddToCalendarCore()
+        {
             var status = await Permissions.CheckStatusAsync<Permissions.CalendarRead>();
             if (status != PermissionStatus.Granted)
             {
@@ -123,9 +136,11 @@ namespace Ifpa.ViewModels
                                                                                    .Select(n => n.Name)
                                                                                    .ToArray());
 
-                if (selectedCalendar != Strings.Cancel)
+                // Tapping outside the action sheet returns null rather than Cancel.
+                var selected = calendars.FirstOrDefault(n => n.IsReadOnly == false && n.Name == selectedCalendar);
+                if (selected != null)
                 {
-                    var selectedCalendarId = calendars.First(n => n.Name == selectedCalendar).Id;
+                    var selectedCalendarId = selected.Id;
                     string newEventId = null;
 
                     // TODO: what if the tournament is already in the calendar?

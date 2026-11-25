@@ -97,10 +97,14 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-        <PackageReference Include="Plugin.Maui.BottomSheet" Version="10.0.7" />
         <PackageReference Include="Plugin.Maui.NativeContextMenus" Version="1.2.0" />
 
         <PackageReference Include="PinballApi" Version="4.0.0" />
+    </ItemGroup>
+
+    <!-- Vendored fork of Plugin.Maui.BottomSheet (see src/Maui.BottomSheet/README.md) -->
+    <ItemGroup>
+        <ProjectReference Include="..\Maui.BottomSheet\Plugin.Maui.BottomSheet\Plugin.Maui.BottomSheet.csproj" />
     </ItemGroup>
 
     <!-- Shiny.AppFunctions compiles its Swift App Intents with xcrun, which is only on macOS. An iOS build
